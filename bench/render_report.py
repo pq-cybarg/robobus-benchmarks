@@ -34,12 +34,13 @@ GROUP_TITLES = {
     "handshake": "Full authenticated handshake crypto (isolated from DDS transport)",
     "sig": "Digital signatures (ML-DSA vs classical)",
     "dds_handshake": "DDS-Security live handshakes (Fast DDS + CycloneDDS)",
+    "hdl_sim": "RTL / FPGA (cycle-exact simulation + formal proof — no hardware)",
     "gpu": "GPU offload — swapover cost & throughput crossover (scalability, not latency)",
     "robobus": "robobus bus / determinism / real-time",
 }
 
 GROUP_ORDER = ["bus", "kem", "hybrid_kem", "handshake", "sig", "aead", "hash", "mac", "kdf",
-               "dds_handshake", "gpu", "robobus"]
+               "dds_handshake", "gpu", "hdl_sim", "robobus"]
 
 PQC = {"ML-KEM-512", "ML-KEM-768", "ML-KEM-1024", "ML-DSA-44", "ML-DSA-65", "ML-DSA-87"}
 HYBRID = {"ECDH-P256+ML-KEM-768", "ECDH-P256+ML-KEM-1024"}

@@ -4,7 +4,7 @@
 
 > ⚠️ **Platform caveat.** These figures were measured **on macOS only** so far. They are inherently CPU-, OS- and build-specific and are **not** portable claims. The value here is the *method*: the identical script is designed to run on macOS, Windows, every supported Linux, Android and iOS, skipping only what a given platform lacks. Re-run it on each target to populate that platform's column.
 
-_Generated 2026-07-02 21:22 UTC from `bench/results/latest-*.json`._
+_Generated 2026-07-02 23:21 UTC from `bench/results/latest-*.json`._
 
 ## Platforms measured
 
@@ -21,6 +21,14 @@ _Generated 2026-07-02 21:22 UTC from `bench/results/latest-*.json`._
 - **CPU:** Apple M5 — 10 cores, 32 GB RAM
 - **Python:** 3.12.13 (CPython)
 - **Crypto backends:** cryptography 49.0.0, oqs 0.15.0, argon2 25.1.0, psutil 7.2.2
+
+### HDL-sim · RTL @ 200 MHz (icarus)
+
+- **OS:** HDL-sim cycle-exact (cocotb/icarus cycle-accurate simulation)
+- **CPU:** RTL @ 200 MHz (icarus) — 1 cores
+- **Python:** n/a (cocotb)
+- **Crypto backends:** cocotb 2.0.1, icarus present
+- **Fidelity tier:** 6/7-hdl-sim (cycle-exact RTL, no hardware)
 
 ### Linux · x86_64
 
@@ -715,6 +723,16 @@ Optional backends unlock more rows: `cryptography` (AEAD, ECDH, classical signat
 |---|---|---|---|---|
 | `swapover` | — | classical | — | ⚠️ skipped: no GPU compute backend and no GPU hardware detected |
 | `throughput_crossover` | — | classical | — | ⚠️ skipped: no GPU compute backend and no GPU hardware detected |
+
+## RTL / FPGA (cycle-exact simulation + formal proof — no hardware)
+
+**HDL-sim · RTL @ 200 MHz (icarus)**
+
+| Algorithm | Config | Class | Throughput / rate | p50 | p99 | Status |
+|---|---|---|---|---|---|---|
+| `SPSC FIFO enqueue->dequeue latency` | clock_mhz=200.0, width_bits=64, depth=16 | classical | 10.0 ns | 10.0 ns | 0.0 ns | ok · 2 clock cycles, cycle-exact; = 10.00 ns @ 200 MHz. The bus ring as RTL. |
+| `SPSC FIFO steady-state throughput` | clock_mhz=200.0 | classical | 199,902,391 items/s | — | — | ok · 1.000 items/cycle x 200 MHz (1.0 = full rate) |
+| `SPSC FIFO formal proof (SymbiYosys + z3)` | method=k-induction | classical | — | — | — | ok · PROVEN unbounded (k-induction): never overflow, never full&empty, count consistent |
 
 ## robobus bus / determinism / real-time
 
