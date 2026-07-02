@@ -1,0 +1,13 @@
+[options]
+mode prove
+depth 20
+
+[engines]
+smtbmc z3
+
+[script]
+read -formal -DFORMAL spsc_fifo.v
+prep -top spsc_fifo
+
+[files]
+spsc_fifo.v
