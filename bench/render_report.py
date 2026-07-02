@@ -66,6 +66,40 @@ def fmt(v, unit) -> str:
     return f"{v:,.2f}"
 
 
+def props(name: str) -> str:
+    """Structural / functional property — the axis ORTHOGONAL to the quantum-security class.
+
+    e.g. SHA3 vs SHA2 is not a quantum difference (both QR at >=384-bit) but a construction
+    difference (sponge vs Merkle-Damgard -> length-extension immunity -> native KMAC). Argon2id
+    vs HKDF is not a quantum difference but a role difference (memory-hard passphrase KDF for
+    LOW-entropy inputs vs fast KDF for HIGH-entropy inputs).
+    """
+    n = name.lower().replace("_", "-")   # sha3_512 -> sha3-512 (so "sha3-" won't match "sha384")
+    out = []
+    if any(k in n for k in ("sha3-", "shake", "kmac")):
+        out.append("Keccak sponge — length-extension-immune, design-diverse from SHA-2")
+    if "kmac" in n:
+        out.append("keyed hash directly (SP 800-185) — no HMAC nesting needed")
+    if any(k in n for k in ("sha-256", "sha256", "sha-384", "sha384", "sha-512", "sha512")) \
+            and "hmac" not in n and "hkdf" not in n:
+        out.append("Merkle-Damgard — length-extendable (key via HMAC)")
+    if "hmac" in n:
+        out.append("nested MAC — keys a Merkle-Damgard hash safely")
+    if "argon2" in n:
+        out.append("memory-hard passphrase KDF — LOW-entropy inputs, GPU/ASIC-resistant")
+    if "pbkdf2" in n:
+        out.append("iteration-only passphrase KDF — NO memory-hardness (weakest)")
+    if "hkdf" in n:
+        out.append("extract-then-expand KDF — HIGH-entropy inputs (RFC 5869)")
+    if "poly1305" in n:
+        out.append("one-time Wegman-Carter MAC (with ChaCha20)")
+    if "aes-256" in n:
+        out.append("Grover → ~128-bit quantum security")
+    if "aes-128" in n:
+        out.append("Grover → ~64-bit — below the post-quantum bar")
+    return " · ".join(out)
+
+
 def fmt_lat(ns) -> str:
     """Auto-scale a nanosecond latency to ns / µs / ms so sub-µs values read as nanoseconds."""
     if ns is None:
@@ -111,10 +145,43 @@ def lat_pair(r: dict):
 
 
 def tag(name: str) -> str:
-    if name in PQC:
-        return "PQC"
-    if name in HYBRID:
+    """Classify a row into four quantum-security classes by pattern.
+
+    PQC       = post-quantum *asymmetric* (ML-KEM, ML-DSA, SLH-DSA, Falcon, HQC) — the new NIST
+                hard-problem algorithms that replace quantum-broken RSA/ECC.
+    HYBRID    = a classical asymmetric primitive combined with a PQC one (CNSA 2.0 transition
+                pattern): ECDH ‖ ML-KEM, or an ML-KEM suite paired with ML-DSA signatures.
+    QR        = quantum-RESISTANT symmetric/hash/KDF: secure against a quantum adversary at its
+                size (Grover only square-roots symmetric search). AES-256, ChaCha20-Poly1305,
+                SHA-384/512, SHA3-*, KMAC, HMAC-SHA-384/512, HKDF-SHA-384, BLAKE2b, Argon2id —
+                these ARE part of CNSA 2.0 (not "PQC", but not "classical" either).
+    classical = quantum-BROKEN asymmetric (RSA, ECDH/ECDSA, X25519/Ed25519) OR symmetric/hash
+                below the post-quantum bar (AES-128 ~64-bit under Grover; SHA-256 collision).
+    """
+    n = name.lower().replace("_", "-")   # hashlib uses sha3_512 / blake2b; normalize to dashes
+    has_kem = ("ml-kem" in n) or ("kyber" in n)
+    has_pq_sig = any(k in n for k in ("ml-dsa", "dilithium", "falcon", "sphincs", "slh-dsa"))
+    has_pqc = has_kem or has_pq_sig or ("hqc" in n) or ("frodo" in n) or ("mceliece" in n)
+    has_classical_asym = any(k in n for k in (
+        "ecdh", "x25519", "x448", "p-256", "p256", "prime256v1", "rsa", "ecdsa",
+        "ed25519", "ed448", "dh+modp"))
+    if "hybrid" in n:
         return "HYBRID"
+    if has_kem and (has_classical_asym or has_pq_sig):
+        return "HYBRID"
+    if has_pqc:
+        return "PQC"
+    # symmetric / hash / MAC / KDF: quantum-resistant only at sufficient strength
+    # >=256-bit symmetric keys + >=384-bit-strength hashes/XOFs (the CNSA 2.0 symmetric floor);
+    # 256-bit hashes (SHA-256 / SHA3-256) stay classical (collision below the post-quantum bar).
+    qr = any(k in n for k in (
+        "aes-256", "chacha20", "poly1305", "sha384", "sha-384", "sha512", "sha-512",
+        "sha3-384", "sha3-512", "shake256", "blake2b", "kmac", "argon2"))
+    if qr:
+        return "QR"
+    if has_classical_asym:
+        return "classical"
+    # remaining symmetric/hash below the PQ bar (AES-128, SHA-256, HMAC-SHA256, PBKDF2, ...)
     return "classical"
 
 
@@ -160,8 +227,8 @@ def md_table(doc: dict, group: str) -> str:
         if has_lat:
             p50, p99 = lat_pair(r)
             cells += [p50 or "—", p99 or "—"]
-        note = f" · {r['note']}" if r.get("note") else ""
-        cells += ["ok" + note]
+        extra = " · ".join(x for x in [props(r["name"]), r.get("note", "")] if x)
+        cells += ["ok" + (f" · {extra}" if extra else "")]
         out.append("| " + " | ".join(cells) + " |")
     return "\n".join(out) + "\n"
 
@@ -213,9 +280,15 @@ def render_markdown(docs: list[dict]) -> str:
             S.append(f"**{p['system']} · {p.get('cpu_brand', p['machine'])}**\n")
             S.append(md_table(doc, group))
     S.append("\n---\n")
-    S.append("_`PQC` = FIPS 203/204 post-quantum (ML-KEM / ML-DSA). `HYBRID` = classical ‖ PQC "
-             "combined through HKDF-SHA384 (CNSA 2.0). `classical` = pre-quantum baseline for "
-             "comparison. Latency percentiles are per-operation; throughput is aggregate._\n")
+    S.append("**Classes.** `PQC` = post-quantum *asymmetric* (FIPS 203 ML-KEM / FIPS 204 ML-DSA), "
+             "replacing quantum-broken RSA/ECC. `HYBRID` = classical ⊕ PQC (CNSA 2.0 transition, "
+             "e.g. ECDH ‖ ML-KEM → HKDF-SHA384). `QR` = quantum-**resistant** symmetric/hash "
+             "(AES-256, ChaCha20-Poly1305, SHA-384/512, SHA3, KMAC, Argon2id) — Grover only "
+             "square-roots symmetric search, so these keep their margins and are part of CNSA 2.0; "
+             "*not* PQC (an asymmetric term), but *not* classical either. `classical` = "
+             "quantum-broken asymmetric (RSA/ECDH/ECDSA/Ed25519) or sub-strength symmetric "
+             "(AES-128, SHA-256 collision). Latency percentiles are per-operation; throughput is "
+             "aggregate._\n")
     return "\n".join(S)
 
 
@@ -231,7 +304,7 @@ def svg_bar_chart(title, rows, unit, *, width=720, log=False):
     vmax = max(v for _, v, _ in rows)
     barh, gap, left, top = 26, 10, 210, 34
     h = top + len(rows) * (barh + gap) + 16
-    colors = {"PQC": "#7c5cff", "HYBRID": "#00b4d8", "classical": "#8a8f98"}
+    colors = {"PQC": "#7c5cff", "HYBRID": "#00b4d8", "QR": "#3fb950", "classical": "#8a8f98"}
     plot_w = width - left - 90
 
     def scale(v):
@@ -296,7 +369,14 @@ def html_table(doc, group):
             if has_lat:
                 p50, p99 = lat_pair(r)
                 cells += [p50 or "—", p99 or "—"]
-            note = f"<div class='muted' style='font-size:11px'>{html.escape(r['note'])}</div>" if r.get("note") else ""
+            pr = props(r["name"])
+            bits = []
+            if pr:
+                bits.append(f"<span style='color:#7ee787'>{html.escape(pr)}</span>")
+            if r.get("note"):
+                bits.append(html.escape(r["note"]))
+            note = (f"<div class='muted' style='font-size:11px'>{' · '.join(bits)}</div>"
+                    if bits else "")
             cells += [f"<span class='ok'>ok</span>{note}"]
         out.append("<tr>" + "".join(f"<td>{c}</td>" for c in cells) + "</tr>")
     out.append("</tbody></table>")
@@ -305,7 +385,7 @@ def html_table(doc, group):
 
 CSS = """
 :root{--bg:#0d1117;--panel:#161b22;--line:#21262d;--fg:#e6edf3;--muted:#8a8f98;
- --pqc:#7c5cff;--hybrid:#00b4d8;--classical:#8a8f98;--accent:#2f81f7}
+ --pqc:#7c5cff;--hybrid:#00b4d8;--qr:#3fb950;--classical:#8a8f98;--accent:#2f81f7}
 *{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--fg);
  font:15px/1.55 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif}
 .wrap{max-width:1040px;margin:0 auto;padding:32px 22px 80px}
@@ -325,6 +405,7 @@ tbody tr:hover{background:#1b2129}
 .badge{display:inline-block;padding:1px 8px;border-radius:20px;font-size:11px;font-weight:700;letter-spacing:.03em}
 .badge.pqc{background:#7c5cff22;color:#b3a1ff;border:1px solid #7c5cff55}
 .badge.hybrid{background:#00b4d822;color:#7fdcef;border:1px solid #00b4d855}
+.badge.qr{background:#3fb95022;color:#7ee787;border:1px solid #3fb95055}
 .badge.classical{background:#8a8f9822;color:#b6bcc6;border:1px solid #8a8f9855}
 .chart{width:100%;height:auto;margin:6px 0 2px}
 .chart .ct{fill:var(--fg);font-size:14px;font-weight:700}
@@ -356,9 +437,34 @@ def render_html(docs: list[dict]) -> str:
     P.append(f"<p class='muted'>Generated {now}. "
              "<a href='https://github.com/pq-cybarg'>pq-cybarg</a>.</p>")
     P.append("<div class='legend'>"
-             "<span><i class='dot' style='background:var(--pqc)'></i>PQC (FIPS 203/204)</span>"
-             "<span><i class='dot' style='background:var(--hybrid)'></i>Hybrid (CNSA 2.0)</span>"
-             "<span><i class='dot' style='background:var(--classical)'></i>classical baseline</span></div>")
+             "<span><i class='dot' style='background:var(--pqc)'></i>PQC — post-quantum asymmetric (ML-KEM/ML-DSA)</span>"
+             "<span><i class='dot' style='background:var(--hybrid)'></i>Hybrid — classical ⊕ PQC</span>"
+             "<span><i class='dot' style='background:var(--qr)'></i>QR — quantum-resistant symmetric (AES-256, SHA-384/512…)</span>"
+             "<span><i class='dot' style='background:var(--classical)'></i>classical — quantum-broken (RSA/ECC) or sub-strength</span></div>")
+    P.append("<div class='card' style='font-size:13px'><b>On the four classes.</b> "
+             "<span class='badge pqc'>PQC</span> is reserved for the new NIST <i>asymmetric</i> "
+             "standards (FIPS 203 ML-KEM, FIPS 204 ML-DSA) that replace RSA/ECC — which Shor's "
+             "algorithm breaks outright (<span class='badge classical'>classical</span>). "
+             "<span class='badge qr'>QR</span> covers symmetric &amp; hash primitives that stay "
+             "secure against a quantum adversary at their size: Grover only <i>square-roots</i> "
+             "symmetric search, so <code>AES-256</code> keeps ~128-bit security and "
+             "<code>SHA-384/512</code>/<code>SHA3</code>/<code>KMAC</code> keep their margins — "
+             "CNSA 2.0 keeps exactly these. So AES-256 is <i>not</i> PQC (that's an asymmetric "
+             "term) but it <i>is</i> quantum-resistant — it is not \"classical\". Sub-strength "
+             "symmetric (AES-128 → ~64-bit under Grover; SHA-256 collision) stays classical.</div>")
+    P.append("<div class='card' style='font-size:13px'><b>A second, orthogonal axis — construction "
+             "&amp; role (the green notes in each row).</b> Two primitives can share a quantum class "
+             "yet differ structurally: <code>SHA3</code>/<code>SHAKE</code>/<code>KMAC</code> use the "
+             "<i>Keccak sponge</i>, which is <i>length-extension-immune</i> — so KMAC (SP 800-185) "
+             "keys a hash <i>directly</i> with no HMAC nesting, and it's design-diverse from SHA-2's "
+             "Merkle–Damgård (which <i>is</i> length-extendable, hence HMAC). That is not a "
+             "quantum-status difference — SHA-384/512 and SHA3-384/512 are equally QR. Likewise "
+             "<code>Argon2id</code> is not \"just a KDF\": it is a <i>memory-hard passphrase</i> KDF "
+             "for <i>low-entropy</i> inputs (GPU/ASIC-resistant), a different role from "
+             "<code>HKDF</code>/<code>KMAC</code>-KDF, which are fast extractors for "
+             "<i>high-entropy</i> inputs, and stronger than <code>PBKDF2</code> (iterations only, no "
+             "memory-hardness). The <b>Class</b> badge is the quantum axis; the green note is the "
+             "construction/role axis.</div>")
 
     # platform cards
     for doc in docs:
