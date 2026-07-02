@@ -11,6 +11,11 @@ name: benchmarks
 
 on:
   workflow_dispatch:
+    inputs:
+      run_gpu_baremetal:
+        description: "Also run the opt-in discrete-GPU / bare-metal self-hosted job"
+        type: boolean
+        default: false
   push:
     branches: [main]
     paths: ["bench/**", ".github/workflows/benchmarks.yml"]
@@ -42,12 +47,46 @@ jobs:
           python -m pip install --upgrade pip
           pip install cryptography argon2-cffi psutil || true
           pip install liboqs-python || echo "liboqs-python unavailable -> PQC rows SKIPPED on this runner"
+          # Apple GPU: macOS hosted runners are Apple Silicon -> mlx runs the GPU swapover/crossover.
+          if [ "${{ matrix.os }}" = "macos-latest" ]; then pip install mlx || echo "mlx unavailable"; fi
       - name: Run the identical harness
         shell: bash
         run: python bench/run_benchmarks.py --quick --label "GitHub Actions ${{ matrix.os }}"
       - uses: actions/upload-artifact@v4
         with:
           name: results-${{ matrix.os }}
+          path: bench/results/latest-*.json
+          if-no-files-found: warn
+
+  # Opt-in: discrete-GPU (NVIDIA/AMD) + bare-metal runs. Needs a GPU/bare-metal runner —
+  # self-hosted (your own box), a managed provider (Blacksmith / RunsOn / Namespace), or
+  # GitHub GPU larger-runners. Give the runner labels [self-hosted, gpu] (and/or [baremetal]).
+  # SECURITY: only enable self-hosted runners on a PRIVATE repo or trusted workflows — untrusted
+  # PRs can run arbitrary code on your hardware. Guarded off by default via the input below.
+  gpu-baremetal:
+    if: ${{ inputs.run_gpu_baremetal == true }}
+    runs-on: [self-hosted, gpu]
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Install backends + a discrete-GPU compute lib
+        shell: bash
+        run: |
+          python -m pip install --upgrade pip
+          pip install cryptography argon2-cffi psutil || true
+          pip install liboqs-python || true
+          pip install cupy-cuda12x || pip install torch || echo "no CUDA/ROCm compute lib"
+      - name: Run on bare metal (pin a core; the harness records governor/turbo/isolcpus)
+        shell: bash
+        run: |
+          # taskset pins to an isolated core if the operator set isolcpus; harness self-documents.
+          taskset -c 2 python bench/run_benchmarks.py --label "self-hosted $(hostname) (bare metal / GPU)" \
+            || python bench/run_benchmarks.py --label "self-hosted (bare metal / GPU)"
+      - uses: actions/upload-artifact@v4
+        with:
+          name: results-selfhosted-gpu
           path: bench/results/latest-*.json
           if-no-files-found: warn
 

@@ -34,11 +34,12 @@ GROUP_TITLES = {
     "handshake": "Full authenticated handshake crypto (isolated from DDS transport)",
     "sig": "Digital signatures (ML-DSA vs classical)",
     "dds_handshake": "DDS-Security live handshakes (Fast DDS + CycloneDDS)",
+    "gpu": "GPU offload — swapover cost & throughput crossover (scalability, not latency)",
     "robobus": "robobus bus / determinism / real-time",
 }
 
 GROUP_ORDER = ["bus", "kem", "hybrid_kem", "handshake", "sig", "aead", "hash", "mac", "kdf",
-               "dds_handshake", "robobus"]
+               "dds_handshake", "gpu", "robobus"]
 
 PQC = {"ML-KEM-512", "ML-KEM-768", "ML-KEM-1024", "ML-DSA-44", "ML-DSA-65", "ML-DSA-87"}
 HYBRID = {"ECDH-P256+ML-KEM-768", "ECDH-P256+ML-KEM-1024"}
@@ -201,6 +202,24 @@ def md_platform_block(doc: dict) -> str:
     ]
     if deps["missing"]:
         lines.append(f"- **Absent on this host (SKIPPED):** {', '.join(deps['missing'])}")
+    m = p.get("measurement", {})
+    if m.get("fidelity_tier"):
+        lines.append(f"- **Fidelity tier:** {m['fidelity_tier']}")
+    conds = []
+    if m.get("cpu_governor"):
+        conds.append(f"governor={'/'.join(m['cpu_governor'])}")
+    if m.get("turbo"):
+        conds.append(f"turbo={m['turbo']}")
+    if m.get("smt_active") is not None:
+        conds.append(f"SMT={'on' if m['smt_active'] else 'off'}")
+    if m.get("isolated_cpus") is not None:
+        conds.append(f"isolcpus={m['isolated_cpus'] or 'none'}")
+    if m.get("pinned") is not None:
+        conds.append(f"pinned={m['pinned']}")
+    if conds:
+        lines.append(f"- **Measurement conditions:** {', '.join(conds)}")
+    if m.get("uncontrolled_noise"):
+        lines.append(f"- **Uncontrolled noise:** {'; '.join(m['uncontrolled_noise'])}")
     return "\n".join(lines)
 
 
@@ -478,6 +497,12 @@ def render_html(docs: list[dict]) -> str:
         P.append(f"<div><b>Backends</b> {html.escape(', '.join(deps['available']) or 'stdlib only')}</div>")
         if deps["missing"]:
             P.append(f"<div><b>Skipped</b> {html.escape(', '.join(deps['missing']))}</div>")
+        m = p.get("measurement", {})
+        if m.get("fidelity_tier"):
+            P.append(f"<div><b>Fidelity</b> {html.escape(m['fidelity_tier'])}</div>")
+        if m.get("uncontrolled_noise"):
+            P.append(f"<div style='grid-column:1/-1;color:#d29922'><b>Uncontrolled noise</b> "
+                     f"{html.escape('; '.join(m['uncontrolled_noise']))}</div>")
         P.append("</div></div>")
 
     # headline charts (first doc)

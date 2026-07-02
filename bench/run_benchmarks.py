@@ -681,6 +681,157 @@ def bench_bus() -> None:
         pass
 
 
+def _gpu_hardware() -> Optional[str]:
+    """Detect GPU HARDWARE (independent of any compute backend being installed)."""
+    if platform.system() == "Darwin":
+        try:
+            out = subprocess.check_output(["system_profiler", "SPDisplaysDataType"],
+                                          text=True, timeout=8)
+            for line in out.splitlines():
+                if "Chipset Model:" in line:
+                    return line.split(":", 1)[1].strip() + " (Apple GPU / Metal)"
+        except Exception:
+            return None
+    for tool, tag in (("nvidia-smi", "NVIDIA"), ("rocm-smi", "AMD ROCm")):
+        if _which(tool):
+            try:
+                subprocess.check_output([tool], timeout=8)
+                return tag + " GPU"
+            except Exception:
+                return tag + " GPU (present)"
+    return None
+
+
+def bench_gpu() -> None:
+    """GPU offload: measure the SWAPOVER (dispatch+sync) and the throughput CROSSOVER.
+
+    The point is NOT that the GPU is fast per-op — it is that a fixed dispatch+transfer+sync
+    cost must be amortized over a batch. Latency path (bus, single crypto op) -> GPU always
+    loses. Aggregate throughput (swarm of N robots, dense sensor/electrode mesh) -> GPU wins
+    ABOVE a crossover batch size. We report that crossover and what it means at scale.
+
+    'no backend installed' is distinguished from 'no GPU hardware' (a backend is installable).
+    """
+    hw = _gpu_hardware()
+    backend = None
+    for m in ("mlx.core", "cupy", "torch"):
+        try:
+            __import__(m)
+            backend = m
+            break
+        except Exception:
+            continue
+    if backend is None:
+        reason = (f"GPU hardware present ({hw}) but no compute backend installed "
+                  f"(pip install mlx / cupy / torch) — GPU is throughput-only; see fidelity doc"
+                  if hw else "no GPU compute backend and no GPU hardware detected")
+        skip("gpu", "swapover", "mlx/cupy/torch", reason)
+        skip("gpu", "throughput_crossover", "mlx/cupy/torch", reason)
+        return
+    if backend != "mlx.core":
+        _gpu_discrete(backend, hw)
+        return
+    import mlx.core as mx
+    import numpy as np
+    # 1) swapover: trivial-op dispatch+sync round-trip = the irreducible per-offload cost
+    a = mx.array([1.0, 2.0, 3.0]); mx.eval(a * 2)
+    n = 100 if MIN_SECONDS < 0.3 else 1500
+    samples = []
+    for _ in range(n):
+        t0 = time.perf_counter_ns(); b = a * 2; mx.eval(b); samples.append(time.perf_counter_ns() - t0)
+    sw = _percentiles(samples)
+    record("gpu", "dispatch+sync swapover (unified memory)", {"backend": backend, "gpu": hw},
+           "ns", {**sw, "p50_ns": sw["p50_ns"]}, dependency="mlx",
+           note=f"irreducible per-offload cost; unified memory (no PCIe). vs 83 ns bus hop / "
+                f"12 µs ML-KEM — GPU disqualified for the latency path")
+    # 2) crossover: elementwise op (bulk-data proxy) GPU-incl-swapover vs CPU numpy
+    crossover = None
+    for elems in [1 << 12, 1 << 16, 1 << 18, 1 << 20, 1 << 22, 1 << 24]:
+        xg = mx.random.uniform(shape=(elems,)); mx.eval(xg)
+        xc = np.random.rand(elems).astype(np.float32)
+        it = 20
+        t0 = time.perf_counter_ns()
+        for _ in range(it):
+            yg = xg * 1.5 + 0.5; mx.eval(yg)
+        gpu_ns = (time.perf_counter_ns() - t0) / it
+        t0 = time.perf_counter_ns()
+        for _ in range(it):
+            yc = xc * 1.5 + 0.5  # noqa
+        cpu_ns = (time.perf_counter_ns() - t0) / it
+        won = gpu_ns < cpu_ns
+        if won and crossover is None:
+            crossover = elems
+        record("gpu", "throughput vs CPU", {"batch_elems": elems, "backend": backend},
+               "ns/batch",
+               {"gpu_ns": gpu_ns, "cpu_ns": cpu_ns, "gpu_wins": won,
+                "speedup": cpu_ns / gpu_ns if gpu_ns else 0},
+               dependency="mlx+numpy",
+               note=("GPU wins" if won else "CPU wins (swapover not amortized)")
+                    + f"; batch={elems:,} f32 = {elems*4/1024:.0f} KiB")
+    if crossover:
+        kib = crossover * 4 / 1024
+        record("gpu", "crossover batch (GPU starts winning)", {"backend": backend}, "elements",
+               {"batch_elems": crossover, "batch_kib": kib}, dependency="mlx+numpy",
+               note=f"GPU offload pays off above ~{crossover:,} f32 elems (~{kib:.0f} KiB). "
+                    f"At 1 KiB/stream that is ~{int(kib):,} concurrent streams — i.e. GPU is a "
+                    f"SWARM/MESH/high-density-electrode scalability tool, not a per-node one")
+
+
+def _gpu_discrete(backend: str, hw) -> None:
+    """Discrete GPU (NVIDIA/AMD) via cupy or torch — measures the FULL PCIe swapover
+    (host->device transfer + kernel + device->host + sync), which unified-memory Apple GPUs
+    avoid. Activates on GPU CI runners (self-hosted / managed / GitHub GPU larger-runners)."""
+    import numpy as np
+    try:
+        if backend == "cupy":
+            import cupy as xp
+            def to_dev(a): d = xp.asarray(a); xp.cuda.runtime.deviceSynchronize(); return d
+            def frm_dev(d): h = xp.asnumpy(d); return h
+            def sync(): xp.cuda.runtime.deviceSynchronize()
+        else:  # torch
+            import torch
+            dev = "cuda" if torch.cuda.is_available() else ("mps" if getattr(torch.backends, "mps", None) and torch.backends.mps.is_available() else None)
+            if dev is None:
+                skip("gpu", "swapover", backend, "no CUDA/MPS device visible to torch")
+                return
+            def to_dev(a): d = torch.from_numpy(a).to(dev); torch.cuda.synchronize() if dev == "cuda" else None; return d
+            def frm_dev(d): return d.cpu().numpy()
+            def sync(): torch.cuda.synchronize() if dev == "cuda" else None
+            xp = torch
+    except Exception as e:
+        skip("gpu", "swapover", backend, f"init failed: {e}")
+        return
+    # full round-trip swapover at increasing sizes (host->device->host)
+    crossover = None
+    for elems in [1 << 10, 1 << 14, 1 << 18, 1 << 20, 1 << 22, 1 << 24]:
+        a = np.random.rand(elems).astype(np.float32)
+        it = 20
+        t0 = time.perf_counter_ns()
+        for _ in range(it):
+            d = to_dev(a); d = d * 1.5 + 0.5; h = frm_dev(d); sync()  # noqa
+        gpu_ns = (time.perf_counter_ns() - t0) / it
+        t0 = time.perf_counter_ns()
+        for _ in range(it):
+            hc = a * 1.5 + 0.5  # noqa
+        cpu_ns = (time.perf_counter_ns() - t0) / it
+        won = gpu_ns < cpu_ns
+        if won and crossover is None:
+            crossover = elems
+        record("gpu", "throughput vs CPU (incl. PCIe transfer)",
+               {"batch_elems": elems, "backend": backend, "gpu": hw}, "ns/batch",
+               {"gpu_ns": gpu_ns, "cpu_ns": cpu_ns, "gpu_wins": won,
+                "speedup": cpu_ns / gpu_ns if gpu_ns else 0}, dependency=f"{backend}+numpy",
+               note=("GPU wins" if won else "CPU wins (PCIe swapover not amortized)")
+                    + f"; discrete GPU — host->device->host copy included; {elems*4/1024:.0f} KiB")
+    if crossover:
+        record("gpu", "crossover batch (GPU starts winning)", {"backend": backend}, "elements",
+               {"batch_elems": crossover, "batch_kib": crossover * 4 / 1024},
+               dependency=f"{backend}+numpy",
+               note=f"discrete GPU offload pays off above ~{crossover:,} f32 elems "
+                    f"(~{crossover*4/1024:.0f} KiB) — PCIe transfer pushes the crossover higher "
+                    f"than unified-memory Apple GPUs")
+
+
 def bench_dds() -> None:
     try:
         import dds_bench  # noqa
@@ -756,8 +907,82 @@ GROUPS: dict[str, Callable[[], None]] = {
     "mac": bench_mac,
     "kdf": bench_kdf,
     "dds_handshake": bench_dds,
+    "gpu": bench_gpu,
     "robobus": bench_robobus,
 }
+
+
+# --------------------------------------------------------------------------------------
+# measurement conditions — the noise knobs that decide whether numbers are reproducible.
+# Reading these (governor, turbo, SMT, core isolation, ASLR, pinning, thermal) is the single
+# biggest honesty win: two hosts with identical silicon give different numbers under different
+# conditions, so every result self-documents the conditions it was taken under.
+# --------------------------------------------------------------------------------------
+def _read(path: str) -> Optional[str]:
+    try:
+        with open(path) as f:
+            return f.read().strip()
+    except Exception:
+        return None
+
+
+def measurement_conditions() -> dict:
+    c: dict = {}
+    uncontrolled = []
+    # process CPU pinning (affinity)
+    try:
+        aff = os.sched_getaffinity(0)  # Linux only
+        c["pinned_cpus"] = sorted(aff)
+        c["pinned"] = len(aff) < (os.cpu_count() or 1)
+    except (AttributeError, OSError):
+        c["pinned"] = None
+    if platform.system() == "Linux":
+        govs = set()
+        for i in range(os.cpu_count() or 1):
+            g = _read(f"/sys/devices/system/cpu/cpu{i}/cpufreq/scaling_governor")
+            if g:
+                govs.add(g)
+        c["cpu_governor"] = sorted(govs) or None
+        if govs and govs != {"performance"}:
+            uncontrolled.append("cpu_governor!=performance (frequency scaling adds jitter)")
+        no_turbo = _read("/sys/devices/system/cpu/intel_pstate/no_turbo")
+        boost = _read("/sys/devices/system/cpu/cpufreq/boost")
+        c["turbo"] = ("off" if no_turbo == "1" or boost == "0" else
+                      "on" if no_turbo == "0" or boost == "1" else None)
+        if c["turbo"] == "on":
+            uncontrolled.append("turbo/boost on (opportunistic clocks -> variance)")
+        smt = _read("/sys/devices/system/cpu/smt/active")
+        c["smt_active"] = (smt == "1") if smt is not None else None
+        if smt == "1":
+            uncontrolled.append("SMT/hyperthreading active (sibling-core contention)")
+        iso = _read("/sys/devices/system/cpu/isolated")
+        c["isolated_cpus"] = iso or ""
+        if not iso:
+            uncontrolled.append("no isolated cores (isolcpus=) -> scheduler + IRQ noise")
+        aslr = _read("/proc/sys/kernel/randomize_va_space")
+        c["aslr"] = {"0": "off", "1": "partial", "2": "full"}.get(aslr, aslr)
+    elif platform.system() == "Darwin":
+        # macOS exposes far less; capture what we can and note the limitation
+        try:
+            therm = subprocess.check_output(["pmset", "-g", "therm"], text=True, timeout=5)
+            c["thermal"] = " ".join(therm.split())[:200]
+        except Exception:
+            pass
+        c["note"] = ("macOS does not expose governor/isolcpus/SMT toggles; RT via Mach "
+                     "time-constraint policy only (soft-RT). Use Linux + isolcpus for hard bounds.")
+        uncontrolled.append("macOS: no core isolation / governor control (soft-RT only)")
+    # PMU availability (the CPU's built-in white-box counters — the cocotb-counter analog)
+    c["pmu_perf_available"] = _which("perf") is not None and platform.system() == "Linux"
+    c["uncontrolled_noise"] = uncontrolled
+    return c
+
+
+def _which(prog: str) -> Optional[str]:
+    for d in os.environ.get("PATH", "").split(os.pathsep):
+        p = os.path.join(d, prog)
+        if os.path.isfile(p) and os.access(p, os.X_OK):
+            return p
+    return None
 
 
 # --------------------------------------------------------------------------------------
@@ -805,16 +1030,35 @@ def collect_platform() -> dict:
         if os.environ.get(var):
             env["ci"] = label
             break
+    self_hosted = False
     if "GITHUB_ACTIONS" in os.environ:
         env["runner_os"] = os.environ.get("RUNNER_OS", "")
         env["runner_arch"] = os.environ.get("RUNNER_ARCH", "")
         env["runner_name"] = os.environ.get("RUNNER_NAME", "")
-    env["virtualized"] = bool(env.get("ci"))
+        env["runner_environment"] = os.environ.get("RUNNER_ENVIRONMENT", "")
+        self_hosted = env["runner_environment"] == "self-hosted"
+    # a self-hosted runner may be real bare metal; GitHub-hosted runners are always VMs
+    env["virtualized"] = bool(env.get("ci")) and not self_hosted
+    env["self_hosted"] = self_hosted
     if env.get("virtualized"):
         env["caveat"] = ("virtualized CI runner: shared vCPUs, noisy neighbours, no real-time "
                          "scheduling -- absolute latency (esp. tails) is worse and noisier than "
                          "bare metal; use for cross-platform coverage and relative comparison.")
     info["environment"] = env
+    info["measurement"] = measurement_conditions()
+    # fidelity tier: how close is this to a clean bare-metal measurement?
+    m = info["measurement"]
+    if env.get("virtualized"):
+        tier = "1-virtualized (GitHub-hosted VM — coverage only)"
+    elif m.get("isolated_cpus") and m.get("cpu_governor") == ["performance"] and not m.get("smt_active"):
+        tier = "4-tuned-baremetal (isolcpus + performance governor + SMT off)"
+    elif m.get("pinned") or (platform.system() == "Darwin" and not env.get("virtualized")):
+        tier = "3-baremetal-partial (real hardware, some noise controls)"
+    elif not env.get("ci"):
+        tier = "2-baremetal-untuned (real hardware, default OS noise)"
+    else:
+        tier = "2-baremetal-untuned"
+    info["measurement"]["fidelity_tier"] = tier
     info["dependencies"] = {"available": dict(HAVE), "missing": dict(MISSING)}
     return info
 
