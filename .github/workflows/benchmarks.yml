@@ -1,0 +1,83 @@
+name: benchmarks
+
+# Runs the IDENTICAL bench/run_benchmarks.py on GitHub's ubuntu / macOS / Windows runners, then
+# renders the combined report into docs/ (served by GitHub Pages from the main branch /docs folder)
+# and commits it back. The macOS bare-metal baseline is committed, so the site always has content.
+#
+# Caveat baked into the data: these runners are VIRTUALIZED (shared vCPUs, noisy neighbours, no
+# real-time scheduling). run_benchmarks.py self-labels the run as `virtualized`, so the report marks
+# those columns accordingly — good for cross-platform coverage + relative comparison, not for
+# bare-metal nanosecond claims.
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths: ["bench/**", ".github/workflows/benchmarks.yml"]
+  schedule:
+    - cron: "0 6 * * 1"   # weekly refresh
+
+permissions:
+  contents: write
+
+concurrency:
+  group: benchmarks
+  cancel-in-progress: false
+
+jobs:
+  measure:
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, macos-latest, windows-latest]
+    runs-on: ${{ matrix.os }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Install backends (best-effort — the harness SKIPS what is missing)
+        shell: bash
+        run: |
+          python -m pip install --upgrade pip
+          pip install cryptography argon2-cffi psutil || true
+          pip install liboqs-python || echo "liboqs-python unavailable -> PQC rows SKIPPED on this runner"
+      - name: Run the identical harness
+        shell: bash
+        run: python bench/run_benchmarks.py --quick --label "GitHub Actions ${{ matrix.os }}"
+      - uses: actions/upload-artifact@v4
+        with:
+          name: results-${{ matrix.os }}
+          path: bench/results/latest-*.json
+          if-no-files-found: warn
+
+  publish:
+    needs: measure
+    if: ${{ always() }}
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Collect every runner's results
+        uses: actions/download-artifact@v4
+        with:
+          path: _artifacts
+      - name: Merge + render into docs/
+        shell: bash
+        run: |
+          find _artifacts -name 'latest-*.json' -exec cp {} bench/results/ \; || true
+          ls -la bench/results/
+          python bench/render_report.py
+          cp bench/site/index.html docs/index.html
+          cp bench/site/data-*.json docs/ 2>/dev/null || true
+          touch docs/.nojekyll
+      - name: Commit refreshed site
+        shell: bash
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add bench/results bench/reports docs || true
+          git commit -m "ci: refresh benchmarks (ubuntu/macos/windows runners)" || echo "no changes"
+          git push || echo "push skipped"
