@@ -872,7 +872,9 @@ def main() -> int:
                  "indicate a capability/dependency absent on THIS platform, not a failure."),
     }
     os.makedirs(args.out, exist_ok=True)
-    sysslug = f"{meta['system']}-{meta['machine']}".lower().replace(" ", "_")
+    # virtualized/CI runs get a distinct slug so they never overwrite a bare-metal baseline
+    ci_suffix = "-ci" if meta.get("environment", {}).get("virtualized") else ""
+    sysslug = f"{meta['system']}-{meta['machine']}{ci_suffix}".lower().replace(" ", "_")
     fname = f"bench-{sysslug}-{int(t_start)}.json"
     fpath = os.path.join(args.out, fname)
     with open(fpath, "w") as f:
