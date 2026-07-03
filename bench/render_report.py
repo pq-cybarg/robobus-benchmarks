@@ -35,12 +35,13 @@ GROUP_TITLES = {
     "sig": "Digital signatures (ML-DSA vs classical)",
     "dds_handshake": "DDS-Security live handshakes (Fast DDS + CycloneDDS)",
     "correctness": "Portability / correctness — emulated ISAs (QEMU; timing NOT measured, by design)",
+    "formal": "Formal verification — machine-checked proofs of the C bus ring (cbmc) & RTL (SymbiYosys)",
     "hdl_sim": "RTL / FPGA (cycle-exact simulation + formal proof — no hardware)",
     "gpu": "GPU offload — swapover cost & throughput crossover (scalability, not latency)",
     "robobus": "robobus bus / determinism / real-time",
 }
 
-GROUP_ORDER = ["correctness", "bus", "kem", "hybrid_kem", "handshake", "sig", "aead", "hash", "mac", "kdf",
+GROUP_ORDER = ["correctness", "formal", "bus", "kem", "hybrid_kem", "handshake", "sig", "aead", "hash", "mac", "kdf",
                "dds_handshake", "gpu", "hdl_sim", "robobus"]
 
 PQC = {"ML-KEM-512", "ML-KEM-768", "ML-KEM-1024", "ML-DSA-44", "ML-DSA-65", "ML-DSA-87"}
@@ -156,7 +157,8 @@ def tag(name: str) -> str:
     PQC       = post-quantum *asymmetric* (ML-KEM, ML-DSA, SLH-DSA, Falcon, HQC) — the new NIST
                 hard-problem algorithms that replace quantum-broken RSA/ECC.
     HYBRID    = a classical asymmetric primitive combined with a PQC one (CNSA 2.0 transition
-                pattern): ECDH ‖ ML-KEM, or an ML-KEM suite paired with ML-DSA signatures.
+                pattern), e.g. ECDH ‖ ML-KEM. NOTE: a PQC KEM together with a PQC signature
+                (ML-KEM + ML-DSA) is all-PQC, NOT hybrid — hybrid requires a *classical* term.
     QR        = quantum-RESISTANT symmetric/hash/KDF: secure against a quantum adversary at its
                 size (Grover only square-roots symmetric search). AES-256, ChaCha20-Poly1305,
                 SHA-384/512, SHA3-*, KMAC, HMAC-SHA-384/512, HKDF-SHA-384, BLAKE2b, Argon2id —
@@ -173,7 +175,7 @@ def tag(name: str) -> str:
         "ed25519", "ed448", "dh+modp"))
     if "hybrid" in n:
         return "HYBRID"
-    if has_kem and (has_classical_asym or has_pq_sig):
+    if has_pqc and has_classical_asym:   # classical ⊕ PQC only; PQC-KEM + PQC-sig is all-PQC
         return "HYBRID"
     if has_pqc:
         return "PQC"
@@ -189,6 +191,16 @@ def tag(name: str) -> str:
         return "classical"
     # remaining symmetric/hash below the PQ bar (AES-128, SHA-256, HMAC-SHA256, PBKDF2, ...)
     return "classical"
+
+
+# Only these groups compare crypto PRIMITIVES, so only they carry a quantum-security class. For
+# the portability/correctness matrix, the formal proofs, the bus, the HDL sim, handshakes, etc.
+# a QR/classical/PQC badge is meaningless (the row is a check or a latency, not an algorithm).
+_CLASS_GROUPS = {"kem", "hybrid_kem", "sig", "aead", "hash", "mac", "kdf"}
+
+def class_cell(group: str, name: str) -> str:
+    """Quantum-security class, shown only for crypto-primitive groups; '—' everywhere else."""
+    return tag(name) if group in _CLASS_GROUPS else "—"
 
 
 # --------------------------------------------------------------------------------------
@@ -245,13 +257,13 @@ def md_table(doc: dict, group: str) -> str:
     for r in rows:
         cfg = ", ".join(f"{k}={v}" for k, v in r["config"].items()) or "—"
         if r["status"] != "ok":
-            cells = [f"`{r['name']}`", cfg, tag(r["name"]), "—"]
+            cells = [f"`{r['name']}`", cfg, class_cell(group, r["name"]), "—"]
             if has_lat:
                 cells += ["—", "—"]
             cells += [f"⚠️ {r['status']}: {r['note']}"]
             out.append("| " + " | ".join(cells) + " |")
             continue
-        cells = [f"`{r['name']}`", cfg, tag(r["name"]), primary_str(r)]
+        cells = [f"`{r['name']}`", cfg, class_cell(group, r["name"]), primary_str(r)]
         if has_lat:
             p50, p99 = lat_pair(r)
             cells += [p50 or "—", p99 or "—"]
@@ -384,8 +396,8 @@ def html_table(doc, group):
     out = ["<table><thead><tr>" + "".join(f"<th>{c}</th>" for c in cols) + "</tr></thead><tbody>"]
     for r in rows:
         cfg = ", ".join(f"{k}={v}" for k, v in r["config"].items()) or "—"
-        klass = tag(r["name"])
-        badge = f"<span class='badge {klass.lower()}'>{klass}</span>"
+        klass = class_cell(group, r["name"])
+        badge = "—" if klass == "—" else f"<span class='badge {klass.lower()}'>{klass}</span>"
         if r["status"] != "ok":
             cells = [f"<code>{html.escape(r['name'])}</code>", html.escape(cfg), badge, "—"]
             if has_lat:

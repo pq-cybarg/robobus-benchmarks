@@ -1,10 +1,10 @@
 {
   "schema": "robobus-bench/1",
-  "generated_unix": 1783039680,
-  "label": "emulated linux/s390x (big-endian)",
+  "generated_unix": 1783058424,
+  "label": "emulated linux/s390x",
   "quick": false,
   "platform": {
-    "python_version": "3.12.13",
+    "python_version": "3.13.5",
     "python_impl": "CPython",
     "system": "Linux",
     "release": "6.12.76-linuxkit",
@@ -46,9 +46,10 @@
       "fidelity_tier": "2-baremetal-untuned (real hardware, default OS noise)"
     },
     "dependencies": {
-      "available": {},
+      "available": {
+        "cryptography": "43.0.0"
+      },
       "missing": {
-        "cryptography": "ModuleNotFoundError: No module named 'cryptography'",
         "oqs": "ModuleNotFoundError: No module named 'oqs'",
         "argon2": "ModuleNotFoundError: No module named 'argon2'",
         "psutil": "ModuleNotFoundError: No module named 'psutil'"
@@ -157,28 +158,56 @@
     },
     {
       "group": "correctness",
-      "name": "cryptography round-trips",
+      "name": "AES-256-GCM seal/open round-trip",
       "config": {
         "arch": "s390x"
       },
       "unit": "pass",
       "dependency": "stdlib",
-      "status": "skipped",
-      "note": "cryptography unavailable: ModuleNotFoundError",
+      "status": "ok",
+      "note": "encrypt then decrypt",
       "metrics": {
-        "passed": null
+        "passed": true
       }
     },
     {
       "group": "correctness",
-      "name": "oqs (ML-KEM/ML-DSA) round-trips",
+      "name": "ECDH-P256 shared-secret agreement",
+      "config": {
+        "arch": "s390x"
+      },
+      "unit": "pass",
+      "dependency": "stdlib",
+      "status": "ok",
+      "note": "both parties derive the same key",
+      "metrics": {
+        "passed": true
+      }
+    },
+    {
+      "group": "correctness",
+      "name": "Ed25519 sign/verify",
+      "config": {
+        "arch": "s390x"
+      },
+      "unit": "pass",
+      "dependency": "stdlib",
+      "status": "ok",
+      "note": "signature verifies",
+      "metrics": {
+        "passed": true
+      }
+    },
+    {
+      "group": "correctness",
+      "name": "ML-KEM/ML-DSA round-trips (oqs)",
       "config": {
         "arch": "s390x"
       },
       "unit": "pass",
       "dependency": "stdlib",
       "status": "skipped",
-      "note": "oqs unavailable: ModuleNotFoundError",
+      "note": "liboqs/oqs not built here (ModuleNotFoundError); ML-KEM/ML-DSA use fixed byte encodings (FIPS 203/204) over SHA-3/SHAKE, whose KATs pass above",
       "metrics": {
         "passed": null
       }

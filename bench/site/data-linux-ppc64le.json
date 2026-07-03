@@ -1,7 +1,7 @@
 {
   "schema": "robobus-bench/1",
-  "generated_unix": 1783058779,
-  "label": "emulated linux/arm/v7",
+  "generated_unix": 1783058695,
+  "label": "emulated linux/ppc64le",
   "quick": false,
   "platform": {
     "python_version": "3.13.5",
@@ -9,12 +9,12 @@
     "system": "Linux",
     "release": "6.12.76-linuxkit",
     "version": "#1 SMP Fri May  1 14:35:41 UTC 2026",
-    "machine": "armv7l",
+    "machine": "ppc64le",
     "processor": "",
-    "platform": "Linux-6.12.76-linuxkit-armv7l-with-glibc2.41",
+    "platform": "Linux-6.12.76-linuxkit-ppc64le-with-glibc2.41",
     "cpu_count_logical": 10,
     "environment": {
-      "emulated": "linux/arm/v7",
+      "emulated": "linux/ppc64le",
       "timing_representative": false,
       "caveat_emulation": "QEMU emulation: NOT cycle-accurate \u2014 timing here would not reflect real hardware and is not measured. Purpose is PORTABILITY/CORRECTNESS across this ISA (endianness, word size).",
       "virtualized": false,
@@ -61,7 +61,7 @@
       "group": "correctness",
       "name": "KAT sha256",
       "config": {
-        "arch": "armv7l"
+        "arch": "ppc64le"
       },
       "unit": "pass",
       "dependency": "stdlib",
@@ -75,7 +75,7 @@
       "group": "correctness",
       "name": "KAT sha384",
       "config": {
-        "arch": "armv7l"
+        "arch": "ppc64le"
       },
       "unit": "pass",
       "dependency": "stdlib",
@@ -89,7 +89,7 @@
       "group": "correctness",
       "name": "KAT sha512",
       "config": {
-        "arch": "armv7l"
+        "arch": "ppc64le"
       },
       "unit": "pass",
       "dependency": "stdlib",
@@ -103,7 +103,7 @@
       "group": "correctness",
       "name": "KAT sha3_256",
       "config": {
-        "arch": "armv7l"
+        "arch": "ppc64le"
       },
       "unit": "pass",
       "dependency": "stdlib",
@@ -117,7 +117,7 @@
       "group": "correctness",
       "name": "KAT sha3_512",
       "config": {
-        "arch": "armv7l"
+        "arch": "ppc64le"
       },
       "unit": "pass",
       "dependency": "stdlib",
@@ -131,7 +131,7 @@
       "group": "correctness",
       "name": "KAT HMAC-SHA256",
       "config": {
-        "arch": "armv7l"
+        "arch": "ppc64le"
       },
       "unit": "pass",
       "dependency": "stdlib",
@@ -146,7 +146,7 @@
       "name": "struct pack/unpack (wire format)",
       "config": {
         "host_byteorder": "little",
-        "arch": "armv7l"
+        "arch": "ppc64le"
       },
       "unit": "pass",
       "dependency": "stdlib",
@@ -160,7 +160,7 @@
       "group": "correctness",
       "name": "AES-256-GCM seal/open round-trip",
       "config": {
-        "arch": "armv7l"
+        "arch": "ppc64le"
       },
       "unit": "pass",
       "dependency": "stdlib",
@@ -174,7 +174,7 @@
       "group": "correctness",
       "name": "ECDH-P256 shared-secret agreement",
       "config": {
-        "arch": "armv7l"
+        "arch": "ppc64le"
       },
       "unit": "pass",
       "dependency": "stdlib",
@@ -188,7 +188,7 @@
       "group": "correctness",
       "name": "Ed25519 sign/verify",
       "config": {
-        "arch": "armv7l"
+        "arch": "ppc64le"
       },
       "unit": "pass",
       "dependency": "stdlib",
@@ -202,7 +202,7 @@
       "group": "correctness",
       "name": "ML-KEM/ML-DSA round-trips (oqs)",
       "config": {
-        "arch": "armv7l"
+        "arch": "ppc64le"
       },
       "unit": "pass",
       "dependency": "stdlib",

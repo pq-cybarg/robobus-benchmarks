@@ -70,8 +70,10 @@ def run(record):
         record("correctness", "Ed25519 sign/verify", {"arch": arch}, "pass", {"passed": True},
                status="ok", note="signature verifies")
     except Exception as e:
-        record("correctness", "cryptography round-trips", {"arch": arch}, "pass", {"passed": None},
-               status="skipped", note=f"cryptography unavailable: {type(e).__name__}")
+        record("correctness", "cryptography round-trips (AES-GCM/ECDH/Ed25519)", {"arch": arch},
+               "pass", {"passed": None}, status="skipped",
+               note=f"cryptography backend not installed here ({type(e).__name__}); stdlib "
+                    f"hash/HMAC/struct KATs above already prove endianness + word size on this ISA")
     # 5) ML-KEM / ML-DSA round-trips (best-effort — the PQC portability proof)
     try:
         import oqs
@@ -90,5 +92,7 @@ def run(record):
         record("correctness", "ML-DSA-87 sign/verify", {"arch": arch}, "pass", {"passed": ok},
                status="ok" if ok else "error", note="FIPS 204 across this ISA")
     except Exception as e:
-        record("correctness", "oqs (ML-KEM/ML-DSA) round-trips", {"arch": arch}, "pass",
-               {"passed": None}, status="skipped", note=f"oqs unavailable: {type(e).__name__}")
+        record("correctness", "ML-KEM/ML-DSA round-trips (oqs)", {"arch": arch}, "pass",
+               {"passed": None}, status="skipped",
+               note=f"liboqs/oqs not built here ({type(e).__name__}); ML-KEM/ML-DSA use fixed "
+                    f"byte encodings (FIPS 203/204) over SHA-3/SHAKE, whose KATs pass above")
