@@ -579,7 +579,7 @@
     },
     {
       "group": "handshake",
-      "name": "key agreement only (rekey, no identity sig)",
+      "name": "key agreement only \u2014 hybrid ECDH+ML-KEM rekey (no identity sig)",
       "config": {
         "note": "see hybrid_kem"
       },

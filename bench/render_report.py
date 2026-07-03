@@ -185,7 +185,7 @@ def tag(name: str) -> str:
     has_pqc = has_kem or has_pq_sig or ("hqc" in n) or ("frodo" in n) or ("mceliece" in n)
     has_classical_asym = any(k in n for k in (
         "ecdh", "x25519", "x448", "p-256", "p256", "prime256v1", "rsa", "ecdsa",
-        "ed25519", "ed448", "dh+modp"))
+        "ed25519", "ed448", "dh+modp", "pki-dh"))
     if "hybrid" in n:
         return "HYBRID"
     if has_pqc and has_classical_asym:   # classical ⊕ PQC only; PQC-KEM + PQC-sig is all-PQC
@@ -207,11 +207,26 @@ def tag(name: str) -> str:
 # Only these groups compare crypto PRIMITIVES, so only they carry a quantum-security class. For
 # the portability/correctness matrix, the formal proofs, the bus, the HDL sim, handshakes, etc.
 # a QR/classical/PQC badge is meaningless (the row is a check or a latency, not an algorithm).
-_CLASS_GROUPS = {"kem", "hybrid_kem", "sig", "aead", "hash", "mac", "kdf"}
+_CLASS_GROUPS = {"kem", "hybrid_kem", "sig", "aead", "hash", "mac", "kdf",
+                 "handshake", "dds_handshake"}
+# A row carries a quantum class only if its name references a crypto primitive/suite. This lets the
+# handshake / DDS-suite rows be classified (a fully-PQC handshake reads PQC) while a bare product
+# placeholder (e.g. a skipped "CycloneDDS") shows '—' instead of a guessed class.
+_CRYPTO_TOKENS = ("ml-kem", "kyber", "ml-dsa", "dilithium", "falcon", "sphincs", "slh-dsa", "hqc",
+                  "frodo", "mceliece", "ecdh", "x25519", "x448", "p-256", "p256", "prime256", "rsa",
+                  "ecdsa", "ed25519", "ed448", "pki-dh", "dh+modp", "aes", "sha", "shake", "chacha",
+                  "poly1305", "blake", "hmac", "hkdf", "pbkdf", "kmac", "argon", "siphash",
+                  "hybrid", "classical", "cnsa", "nist-")
 
 def class_cell(group: str, name: str) -> str:
-    """Quantum-security class, shown only for crypto-primitive groups; '—' everywhere else."""
-    return tag(name) if group in _CLASS_GROUPS else "—"
+    """Quantum class for crypto-primitive AND handshake/DDS-suite groups; '—' for a row that names no
+    primitive (a bare/skipped product row) or a non-crypto group."""
+    if group not in _CLASS_GROUPS:
+        return "—"
+    n = name.lower().replace("_", "-")
+    if not any(tok in n for tok in _CRYPTO_TOKENS):
+        return "—"
+    return tag(name)
 
 
 # --------------------------------------------------------------------------------------

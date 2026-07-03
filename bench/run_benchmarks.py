@@ -515,7 +515,7 @@ def bench_handshake_auth() -> None:
                     "provisioned out-of-band (not timed); isolated from DDS transport")
         id_i.free(); id_r.free(); ver.free()
     # key-agreement-only (rekey) reference: the recurring cost without re-authentication
-    record("handshake", "key agreement only (rekey, no identity sig)", {"note": "see hybrid_kem"},
+    record("handshake", "key agreement only — hybrid ECDH+ML-KEM rekey (no identity sig)", {"note": "see hybrid_kem"},
            "", None, dependency="cryptography+oqs", status="ok",
            note="the recurring/rekey cost is the hybrid_kem group: ~128 µs (ECDH+ML-KEM+HKDF, no signatures)")
 
