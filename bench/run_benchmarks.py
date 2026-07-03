@@ -207,6 +207,16 @@ def bench_hashing() -> None:
             m = measure_throughput(lambda: hashlib.new(algo, data).digest(),
                                    nbytes=size, min_iters=MIN_ITERS, min_seconds=MIN_SECONDS)
             record("hash", algo, {"input_bytes": size}, "MB/s", m, dependency="hashlib")
+    # BLAKE3 (not in stdlib hashlib) — modern Merkle-tree hash: parallel + SIMD, XOF, 256-bit
+    try:
+        import blake3
+        for size in SIZES:
+            data = os.urandom(size)
+            m = measure_throughput(lambda: blake3.blake3(data).digest(),
+                                   nbytes=size, min_iters=MIN_ITERS, min_seconds=MIN_SECONDS)
+            record("hash", "blake3", {"input_bytes": size}, "MB/s", m, dependency="blake3")
+    except ImportError:
+        skip("hash", "blake3", "blake3", "pip install blake3 (BLAKE3 is not in stdlib hashlib)")
 
 
 # ======================================================================================
@@ -724,7 +734,8 @@ def bench_gpu() -> None:
     if backend is None:
         reason = (f"GPU hardware present ({hw}) but no compute backend installed "
                   f"(pip install mlx / cupy / torch) — GPU is throughput-only; see fidelity doc"
-                  if hw else "no GPU compute backend and no GPU hardware detected")
+                  if hw else "no GPU on this runner — the GPU swapover/crossover is measured "
+                           "on the Apple-Silicon host")
         skip("gpu", "swapover", "mlx/cupy/torch", reason)
         skip("gpu", "throughput_crossover", "mlx/cupy/torch", reason)
         return
@@ -843,8 +854,10 @@ def bench_dds() -> None:
         try:
             import dds_bench  # type: ignore
         except Exception as e:
-            skip("dds_handshake", "CycloneDDS", "cunit_security_core", f"dds_bench unavailable: {e}")
-            skip("dds_handshake", "FastDDS", "BuiltinPKIDH", f"dds_bench unavailable: {e}")
+            ddsmsg = ("PQC-DDS test binary not built in this environment — the handshake is "
+                      "built + measured on the dev machine")
+            skip("dds_handshake", "CycloneDDS", "cunit_security_core", ddsmsg)
+            skip("dds_handshake", "FastDDS", "BuiltinPKIDH", ddsmsg)
             return
     dds_bench.run(record, skip, measure_wall=_measure_wall)
 
@@ -878,20 +891,24 @@ def bench_robobus() -> None:
     try:
         import robobus  # noqa: F401
     except Exception as e:
-        skip("robobus", "determinism_probe", "robobus", f"package import failed: {e}")
-        skip("robobus", "bus_latency", "robobus", f"package import failed: {e}")
+        msg = ("n/a here — needs the robobus package (private repo); the portable `bus` "
+               "group measures the same ring on this platform")
+        skip("robobus", "determinism_probe", "robobus", msg)
+        skip("robobus", "bus_latency", "robobus", msg)
         return
     # determinism probe
     try:
         from robobus import determinism
-        probe = getattr(determinism, "probe", None) or getattr(determinism, "measure", None)
+        probe = (getattr(determinism, "report", None) or getattr(determinism, "capabilities", None)
+                 or getattr(determinism, "probe", None) or getattr(determinism, "measure", None))
         if probe:
             res = probe() if callable(probe) else None
             record("robobus", "determinism_probe", {}, "report",
                    {"result": str(res)[:400]}, dependency="robobus",
                    note="adaptive determinism probe output")
         else:
-            skip("robobus", "determinism_probe", "robobus", "no probe()/measure() entrypoint")
+            skip("robobus", "determinism_probe", "robobus",
+                 "no report()/capabilities() entrypoint in this build")
     except Exception as e:
         skip("robobus", "determinism_probe", "robobus", str(e))
 

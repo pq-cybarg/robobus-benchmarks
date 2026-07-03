@@ -45,7 +45,7 @@ jobs:
         shell: bash
         run: |
           python -m pip install --upgrade pip
-          pip install cryptography argon2-cffi psutil || true
+          pip install cryptography argon2-cffi psutil blake3 || true
           pip install liboqs-python || echo "liboqs-python unavailable -> PQC rows SKIPPED on this runner"
           # Apple GPU: macOS hosted runners are Apple Silicon -> mlx runs the GPU swapover/crossover.
           if [ "${{ matrix.os }}" = "macos-latest" ]; then pip install mlx || echo "mlx unavailable"; fi
@@ -75,7 +75,7 @@ jobs:
         shell: bash
         run: |
           python -m pip install --upgrade pip
-          pip install cryptography argon2-cffi psutil || true
+          pip install cryptography argon2-cffi psutil blake3 || true
           pip install liboqs-python || true
           pip install cupy-cuda12x || pip install torch || echo "no CUDA/ROCm compute lib"
       - name: Run on bare metal (pin a core; the harness records governor/turbo/isolcpus)

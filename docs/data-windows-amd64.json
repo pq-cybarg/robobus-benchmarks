@@ -46,7 +46,7 @@
       "unit": "",
       "dependency": "native/nsbus.c",
       "status": "skipped",
-      "note": "no fork/mmap on Windows",
+      "note": "no fork/mmap on Windows \u2014 the nanosecond bus uses POSIX shared memory (measured on macOS/Linux)",
       "metrics": {}
     },
     {
@@ -56,7 +56,7 @@
       "unit": "",
       "dependency": "native/nsbus.c",
       "status": "skipped",
-      "note": "no fork/mmap on Windows",
+      "note": "no fork/mmap on Windows \u2014 the nanosecond bus uses POSIX shared memory (measured on macOS/Linux)",
       "metrics": {}
     },
     {
@@ -2057,7 +2057,7 @@
       "unit": "",
       "dependency": "cunit_security_core",
       "status": "skipped",
-      "note": "CycloneDDS PQC test binary not built on this platform",
+      "note": "PQC-DDS test binary not built in this environment \u2014 the handshake is built + measured on the dev machine",
       "metrics": {}
     },
     {
@@ -2067,7 +2067,7 @@
       "unit": "",
       "dependency": "BuiltinPKIDH",
       "status": "skipped",
-      "note": "Fast DDS PKI-DH test binary not built on this platform",
+      "note": "PQC-DDS test binary not built in this environment \u2014 the handshake is built + measured on the dev machine",
       "metrics": {}
     },
     {
@@ -2077,7 +2077,7 @@
       "unit": "",
       "dependency": "robobus",
       "status": "skipped",
-      "note": "package import failed: No module named 'robobus'",
+      "note": "n/a here \u2014 needs the robobus package (private repo); the portable `bus` group measures the same ring on this platform",
       "metrics": {}
     },
     {
@@ -2087,7 +2087,7 @@
       "unit": "",
       "dependency": "robobus",
       "status": "skipped",
-      "note": "package import failed: No module named 'robobus'",
+      "note": "n/a here \u2014 needs the robobus package (private repo); the portable `bus` group measures the same ring on this platform",
       "metrics": {}
     }
   ],

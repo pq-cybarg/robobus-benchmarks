@@ -97,10 +97,23 @@ def props(name: str) -> str:
         out.append("extract-then-expand KDF — HIGH-entropy inputs (RFC 5869)")
     if "poly1305" in n:
         out.append("one-time Wegman-Carter MAC (with ChaCha20)")
+    if "blake3" in n:
+        out.append("BLAKE3 — Merkle-tree hash, parallel + SIMD, XOF; 256-bit (NIST Level-1 QR floor)")
+    # NIST PQC strength category — the AES/SHA yardsticks NIST defines its levels by — + CNSA 2.0 fit
+    keyed = any(k in n for k in ("hmac", "hkdf", "pbkdf2"))
     if "aes-256" in n:
-        out.append("Grover → ~128-bit quantum security")
-    if "aes-128" in n:
-        out.append("Grover → ~64-bit — below the post-quantum bar")
+        out.append("AES-256 → NIST Level 5, CNSA 2.0 (Grover leaves 128-bit)")
+    elif "aes-192" in n:
+        out.append("AES-192 → NIST Level 3 (Grover leaves 96-bit)")
+    elif "aes-128" in n:
+        out.append("AES-128 → NIST Level 1 — the QR floor (128-bit; Grover→64-bit); below CNSA 2.0")
+    if any(k in n for k in ("sha-384", "sha384", "sha3-384")):
+        out.append("SHA-384 → NIST Level 4 collision, CNSA 2.0")
+    elif any(k in n for k in ("sha-512", "sha512", "sha3-512")):
+        out.append("512-bit — CNSA 2.0-grade")
+    elif any(k in n for k in ("sha-256", "sha256", "sha3-256")):
+        out.append("128-bit quantum PRF security — quantum-safe (Grover-halved, not collision-bound)"
+                   if keyed else "SHA-256 → NIST Level 2 collision; below CNSA 2.0's SHA-384")
     return " · ".join(out)
 
 
@@ -179,18 +192,16 @@ def tag(name: str) -> str:
         return "HYBRID"
     if has_pqc:
         return "PQC"
-    # symmetric / hash / MAC / KDF: quantum-resistant only at sufficient strength
-    # >=256-bit symmetric keys + >=384-bit-strength hashes/XOFs (the CNSA 2.0 symmetric floor);
-    # 256-bit hashes (SHA-256 / SHA3-256) stay classical (collision below the post-quantum bar).
-    qr = any(k in n for k in (
-        "aes-256", "chacha20", "poly1305", "sha384", "sha-384", "sha512", "sha-512",
-        "sha3-384", "sha3-512", "shake256", "blake2b", "kmac", "argon2"))
-    if qr:
-        return "QR"
     if has_classical_asym:
+        return "classical"   # Shor-broken: RSA/DH/ECDH/ECDSA/EdDSA — NIST IR 8547 "quantum-vulnerable"
+    # Pre-quantum-broken symmetric/hash (already dead classically):
+    if any(k in n for k in ("md5", " sha1", "sha-1", "sha1-", "rc4", "3des", "des-cbc")):
         return "classical"
-    # remaining symmetric/hash below the PQ bar (AES-128, SHA-256, HMAC-SHA256, PBKDF2, ...)
-    return "classical"
+    # Everything else is symmetric / hash / MAC / KDF. A quantum computer does NOT break these (only
+    # Grover's quadratic speedup applies), and NIST *defines* its five PQ strength Categories BY them
+    # (Cat 1 = AES-128, 2 = SHA-256, 3 = AES-192, 4 = SHA-384, 5 = AES-256). So they are quantum-
+    # RESISTANT at some NIST level; the level + CNSA 2.0 fitness is the role note (props), not class.
+    return "QR"
 
 
 # Only these groups compare crypto PRIMITIVES, so only they carry a quantum-security class. For
@@ -260,7 +271,7 @@ def md_table(doc: dict, group: str) -> str:
             cells = [f"`{r['name']}`", cfg, class_cell(group, r["name"]), "—"]
             if has_lat:
                 cells += ["—", "—"]
-            cells += [f"⚠️ {r['status']}: {r['note']}"]
+            cells += [f"○ _{r['status']}_ — {r['note']}"]
             out.append("| " + " | ".join(cells) + " |")
             continue
         cells = [f"`{r['name']}`", cfg, class_cell(group, r["name"]), primary_str(r)]
@@ -320,15 +331,18 @@ def render_markdown(docs: list[dict]) -> str:
             S.append(f"**{p['system']} · {p.get('cpu_brand', p['machine'])}**\n")
             S.append(md_table(doc, group))
     S.append("\n---\n")
-    S.append("**Classes.** `PQC` = post-quantum *asymmetric* (FIPS 203 ML-KEM / FIPS 204 ML-DSA), "
-             "replacing quantum-broken RSA/ECC. `HYBRID` = classical ⊕ PQC (CNSA 2.0 transition, "
-             "e.g. ECDH ‖ ML-KEM → HKDF-SHA384). `QR` = quantum-**resistant** symmetric/hash "
-             "(AES-256, ChaCha20-Poly1305, SHA-384/512, SHA3, KMAC, Argon2id) — Grover only "
-             "square-roots symmetric search, so these keep their margins and are part of CNSA 2.0; "
-             "*not* PQC (an asymmetric term), but *not* classical either. `classical` = "
-             "quantum-broken asymmetric (RSA/ECDH/ECDSA/Ed25519) or sub-strength symmetric "
-             "(AES-128, SHA-256 collision). Latency percentiles are per-operation; throughput is "
-             "aggregate._\n")
+    S.append("**Classes (grounded in NIST).** `classical` = quantum-**broken** asymmetric — RSA, "
+             "DH, ECDH, ECDSA, Ed25519 — which Shor breaks and NIST IR 8547 lists as quantum-"
+             "vulnerable (deprecate 2030 / disallow 2035). `PQC` = the NIST post-quantum *asymmetric* "
+             "standards (FIPS 203 ML-KEM, FIPS 204 ML-DSA) that replace them. `HYBRID` = classical ⊕ "
+             "PQC (the CNSA 2.0 transition, e.g. ECDH ‖ ML-KEM → HKDF-SHA384). `QR` = symmetric / "
+             "hash / MAC / KDF: quantum does **not** break these (only Grover's square-root applies), "
+             "and NIST *defines* its strength Categories 1–5 BY them (Cat 1 = AES-128, 2 = SHA-256, "
+             "3 = AES-192, 4 = SHA-384, 5 = AES-256). So AES-128 and SHA-256 are quantum-security "
+             "*levels*, not \"classical\" — the NIST Category and CNSA-2.0 fitness are in each row's "
+             "role note. **AES-128 (Level 1) is the QR floor**; anything weaker — 3DES "
+             "(112-bit), DES, RC4, MD5, SHA-1 — is sub-threshold and stays `classical`. "
+             "Latency percentiles are per-operation; throughput is aggregate._\n")
     return "\n".join(S)
 
 
@@ -441,7 +455,7 @@ table{border-collapse:collapse;width:100%;font-size:13.5px;margin:6px 0 4px}
 th,td{border-bottom:1px solid var(--line);padding:7px 10px;text-align:left;vertical-align:top}
 th{color:var(--muted);font-weight:600;font-size:12px;text-transform:uppercase;letter-spacing:.04em}
 tbody tr:hover{background:#1b2129}
-.muted{color:var(--muted)}.ok{color:#3fb950}.skip{color:#d29922;font-size:12px}
+.muted{color:var(--muted)}.ok{color:#3fb950}.skip{color:#8a8f98;font-size:12px}
 .badge{display:inline-block;padding:1px 8px;border-radius:20px;font-size:11px;font-weight:700;letter-spacing:.03em}
 .badge.pqc{background:#7c5cff22;color:#b3a1ff;border:1px solid #7c5cff55}
 .badge.hybrid{background:#00b4d822;color:#7fdcef;border:1px solid #00b4d855}
@@ -479,19 +493,25 @@ def render_html(docs: list[dict]) -> str:
     P.append("<div class='legend'>"
              "<span><i class='dot' style='background:var(--pqc)'></i>PQC — post-quantum asymmetric (ML-KEM/ML-DSA)</span>"
              "<span><i class='dot' style='background:var(--hybrid)'></i>Hybrid — classical ⊕ PQC</span>"
-             "<span><i class='dot' style='background:var(--qr)'></i>QR — quantum-resistant symmetric (AES-256, SHA-384/512…)</span>"
-             "<span><i class='dot' style='background:var(--classical)'></i>classical — quantum-broken (RSA/ECC) or sub-strength</span></div>")
-    P.append("<div class='card' style='font-size:13px'><b>On the four classes.</b> "
-             "<span class='badge pqc'>PQC</span> is reserved for the new NIST <i>asymmetric</i> "
-             "standards (FIPS 203 ML-KEM, FIPS 204 ML-DSA) that replace RSA/ECC — which Shor's "
-             "algorithm breaks outright (<span class='badge classical'>classical</span>). "
-             "<span class='badge qr'>QR</span> covers symmetric &amp; hash primitives that stay "
-             "secure against a quantum adversary at their size: Grover only <i>square-roots</i> "
-             "symmetric search, so <code>AES-256</code> keeps ~128-bit security and "
-             "<code>SHA-384/512</code>/<code>SHA3</code>/<code>KMAC</code> keep their margins — "
-             "CNSA 2.0 keeps exactly these. So AES-256 is <i>not</i> PQC (that's an asymmetric "
-             "term) but it <i>is</i> quantum-resistant — it is not \"classical\". Sub-strength "
-             "symmetric (AES-128 → ~64-bit under Grover; SHA-256 collision) stays classical.</div>")
+             "<span><i class='dot' style='background:var(--qr)'></i>QR — symmetric/hash, Grover-only (NIST Category 1–5)</span>"
+             "<span><i class='dot' style='background:var(--classical)'></i>classical — quantum-broken by Shor (RSA/ECC)</span></div>")
+    P.append("<div class='card' style='font-size:13px'><b>The four classes, grounded in NIST.</b> "
+             "<span class='badge classical'>classical</span> is reserved for the <i>quantum-broken</i> "
+             "asymmetric algorithms — RSA, DH, ECDH, ECDSA, Ed25519 — which Shor breaks outright and "
+             "<a href='https://csrc.nist.gov/pubs/ir/8547/ipd'>NIST IR 8547</a> lists as quantum-"
+             "vulnerable (deprecate 2030, disallow 2035). <span class='badge pqc'>PQC</span> is the "
+             "NIST post-quantum <i>asymmetric</i> replacement (FIPS 203 ML-KEM, FIPS 204 ML-DSA). "
+             "<span class='badge hybrid'>HYBRID</span> runs a classical and a PQC primitive together "
+             "(CNSA 2.0 transition). <span class='badge qr'>QR</span> covers <i>symmetric / hash / "
+             "MAC / KDF</i>: a quantum computer does <b>not</b> break these — only Grover's quadratic "
+             "speedup applies — and NIST <i>defines</i> its five PQ strength Categories BY them: "
+             "<b>Cat 1 = AES-128, 2 = SHA-256, 3 = AES-192, 4 = SHA-384, 5 = AES-256</b>. So AES-128 "
+             "and SHA-256 are quantum-security <i>levels</i>, not \"classical\" — even <code>HMAC</code>/"
+             "<code>HKDF</code>/<code>PBKDF2</code> over SHA-256 stay 128-bit quantum-safe (PRFs, not "
+             "collision-bound). Each row's green note carries the NIST Category and CNSA-2.0 fitness; "
+             "CNSA 2.0 mandates the Level-5 tier (AES-256, SHA-384, ML-KEM-1024, ML-DSA-87). "
+             "<b>AES-128 (Level 1) is the QR floor</b> — anything weaker (3DES 112-bit, DES, "
+             "RC4, MD5, SHA-1) is sub-threshold and stays <span class='badge classical'>classical</span>.</div>")
     P.append("<div class='card' style='font-size:13px'><b>A second, orthogonal axis — construction "
              "&amp; role (the green notes in each row).</b> Two primitives can share a quantum class "
              "yet differ structurally: <code>SHA3</code>/<code>SHAKE</code>/<code>KMAC</code> use the "
