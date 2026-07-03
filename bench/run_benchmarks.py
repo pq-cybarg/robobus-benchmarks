@@ -896,6 +896,18 @@ def bench_robobus() -> None:
         skip("robobus", "determinism_probe", "robobus", str(e))
 
 
+def bench_correctness_group() -> None:
+    here = os.path.dirname(os.path.abspath(__file__))
+    if here not in sys.path:
+        sys.path.insert(0, here)
+    try:
+        import correctness
+    except Exception as e:
+        skip("correctness", "checks", "correctness.py", f"module unavailable: {e}")
+        return
+    correctness.run(record)
+
+
 GROUPS: dict[str, Callable[[], None]] = {
     "bus": bench_bus,
     "kem": bench_kem,
@@ -909,6 +921,7 @@ GROUPS: dict[str, Callable[[], None]] = {
     "dds_handshake": bench_dds,
     "gpu": bench_gpu,
     "robobus": bench_robobus,
+    "correctness": bench_correctness_group,
 }
 
 
@@ -1038,6 +1051,13 @@ def collect_platform() -> dict:
         env["runner_environment"] = os.environ.get("RUNNER_ENVIRONMENT", "")
         self_hosted = env["runner_environment"] == "self-hosted"
     # a self-hosted runner may be real bare metal; GitHub-hosted runners are always VMs
+    emulated = os.environ.get("ROBOBUS_EMULATED")
+    if emulated:
+        env["emulated"] = emulated
+        env["timing_representative"] = False
+        env["caveat_emulation"] = ("QEMU emulation: NOT cycle-accurate — timing here would not "
+                                    "reflect real hardware and is not measured. Purpose is "
+                                    "PORTABILITY/CORRECTNESS across this ISA (endianness, word size).")
     env["virtualized"] = bool(env.get("ci")) and not self_hosted
     env["self_hosted"] = self_hosted
     if env.get("virtualized"):
@@ -1069,6 +1089,8 @@ def main() -> int:
     ap.add_argument("--out", default=os.path.join(os.path.dirname(os.path.abspath(__file__)), "results"))
     ap.add_argument("--only", default="", help="comma-separated subset of groups to run")
     ap.add_argument("--label", default="", help="optional label for this run")
+    ap.add_argument("--verify", action="store_true",
+                    help="correctness/portability checks only (no timing) — for emulated ISAs (QEMU)")
     args = ap.parse_args()
 
     global SIZES, MIN_SECONDS, MIN_ITERS
@@ -1077,7 +1099,11 @@ def main() -> int:
         MIN_SECONDS = 0.15
         MIN_ITERS = 10
 
-    selected = [g.strip() for g in args.only.split(",") if g.strip()] or list(GROUPS)
+    if args.verify:
+        selected = ["correctness"]
+    else:
+        selected = [g.strip() for g in args.only.split(",") if g.strip()] or [
+            g for g in GROUPS if g != "correctness"]
     meta = collect_platform()
     print(f"robobus/PQC benchmark harness  —  {meta['platform']}")
     print(f"python {meta['python_version']} ({meta['python_impl']})  "
@@ -1117,7 +1143,13 @@ def main() -> int:
     }
     os.makedirs(args.out, exist_ok=True)
     # virtualized/CI runs get a distinct slug so they never overwrite a bare-metal baseline
-    ci_suffix = "-ci" if meta.get("environment", {}).get("virtualized") else ""
+    emu = meta.get("environment", {}).get("emulated")
+    if emu:
+        ci_suffix = "-emulated-" + emu.replace("/", "-")
+    else:
+        ci_suffix = "-ci" if meta.get("environment", {}).get("virtualized") else ""
+    if args.verify and not emu:
+        ci_suffix += "-verify"
     sysslug = f"{meta['system']}-{meta['machine']}{ci_suffix}".lower().replace(" ", "_")
     fname = f"bench-{sysslug}-{int(t_start)}.json"
     fpath = os.path.join(args.out, fname)

@@ -4,7 +4,7 @@
 
 > ⚠️ **Platform caveat.** These figures were measured **on macOS only** so far. They are inherently CPU-, OS- and build-specific and are **not** portable claims. The value here is the *method*: the identical script is designed to run on macOS, Windows, every supported Linux, Android and iOS, skipping only what a given platform lacks. Re-run it on each target to populate that platform's column.
 
-_Generated 2026-07-02 23:30 UTC from `bench/results/latest-*.json`._
+_Generated 2026-07-03 00:56 UTC from `bench/results/latest-*.json`._
 
 ## Platforms measured
 
@@ -29,6 +29,42 @@ _Generated 2026-07-02 23:30 UTC from `bench/results/latest-*.json`._
 - **Python:** n/a (cocotb)
 - **Crypto backends:** cocotb 2.0.1, icarus present
 - **Fidelity tier:** 6/7-hdl-sim (cycle-exact RTL, no hardware)
+
+### Linux · armv7l
+
+- **EMULATED ISA (linux/arm64, QEMU):** correctness/portability only — timing is NOT cycle-accurate under emulation and is not measured.
+- **OS:** Linux 6.12.76-linuxkit (Linux-6.12.76-linuxkit-armv7l-with-glibc2.41)
+- **CPU:** armv7l — 10 cores
+- **Python:** 3.12.13 (CPython)
+- **Crypto backends:** stdlib only
+- **Absent on this host (SKIPPED):** cryptography, oqs, argon2, psutil
+- **Fidelity tier:** 2-baremetal-untuned (real hardware, default OS noise)
+- **Measurement conditions:** isolcpus=none, pinned=False
+- **Uncontrolled noise:** no isolated cores (isolcpus=) -> scheduler + IRQ noise
+
+### Linux · riscv64
+
+- **EMULATED ISA (linux/riscv64, QEMU):** correctness/portability only — timing is NOT cycle-accurate under emulation and is not measured.
+- **OS:** Linux 6.12.76-linuxkit (Linux-6.12.76-linuxkit-riscv64-with-glibc2.41)
+- **CPU:** riscv64 — 10 cores
+- **Python:** 3.12.13 (CPython)
+- **Crypto backends:** stdlib only
+- **Absent on this host (SKIPPED):** cryptography, oqs, argon2, psutil
+- **Fidelity tier:** 2-baremetal-untuned (real hardware, default OS noise)
+- **Measurement conditions:** isolcpus=none, pinned=False
+- **Uncontrolled noise:** no isolated cores (isolcpus=) -> scheduler + IRQ noise
+
+### Linux · s390x
+
+- **EMULATED ISA (linux/s390x, QEMU):** correctness/portability only — timing is NOT cycle-accurate under emulation and is not measured.
+- **OS:** Linux 6.12.76-linuxkit (Linux-6.12.76-linuxkit-s390x-with-glibc2.41)
+- **CPU:** s390x — 10 cores
+- **Python:** 3.12.13 (CPython)
+- **Crypto backends:** stdlib only
+- **Absent on this host (SKIPPED):** cryptography, oqs, argon2, psutil
+- **Fidelity tier:** 2-baremetal-untuned (real hardware, default OS noise)
+- **Measurement conditions:** isolcpus=none, pinned=False
+- **Uncontrolled noise:** no isolated cores (isolcpus=) -> scheduler + IRQ noise
 
 ### Linux · x86_64
 
@@ -57,6 +93,50 @@ python bench/render_report.py             # regenerate this report + the HTML si
 ```
 
 Optional backends unlock more rows: `cryptography` (AEAD, ECDH, classical signatures), `oqs`/liboqs (ML-KEM, ML-DSA), `argon2-cffi` (Argon2id). Absent backends produce **SKIPPED** rows — never a crash — which is exactly how the same script stays valid on constrained platforms (e.g. stock Android/iOS Python).
+
+## Portability / correctness — emulated ISAs (QEMU; timing NOT measured, by design)
+
+**Linux · armv7l**
+
+| Algorithm | Config | Class | Throughput / rate | Status |
+|---|---|---|---|---|
+| `KAT sha256` | arch=armv7l | classical | — | ok · Merkle-Damgard — length-extendable (key via HMAC) · known-answer vector matches |
+| `KAT sha384` | arch=armv7l | QR | — | ok · Merkle-Damgard — length-extendable (key via HMAC) · known-answer vector matches |
+| `KAT sha512` | arch=armv7l | QR | — | ok · Merkle-Damgard — length-extendable (key via HMAC) · known-answer vector matches |
+| `KAT sha3_256` | arch=armv7l | classical | — | ok · Keccak sponge — length-extension-immune, design-diverse from SHA-2 · known-answer vector matches |
+| `KAT sha3_512` | arch=armv7l | QR | — | ok · Keccak sponge — length-extension-immune, design-diverse from SHA-2 · known-answer vector matches |
+| `KAT HMAC-SHA256` | arch=armv7l | classical | — | ok · nested MAC — keys a Merkle-Damgard hash safely · RFC vector |
+| `struct pack/unpack (wire format)` | host_byteorder=little, arch=armv7l | classical | — | ok · little+big-endian round-trip on a little-endian host |
+| `cryptography round-trips` | arch=armv7l | classical | — | ⚠️ skipped: cryptography unavailable: ModuleNotFoundError |
+| `oqs (ML-KEM/ML-DSA) round-trips` | arch=armv7l | HYBRID | — | ⚠️ skipped: oqs unavailable: ModuleNotFoundError |
+
+**Linux · riscv64**
+
+| Algorithm | Config | Class | Throughput / rate | Status |
+|---|---|---|---|---|
+| `KAT sha256` | arch=riscv64 | classical | — | ok · Merkle-Damgard — length-extendable (key via HMAC) · known-answer vector matches |
+| `KAT sha384` | arch=riscv64 | QR | — | ok · Merkle-Damgard — length-extendable (key via HMAC) · known-answer vector matches |
+| `KAT sha512` | arch=riscv64 | QR | — | ok · Merkle-Damgard — length-extendable (key via HMAC) · known-answer vector matches |
+| `KAT sha3_256` | arch=riscv64 | classical | — | ok · Keccak sponge — length-extension-immune, design-diverse from SHA-2 · known-answer vector matches |
+| `KAT sha3_512` | arch=riscv64 | QR | — | ok · Keccak sponge — length-extension-immune, design-diverse from SHA-2 · known-answer vector matches |
+| `KAT HMAC-SHA256` | arch=riscv64 | classical | — | ok · nested MAC — keys a Merkle-Damgard hash safely · RFC vector |
+| `struct pack/unpack (wire format)` | host_byteorder=little, arch=riscv64 | classical | — | ok · little+big-endian round-trip on a little-endian host |
+| `cryptography round-trips` | arch=riscv64 | classical | — | ⚠️ skipped: cryptography unavailable: ModuleNotFoundError |
+| `oqs (ML-KEM/ML-DSA) round-trips` | arch=riscv64 | HYBRID | — | ⚠️ skipped: oqs unavailable: ModuleNotFoundError |
+
+**Linux · s390x**
+
+| Algorithm | Config | Class | Throughput / rate | Status |
+|---|---|---|---|---|
+| `KAT sha256` | arch=s390x | classical | — | ok · Merkle-Damgard — length-extendable (key via HMAC) · known-answer vector matches |
+| `KAT sha384` | arch=s390x | QR | — | ok · Merkle-Damgard — length-extendable (key via HMAC) · known-answer vector matches |
+| `KAT sha512` | arch=s390x | QR | — | ok · Merkle-Damgard — length-extendable (key via HMAC) · known-answer vector matches |
+| `KAT sha3_256` | arch=s390x | classical | — | ok · Keccak sponge — length-extension-immune, design-diverse from SHA-2 · known-answer vector matches |
+| `KAT sha3_512` | arch=s390x | QR | — | ok · Keccak sponge — length-extension-immune, design-diverse from SHA-2 · known-answer vector matches |
+| `KAT HMAC-SHA256` | arch=s390x | classical | — | ok · nested MAC — keys a Merkle-Damgard hash safely · RFC vector |
+| `struct pack/unpack (wire format)` | host_byteorder=big, arch=s390x | classical | — | ok · little+big-endian round-trip on a big-endian host |
+| `cryptography round-trips` | arch=s390x | classical | — | ⚠️ skipped: cryptography unavailable: ModuleNotFoundError |
+| `oqs (ML-KEM/ML-DSA) round-trips` | arch=s390x | HYBRID | — | ⚠️ skipped: oqs unavailable: ModuleNotFoundError |
 
 ## Shared-memory bus — nanosecond latency (native SPSC ring)
 

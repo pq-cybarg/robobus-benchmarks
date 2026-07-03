@@ -34,12 +34,13 @@ GROUP_TITLES = {
     "handshake": "Full authenticated handshake crypto (isolated from DDS transport)",
     "sig": "Digital signatures (ML-DSA vs classical)",
     "dds_handshake": "DDS-Security live handshakes (Fast DDS + CycloneDDS)",
+    "correctness": "Portability / correctness — emulated ISAs (QEMU; timing NOT measured, by design)",
     "hdl_sim": "RTL / FPGA (cycle-exact simulation + formal proof — no hardware)",
     "gpu": "GPU offload — swapover cost & throughput crossover (scalability, not latency)",
     "robobus": "robobus bus / determinism / real-time",
 }
 
-GROUP_ORDER = ["bus", "kem", "hybrid_kem", "handshake", "sig", "aead", "hash", "mac", "kdf",
+GROUP_ORDER = ["correctness", "bus", "kem", "hybrid_kem", "handshake", "sig", "aead", "hash", "mac", "kdf",
                "dds_handshake", "gpu", "hdl_sim", "robobus"]
 
 PQC = {"ML-KEM-512", "ML-KEM-768", "ML-KEM-1024", "ML-DSA-44", "ML-DSA-65", "ML-DSA-87"}
@@ -130,6 +131,9 @@ def primary_str(r: dict) -> str:
     u = r["unit"]
     if v is None:
         return "—"
+    if u == "pass":
+        pv = r["metrics"].get("passed")
+        return "✓ pass" if pv else ("—" if pv is None else "✗ FAIL")
     if u == "ns":                 # p50 latency, ns-scaled
         return fmt_lat(v)
     if u == "ns/op":              # rate + amortized ns/op
@@ -203,6 +207,10 @@ def md_platform_block(doc: dict) -> str:
     ]
     if deps["missing"]:
         lines.append(f"- **Absent on this host (SKIPPED):** {', '.join(deps['missing'])}")
+    envp = p.get("environment", {})
+    if envp.get("emulated"):
+        lines.insert(0, f"- **EMULATED ISA ({envp['emulated']}, QEMU):** correctness/portability only "
+                        f"— timing is NOT cycle-accurate under emulation and is not measured.")
     m = p.get("measurement", {})
     if m.get("fidelity_tier"):
         lines.append(f"- **Fidelity tier:** {m['fidelity_tier']}")
@@ -490,7 +498,13 @@ def render_html(docs: list[dict]) -> str:
     for doc in docs:
         p = doc["platform"]
         deps = p["dependencies"]
-        P.append("<div class='card'><h3 style='margin-top:0'>Host measured</h3><div class='meta'>")
+        emu = p.get("environment", {}).get("emulated")
+        title = f"Emulated ISA — {emu} (QEMU)" if emu else "Host measured"
+        P.append(f"<div class='card'><h3 style='margin-top:0'>{html.escape(title)}</h3>")
+        if emu:
+            P.append("<div class='callout' style='margin:0 0 10px'>EMULATED — correctness/portability "
+                     "only. QEMU is not cycle-accurate; timing is <b>not measured</b> here.</div>")
+        P.append("<div class='meta'>")
         P.append(f"<div><b>OS</b> {html.escape(p['system'])} {html.escape(p['release'])}</div>")
         P.append(f"<div><b>CPU</b> {html.escape(str(p.get('cpu_brand', p['machine'])))} "
                  f"({p.get('cpu_count_physical', p['cpu_count_logical'])} cores)</div>")
