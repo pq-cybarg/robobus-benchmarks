@@ -4,7 +4,7 @@
 
 > ⚠️ **Platform caveat.** These figures were measured **on macOS only** so far. They are inherently CPU-, OS- and build-specific and are **not** portable claims. The value here is the *method*: the identical script is designed to run on macOS, Windows, every supported Linux, Android and iOS, skipping only what a given platform lacks. Re-run it on each target to populate that platform's column.
 
-_Generated 2026-07-04 03:47 UTC from `bench/results/latest-*.json`._
+_Generated 2026-07-04 05:25 UTC from `bench/results/latest-*.json`._
 
 ## Platforms measured
 
@@ -875,10 +875,19 @@ Optional backends unlock more rows: `cryptography` (AEAD, ECDH, classical signat
 
 **Linux · x86_64**
 
-| Algorithm | Config | Class | Throughput / rate | Status |
-|---|---|---|---|---|
-| `CycloneDDS` | — | — | — | ○ _skipped_ — CycloneDDS PQC test binary not built on this platform |
-| `FastDDS` | — | — | — | ○ _skipped_ — Fast DDS PKI-DH test binary not built on this platform |
+| Algorithm | Config | Class | Throughput / rate | p50 | p99 | Status |
+|---|---|---|---|---|---|---|
+| `CycloneDDS classical (RSA id · ECDH P-256)` | — | classical | 3.48 ms | 3.48 ms | 7.66 ms | ok · ISOLATED handshake window (FSM begin->OK), excludes startup/discovery/teardown |
+| `CycloneDDS classical (RSA id · ECDH P-256) — full process` | — | classical | 103.16 ms | 103.16 ms | 175.15 ms | ok · whole test process: startup + participant create + SPDP discovery + handshake + teardown |
+| `CycloneDDS hybrid ECDH+ML-KEM-768` | CYCLONEDDS_PQC_KAGREE=ECDH+ML-KEM-768 | HYBRID | 3.72 ms | 3.72 ms | 3.94 ms | ok · ISOLATED handshake window (FSM begin->OK), excludes startup/discovery/teardown |
+| `CycloneDDS hybrid ECDH+ML-KEM-768 — full process` | CYCLONEDDS_PQC_KAGREE=ECDH+ML-KEM-768 | HYBRID | 102.89 ms | 102.89 ms | 104.20 ms | ok · whole test process: startup + participant create + SPDP discovery + handshake + teardown |
+| `CycloneDDS hybrid ECDH+ML-KEM-1024` | CYCLONEDDS_PQC_KAGREE=ECDH+ML-KEM-1024 | HYBRID | 3.67 ms | 3.67 ms | 4.32 ms | ok · ISOLATED handshake window (FSM begin->OK), excludes startup/discovery/teardown |
+| `CycloneDDS hybrid ECDH+ML-KEM-1024 — full process` | CYCLONEDDS_PQC_KAGREE=ECDH+ML-KEM-1024 | HYBRID | 102.60 ms | 102.60 ms | 104.33 ms | ok · whole test process: startup + participant create + SPDP discovery + handshake + teardown |
+| `CycloneDDS ML-DSA-87 identity (PQ auth)` | — | PQC | 6.57 ms | 6.57 ms | 8.10 ms | ok · ISOLATED handshake window (FSM begin->OK), excludes startup/discovery/teardown |
+| `CycloneDDS ML-DSA-87 identity (PQ auth) — full process` | — | PQC | 32.26 ms | 32.26 ms | 34.05 ms | ok · whole test process: startup + participant create + SPDP discovery + handshake + teardown |
+| `CycloneDDS full CNSA 2.0 (ML-DSA-87 · ML-KEM-1024)` | CYCLONEDDS_PQC_KAGREE=ECDH+ML-KEM-1024 | PQC | 6.76 ms | 6.76 ms | 9.38 ms | ok · ISOLATED handshake window (FSM begin->OK), excludes startup/discovery/teardown |
+| `CycloneDDS full CNSA 2.0 (ML-DSA-87 · ML-KEM-1024) — full process` | CYCLONEDDS_PQC_KAGREE=ECDH+ML-KEM-1024 | PQC | 32.31 ms | 32.31 ms | 35.91 ms | ok · whole test process: startup + participant create + SPDP discovery + handshake + teardown |
+| `FastDDS PKI-DH local-identity validate — full process` | — | classical | 6.77 ms | 6.77 ms | 7.32 ms | ok · whole test process: startup + participant create + SPDP discovery + handshake + teardown |
 
 **Windows · AMD64**
 

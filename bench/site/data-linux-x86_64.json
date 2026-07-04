@@ -1,6 +1,6 @@
 {
   "schema": "robobus-bench/1",
-  "generated_unix": 1783121392,
+  "generated_unix": 1783136825,
   "label": "GitHub Actions ubuntu-latest",
   "quick": true,
   "platform": {
@@ -16,7 +16,7 @@
     "cpu_count_physical": 2,
     "mem_total_bytes": 16766423040,
     "cpu_freq_mhz": {
-      "current": 3227.1287500000003,
+      "current": 3668.958,
       "min": 0.0,
       "max": 0.0
     },
@@ -24,7 +24,7 @@
       "ci": "GitHub Actions",
       "runner_os": "Linux",
       "runner_arch": "X64",
-      "runner_name": "GitHub Actions 1000001987",
+      "runner_name": "GitHub Actions 1000002011",
       "runner_environment": "github-hosted",
       "virtualized": true,
       "self_hosted": false,
@@ -73,8 +73,8 @@
       "status": "ok",
       "note": "pure ring op cost; clock res 1.0 ns",
       "metrics": {
-        "mean_ns": 2.072333,
-        "ops_per_s": 482548000.0,
+        "mean_ns": 1.413645,
+        "ops_per_s": 707391400.0,
         "n": 5000000
       }
     },
@@ -88,19 +88,19 @@
       "unit": "ns",
       "dependency": "native/nsbus.c",
       "status": "ok",
-      "note": "98.7% <100 ns; 20000 msgs warmup discarded; max at 0% of run (cold-start residue); no RT",
+      "note": "50.5% <100 ns; 20000 msgs warmup discarded; max at 43% of run (mid-run scheduler jitter); no RT",
       "metrics": {
         "n": 99936,
-        "min_ns": 59.0,
-        "p50_ns": 70.0,
-        "p90_ns": 80.0,
-        "p99_ns": 120.0,
-        "p999_ns": 5660.0,
-        "max_ns": 15358.0,
-        "mean_ns": 91.16426,
-        "frac_under_100ns": 0.987442,
-        "frac_under_1us": 0.9954171,
-        "max_position_frac": 1.00064e-05
+        "min_ns": 75.0,
+        "p50_ns": 96.0,
+        "p90_ns": 105.0,
+        "p99_ns": 106.0,
+        "p999_ns": 3981.0,
+        "max_ns": 40265.0,
+        "mean_ns": 123.0234,
+        "frac_under_100ns": 0.5052333,
+        "frac_under_1us": 0.9956272,
+        "max_position_frac": 0.426563
       }
     },
     {
@@ -115,8 +115,8 @@
       "status": "ok",
       "note": "pure ring op cost; clock res 1.0 ns",
       "metrics": {
-        "mean_ns": 2.009153,
-        "ops_per_s": 497722200.0,
+        "mean_ns": 1.429218,
+        "ops_per_s": 699683500.0,
         "n": 5000000
       }
     },
@@ -130,19 +130,19 @@
       "unit": "ns",
       "dependency": "native/nsbus.c",
       "status": "ok",
-      "note": "98.8% <100 ns; 20000 msgs warmup discarded; max at 0% of run (cold-start residue); RT time-constraint policy",
+      "note": "50.0% <100 ns; 20000 msgs warmup discarded; max at 61% of run (mid-run scheduler jitter); RT time-constraint policy",
       "metrics": {
         "n": 99936,
-        "min_ns": 72.0,
-        "p50_ns": 83.0,
-        "p90_ns": 93.0,
-        "p99_ns": 103.0,
-        "p999_ns": 1415.0,
-        "max_ns": 14970.0,
-        "mean_ns": 95.07019,
-        "frac_under_100ns": 0.9876121,
-        "frac_under_1us": 0.9988593,
-        "max_position_frac": 1.00064e-05
+        "min_ns": 76.0,
+        "p50_ns": 105.0,
+        "p90_ns": 106.0,
+        "p99_ns": 106.0,
+        "p999_ns": 17702.0,
+        "max_ns": 72553.0,
+        "mean_ns": 153.6785,
+        "frac_under_100ns": 0.4998199,
+        "frac_under_1us": 0.9956572,
+        "max_position_frac": 0.6106708
       }
     },
     {
@@ -156,17 +156,17 @@
       "status": "ok",
       "note": "",
       "metrics": {
-        "iters": 4138,
-        "elapsed_s": 0.150004207,
-        "ops_per_s": 27585.892974321712,
+        "iters": 4669,
+        "elapsed_s": 0.150028701,
+        "ops_per_s": 31120.71202962692,
         "n": 4000,
-        "min_ns": 35276,
-        "p50_ns": 35415.0,
-        "p90_ns": 35586.1,
-        "p99_ns": 46276.11,
-        "max_ns": 55363,
-        "mean_ns": 35860.97275,
-        "stdev_ns": 2130.2882106671477
+        "min_ns": 31087,
+        "p50_ns": 31408.0,
+        "p90_ns": 31647.0,
+        "p99_ns": 44717.11,
+        "max_ns": 50646,
+        "mean_ns": 31815.081,
+        "stdev_ns": 2071.772941212188
       }
     },
     {
@@ -180,17 +180,17 @@
       "status": "ok",
       "note": "",
       "metrics": {
-        "iters": 4165,
-        "elapsed_s": 0.150010829,
-        "ops_per_s": 27764.66224315046,
+        "iters": 4848,
+        "elapsed_s": 0.15002137,
+        "ops_per_s": 32315.39613323089,
         "n": 4000,
-        "min_ns": 34554,
-        "p50_ns": 35346.0,
-        "p90_ns": 35415.0,
-        "p99_ns": 43871.399999999994,
-        "max_ns": 53950,
-        "mean_ns": 35689.043,
-        "stdev_ns": 1659.5808951813708
+        "min_ns": 30125,
+        "p50_ns": 30255.0,
+        "p90_ns": 30436.899999999998,
+        "p99_ns": 44607.399999999994,
+        "max_ns": 52219,
+        "mean_ns": 30699.97425,
+        "stdev_ns": 2266.962508641671
       }
     },
     {
@@ -204,17 +204,17 @@
       "status": "ok",
       "note": "",
       "metrics": {
-        "iters": 9553,
-        "elapsed_s": 0.150009808,
-        "ops_per_s": 63682.50268009143,
+        "iters": 11475,
+        "elapsed_s": 0.150005075,
+        "ops_per_s": 76497.41183756616,
         "n": 4000,
-        "min_ns": 14857,
-        "p50_ns": 15038.0,
-        "p90_ns": 15248.0,
-        "p99_ns": 27651.49999999999,
-        "max_ns": 37940,
-        "mean_ns": 15378.2885,
-        "stdev_ns": 1882.0789573680881
+        "min_ns": 12158,
+        "p50_ns": 12368.0,
+        "p90_ns": 15354.999999999998,
+        "p99_ns": 20436.709999999865,
+        "max_ns": 34823,
+        "mean_ns": 12982.929,
+        "stdev_ns": 1994.5009821905328
       }
     },
     {
@@ -228,17 +228,17 @@
       "status": "ok",
       "note": "",
       "metrics": {
-        "iters": 2755,
-        "elapsed_s": 0.150047107,
-        "ops_per_s": 18360.900487071704,
-        "n": 2755,
-        "min_ns": 53329,
-        "p50_ns": 53479.0,
-        "p90_ns": 53932.0,
-        "p99_ns": 63998.2,
-        "max_ns": 86491,
-        "mean_ns": 54124.455535390196,
-        "stdev_ns": 2542.734604173359
+        "iters": 3166,
+        "elapsed_s": 0.150045757,
+        "ops_per_s": 21100.230111805162,
+        "n": 3166,
+        "min_ns": 46279,
+        "p50_ns": 46630.0,
+        "p90_ns": 47031.0,
+        "p99_ns": 55434.49999999998,
+        "max_ns": 70446,
+        "mean_ns": 47096.05495893872,
+        "stdev_ns": 1930.2092416366195
       }
     },
     {
@@ -252,17 +252,17 @@
       "status": "ok",
       "note": "",
       "metrics": {
-        "iters": 6778,
-        "elapsed_s": 0.15002141,
-        "ops_per_s": 45180.217943558855,
+        "iters": 11099,
+        "elapsed_s": 0.150005296,
+        "ops_per_s": 73990.7209676117,
         "n": 4000,
-        "min_ns": 20769,
-        "p50_ns": 21179.0,
-        "p90_ns": 22191.0,
-        "p99_ns": 38191.69999999998,
-        "max_ns": 65662,
-        "mean_ns": 21872.87025,
-        "stdev_ns": 3013.086721937312
+        "min_ns": 12699,
+        "p50_ns": 12980.0,
+        "p90_ns": 13310.0,
+        "p99_ns": 19610.299999999992,
+        "max_ns": 37436,
+        "mean_ns": 13156.42425,
+        "stdev_ns": 1029.1443833408107
       }
     },
     {
@@ -276,17 +276,17 @@
       "status": "ok",
       "note": "",
       "metrics": {
-        "iters": 6464,
-        "elapsed_s": 0.150018173,
-        "ops_per_s": 43088.11306480849,
+        "iters": 10739,
+        "elapsed_s": 0.150011856,
+        "ops_per_s": 71587.67504349789,
         "n": 4000,
-        "min_ns": 21720,
-        "p50_ns": 22211.0,
-        "p90_ns": 22983.0,
-        "p99_ns": 39249.00999999986,
-        "max_ns": 68798,
-        "mean_ns": 22953.05325,
-        "stdev_ns": 3315.1918007732884
+        "min_ns": 13330,
+        "p50_ns": 13570.0,
+        "p90_ns": 13811.0,
+        "p99_ns": 20211.199999999997,
+        "max_ns": 33971,
+        "mean_ns": 13726.4085,
+        "stdev_ns": 973.204602397538
       }
     },
     {
@@ -300,17 +300,17 @@
       "status": "ok",
       "note": "",
       "metrics": {
-        "iters": 9709,
-        "elapsed_s": 0.150010309,
-        "ops_per_s": 64722.218524328215,
+        "iters": 17554,
+        "elapsed_s": 0.15000098,
+        "ops_per_s": 117025.90209743963,
         "n": 4000,
-        "min_ns": 14807,
-        "p50_ns": 14927.0,
-        "p90_ns": 15028.0,
-        "p99_ns": 25147.189999999995,
-        "max_ns": 41386,
-        "mean_ns": 15139.18275,
-        "stdev_ns": 1463.3265856781381
+        "min_ns": 8122,
+        "p50_ns": 8252.0,
+        "p90_ns": 8343.9,
+        "p99_ns": 11508.089999999998,
+        "max_ns": 25588,
+        "mean_ns": 8347.849,
+        "stdev_ns": 752.3795938214964
       }
     },
     {
@@ -324,17 +324,17 @@
       "status": "ok",
       "note": "",
       "metrics": {
-        "iters": 5219,
-        "elapsed_s": 0.150031808,
-        "ops_per_s": 34785.95685522899,
+        "iters": 9091,
+        "elapsed_s": 0.150005336,
+        "ops_per_s": 60604.51076220383,
         "n": 4000,
-        "min_ns": 27241,
-        "p50_ns": 27691.0,
-        "p90_ns": 28522.1,
-        "p99_ns": 44092.2,
-        "max_ns": 74198,
-        "mean_ns": 28371.86625,
-        "stdev_ns": 3021.8694447909124
+        "min_ns": 15783,
+        "p50_ns": 16064.0,
+        "p90_ns": 16404.0,
+        "p99_ns": 22834.01,
+        "max_ns": 45198,
+        "mean_ns": 16249.29925,
+        "stdev_ns": 1084.6544210943123
       }
     },
     {
@@ -348,17 +348,17 @@
       "status": "ok",
       "note": "",
       "metrics": {
-        "iters": 5092,
-        "elapsed_s": 0.150026669,
-        "ops_per_s": 33940.63224852376,
+        "iters": 8888,
+        "elapsed_s": 0.150010834,
+        "ops_per_s": 59249.0539716618,
         "n": 4000,
-        "min_ns": 27852,
-        "p50_ns": 28403.0,
-        "p90_ns": 28964.0,
-        "p99_ns": 44533.78999999998,
-        "max_ns": 66844,
-        "mean_ns": 29046.85725,
-        "stdev_ns": 2920.0465032893635
+        "min_ns": 16194,
+        "p50_ns": 16455.0,
+        "p90_ns": 16735.0,
+        "p99_ns": 23756.289999999994,
+        "max_ns": 43215,
+        "mean_ns": 16667.01075,
+        "stdev_ns": 1270.741745255281
       }
     },
     {
@@ -372,17 +372,17 @@
       "status": "ok",
       "note": "",
       "metrics": {
-        "iters": 6669,
-        "elapsed_s": 0.150013796,
-        "ops_per_s": 44455.91124165673,
+        "iters": 12381,
+        "elapsed_s": 0.150003744,
+        "ops_per_s": 82537.93985302128,
         "n": 4000,
-        "min_ns": 21681,
-        "p50_ns": 21861.0,
-        "p90_ns": 22001.0,
-        "p99_ns": 32591.0,
-        "max_ns": 45213,
-        "mean_ns": 22177.1825,
-        "stdev_ns": 1792.849015727133
+        "min_ns": 11547,
+        "p50_ns": 11708.0,
+        "p90_ns": 11828.0,
+        "p99_ns": 18098.189999999995,
+        "max_ns": 38568,
+        "mean_ns": 11837.15675,
+        "stdev_ns": 964.2830181950927
       }
     },
     {
@@ -396,17 +396,17 @@
       "status": "ok",
       "note": "",
       "metrics": {
-        "iters": 4275,
-        "elapsed_s": 0.150008726,
-        "ops_per_s": 28498.342156442282,
+        "iters": 7908,
+        "elapsed_s": 0.150000679,
+        "ops_per_s": 52719.7613552136,
         "n": 4000,
-        "min_ns": 33211,
-        "p50_ns": 33743.0,
-        "p90_ns": 34875.0,
-        "p99_ns": 51307.49999999996,
-        "max_ns": 87021,
-        "mean_ns": 34631.901,
-        "stdev_ns": 3439.4066428235847
+        "min_ns": 18128,
+        "p50_ns": 18508.0,
+        "p90_ns": 18908.0,
+        "p99_ns": 25749.999999999978,
+        "max_ns": 43836,
+        "mean_ns": 18744.6145,
+        "stdev_ns": 1301.5163536774135
       }
     },
     {
@@ -420,17 +420,17 @@
       "status": "ok",
       "note": "",
       "metrics": {
-        "iters": 4181,
-        "elapsed_s": 0.150008215,
-        "ops_per_s": 27871.806887376133,
+        "iters": 7791,
+        "elapsed_s": 0.150003063,
+        "ops_per_s": 51938.93940685732,
         "n": 4000,
-        "min_ns": 34133,
-        "p50_ns": 34584.0,
-        "p90_ns": 35596.0,
-        "p99_ns": 51336.99999999998,
-        "max_ns": 78807,
-        "mean_ns": 35445.5055,
-        "stdev_ns": 3448.546382531305
+        "min_ns": 18568,
+        "p50_ns": 18798.0,
+        "p90_ns": 19099.0,
+        "p99_ns": 26059.39999999999,
+        "max_ns": 39109,
+        "mean_ns": 19037.66625,
+        "stdev_ns": 1249.9760101141692
       }
     },
     {
@@ -444,17 +444,17 @@
       "status": "ok",
       "note": "",
       "metrics": {
-        "iters": 4929,
-        "elapsed_s": 0.150012253,
-        "ops_per_s": 32857.31599538072,
+        "iters": 9752,
+        "elapsed_s": 0.150010624,
+        "ops_per_s": 65008.72898175532,
         "n": 4000,
-        "min_ns": 29425,
-        "p50_ns": 29645.0,
-        "p90_ns": 29896.0,
-        "p99_ns": 40876.2,
-        "max_ns": 64059,
-        "mean_ns": 30111.2175,
-        "stdev_ns": 2286.290256987015
+        "min_ns": 14772,
+        "p50_ns": 15002.0,
+        "p90_ns": 15203.0,
+        "p99_ns": 21512.1,
+        "max_ns": 31487,
+        "mean_ns": 15138.44925,
+        "stdev_ns": 926.671315475146
       }
     },
     {
@@ -468,17 +468,17 @@
       "status": "ok",
       "note": "ECDH P-256 + ML-KEM encaps/decaps + HKDF-SHA384 combine, both parties",
       "metrics": {
-        "iters": 477,
-        "elapsed_s": 0.150195213,
-        "ops_per_s": 3175.8668633467037,
-        "n": 477,
-        "min_ns": 297303,
-        "p50_ns": 306060.0,
-        "p90_ns": 331809.0,
-        "p99_ns": 375163.2400000001,
-        "max_ns": 440980,
-        "mean_ns": 313780.13626834383,
-        "stdev_ns": 17032.005056958413
+        "iters": 716,
+        "elapsed_s": 0.150011144,
+        "ops_per_s": 4772.978732833341,
+        "n": 716,
+        "min_ns": 202445,
+        "p50_ns": 206425.5,
+        "p90_ns": 218513.5,
+        "p99_ns": 227879.05000000005,
+        "max_ns": 239059,
+        "mean_ns": 209031.6005586592,
+        "stdev_ns": 6058.415192286065
       }
     },
     {
@@ -492,17 +492,17 @@
       "status": "ok",
       "note": "ECDH P-256 + ML-KEM encaps/decaps + HKDF-SHA384 combine, both parties",
       "metrics": {
-        "iters": 451,
-        "elapsed_s": 0.150319424,
-        "ops_per_s": 3000.2775955288384,
-        "n": 451,
-        "min_ns": 316950,
-        "p50_ns": 324123.0,
-        "p90_ns": 350181.0,
-        "p99_ns": 384144.5,
-        "max_ns": 448785,
-        "mean_ns": 332232.9578713969,
-        "stdev_ns": 15945.851188324077
+        "iters": 687,
+        "elapsed_s": 0.150208912,
+        "ops_per_s": 4573.630091934891,
+        "n": 687,
+        "min_ns": 210746,
+        "p50_ns": 215454.0,
+        "p90_ns": 227083.0,
+        "p99_ns": 242391.08,
+        "max_ns": 315684,
+        "mean_ns": 218180.34061135372,
+        "stdev_ns": 7995.600946479109
       }
     },
     {
@@ -516,17 +516,17 @@
       "status": "ok",
       "note": "3 sign + 3 verify + ML-KEM + 2 ECDH + 2 HKDF, both parties; identities provisioned out-of-band (not timed); isolated from DDS transport",
       "metrics": {
-        "iters": 207,
-        "elapsed_s": 0.150324453,
-        "ops_per_s": 1377.0214750091259,
-        "n": 207,
-        "min_ns": 589006,
-        "p50_ns": 713266.0,
-        "p90_ns": 829475.4,
-        "p99_ns": 927764.92,
-        "max_ns": 952773,
-        "mean_ns": 724956.8067632851,
-        "stdev_ns": 77165.23668134675
+        "iters": 347,
+        "elapsed_s": 0.150073379,
+        "ops_per_s": 2312.202219422273,
+        "n": 347,
+        "min_ns": 356876,
+        "p50_ns": 422735.0,
+        "p90_ns": 496618.4,
+        "p99_ns": 558141.1200000001,
+        "max_ns": 570078,
+        "mean_ns": 431832.44380403456,
+        "stdev_ns": 45796.55023470196
       }
     },
     {
@@ -540,17 +540,17 @@
       "status": "ok",
       "note": "3 sign + 3 verify + ML-KEM + 2 ECDH + 2 HKDF, both parties; identities provisioned out-of-band (not timed); isolated from DDS transport",
       "metrics": {
-        "iters": 155,
-        "elapsed_s": 0.15011291,
-        "ops_per_s": 1032.556093942886,
-        "n": 155,
-        "min_ns": 765665,
-        "p50_ns": 945489.0,
-        "p90_ns": 1151530.4,
-        "p99_ns": 1380686.3600000003,
-        "max_ns": 1409893,
-        "mean_ns": 967238.8967741935,
-        "stdev_ns": 136505.1004043521
+        "iters": 271,
+        "elapsed_s": 0.150443766,
+        "ops_per_s": 1801.3375177008,
+        "n": 271,
+        "min_ns": 421594,
+        "p50_ns": 543297.0,
+        "p90_ns": 657279.0,
+        "p99_ns": 784859.1000000002,
+        "max_ns": 849578,
+        "mean_ns": 554477.483394834,
+        "stdev_ns": 77080.62305776316
       }
     },
     {
@@ -564,17 +564,17 @@
       "status": "ok",
       "note": "3 sign + 3 verify + ML-KEM + 2 ECDH + 2 HKDF, both parties; identities provisioned out-of-band (not timed); isolated from DDS transport",
       "metrics": {
-        "iters": 127,
-        "elapsed_s": 0.150680145,
-        "ops_per_s": 842.8449547881708,
-        "n": 127,
-        "min_ns": 1002235,
-        "p50_ns": 1155670.0,
-        "p90_ns": 1367905.0,
-        "p99_ns": 1521795.9599999997,
-        "max_ns": 1760846,
-        "mean_ns": 1185251.338582677,
-        "stdev_ns": 126221.17786474078
+        "iters": 231,
+        "elapsed_s": 0.15016112,
+        "ops_per_s": 1538.347609554324,
+        "n": 231,
+        "min_ns": 525150,
+        "p50_ns": 633903.0,
+        "p90_ns": 754264.0,
+        "p99_ns": 896747.9999999992,
+        "max_ns": 1171851,
+        "mean_ns": 649389.2424242424,
+        "stdev_ns": 81241.32921593786
       }
     },
     {
@@ -600,17 +600,17 @@
       "status": "ok",
       "note": "",
       "metrics": {
-        "iters": 4118,
-        "elapsed_s": 0.150001242,
-        "ops_per_s": 27453.106021615473,
+        "iters": 4677,
+        "elapsed_s": 0.150012467,
+        "ops_per_s": 31177.408741634787,
         "n": 4000,
-        "min_ns": 35476,
-        "p50_ns": 35586.0,
-        "p90_ns": 35716.1,
-        "p99_ns": 47689.299999999996,
-        "max_ns": 96419,
-        "mean_ns": 36078.70475,
-        "stdev_ns": 2448.285159265039
+        "min_ns": 31127,
+        "p50_ns": 31497.0,
+        "p90_ns": 31697.0,
+        "p99_ns": 38899.1,
+        "max_ns": 54922,
+        "mean_ns": 31793.243,
+        "stdev_ns": 1592.9240407034479
       }
     },
     {
@@ -624,17 +624,17 @@
       "status": "ok",
       "note": "",
       "metrics": {
-        "iters": 3879,
-        "elapsed_s": 0.150034183,
-        "ops_per_s": 25854.108193464155,
-        "n": 3879,
-        "min_ns": 37730,
-        "p50_ns": 37910.0,
-        "p90_ns": 38000.0,
-        "p99_ns": 47667.79999999999,
-        "max_ns": 73327,
-        "mean_ns": 38329.78009796339,
-        "stdev_ns": 2115.1037379963414
+        "iters": 4415,
+        "elapsed_s": 0.150012337,
+        "ops_per_s": 29430.912738863604,
+        "n": 4000,
+        "min_ns": 33010,
+        "p50_ns": 33200.0,
+        "p90_ns": 33400.0,
+        "p99_ns": 40901.299999999996,
+        "max_ns": 57156,
+        "mean_ns": 33524.34725,
+        "stdev_ns": 1555.0600339432035
       }
     },
     {
@@ -648,17 +648,17 @@
       "status": "ok",
       "note": "",
       "metrics": {
-        "iters": 1265,
-        "elapsed_s": 0.150095949,
-        "ops_per_s": 8427.94231575164,
-        "n": 1265,
-        "min_ns": 116527,
-        "p50_ns": 117008.0,
-        "p90_ns": 125544.0,
-        "p99_ns": 130116.4,
-        "max_ns": 156981,
-        "mean_ns": 118307.91857707509,
-        "stdev_ns": 3778.3381237734707
+        "iters": 1447,
+        "elapsed_s": 0.150025797,
+        "ops_per_s": 9645.007918204894,
+        "n": 1447,
+        "min_ns": 101923,
+        "p50_ns": 102394.0,
+        "p90_ns": 108829.6,
+        "p99_ns": 112004.59999999999,
+        "max_ns": 129004,
+        "mean_ns": 103326.23289564617,
+        "stdev_ns": 2668.583672256809
       }
     },
     {
@@ -672,17 +672,17 @@
       "status": "ok",
       "note": "",
       "metrics": {
-        "iters": 5069,
-        "elapsed_s": 0.150016631,
-        "ops_per_s": 33789.5869691941,
+        "iters": 6508,
+        "elapsed_s": 0.150020119,
+        "ops_per_s": 43380.848138108726,
         "n": 4000,
-        "min_ns": 28162,
-        "p50_ns": 28523.0,
-        "p90_ns": 29414.1,
-        "p99_ns": 44422.399999999994,
-        "max_ns": 61615,
-        "mean_ns": 29199.46325,
-        "stdev_ns": 2813.8727889066763
+        "min_ns": 22294,
+        "p50_ns": 22494.0,
+        "p90_ns": 22894.0,
+        "p99_ns": 31006.1,
+        "max_ns": 68183,
+        "mean_ns": 22862.5255,
+        "stdev_ns": 1838.281619434234
       }
     },
     {
@@ -696,17 +696,17 @@
       "status": "ok",
       "note": "",
       "metrics": {
-        "iters": 2012,
-        "elapsed_s": 0.150000761,
-        "ops_per_s": 13413.265283367462,
-        "n": 2012,
-        "min_ns": 71894,
-        "p50_ns": 72425.0,
-        "p90_ns": 77942.90000000001,
-        "p99_ns": 94002.08999999994,
-        "max_ns": 140822,
-        "mean_ns": 74127.42892644135,
-        "stdev_ns": 4962.7176093344515
+        "iters": 2375,
+        "elapsed_s": 0.150053709,
+        "ops_per_s": 15827.666079217008,
+        "n": 2375,
+        "min_ns": 61392,
+        "p50_ns": 62194.0,
+        "p90_ns": 63351.0,
+        "p99_ns": 72063.94,
+        "max_ns": 87742,
+        "mean_ns": 62831.67621052632,
+        "stdev_ns": 2282.4101883298617
       }
     },
     {
@@ -720,17 +720,17 @@
       "status": "ok",
       "note": "",
       "metrics": {
-        "iters": 197,
-        "elapsed_s": 0.400672129,
-        "ops_per_s": 491.673829401795,
-        "n": 197,
-        "min_ns": 1998548,
-        "p50_ns": 2008868.0,
-        "p90_ns": 2031026.2,
-        "p99_ns": 2620963.28,
-        "max_ns": 2624903,
-        "mean_ns": 2032942.5532994925,
-        "stdev_ns": 106252.16889368725
+        "iters": 571,
+        "elapsed_s": 0.400756201,
+        "ops_per_s": 1424.8063999388996,
+        "n": 200,
+        "min_ns": 673553,
+        "p50_ns": 684409.0,
+        "p90_ns": 701375.1,
+        "p99_ns": 1189257.2,
+        "max_ns": 1200415,
+        "mean_ns": 701450.41,
+        "stdev_ns": 86350.96124521081
       }
     },
     {
@@ -744,17 +744,17 @@
       "status": "ok",
       "note": "",
       "metrics": {
-        "iters": 2979,
-        "elapsed_s": 0.150017182,
-        "ops_per_s": 19857.725363752,
-        "n": 2979,
-        "min_ns": 48861,
-        "p50_ns": 49161.0,
-        "p90_ns": 50504.0,
-        "p99_ns": 62547.77999999999,
-        "max_ns": 83245,
-        "mean_ns": 49952.98959382343,
-        "stdev_ns": 2901.9253917148453
+        "iters": 3493,
+        "elapsed_s": 0.150029406,
+        "ops_per_s": 23282.10244330368,
+        "n": 3493,
+        "min_ns": 41723,
+        "p50_ns": 42093.0,
+        "p90_ns": 42574.0,
+        "p99_ns": 50366.8,
+        "max_ns": 100702,
+        "mean_ns": 42549.45548239336,
+        "stdev_ns": 2090.9193372466307
       }
     },
     {
@@ -768,17 +768,17 @@
       "status": "ok",
       "note": "",
       "metrics": {
-        "iters": 3409,
-        "elapsed_s": 0.150038482,
-        "ops_per_s": 22720.83771148791,
-        "n": 3409,
-        "min_ns": 40856,
-        "p50_ns": 42589.0,
-        "p90_ns": 44581.000000000015,
-        "p99_ns": 60860.120000000046,
-        "max_ns": 115385,
-        "mean_ns": 43612.02288061015,
-        "stdev_ns": 3966.8831268292925
+        "iters": 6481,
+        "elapsed_s": 0.150014093,
+        "ops_per_s": 43202.60763767042,
+        "n": 4000,
+        "min_ns": 21883,
+        "p50_ns": 22674.0,
+        "p90_ns": 23085.0,
+        "p99_ns": 29996.289999999994,
+        "max_ns": 39049,
+        "mean_ns": 22913.17325,
+        "stdev_ns": 1267.1309061160325
       }
     },
     {
@@ -792,17 +792,17 @@
       "status": "ok",
       "note": "",
       "metrics": {
-        "iters": 1747,
-        "elapsed_s": 0.150049612,
-        "ops_per_s": 11642.815844135604,
-        "n": 1747,
-        "min_ns": 46416,
-        "p50_ns": 70321.0,
-        "p90_ns": 144483.40000000005,
-        "p99_ns": 268583.61999999994,
-        "max_ns": 437684,
-        "mean_ns": 85514.62907842016,
-        "stdev_ns": 46166.191106228456
+        "iters": 3022,
+        "elapsed_s": 0.150028264,
+        "ops_per_s": 20142.871212586982,
+        "n": 3022,
+        "min_ns": 25499,
+        "p50_ns": 40506.0,
+        "p90_ns": 82083.9,
+        "p99_ns": 139930.68999999997,
+        "max_ns": 294753,
+        "mean_ns": 49351.66545334216,
+        "stdev_ns": 26353.78977000875
       }
     },
     {
@@ -816,17 +816,17 @@
       "status": "ok",
       "note": "",
       "metrics": {
-        "iters": 3366,
-        "elapsed_s": 0.150013815,
-        "ops_per_s": 22437.93346632775,
-        "n": 3366,
-        "min_ns": 43000,
-        "p50_ns": 43381.0,
-        "p90_ns": 44738.0,
-        "p99_ns": 57346.35,
-        "max_ns": 84226,
-        "mean_ns": 44204.73826500297,
-        "stdev_ns": 3112.4728631666403
+        "iters": 6202,
+        "elapsed_s": 0.150013612,
+        "ops_per_s": 41342.91493494604,
+        "n": 4000,
+        "min_ns": 23265,
+        "p50_ns": 23595.0,
+        "p90_ns": 23906.0,
+        "p99_ns": 30916.509999999987,
+        "max_ns": 42424,
+        "mean_ns": 23844.38125,
+        "stdev_ns": 1311.6620294109446
       }
     },
     {
@@ -840,17 +840,17 @@
       "status": "ok",
       "note": "",
       "metrics": {
-        "iters": 2222,
-        "elapsed_s": 0.150016189,
-        "ops_per_s": 14811.734752173981,
-        "n": 2222,
-        "min_ns": 65020,
-        "p50_ns": 65662.0,
-        "p90_ns": 68918.9,
-        "p99_ns": 83426.39,
-        "max_ns": 109403,
-        "mean_ns": 67094.84248424842,
-        "stdev_ns": 4358.187315428159
+        "iters": 4634,
+        "elapsed_s": 0.150000663,
+        "ops_per_s": 30893.19678540354,
+        "n": 4000,
+        "min_ns": 31327,
+        "p50_ns": 31758.0,
+        "p90_ns": 32238.0,
+        "p99_ns": 39519.01,
+        "max_ns": 59340,
+        "mean_ns": 32099.58,
+        "stdev_ns": 1625.0864491158616
       }
     },
     {
@@ -864,17 +864,17 @@
       "status": "ok",
       "note": "",
       "metrics": {
-        "iters": 1070,
-        "elapsed_s": 0.150070351,
-        "ops_per_s": 7129.989320808612,
-        "n": 1070,
-        "min_ns": 69640,
-        "p50_ns": 118044.5,
-        "p90_ns": 236191.1,
-        "p99_ns": 392082.9099999991,
-        "max_ns": 538943,
-        "mean_ns": 139851.6738317757,
-        "stdev_ns": 71381.79415643562
+        "iters": 1952,
+        "elapsed_s": 0.150116226,
+        "ops_per_s": 13003.257888990629,
+        "n": 1952,
+        "min_ns": 35784,
+        "p50_ns": 63445.0,
+        "p90_ns": 135932.00000000003,
+        "p99_ns": 229431.38,
+        "max_ns": 391649,
+        "mean_ns": 76594.00461065574,
+        "stdev_ns": 44792.067858808594
       }
     },
     {
@@ -888,17 +888,17 @@
       "status": "ok",
       "note": "",
       "metrics": {
-        "iters": 2252,
-        "elapsed_s": 0.150062636,
-        "ops_per_s": 15007.066782433436,
-        "n": 2252,
-        "min_ns": 64500,
-        "p50_ns": 65030.0,
-        "p90_ns": 67533.0,
-        "p99_ns": 81282.69999999992,
-        "max_ns": 114363,
-        "mean_ns": 66255.45825932504,
-        "stdev_ns": 3935.9531546785875
+        "iters": 4587,
+        "elapsed_s": 0.150009796,
+        "ops_per_s": 30578.003052547316,
+        "n": 4000,
+        "min_ns": 31547,
+        "p50_ns": 32108.0,
+        "p90_ns": 32579.0,
+        "p99_ns": 39869.11,
+        "max_ns": 50776,
+        "mean_ns": 32427.45125,
+        "stdev_ns": 1455.0620684779867
       }
     },
     {
@@ -912,17 +912,17 @@
       "status": "ok",
       "note": "",
       "metrics": {
-        "iters": 1486,
-        "elapsed_s": 0.150091249,
-        "ops_per_s": 9900.643841001016,
-        "n": 1486,
-        "min_ns": 96549,
-        "p50_ns": 98468.5,
-        "p90_ns": 111177.0,
-        "p99_ns": 117233.50000000001,
-        "max_ns": 165659,
-        "mean_ns": 100565.74697173621,
-        "stdev_ns": 5639.154393744521
+        "iters": 3318,
+        "elapsed_s": 0.150035274,
+        "ops_per_s": 22114.799483753402,
+        "n": 3318,
+        "min_ns": 43295,
+        "p50_ns": 44517.0,
+        "p90_ns": 45228.0,
+        "p99_ns": 52827.3,
+        "max_ns": 70095,
+        "mean_ns": 44946.48432790838,
+        "stdev_ns": 1913.6442756449212
       }
     },
     {
@@ -933,518 +933,518 @@
       },
       "unit": "ops/s",
       "dependency": "oqs",
-      "status": "ok",
-      "note": "",
-      "metrics": {
-        "iters": 886,
-        "elapsed_s": 0.150059911,
-        "ops_per_s": 5904.308446511074,
-        "n": 886,
-        "min_ns": 105046,
-        "p50_ns": 148001.0,
-        "p90_ns": 254023.0,
-        "p99_ns": 403710.14999999997,
-        "max_ns": 520899,
-        "mean_ns": 168929.6952595937,
-        "stdev_ns": 67792.39142550807
-      }
-    },
-    {
-      "group": "sig",
-      "name": "ML-DSA-87",
-      "config": {
-        "op": "verify"
-      },
-      "unit": "ops/s",
-      "dependency": "oqs",
-      "status": "ok",
-      "note": "",
-      "metrics": {
-        "iters": 1513,
-        "elapsed_s": 0.15000035,
-        "ops_per_s": 10086.643131166027,
-        "n": 1513,
-        "min_ns": 95848,
-        "p50_ns": 96539.0,
-        "p90_ns": 108061.0,
-        "p99_ns": 123753.03999999982,
-        "max_ns": 188350,
-        "mean_ns": 98744.13747521481,
-        "stdev_ns": 7153.412750276127
-      }
-    },
-    {
-      "group": "aead",
-      "name": "AES-256-GCM",
-      "config": {
-        "op": "encrypt",
-        "input_bytes": 64
-      },
-      "unit": "MB/s",
-      "dependency": "cryptography",
-      "status": "ok",
-      "note": "",
-      "metrics": {
-        "iters": 165679,
-        "elapsed_s": 0.150003125,
-        "ops_per_s": 1104503.65617383,
-        "bytes": 10603456,
-        "mb_per_s": 70.6882339951251,
-        "mib_per_s": 67.41355323326599
-      }
-    },
-    {
-      "group": "aead",
-      "name": "AES-256-GCM",
-      "config": {
-        "op": "decrypt",
-        "input_bytes": 64
-      },
-      "unit": "MB/s",
-      "dependency": "cryptography",
-      "status": "ok",
-      "note": "",
-      "metrics": {
-        "iters": 164880,
-        "elapsed_s": 0.150002624,
-        "ops_per_s": 1099180.7716643678,
-        "bytes": 10552320,
-        "mb_per_s": 70.34756938651952,
-        "mib_per_s": 67.08867014553026
-      }
-    },
-    {
-      "group": "aead",
-      "name": "AES-256-GCM",
-      "config": {
-        "op": "encrypt",
-        "input_bytes": 1024
-      },
-      "unit": "MB/s",
-      "dependency": "cryptography",
-      "status": "ok",
-      "note": "",
-      "metrics": {
-        "iters": 120355,
-        "elapsed_s": 0.150000681,
-        "ops_per_s": 802363.023938538,
-        "bytes": 123243520,
-        "mb_per_s": 821.6197365130629,
-        "mib_per_s": 783.5576405649786
-      }
-    },
-    {
-      "group": "aead",
-      "name": "AES-256-GCM",
-      "config": {
-        "op": "decrypt",
-        "input_bytes": 1024
-      },
-      "unit": "MB/s",
-      "dependency": "cryptography",
-      "status": "ok",
-      "note": "",
-      "metrics": {
-        "iters": 122044,
-        "elapsed_s": 0.150001251,
-        "ops_per_s": 813619.8810768585,
-        "bytes": 124973056,
-        "mb_per_s": 833.146758222703,
-        "mib_per_s": 794.5506651141196
-      }
-    },
-    {
-      "group": "aead",
-      "name": "AES-256-GCM",
-      "config": {
-        "op": "encrypt",
-        "input_bytes": 65536
-      },
-      "unit": "MB/s",
-      "dependency": "cryptography",
-      "status": "ok",
-      "note": "",
-      "metrics": {
-        "iters": 8253,
-        "elapsed_s": 0.15000776,
-        "ops_per_s": 55017.153779244494,
-        "bytes": 540868608,
-        "mb_per_s": 3605.6041900765667,
-        "mib_per_s": 3438.572111202781
-      }
-    },
-    {
-      "group": "aead",
-      "name": "AES-256-GCM",
-      "config": {
-        "op": "decrypt",
-        "input_bytes": 65536
-      },
-      "unit": "MB/s",
-      "dependency": "cryptography",
-      "status": "ok",
-      "note": "",
-      "metrics": {
-        "iters": 8226,
-        "elapsed_s": 0.15000279,
-        "ops_per_s": 54838.9799949721,
-        "bytes": 539099136,
-        "mb_per_s": 3593.9273929504916,
-        "mib_per_s": 3427.436249685756
-      }
-    },
-    {
-      "group": "aead",
-      "name": "AES-128-GCM",
-      "config": {
-        "op": "encrypt",
-        "input_bytes": 64
-      },
-      "unit": "MB/s",
-      "dependency": "cryptography",
-      "status": "ok",
-      "note": "",
-      "metrics": {
-        "iters": 167388,
-        "elapsed_s": 0.150000526,
-        "ops_per_s": 1115916.0868542555,
-        "bytes": 10712832,
-        "mb_per_s": 71.41862955867235,
-        "mib_per_s": 68.11011272303806
-      }
-    },
-    {
-      "group": "aead",
-      "name": "AES-128-GCM",
-      "config": {
-        "op": "decrypt",
-        "input_bytes": 64
-      },
-      "unit": "MB/s",
-      "dependency": "cryptography",
-      "status": "ok",
-      "note": "",
-      "metrics": {
-        "iters": 169114,
-        "elapsed_s": 0.150000175,
-        "ops_per_s": 1127425.35133709,
-        "bytes": 10823296,
-        "mb_per_s": 72.15522248557376,
-        "mib_per_s": 68.81258247907043
-      }
-    },
-    {
-      "group": "aead",
-      "name": "AES-128-GCM",
-      "config": {
-        "op": "encrypt",
-        "input_bytes": 1024
-      },
-      "unit": "MB/s",
-      "dependency": "cryptography",
-      "status": "ok",
-      "note": "",
-      "metrics": {
-        "iters": 123974,
-        "elapsed_s": 0.150000138,
-        "ops_per_s": 826492.5729601661,
-        "bytes": 126949376,
-        "mb_per_s": 846.3283947112102,
-        "mib_per_s": 807.1216532814123
-      }
-    },
-    {
-      "group": "aead",
-      "name": "AES-128-GCM",
-      "config": {
-        "op": "decrypt",
-        "input_bytes": 1024
-      },
-      "unit": "MB/s",
-      "dependency": "cryptography",
-      "status": "ok",
-      "note": "",
-      "metrics": {
-        "iters": 124207,
-        "elapsed_s": 0.150000356,
-        "ops_per_s": 828044.7014405752,
-        "bytes": 127187968,
-        "mb_per_s": 847.917774275149,
-        "mib_per_s": 808.6374037505617
-      }
-    },
-    {
-      "group": "aead",
-      "name": "AES-128-GCM",
-      "config": {
-        "op": "encrypt",
-        "input_bytes": 65536
-      },
-      "unit": "MB/s",
-      "dependency": "cryptography",
-      "status": "ok",
-      "note": "",
-      "metrics": {
-        "iters": 8837,
-        "elapsed_s": 0.150010194,
-        "ops_per_s": 58909.329855276366,
-        "bytes": 579141632,
-        "mb_per_s": 3860.6818413953915,
-        "mib_per_s": 3681.833115954773
-      }
-    },
-    {
-      "group": "aead",
-      "name": "AES-128-GCM",
-      "config": {
-        "op": "decrypt",
-        "input_bytes": 65536
-      },
-      "unit": "MB/s",
-      "dependency": "cryptography",
-      "status": "ok",
-      "note": "",
-      "metrics": {
-        "iters": 8800,
-        "elapsed_s": 0.150011547,
-        "ops_per_s": 58662.150854293905,
-        "bytes": 576716800,
-        "mb_per_s": 3844.4827183870057,
-        "mib_per_s": 3666.384428393369
-      }
-    },
-    {
-      "group": "aead",
-      "name": "ChaCha20-Poly1305",
-      "config": {
-        "op": "encrypt",
-        "input_bytes": 64
-      },
-      "unit": "MB/s",
-      "dependency": "cryptography",
-      "status": "ok",
-      "note": "",
-      "metrics": {
-        "iters": 139146,
-        "elapsed_s": 0.150000686,
-        "ops_per_s": 927635.7576124686,
-        "bytes": 8905344,
-        "mb_per_s": 59.368688487197986,
-        "mib_per_s": 56.618393408964145
-      }
-    },
-    {
-      "group": "aead",
-      "name": "ChaCha20-Poly1305",
-      "config": {
-        "op": "decrypt",
-        "input_bytes": 64
-      },
-      "unit": "MB/s",
-      "dependency": "cryptography",
-      "status": "ok",
-      "note": "",
-      "metrics": {
-        "iters": 141614,
-        "elapsed_s": 0.150000296,
-        "ops_per_s": 944091.4703261652,
-        "bytes": 9063296,
-        "mb_per_s": 60.42185410087457,
-        "mib_per_s": 57.62277040564973
-      }
-    },
-    {
-      "group": "aead",
-      "name": "ChaCha20-Poly1305",
-      "config": {
-        "op": "encrypt",
-        "input_bytes": 1024
-      },
-      "unit": "MB/s",
-      "dependency": "cryptography",
-      "status": "ok",
-      "note": "",
-      "metrics": {
-        "iters": 96259,
-        "elapsed_s": 0.150020002,
-        "ops_per_s": 641641.10596399,
-        "bytes": 98569216,
-        "mb_per_s": 657.0404925071257,
-        "mib_per_s": 626.602642542959
-      }
-    },
-    {
-      "group": "aead",
-      "name": "ChaCha20-Poly1305",
-      "config": {
-        "op": "decrypt",
-        "input_bytes": 1024
-      },
-      "unit": "MB/s",
-      "dependency": "cryptography",
-      "status": "ok",
-      "note": "",
-      "metrics": {
-        "iters": 95702,
-        "elapsed_s": 0.150001147,
-        "ops_per_s": 638008.4546953498,
-        "bytes": 97998848,
-        "mb_per_s": 653.3206576080381,
-        "mib_per_s": 623.0551315384275
-      }
-    },
-    {
-      "group": "aead",
-      "name": "ChaCha20-Poly1305",
-      "config": {
-        "op": "encrypt",
-        "input_bytes": 65536
-      },
-      "unit": "MB/s",
-      "dependency": "cryptography",
-      "status": "ok",
-      "note": "",
-      "metrics": {
-        "iters": 4703,
-        "elapsed_s": 0.150006357,
-        "ops_per_s": 31352.004635376885,
-        "bytes": 308215808,
-        "mb_per_s": 2054.6849757840596,
-        "mib_per_s": 1959.5002897110553
-      }
-    },
-    {
-      "group": "aead",
-      "name": "ChaCha20-Poly1305",
-      "config": {
-        "op": "decrypt",
-        "input_bytes": 65536
-      },
-      "unit": "MB/s",
-      "dependency": "cryptography",
-      "status": "ok",
-      "note": "",
-      "metrics": {
-        "iters": 4664,
-        "elapsed_s": 0.150007619,
-        "ops_per_s": 31091.75407950445,
-        "bytes": 305659904,
-        "mb_per_s": 2037.6291953544037,
-        "mib_per_s": 1943.2346299690282
-      }
-    },
-    {
-      "group": "hash",
-      "name": "sha256",
-      "config": {
-        "input_bytes": 64
-      },
-      "unit": "MB/s",
-      "dependency": "hashlib",
-      "status": "ok",
-      "note": "",
-      "metrics": {
-        "iters": 156950,
-        "elapsed_s": 0.150000155,
-        "ops_per_s": 1046332.2521233395,
-        "bytes": 10044800,
-        "mb_per_s": 66.96526413589373,
-        "mib_per_s": 63.86305249776242
-      }
-    },
-    {
-      "group": "hash",
-      "name": "sha256",
-      "config": {
-        "input_bytes": 1024
-      },
-      "unit": "MB/s",
-      "dependency": "hashlib",
-      "status": "ok",
-      "note": "",
-      "metrics": {
-        "iters": 95796,
-        "elapsed_s": 0.150000426,
-        "ops_per_s": 638638.186267551,
-        "bytes": 98095104,
-        "mb_per_s": 653.9655027379723,
-        "mib_per_s": 623.6701037769053
-      }
-    },
-    {
-      "group": "hash",
-      "name": "sha256",
-      "config": {
-        "input_bytes": 65536
-      },
-      "unit": "MB/s",
-      "dependency": "hashlib",
-      "status": "ok",
-      "note": "",
-      "metrics": {
-        "iters": 3547,
-        "elapsed_s": 0.150006327,
-        "ops_per_s": 23645.669292335915,
-        "bytes": 232456192,
-        "mb_per_s": 1549.6425827425267,
-        "mib_per_s": 1477.8543307709947
-      }
-    },
-    {
-      "group": "hash",
-      "name": "sha384",
-      "config": {
-        "input_bytes": 64
-      },
-      "unit": "MB/s",
-      "dependency": "hashlib",
-      "status": "ok",
-      "note": "",
-      "metrics": {
-        "iters": 130508,
-        "elapsed_s": 0.150000937,
-        "ops_per_s": 870047.8984341278,
-        "bytes": 8352512,
-        "mb_per_s": 55.683065499784185,
-        "mib_per_s": 53.10350942591112
-      }
-    },
-    {
-      "group": "hash",
-      "name": "sha384",
-      "config": {
-        "input_bytes": 1024
-      },
-      "unit": "MB/s",
-      "dependency": "hashlib",
-      "status": "ok",
-      "note": "",
-      "metrics": {
-        "iters": 58987,
-        "elapsed_s": 0.150001658,
-        "ops_per_s": 393242.3200282226,
-        "bytes": 60402688,
-        "mb_per_s": 402.6801357088999,
-        "mib_per_s": 384.0257031525611
-      }
-    },
-    {
-      "group": "hash",
-      "name": "sha384",
-      "config": {
-        "input_bytes": 65536
-      },
-      "unit": "MB/s",
-      "dependency": "hashlib",
       "status": "ok",
       "note": "",
       "metrics": {
         "iters": 1713,
-        "elapsed_s": 0.150038026,
-        "ops_per_s": 11417.105687594158,
-        "bytes": 112263168,
-        "mb_per_s": 748.2314383421707,
-        "mib_per_s": 713.5691054746349
+        "elapsed_s": 0.150037158,
+        "ops_per_s": 11417.171738217008,
+        "n": 1713,
+        "min_ns": 50867,
+        "p50_ns": 74772.0,
+        "p90_ns": 141968.99999999997,
+        "p99_ns": 234636.87999999992,
+        "max_ns": 355143,
+        "mean_ns": 87289.54816112084,
+        "stdev_ns": 41601.800552581146
+      }
+    },
+    {
+      "group": "sig",
+      "name": "ML-DSA-87",
+      "config": {
+        "op": "verify"
+      },
+      "unit": "ops/s",
+      "dependency": "oqs",
+      "status": "ok",
+      "note": "",
+      "metrics": {
+        "iters": 3295,
+        "elapsed_s": 0.150013501,
+        "ops_per_s": 21964.68969816257,
+        "n": 3295,
+        "min_ns": 44187,
+        "p50_ns": 44697.0,
+        "p90_ns": 45428.0,
+        "p99_ns": 53994.0,
+        "max_ns": 69164,
+        "mean_ns": 45219.16358118361,
+        "stdev_ns": 2082.622900703357
+      }
+    },
+    {
+      "group": "aead",
+      "name": "AES-256-GCM",
+      "config": {
+        "op": "encrypt",
+        "input_bytes": 64
+      },
+      "unit": "MB/s",
+      "dependency": "cryptography",
+      "status": "ok",
+      "note": "",
+      "metrics": {
+        "iters": 237206,
+        "elapsed_s": 0.150002035,
+        "ops_per_s": 1581351.8796594993,
+        "bytes": 15181184,
+        "mb_per_s": 101.20652029820795,
+        "mib_per_s": 96.51805906124874
+      }
+    },
+    {
+      "group": "aead",
+      "name": "AES-256-GCM",
+      "config": {
+        "op": "decrypt",
+        "input_bytes": 64
+      },
+      "unit": "MB/s",
+      "dependency": "cryptography",
+      "status": "ok",
+      "note": "",
+      "metrics": {
+        "iters": 234131,
+        "elapsed_s": 0.150002835,
+        "ops_per_s": 1560843.8333848824,
+        "bytes": 14984384,
+        "mb_per_s": 99.89400533663247,
+        "mib_per_s": 95.26634725249527
+      }
+    },
+    {
+      "group": "aead",
+      "name": "AES-256-GCM",
+      "config": {
+        "op": "encrypt",
+        "input_bytes": 1024
+      },
+      "unit": "MB/s",
+      "dependency": "cryptography",
+      "status": "ok",
+      "note": "",
+      "metrics": {
+        "iters": 177419,
+        "elapsed_s": 0.150000593,
+        "ops_per_s": 1182788.657375508,
+        "bytes": 181677056,
+        "mb_per_s": 1211.1755851525202,
+        "mib_per_s": 1155.0670482182695
+      }
+    },
+    {
+      "group": "aead",
+      "name": "AES-256-GCM",
+      "config": {
+        "op": "decrypt",
+        "input_bytes": 1024
+      },
+      "unit": "MB/s",
+      "dependency": "cryptography",
+      "status": "ok",
+      "note": "",
+      "metrics": {
+        "iters": 178558,
+        "elapsed_s": 0.150000852,
+        "ops_per_s": 1190379.9053088047,
+        "bytes": 182843392,
+        "mb_per_s": 1218.949023036216,
+        "mib_per_s": 1162.4803762781296
+      }
+    },
+    {
+      "group": "aead",
+      "name": "AES-256-GCM",
+      "config": {
+        "op": "encrypt",
+        "input_bytes": 65536
+      },
+      "unit": "MB/s",
+      "dependency": "cryptography",
+      "status": "ok",
+      "note": "",
+      "metrics": {
+        "iters": 19983,
+        "elapsed_s": 0.150006051,
+        "ops_per_s": 133214.62612198223,
+        "bytes": 1309605888,
+        "mb_per_s": 8730.353737530228,
+        "mib_per_s": 8325.91413262389
+      }
+    },
+    {
+      "group": "aead",
+      "name": "AES-256-GCM",
+      "config": {
+        "op": "decrypt",
+        "input_bytes": 65536
+      },
+      "unit": "MB/s",
+      "dependency": "cryptography",
+      "status": "ok",
+      "note": "",
+      "metrics": {
+        "iters": 19936,
+        "elapsed_s": 0.150004178,
+        "ops_per_s": 132902.964876085,
+        "bytes": 1306525696,
+        "mb_per_s": 8709.928706119106,
+        "mib_per_s": 8306.435304755312
+      }
+    },
+    {
+      "group": "aead",
+      "name": "AES-128-GCM",
+      "config": {
+        "op": "encrypt",
+        "input_bytes": 64
+      },
+      "unit": "MB/s",
+      "dependency": "cryptography",
+      "status": "ok",
+      "note": "",
+      "metrics": {
+        "iters": 241821,
+        "elapsed_s": 0.150000563,
+        "ops_per_s": 1612133.9491239109,
+        "bytes": 15476544,
+        "mb_per_s": 103.17657274393031,
+        "mib_per_s": 98.39684748070745
+      }
+    },
+    {
+      "group": "aead",
+      "name": "AES-128-GCM",
+      "config": {
+        "op": "decrypt",
+        "input_bytes": 64
+      },
+      "unit": "MB/s",
+      "dependency": "cryptography",
+      "status": "ok",
+      "note": "",
+      "metrics": {
+        "iters": 236531,
+        "elapsed_s": 0.150000553,
+        "ops_per_s": 1576867.5199484096,
+        "bytes": 15137984,
+        "mb_per_s": 100.91952127669822,
+        "mib_per_s": 96.24435546560117
+      }
+    },
+    {
+      "group": "aead",
+      "name": "AES-128-GCM",
+      "config": {
+        "op": "encrypt",
+        "input_bytes": 1024
+      },
+      "unit": "MB/s",
+      "dependency": "cryptography",
+      "status": "ok",
+      "note": "",
+      "metrics": {
+        "iters": 179043,
+        "elapsed_s": 0.150000102,
+        "ops_per_s": 1193619.188338952,
+        "bytes": 183340032,
+        "mb_per_s": 1222.2660488590868,
+        "mib_per_s": 1165.6437386122577
+      }
+    },
+    {
+      "group": "aead",
+      "name": "AES-128-GCM",
+      "config": {
+        "op": "decrypt",
+        "input_bytes": 1024
+      },
+      "unit": "MB/s",
+      "dependency": "cryptography",
+      "status": "ok",
+      "note": "",
+      "metrics": {
+        "iters": 179686,
+        "elapsed_s": 0.150000201,
+        "ops_per_s": 1197905.0614738844,
+        "bytes": 183998464,
+        "mb_per_s": 1226.6547829492577,
+        "mib_per_s": 1169.8291615955902
+      }
+    },
+    {
+      "group": "aead",
+      "name": "AES-128-GCM",
+      "config": {
+        "op": "encrypt",
+        "input_bytes": 65536
+      },
+      "unit": "MB/s",
+      "dependency": "cryptography",
+      "status": "ok",
+      "note": "",
+      "metrics": {
+        "iters": 22042,
+        "elapsed_s": 0.150005279,
+        "ops_per_s": 146941.49530564187,
+        "bytes": 1444544512,
+        "mb_per_s": 9629.957836350546,
+        "mib_per_s": 9183.843456602617
+      }
+    },
+    {
+      "group": "aead",
+      "name": "AES-128-GCM",
+      "config": {
+        "op": "decrypt",
+        "input_bytes": 65536
+      },
+      "unit": "MB/s",
+      "dependency": "cryptography",
+      "status": "ok",
+      "note": "",
+      "metrics": {
+        "iters": 22576,
+        "elapsed_s": 0.150003537,
+        "ops_per_s": 150503.11780314887,
+        "bytes": 1479540736,
+        "mb_per_s": 9863.372328347165,
+        "mib_per_s": 9406.444862696804
+      }
+    },
+    {
+      "group": "aead",
+      "name": "ChaCha20-Poly1305",
+      "config": {
+        "op": "encrypt",
+        "input_bytes": 64
+      },
+      "unit": "MB/s",
+      "dependency": "cryptography",
+      "status": "ok",
+      "note": "",
+      "metrics": {
+        "iters": 165889,
+        "elapsed_s": 0.150000512,
+        "ops_per_s": 1105922.891783196,
+        "bytes": 10616896,
+        "mb_per_s": 70.77906507412455,
+        "mib_per_s": 67.50017650043921
+      }
+    },
+    {
+      "group": "aead",
+      "name": "ChaCha20-Poly1305",
+      "config": {
+        "op": "decrypt",
+        "input_bytes": 64
+      },
+      "unit": "MB/s",
+      "dependency": "cryptography",
+      "status": "ok",
+      "note": "",
+      "metrics": {
+        "iters": 169437,
+        "elapsed_s": 0.150000833,
+        "ops_per_s": 1129573.7271005688,
+        "bytes": 10843968,
+        "mb_per_s": 72.2927185344364,
+        "mib_per_s": 68.94370892947808
+      }
+    },
+    {
+      "group": "aead",
+      "name": "ChaCha20-Poly1305",
+      "config": {
+        "op": "encrypt",
+        "input_bytes": 1024
+      },
+      "unit": "MB/s",
+      "dependency": "cryptography",
+      "status": "ok",
+      "note": "",
+      "metrics": {
+        "iters": 129420,
+        "elapsed_s": 0.150000192,
+        "ops_per_s": 862798.8956174136,
+        "bytes": 132526080,
+        "mb_per_s": 883.5060691122316,
+        "mib_per_s": 842.5770465013804
+      }
+    },
+    {
+      "group": "aead",
+      "name": "ChaCha20-Poly1305",
+      "config": {
+        "op": "decrypt",
+        "input_bytes": 1024
+      },
+      "unit": "MB/s",
+      "dependency": "cryptography",
+      "status": "ok",
+      "note": "",
+      "metrics": {
+        "iters": 127399,
+        "elapsed_s": 0.150000692,
+        "ops_per_s": 849322.7484577205,
+        "bytes": 130456576,
+        "mb_per_s": 869.7064944207059,
+        "mib_per_s": 829.4167465407427
+      }
+    },
+    {
+      "group": "aead",
+      "name": "ChaCha20-Poly1305",
+      "config": {
+        "op": "encrypt",
+        "input_bytes": 65536
+      },
+      "unit": "MB/s",
+      "dependency": "cryptography",
+      "status": "ok",
+      "note": "",
+      "metrics": {
+        "iters": 7955,
+        "elapsed_s": 0.150001053,
+        "ops_per_s": 53032.96104194682,
+        "bytes": 521338880,
+        "mb_per_s": 3475.568134845027,
+        "mib_per_s": 3314.5600651216764
+      }
+    },
+    {
+      "group": "aead",
+      "name": "ChaCha20-Poly1305",
+      "config": {
+        "op": "decrypt",
+        "input_bytes": 65536
+      },
+      "unit": "MB/s",
+      "dependency": "cryptography",
+      "status": "ok",
+      "note": "",
+      "metrics": {
+        "iters": 7814,
+        "elapsed_s": 0.150016446,
+        "ops_per_s": 52087.62244640831,
+        "bytes": 512098304,
+        "mb_per_s": 3413.6144246478148,
+        "mib_per_s": 3255.4764029005196
+      }
+    },
+    {
+      "group": "hash",
+      "name": "sha256",
+      "config": {
+        "input_bytes": 64
+      },
+      "unit": "MB/s",
+      "dependency": "hashlib",
+      "status": "ok",
+      "note": "",
+      "metrics": {
+        "iters": 214446,
+        "elapsed_s": 0.150000532,
+        "ops_per_s": 1429634.92956145,
+        "bytes": 13724544,
+        "mb_per_s": 91.49663549193279,
+        "mib_per_s": 87.25799130624084
+      }
+    },
+    {
+      "group": "hash",
+      "name": "sha256",
+      "config": {
+        "input_bytes": 1024
+      },
+      "unit": "MB/s",
+      "dependency": "hashlib",
+      "status": "ok",
+      "note": "",
+      "metrics": {
+        "iters": 122399,
+        "elapsed_s": 0.150000242,
+        "ops_per_s": 815992.0168662127,
+        "bytes": 125336576,
+        "mb_per_s": 835.5758252710018,
+        "mib_per_s": 796.8672039709109
+      }
+    },
+    {
+      "group": "hash",
+      "name": "sha256",
+      "config": {
+        "input_bytes": 65536
+      },
+      "unit": "MB/s",
+      "dependency": "hashlib",
+      "status": "ok",
+      "note": "",
+      "metrics": {
+        "iters": 4052,
+        "elapsed_s": 0.150014233,
+        "ops_per_s": 27010.770371368697,
+        "bytes": 265551872,
+        "mb_per_s": 1770.1778470580189,
+        "mib_per_s": 1688.1731482105436
+      }
+    },
+    {
+      "group": "hash",
+      "name": "sha384",
+      "config": {
+        "input_bytes": 64
+      },
+      "unit": "MB/s",
+      "dependency": "hashlib",
+      "status": "ok",
+      "note": "",
+      "metrics": {
+        "iters": 171137,
+        "elapsed_s": 0.150000793,
+        "ops_per_s": 1140907.3017367315,
+        "bytes": 10952768,
+        "mb_per_s": 73.01806731115083,
+        "mib_per_s": 69.6354554282673
+      }
+    },
+    {
+      "group": "hash",
+      "name": "sha384",
+      "config": {
+        "input_bytes": 1024
+      },
+      "unit": "MB/s",
+      "dependency": "hashlib",
+      "status": "ok",
+      "note": "",
+      "metrics": {
+        "iters": 72931,
+        "elapsed_s": 0.150000522,
+        "ops_per_s": 486204.9746733548,
+        "bytes": 74681344,
+        "mb_per_s": 497.8738940655153,
+        "mib_per_s": 474.80954557944807
+      }
+    },
+    {
+      "group": "hash",
+      "name": "sha384",
+      "config": {
+        "input_bytes": 65536
+      },
+      "unit": "MB/s",
+      "dependency": "hashlib",
+      "status": "ok",
+      "note": "",
+      "metrics": {
+        "iters": 1979,
+        "elapsed_s": 0.150064798,
+        "ops_per_s": 13187.63645022199,
+        "bytes": 129695744,
+        "mb_per_s": 864.2649424017483,
+        "mib_per_s": 824.2272781388743
       }
     },
     {
@@ -1458,12 +1458,12 @@
       "status": "ok",
       "note": "",
       "metrics": {
-        "iters": 130735,
-        "elapsed_s": 0.150000315,
-        "ops_per_s": 871564.8363805102,
-        "bytes": 8367040,
-        "mb_per_s": 55.78014952835265,
-        "mib_per_s": 53.19609597049013
+        "iters": 171720,
+        "elapsed_s": 0.150000291,
+        "ops_per_s": 1144797.7790923086,
+        "bytes": 10990080,
+        "mb_per_s": 73.26705786190774,
+        "mib_per_s": 69.87291132155204
       }
     },
     {
@@ -1477,12 +1477,12 @@
       "status": "ok",
       "note": "",
       "metrics": {
-        "iters": 58720,
-        "elapsed_s": 0.15000255,
-        "ops_per_s": 391460.01184646523,
-        "bytes": 60129280,
-        "mb_per_s": 400.8550521307804,
-        "mib_per_s": 382.2851678188137
+        "iters": 73005,
+        "elapsed_s": 0.150001604,
+        "ops_per_s": 486694.7956103189,
+        "bytes": 74757120,
+        "mb_per_s": 498.3754707049666,
+        "mib_per_s": 475.28788633820204
       }
     },
     {
@@ -1496,12 +1496,12 @@
       "status": "ok",
       "note": "",
       "metrics": {
-        "iters": 1699,
-        "elapsed_s": 0.150009443,
-        "ops_per_s": 11325.953660130583,
-        "bytes": 111345664,
-        "mb_per_s": 742.2576990703179,
-        "mib_per_s": 707.8721037581614
+        "iters": 1981,
+        "elapsed_s": 0.150036737,
+        "ops_per_s": 13203.432969886568,
+        "bytes": 129826816,
+        "mb_per_s": 865.3001831144862,
+        "mib_per_s": 825.2145606179105
       }
     },
     {
@@ -1515,12 +1515,12 @@
       "status": "ok",
       "note": "",
       "metrics": {
-        "iters": 117049,
-        "elapsed_s": 0.150000556,
-        "ops_per_s": 780323.7742665433,
-        "bytes": 7491136,
-        "mb_per_s": 49.94072155305877,
-        "mib_per_s": 47.6271834879482
+        "iters": 144589,
+        "elapsed_s": 0.150000462,
+        "ops_per_s": 963923.6977816775,
+        "bytes": 9253696,
+        "mb_per_s": 61.691116658027354,
+        "mib_per_s": 58.83323350718246
       }
     },
     {
@@ -1534,12 +1534,12 @@
       "status": "ok",
       "note": "",
       "metrics": {
-        "iters": 43613,
-        "elapsed_s": 0.150003041,
-        "ops_per_s": 290747.4389135884,
-        "bytes": 44659712,
-        "mb_per_s": 297.7253774475145,
-        "mib_per_s": 283.9330458140512
+        "iters": 51907,
+        "elapsed_s": 0.150002656,
+        "ops_per_s": 346040.5394421816,
+        "bytes": 53152768,
+        "mb_per_s": 354.34551238879396,
+        "mib_per_s": 337.93021429900546
       }
     },
     {
@@ -1553,12 +1553,12 @@
       "status": "ok",
       "note": "",
       "metrics": {
-        "iters": 974,
-        "elapsed_s": 0.150015724,
-        "ops_per_s": 6492.652730189804,
-        "bytes": 63832064,
-        "mb_per_s": 425.502489325719,
-        "mib_per_s": 405.79079563686275
+        "iters": 1149,
+        "elapsed_s": 0.150007773,
+        "ops_per_s": 7659.603079368427,
+        "bytes": 75300864,
+        "mb_per_s": 501.9797474094892,
+        "mib_per_s": 478.72519246052667
       }
     },
     {
@@ -1572,12 +1572,12 @@
       "status": "ok",
       "note": "",
       "metrics": {
-        "iters": 117831,
-        "elapsed_s": 0.150000766,
-        "ops_per_s": 785535.9885295519,
-        "bytes": 7541184,
-        "mb_per_s": 50.27430326589132,
-        "mib_per_s": 47.94531179989941
+        "iters": 146910,
+        "elapsed_s": 0.150000773,
+        "ops_per_s": 979394.952851343,
+        "bytes": 9402240,
+        "mb_per_s": 62.681276982485954,
+        "mib_per_s": 59.7775239777431
       }
     },
     {
@@ -1591,12 +1591,12 @@
       "status": "ok",
       "note": "",
       "metrics": {
-        "iters": 27400,
-        "elapsed_s": 0.150002039,
-        "ops_per_s": 182664.1836515302,
-        "bytes": 28057600,
-        "mb_per_s": 187.04812405916695,
-        "mib_per_s": 178.38299184719747
+        "iters": 31770,
+        "elapsed_s": 0.150000282,
+        "ops_per_s": 211799.60181674856,
+        "bytes": 32532480,
+        "mb_per_s": 216.88279226035053,
+        "mib_per_s": 206.83554864916852
       }
     },
     {
@@ -1610,12 +1610,12 @@
       "status": "ok",
       "note": "",
       "metrics": {
-        "iters": 549,
-        "elapsed_s": 0.150128605,
-        "ops_per_s": 3656.8647260793505,
-        "bytes": 35979264,
-        "mb_per_s": 239.6562866883363,
-        "mib_per_s": 228.5540453799594
+        "iters": 624,
+        "elapsed_s": 0.150096176,
+        "ops_per_s": 4157.334428027,
+        "bytes": 40894464,
+        "mb_per_s": 272.4550690751775,
+        "mib_per_s": 259.8334017516875
       }
     },
     {
@@ -1629,12 +1629,12 @@
       "status": "ok",
       "note": "",
       "metrics": {
-        "iters": 202062,
-        "elapsed_s": 0.150000487,
-        "ops_per_s": 1347075.626494466,
-        "bytes": 12931968,
-        "mb_per_s": 86.21284009564583,
-        "mib_per_s": 82.21897134365638
+        "iters": 249123,
+        "elapsed_s": 0.150000182,
+        "ops_per_s": 1660817.9848741782,
+        "bytes": 15943872,
+        "mb_per_s": 106.29235103194742,
+        "mib_per_s": 101.3682852096056
       }
     },
     {
@@ -1648,12 +1648,12 @@
       "status": "ok",
       "note": "",
       "metrics": {
-        "iters": 77479,
-        "elapsed_s": 0.150000586,
-        "ops_per_s": 516524.6487770388,
-        "bytes": 79338496,
-        "mb_per_s": 528.9212403476878,
-        "mib_per_s": 504.41860232132694
+        "iters": 93125,
+        "elapsed_s": 0.150000081,
+        "ops_per_s": 620832.9980835144,
+        "bytes": 95360000,
+        "mb_per_s": 635.7329900375187,
+        "mib_per_s": 606.282224690932
       }
     },
     {
@@ -1667,12 +1667,12 @@
       "status": "ok",
       "note": "",
       "metrics": {
-        "iters": 1669,
-        "elapsed_s": 0.150042704,
-        "ops_per_s": 11123.49988040738,
-        "bytes": 109379584,
-        "mb_per_s": 728.989688162378,
-        "mib_per_s": 695.2187425254613
+        "iters": 1986,
+        "elapsed_s": 0.150046001,
+        "ops_per_s": 13235.940889887494,
+        "bytes": 130154496,
+        "mb_per_s": 867.4306221596668,
+        "mib_per_s": 827.2463056179683
       }
     },
     {
@@ -1686,12 +1686,12 @@
       "status": "ok",
       "note": "",
       "metrics": {
-        "iters": 217966,
-        "elapsed_s": 0.150000506,
-        "ops_per_s": 1453101.7648700464,
-        "bytes": 13949824,
-        "mb_per_s": 92.99851295168297,
-        "mib_per_s": 88.69029326599404
+        "iters": 288100,
+        "elapsed_s": 0.150000462,
+        "ops_per_s": 1920660.7510315534,
+        "bytes": 18438400,
+        "mb_per_s": 122.92228806601943,
+        "mib_per_s": 117.22782904245321
       }
     },
     {
@@ -1705,12 +1705,12 @@
       "status": "ok",
       "note": "",
       "metrics": {
-        "iters": 54726,
-        "elapsed_s": 0.150001417,
-        "ops_per_s": 364836.55351069116,
-        "bytes": 56039424,
-        "mb_per_s": 373.59263079494775,
-        "mib_per_s": 356.28569678778433
+        "iters": 63355,
+        "elapsed_s": 0.150000452,
+        "ops_per_s": 422365.39393894625,
+        "bytes": 64875520,
+        "mb_per_s": 432.50216339348094,
+        "mib_per_s": 412.4662050185022
       }
     },
     {
@@ -1724,12 +1724,12 @@
       "status": "ok",
       "note": "",
       "metrics": {
-        "iters": 1075,
-        "elapsed_s": 0.150054827,
-        "ops_per_s": 7164.048111561249,
-        "bytes": 70451200,
-        "mb_per_s": 469.503057039278,
-        "mib_per_s": 447.7530069725781
+        "iters": 1196,
+        "elapsed_s": 0.150074033,
+        "ops_per_s": 7969.40000939403,
+        "bytes": 78381056,
+        "mb_per_s": 522.2825990156472,
+        "mib_per_s": 498.0875005871269
       }
     },
     {
@@ -1743,12 +1743,12 @@
       "status": "ok",
       "note": "",
       "metrics": {
-        "iters": 204230,
-        "elapsed_s": 0.150000445,
-        "ops_per_s": 1361529.2941297607,
-        "bytes": 13070720,
-        "mb_per_s": 87.13787482430467,
-        "mib_per_s": 83.10115320616215
+        "iters": 258916,
+        "elapsed_s": 0.150000292,
+        "ops_per_s": 1726103.3065188965,
+        "bytes": 16570624,
+        "mb_per_s": 110.47061161720937,
+        "mib_per_s": 105.35298501702249
       }
     },
     {
@@ -1762,12 +1762,12 @@
       "status": "ok",
       "note": "",
       "metrics": {
-        "iters": 83338,
-        "elapsed_s": 0.150011386,
-        "ops_per_s": 555544.4971357042,
-        "bytes": 85338112,
-        "mb_per_s": 568.877565066961,
-        "mib_per_s": 542.5239229840861
+        "iters": 95811,
+        "elapsed_s": 0.150000522,
+        "ops_per_s": 638737.7771925353,
+        "bytes": 98110464,
+        "mb_per_s": 654.0674838451562,
+        "mib_per_s": 623.7673605395853
       }
     },
     {
@@ -1781,12 +1781,12 @@
       "status": "ok",
       "note": "",
       "metrics": {
-        "iters": 9150,
-        "elapsed_s": 0.15001338,
-        "ops_per_s": 60994.55928531175,
-        "bytes": 599654400,
-        "mb_per_s": 3997.339437322191,
-        "mib_per_s": 3812.1599553319843
+        "iters": 13876,
+        "elapsed_s": 0.150009185,
+        "ops_per_s": 92501.00252194559,
+        "bytes": 909377536,
+        "mb_per_s": 6062.145701278225,
+        "mib_per_s": 5781.312657621599
       }
     },
     {
@@ -1800,12 +1800,12 @@
       "status": "ok",
       "note": "",
       "metrics": {
-        "iters": 69686,
-        "elapsed_s": 0.150001969,
-        "ops_per_s": 464567.2351140937,
-        "bytes": 4459904,
-        "mb_per_s": 29.732303047301997,
-        "mib_per_s": 28.354933783819195
+        "iters": 90455,
+        "elapsed_s": 0.15000132,
+        "ops_per_s": 603028.0266866985,
+        "bytes": 5789120,
+        "mb_per_s": 38.593793707948706,
+        "mib_per_s": 36.805909831951816
       }
     },
     {
@@ -1819,12 +1819,12 @@
       "status": "ok",
       "note": "",
       "metrics": {
-        "iters": 54552,
-        "elapsed_s": 0.150000676,
-        "ops_per_s": 363678.361022853,
-        "bytes": 55861248,
-        "mb_per_s": 372.4066416874015,
-        "mib_per_s": 355.1546494363799
+        "iters": 68786,
+        "elapsed_s": 0.150002121,
+        "ops_per_s": 458566.8491980857,
+        "bytes": 70436864,
+        "mb_per_s": 469.57245357883977,
+        "mib_per_s": 447.8191886700056
       }
     },
     {
@@ -1838,12 +1838,12 @@
       "status": "ok",
       "note": "",
       "metrics": {
-        "iters": 3437,
-        "elapsed_s": 0.150038526,
-        "ops_per_s": 22907.449783930828,
-        "bytes": 225247232,
-        "mb_per_s": 1501.2626290396906,
-        "mib_per_s": 1431.7156114956767
+        "iters": 3925,
+        "elapsed_s": 0.150024806,
+        "ops_per_s": 26162.34011327433,
+        "bytes": 257228800,
+        "mb_per_s": 1714.5751216635465,
+        "mib_per_s": 1635.1462570796457
       }
     },
     {
@@ -1857,12 +1857,12 @@
       "status": "ok",
       "note": "",
       "metrics": {
-        "iters": 52172,
-        "elapsed_s": 0.150001839,
-        "ops_per_s": 347809.06919414503,
-        "bytes": 3339008,
-        "mb_per_s": 22.259780428425284,
-        "mib_per_s": 21.228580883431704
+        "iters": 65260,
+        "elapsed_s": 0.150000128,
+        "ops_per_s": 435066.29541009455,
+        "bytes": 4176640,
+        "mb_per_s": 27.844242906246052,
+        "mib_per_s": 26.55433931946378
       }
     },
     {
@@ -1876,12 +1876,12 @@
       "status": "ok",
       "note": "",
       "metrics": {
-        "iters": 35231,
-        "elapsed_s": 0.150003442,
-        "ops_per_s": 234867.94389691408,
-        "bytes": 36076544,
-        "mb_per_s": 240.50477455044,
-        "mib_per_s": 229.36322646183015
+        "iters": 43460,
+        "elapsed_s": 0.150002122,
+        "ops_per_s": 289729.23463042744,
+        "bytes": 44503040,
+        "mb_per_s": 296.6827362615577,
+        "mib_per_s": 282.9387056937768
       }
     },
     {
@@ -1895,12 +1895,12 @@
       "status": "ok",
       "note": "",
       "metrics": {
-        "iters": 1675,
-        "elapsed_s": 0.150016176,
-        "ops_per_s": 11165.462583181696,
-        "bytes": 109772800,
-        "mb_per_s": 731.7397558513957,
-        "mib_per_s": 697.841411448856
+        "iters": 1922,
+        "elapsed_s": 0.150047029,
+        "ops_per_s": 12809.317270787147,
+        "bytes": 125960192,
+        "mb_per_s": 839.4714166583066,
+        "mib_per_s": 800.5823294241967
       }
     },
     {
@@ -1914,12 +1914,12 @@
       "status": "ok",
       "note": "",
       "metrics": {
-        "iters": 51927,
-        "elapsed_s": 0.150002921,
-        "ops_per_s": 346173.25885273924,
-        "bytes": 3323328,
-        "mb_per_s": 22.155088566575312,
-        "mib_per_s": 21.128738943648635
+        "iters": 65711,
+        "elapsed_s": 0.150001671,
+        "ops_per_s": 438068.4532507641,
+        "bytes": 4205504,
+        "mb_per_s": 28.036381008048906,
+        "mib_per_s": 26.737576492356208
       }
     },
     {
@@ -1933,12 +1933,12 @@
       "status": "ok",
       "note": "",
       "metrics": {
-        "iters": 35369,
-        "elapsed_s": 0.150000957,
-        "ops_per_s": 235791.82898146444,
-        "bytes": 36217856,
-        "mb_per_s": 241.45083287701956,
-        "mib_per_s": 230.26545798971136
+        "iters": 43509,
+        "elapsed_s": 0.150000569,
+        "ops_per_s": 290058.8997099071,
+        "bytes": 44553216,
+        "mb_per_s": 297.0203133029449,
+        "mib_per_s": 283.2606442479562
       }
     },
     {
@@ -1952,12 +1952,12 @@
       "status": "ok",
       "note": "",
       "metrics": {
-        "iters": 1675,
-        "elapsed_s": 0.150032977,
-        "ops_per_s": 11164.212251817145,
-        "bytes": 109772800,
-        "mb_per_s": 731.6578141350884,
-        "mib_per_s": 697.7632657385716
+        "iters": 1891,
+        "elapsed_s": 0.150045046,
+        "ops_per_s": 12602.881937201713,
+        "bytes": 123928576,
+        "mb_per_s": 825.9424706364515,
+        "mib_per_s": 787.6801210751071
       }
     },
     {
@@ -1971,12 +1971,12 @@
       "status": "ok",
       "note": "",
       "metrics": {
-        "iters": 44953,
-        "elapsed_s": 0.15000275,
-        "ops_per_s": 299681.1725118373,
-        "bytes": 2876992,
-        "mb_per_s": 19.179595040757587,
-        "mib_per_s": 18.291087189443196
+        "iters": 59667,
+        "elapsed_s": 0.150001821,
+        "ops_per_s": 397775.1710094239,
+        "bytes": 3818688,
+        "mb_per_s": 25.45761094460313,
+        "mib_per_s": 24.27826971493066
       }
     },
     {
@@ -1990,12 +1990,12 @@
       "status": "ok",
       "note": "",
       "metrics": {
-        "iters": 42509,
-        "elapsed_s": 0.15000298,
-        "ops_per_s": 283387.70336429315,
-        "bytes": 43529216,
-        "mb_per_s": 290.1890082450362,
-        "mib_per_s": 276.74580406669253
+        "iters": 58096,
+        "elapsed_s": 0.15000132,
+        "ops_per_s": 387303.25839799276,
+        "bytes": 59490304,
+        "mb_per_s": 396.5985365995446,
+        "mib_per_s": 378.2258382792898
       }
     },
     {
@@ -2009,12 +2009,12 @@
       "status": "ok",
       "note": "",
       "metrics": {
-        "iters": 11093,
-        "elapsed_s": 0.150009092,
-        "ops_per_s": 73948.85104697521,
-        "bytes": 726990848,
-        "mb_per_s": 4846.3119022145665,
-        "mib_per_s": 4621.8031904359505
+        "iters": 19560,
+        "elapsed_s": 0.15000122,
+        "ops_per_s": 130398.93942195938,
+        "bytes": 1281884160,
+        "mb_per_s": 8545.82489395753,
+        "mib_per_s": 8149.933713872461
       }
     },
     {
@@ -2028,17 +2028,17 @@
       "status": "ok",
       "note": "",
       "metrics": {
-        "iters": 131,
-        "elapsed_s": 0.402907205,
-        "ops_per_s": 325.13690093975856,
-        "n": 131,
-        "min_ns": 2909002,
-        "p50_ns": 2931674.0,
-        "p90_ns": 3068318.0,
-        "p99_ns": 5648450.1,
-        "max_ns": 5938016,
-        "mean_ns": 3075032.9236641224,
-        "stdev_ns": 525054.9249141075
+        "iters": 160,
+        "elapsed_s": 0.401552325,
+        "ops_per_s": 398.45367599353335,
+        "n": 160,
+        "min_ns": 2295782,
+        "p50_ns": 2578576.5,
+        "p90_ns": 2704265.0,
+        "p99_ns": 2746677.87,
+        "max_ns": 2792008,
+        "mean_ns": 2508843.275,
+        "stdev_ns": 189961.48867224212
       }
     },
     {
@@ -2052,17 +2052,17 @@
       "status": "ok",
       "note": "",
       "metrics": {
-        "iters": 14,
-        "elapsed_s": 0.410201478,
-        "ops_per_s": 34.129569859814104,
-        "n": 14,
-        "min_ns": 29226621,
-        "p50_ns": 29302312.5,
-        "p90_ns": 29359203.2,
-        "p99_ns": 29362080.98,
-        "max_ns": 29362374,
-        "mean_ns": 29298030.85714286,
-        "stdev_ns": 46053.02748363199
+        "iters": 16,
+        "elapsed_s": 0.400948387,
+        "ops_per_s": 39.90538562760199,
+        "n": 16,
+        "min_ns": 23079739,
+        "p50_ns": 25101268.0,
+        "p90_ns": 26996708.0,
+        "p99_ns": 27034351.95,
+        "max_ns": 27039012,
+        "mean_ns": 25056309.6875,
+        "stdev_ns": 1901590.1311400454
       }
     },
     {
@@ -2077,16 +2077,16 @@
       "note": "",
       "metrics": {
         "iters": 3,
-        "elapsed_s": 0.527826972,
-        "ops_per_s": 5.683680749834815,
+        "elapsed_s": 0.438872614,
+        "ops_per_s": 6.835696519446073,
         "n": 3,
-        "min_ns": 175773520,
-        "p50_ns": 175997506.0,
-        "p90_ns": 176022056.4,
-        "p99_ns": 176027580.24,
-        "max_ns": 176028194,
-        "mean_ns": 175933073.33333334,
-        "stdev_ns": 113514.72142218187
+        "min_ns": 138689082,
+        "p50_ns": 138699348.0,
+        "p90_ns": 156907811.2,
+        "p99_ns": 161004715.42,
+        "max_ns": 161459927,
+        "mean_ns": 146282785.66666666,
+        "stdev_ns": 10731860.374190187
       }
     },
     {
@@ -2101,17 +2101,17 @@
       "status": "ok",
       "note": "",
       "metrics": {
-        "iters": 33581,
-        "elapsed_s": 0.150002327,
-        "ops_per_s": 223869.86036556622,
+        "iters": 44922,
+        "elapsed_s": 0.150000519,
+        "ops_per_s": 299478.96380278526,
         "n": 4000,
-        "min_ns": 4037,
-        "p50_ns": 4138.0,
-        "p90_ns": 4198.0,
-        "p99_ns": 5185.339999999614,
-        "max_ns": 25748,
-        "mean_ns": 4216.1885,
-        "stdev_ns": 849.7885436788084
+        "min_ns": 2954,
+        "p50_ns": 3084.0,
+        "p90_ns": 3144.0,
+        "p99_ns": 4346.01,
+        "max_ns": 17025,
+        "mean_ns": 3129.85625,
+        "stdev_ns": 514.5416121033726
       }
     },
     {
@@ -2126,17 +2126,17 @@
       "status": "ok",
       "note": "",
       "metrics": {
-        "iters": 25447,
-        "elapsed_s": 0.150000763,
-        "ops_per_s": 169645.80373501166,
+        "iters": 33282,
+        "elapsed_s": 0.150003113,
+        "ops_per_s": 221875.39534596194,
         "n": 4000,
-        "min_ns": 5370,
-        "p50_ns": 5500.0,
-        "p90_ns": 5560.0,
-        "p99_ns": 8947.999999999976,
-        "max_ns": 24887,
-        "mean_ns": 5591.7295,
-        "stdev_ns": 939.9373701634328
+        "min_ns": 4056,
+        "p50_ns": 4206.0,
+        "p90_ns": 4276.0,
+        "p99_ns": 6299.709999999983,
+        "max_ns": 24758,
+        "mean_ns": 4266.71275,
+        "stdev_ns": 659.5745164402863
       }
     },
     {
@@ -2153,17 +2153,17 @@
       "status": "ok",
       "note": "",
       "metrics": {
-        "iters": 7,
-        "elapsed_s": 0.52123607,
-        "ops_per_s": 13.429615490731482,
-        "n": 7,
-        "min_ns": 74076859,
-        "p50_ns": 74461835.0,
-        "p90_ns": 74769335.0,
-        "p99_ns": 74847899.6,
-        "max_ns": 74856629,
-        "mean_ns": 74456693.85714285,
-        "stdev_ns": 254877.65324250804
+        "iters": 8,
+        "elapsed_s": 0.500556333,
+        "ops_per_s": 15.982217130394393,
+        "n": 8,
+        "min_ns": 61919803,
+        "p50_ns": 62253836.0,
+        "p90_ns": 63539445.2,
+        "p99_ns": 63880485.62,
+        "max_ns": 63918379,
+        "mean_ns": 62564466.75,
+        "stdev_ns": 672622.5532270587
       }
     },
     {
@@ -2181,16 +2181,16 @@
       "note": "",
       "metrics": {
         "iters": 4,
-        "elapsed_s": 0.666705033,
-        "ops_per_s": 5.999654722870527,
+        "elapsed_s": 0.598325699,
+        "ops_per_s": 6.685322069042534,
         "n": 4,
-        "min_ns": 165956330,
-        "p50_ns": 166334744.0,
-        "p90_ns": 167569098.1,
-        "p99_ns": 168007527.61,
-        "max_ns": 168056242,
-        "mean_ns": 166670515.0,
-        "stdev_ns": 817751.2733230686
+        "min_ns": 149257056,
+        "p50_ns": 149362917.5,
+        "p90_ns": 150040537.4,
+        "p99_ns": 150290390.54,
+        "max_ns": 150318152,
+        "mean_ns": 149575260.75,
+        "stdev_ns": 431596.8394818103
       }
     },
     {
@@ -2243,12 +2243,12 @@
       "note": "ISOLATED handshake window (FSM begin->OK), excludes startup/discovery/teardown",
       "metrics": {
         "n": 20,
-        "min_ns": 3221988.6779785156,
-        "p50_ns": 3415465.3549194336,
-        "p90_ns": 6131005.287170411,
-        "p99_ns": 7084391.117095947,
-        "max_ns": 7120132.4462890625,
-        "mean_ns": 4102230.0720214844,
+        "min_ns": 3338813.7817382812,
+        "p50_ns": 3481864.9291992188,
+        "p90_ns": 4083156.5856933626,
+        "p99_ns": 7662210.464477537,
+        "max_ns": 8022069.931030273,
+        "mean_ns": 3847420.2156066895,
         "runs": 20
       }
     },
@@ -2262,12 +2262,12 @@
       "note": "whole test process: startup + participant create + SPDP discovery + handshake + teardown",
       "metrics": {
         "n": 20,
-        "min_ns": 102504437,
-        "p50_ns": 104693127.5,
-        "p90_ns": 123765179.10000001,
-        "p99_ns": 135920598.98999998,
-        "max_ns": 137954564,
-        "mean_ns": 108973967.65,
+        "min_ns": 102242197,
+        "p50_ns": 103156303.5,
+        "p90_ns": 128443313.10000002,
+        "p99_ns": 175149810.56999993,
+        "max_ns": 182865235,
+        "mean_ns": 111076261.8,
         "runs": 20
       }
     },
@@ -2283,12 +2283,12 @@
       "note": "ISOLATED handshake window (FSM begin->OK), excludes startup/discovery/teardown",
       "metrics": {
         "n": 20,
-        "min_ns": 3503084.182739258,
-        "p50_ns": 3682017.3263549805,
-        "p90_ns": 3730893.135070801,
-        "p99_ns": 3748531.3415527344,
-        "max_ns": 3748893.7377929688,
-        "mean_ns": 3655385.971069336,
+        "min_ns": 3525018.6920166016,
+        "p50_ns": 3718376.1596679688,
+        "p90_ns": 3864669.7998046875,
+        "p99_ns": 3936789.035797119,
+        "max_ns": 3949880.599975586,
+        "mean_ns": 3729212.2840881348,
         "runs": 20
       }
     },
@@ -2304,12 +2304,12 @@
       "note": "whole test process: startup + participant create + SPDP discovery + handshake + teardown",
       "metrics": {
         "n": 20,
-        "min_ns": 101965146,
-        "p50_ns": 104146113.5,
-        "p90_ns": 104669146.4,
-        "p99_ns": 105266730.02,
-        "max_ns": 105387540,
-        "mean_ns": 103809091.6,
+        "min_ns": 101092137,
+        "p50_ns": 102885622.5,
+        "p90_ns": 103799395.8,
+        "p99_ns": 104200044.48,
+        "max_ns": 104203846,
+        "mean_ns": 103016863.95,
         "runs": 20
       }
     },
@@ -2325,12 +2325,12 @@
       "note": "ISOLATED handshake window (FSM begin->OK), excludes startup/discovery/teardown",
       "metrics": {
         "n": 20,
-        "min_ns": 3577947.6165771484,
-        "p50_ns": 3651499.7482299805,
-        "p90_ns": 3796505.928039551,
-        "p99_ns": 3829593.6584472656,
-        "max_ns": 3829956.0546875,
-        "mean_ns": 3680551.052093506,
+        "min_ns": 3597021.1029052734,
+        "p50_ns": 3669023.5137939453,
+        "p90_ns": 3796935.0814819336,
+        "p99_ns": 4319815.635681151,
+        "max_ns": 4442214.9658203125,
+        "mean_ns": 3727459.9075317383,
         "runs": 20
       }
     },
@@ -2346,12 +2346,12 @@
       "note": "whole test process: startup + participant create + SPDP discovery + handshake + teardown",
       "metrics": {
         "n": 20,
-        "min_ns": 102669721,
-        "p50_ns": 104401427.0,
-        "p90_ns": 105044818.1,
-        "p99_ns": 105658995.65,
-        "max_ns": 105696495,
-        "mean_ns": 104241563.75,
+        "min_ns": 102132211,
+        "p50_ns": 102599310.0,
+        "p90_ns": 103455666.5,
+        "p99_ns": 104333561.69,
+        "max_ns": 104450763,
+        "mean_ns": 102838516.25,
         "runs": 20
       }
     },
@@ -2365,12 +2365,12 @@
       "note": "ISOLATED handshake window (FSM begin->OK), excludes startup/discovery/teardown",
       "metrics": {
         "n": 20,
-        "min_ns": 4135131.8359375,
-        "p50_ns": 5292057.991027832,
-        "p90_ns": 6622982.025146484,
-        "p99_ns": 6825048.923492432,
-        "max_ns": 6842851.638793945,
-        "mean_ns": 5470359.325408936,
+        "min_ns": 4685878.753662109,
+        "p50_ns": 6572008.13293457,
+        "p90_ns": 7880473.1369018555,
+        "p99_ns": 8102817.535400391,
+        "max_ns": 8153915.4052734375,
+        "mean_ns": 6529974.937438965,
         "runs": 20
       }
     },
@@ -2384,12 +2384,12 @@
       "note": "whole test process: startup + participant create + SPDP discovery + handshake + teardown",
       "metrics": {
         "n": 20,
-        "min_ns": 29097595,
-        "p50_ns": 30234157.5,
-        "p90_ns": 32394147.2,
-        "p99_ns": 32579256.05,
-        "max_ns": 32608080,
-        "mean_ns": 30530148.15,
+        "min_ns": 30286949,
+        "p50_ns": 32259630.0,
+        "p90_ns": 33936486.6,
+        "p99_ns": 34053849.03,
+        "max_ns": 34054412,
+        "mean_ns": 32423856.1,
         "runs": 20
       }
     },
@@ -2405,12 +2405,12 @@
       "note": "ISOLATED handshake window (FSM begin->OK), excludes startup/discovery/teardown",
       "metrics": {
         "n": 20,
-        "min_ns": 4848003.387451172,
-        "p50_ns": 6677985.191345215,
-        "p90_ns": 8166503.906250002,
-        "p99_ns": 11386485.099792477,
-        "max_ns": 11920928.955078125,
-        "mean_ns": 6791341.304779053,
+        "min_ns": 5211114.883422852,
+        "p50_ns": 6761074.066162109,
+        "p90_ns": 8801984.786987305,
+        "p99_ns": 9384195.804595947,
+        "max_ns": 9432077.407836914,
+        "mean_ns": 6857573.986053467,
         "runs": 20
       }
     },
@@ -2426,12 +2426,12 @@
       "note": "whole test process: startup + participant create + SPDP discovery + handshake + teardown",
       "metrics": {
         "n": 20,
-        "min_ns": 29659894,
-        "p50_ns": 32431037.5,
-        "p90_ns": 33952285.9,
-        "p99_ns": 35889414.22,
-        "max_ns": 36217708,
-        "mean_ns": 32331891.75,
+        "min_ns": 30182069,
+        "p50_ns": 32314335.5,
+        "p90_ns": 34765377.9,
+        "p99_ns": 35912810.13,
+        "max_ns": 35996785,
+        "mean_ns": 32523403.3,
         "runs": 20
       }
     },
@@ -2445,12 +2445,12 @@
       "note": "whole test process: startup + participant create + SPDP discovery + handshake + teardown",
       "metrics": {
         "n": 20,
-        "min_ns": 6407770,
-        "p50_ns": 6557211.5,
-        "p90_ns": 6627917.3,
-        "p99_ns": 6989311.85,
-        "max_ns": 7050755,
-        "mean_ns": 6565765.8,
+        "min_ns": 6549304,
+        "p50_ns": 6766012.0,
+        "p90_ns": 6922692.100000001,
+        "p99_ns": 7323159.069999999,
+        "max_ns": 7375893,
+        "mean_ns": 6794020.7,
         "runs": 20
       }
     }
