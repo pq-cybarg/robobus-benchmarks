@@ -629,10 +629,6 @@ def bench_bus() -> None:
     nanosecond figures rather than the ~1 us clock floor. Skipped where there is no C compiler
     or no fork/mmap (e.g. Windows) -- crypto benchmarks still run there.
     """
-    if platform.system() == "Windows":
-        skip("bus", "ring_op_amortized", "native/nsbus.c", "no fork/mmap on Windows")
-        skip("bus", "oneway_latency", "native/nsbus.c", "no fork/mmap on Windows")
-        return
     cc = _find_cc()
     if not cc:
         skip("bus", "ring_op_amortized", "C compiler", "no cc/clang/gcc on PATH")
@@ -642,13 +638,39 @@ def bench_bus() -> None:
     if not os.path.exists(src):
         skip("bus", "ring_op_amortized", "native/nsbus.c", "source not found")
         return
-    binp = os.path.join(os.path.dirname(src), "_nsbus")
-    comp = subprocess.run([cc, "-O3", "-std=c11", src, "-o", binp], capture_output=True, text=True)
+    is_win = platform.system() == "Windows"
+    binp = os.path.join(os.path.dirname(src), "_nsbus.exe" if is_win else "_nsbus")
+    cmd = [cc, "-O3", "-std=c11", src, "-o", binp]
+    if is_win:
+        cmd += ["-lwinmm", "-lavrt"]     # timeBeginPeriod (winmm) + MMCSS/Pro-Audio (avrt)
+    comp = subprocess.run(cmd, capture_output=True, text=True)
     if comp.returncode != 0:
-        skip("bus", "ring_op_amortized", "native/nsbus.c", f"compile failed: {comp.stderr[:160]}")
+        for nm in ("ring_op_amortized", "oneway_latency"):
+            skip("bus", nm, "native/nsbus.c", f"compile failed: {comp.stderr[:160]}")
         return
     n_amort = 5_000_000 if MIN_SECONDS < 0.3 else 30_000_000
     n_oneway = 100_000 if MIN_SECONDS < 0.3 else 300_000
+
+    def _rec_latency(data, o, label, rt):
+        # o may be null (e.g. Win32 CreateProcess failed) -> a clean skip, not a crash
+        if not o:
+            skip("bus", label, "native/nsbus.c", "measurement unavailable on this host")
+            return
+        pos = o.get("max_position_frac", 0.0)
+        cold = pos < 0.02
+        record("bus", label + (" (RT)" if rt else ""),
+               {"realtime": data.get("realtime"), "ipc": data.get("platform_ipc"),
+                "warmup_msgs": o.get("warmup_discarded")}, "ns",
+               {"n": o["n"], "min_ns": o["min"], "p50_ns": o["p50"], "p90_ns": o["p90"],
+                "p99_ns": o["p99"], "p999_ns": o["p999"], "max_ns": o["max"], "mean_ns": o["mean"],
+                "frac_under_100ns": o["frac_under_100ns"], "frac_under_1us": o["frac_under_1us"],
+                "spike_rate": o.get("spike_rate"), "stable_max_ns": o.get("stable_max_ns"),
+                "max_position_frac": pos},
+               dependency="native/nsbus.c",
+               note=(f"{o['frac_under_100ns']*100:.1f}% <100 ns; max at {pos*100:.0f}% of run "
+                     f"({'cold-start residue' if cold else 'mid-run scheduler jitter'})"
+                     + ("; RT hardened" if rt else "; no RT")))
+
     for rt in (False, True):
         env = dict(os.environ)
         if rt:
@@ -668,23 +690,10 @@ def bench_bus() -> None:
                "ns/op",
                {"mean_ns": a["ns_per_op"], "ops_per_s": a["ops_per_s"], "n": a["n"]},
                dependency="native/nsbus.c",
-               note=f"pure ring op cost; clock res {clk.get('single_shot_res_ns'):.1f} ns")
-        o = data["oneway_latency_ns"]
-        pos = o.get("max_position_frac", 0.0)
-        cold = pos < 0.02  # max within first 2% of steady-state => likely a warmup residue
-        record("bus", "cross-process one-way latency" + suffix,
-               {"realtime": data.get("realtime"), "warmup_msgs": o.get("warmup_discarded")},
-               "ns",
-               {"n": o["n"], "min_ns": o["min"], "p50_ns": o["p50"], "p90_ns": o["p90"],
-                "p99_ns": o["p99"], "p999_ns": o["p999"], "max_ns": o["max"], "mean_ns": o["mean"],
-                "frac_under_100ns": o["frac_under_100ns"], "frac_under_1us": o["frac_under_1us"],
-                "max_position_frac": pos},
-               dependency="native/nsbus.c",
-               note=(f"{o['frac_under_100ns']*100:.1f}% <100 ns; "
-                     f"{o.get('warmup_discarded', 0)} msgs warmup discarded; "
-                     f"max at {pos*100:.0f}% of run "
-                     f"({'cold-start residue' if cold else 'mid-run scheduler jitter'})"
-                     + ("; RT time-constraint policy" if rt else "; no RT")))
+               note=f"pure ring op cost; clock {clk.get('source','?')} res {clk.get('single_shot_res_ns'):.1f} ns")
+        # C: cross-THREAD (portable everywhere incl. Windows);  B: cross-PROCESS (fork / CreateProcess)
+        _rec_latency(data, data.get("twothread_latency_ns"), "cross-thread one-way latency", rt)
+        _rec_latency(data, data.get("oneway_latency_ns"), "cross-process one-way latency", rt)
     try:
         os.remove(binp)
     except Exception:
