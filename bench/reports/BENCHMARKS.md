@@ -4,7 +4,7 @@
 
 > ⚠️ **Platform caveat.** These figures were measured **on macOS only** so far. They are inherently CPU-, OS- and build-specific and are **not** portable claims. The value here is the *method*: the identical script is designed to run on macOS, Windows, every supported Linux, Android and iOS, skipping only what a given platform lacks. Re-run it on each target to populate that platform's column.
 
-_Generated 2026-07-04 06:55 UTC from `bench/results/latest-*.json`._
+_Generated 2026-07-04 07:24 UTC from `bench/results/latest-*.json`._
 
 ## Platforms measured
 
@@ -46,8 +46,8 @@ _Generated 2026-07-04 06:55 UTC from `bench/results/latest-*.json`._
 - **OS:** Linux 6.12.76-linuxkit (Linux-6.12.76-linuxkit-armv7l-with-glibc2.41)
 - **CPU:** armv7l — 10 cores
 - **Python:** 3.13.5 (CPython)
-- **Crypto backends:** cryptography 43.0.0
-- **Absent on this host (SKIPPED):** oqs, argon2, psutil
+- **Crypto backends:** cryptography 43.0.0, oqs 0.15.0
+- **Absent on this host (SKIPPED):** argon2, psutil
 - **Fidelity tier:** 2-baremetal-untuned (real hardware, default OS noise)
 - **Measurement conditions:** isolcpus=none, pinned=False
 - **Uncontrolled noise:** no isolated cores (isolcpus=) -> scheduler + IRQ noise
@@ -58,8 +58,8 @@ _Generated 2026-07-04 06:55 UTC from `bench/results/latest-*.json`._
 - **OS:** Linux 6.12.76-linuxkit (Linux-6.12.76-linuxkit-i686-with-glibc2.41)
 - **CPU:** i686 — 10 cores
 - **Python:** 3.13.5 (CPython)
-- **Crypto backends:** cryptography 43.0.0
-- **Absent on this host (SKIPPED):** oqs, argon2, psutil
+- **Crypto backends:** cryptography 43.0.0, oqs 0.15.0
+- **Absent on this host (SKIPPED):** argon2, psutil
 - **Fidelity tier:** 2-baremetal-untuned (real hardware, default OS noise)
 - **Measurement conditions:** isolcpus=none, pinned=False
 - **Uncontrolled noise:** no isolated cores (isolcpus=) -> scheduler + IRQ noise
@@ -144,7 +144,8 @@ Optional backends unlock more rows: `cryptography` (AEAD, ECDH, classical signat
 | `AES-256-GCM seal/open round-trip` | arch=armv7l | — | — | ok · AES-256 → NIST Level 5, CNSA 2.0 (Grover leaves 128-bit) · encrypt then decrypt |
 | `ECDH-P256 shared-secret agreement` | arch=armv7l | — | — | ok · both parties derive the same key |
 | `Ed25519 sign/verify` | arch=armv7l | — | — | ok · signature verifies |
-| `ML-KEM/ML-DSA round-trips (oqs)` | arch=armv7l | — | — | ○ _skipped_ — liboqs/oqs not built here (ModuleNotFoundError); ML-KEM/ML-DSA use fixed byte encodings (FIPS 203/204) over SHA-3/SHAKE, whose KATs pass above |
+| `ML-KEM-768 encap/decap secret match` | arch=armv7l | — | — | ok · FIPS 203 across this ISA |
+| `ML-DSA-87 sign/verify` | arch=armv7l | — | — | ok · FIPS 204 across this ISA |
 
 **Linux · i686**
 
@@ -160,7 +161,8 @@ Optional backends unlock more rows: `cryptography` (AEAD, ECDH, classical signat
 | `AES-256-GCM seal/open round-trip` | arch=i686 | — | — | ok · AES-256 → NIST Level 5, CNSA 2.0 (Grover leaves 128-bit) · encrypt then decrypt |
 | `ECDH-P256 shared-secret agreement` | arch=i686 | — | — | ok · both parties derive the same key |
 | `Ed25519 sign/verify` | arch=i686 | — | — | ok · signature verifies |
-| `ML-KEM/ML-DSA round-trips (oqs)` | arch=i686 | — | — | ○ _skipped_ — liboqs/oqs not built here (ModuleNotFoundError); ML-KEM/ML-DSA use fixed byte encodings (FIPS 203/204) over SHA-3/SHAKE, whose KATs pass above |
+| `ML-KEM-768 encap/decap secret match` | arch=i686 | — | — | ok · FIPS 203 across this ISA |
+| `ML-DSA-87 sign/verify` | arch=i686 | — | — | ok · FIPS 204 across this ISA |
 
 **Linux · ppc64le**
 
