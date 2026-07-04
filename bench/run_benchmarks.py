@@ -731,6 +731,14 @@ def bench_gpu() -> None:
 
     'no backend installed' is distinguished from 'no GPU hardware' (a backend is installable).
     """
+    # Always emit the hardware-free ANALYTICAL projection (roofline model) across a range of devices,
+    # so CI VMs / pre-purchase planning get PROJECTED crossover numbers instead of only a skip. The
+    # measured rows below (where a GPU + backend exist) validate the model against real silicon.
+    try:
+        import gpu_model
+        gpu_model.project(record)
+    except Exception:
+        pass
     hw = _gpu_hardware()
     backend = None
     for m in ("mlx.core", "cupy", "torch"):
