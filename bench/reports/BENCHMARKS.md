@@ -4,7 +4,7 @@
 
 > ⚠️ **Platform caveat.** These figures were measured **on macOS only** so far. They are inherently CPU-, OS- and build-specific and are **not** portable claims. The value here is the *method*: the identical script is designed to run on macOS, Windows, every supported Linux, Android and iOS, skipping only what a given platform lacks. Re-run it on each target to populate that platform's column.
 
-_Generated 2026-07-04 12:07 UTC from `bench/results/latest-*.json`._
+_Generated 2026-07-04 12:31 UTC from `bench/results/latest-*.json`._
 
 ## Platforms measured
 
@@ -19,6 +19,15 @@ _Generated 2026-07-04 12:07 UTC from `bench/results/latest-*.json`._
 
 - **OS:** Darwin 25.1.0 (macOS-26.1-arm64-arm-64bit)
 - **CPU:** Apple M5 — 10 cores, 32 GB RAM
+- **Python:** 3.12.13 (CPython)
+- **Crypto backends:** cryptography 49.0.0, oqs 0.15.0, argon2 25.1.0, psutil 7.2.2, blake3 1.0.9
+- **Fidelity tier:** 3-baremetal-partial (real hardware, some noise controls)
+- **Uncontrolled noise:** macOS: no core isolation / governor control (soft-RT only)
+
+### Darwin · PQC-DDS build — macOS Apple Silicon CI
+
+- **OS:** Darwin 25.1.0 (macOS-26.1-arm64-arm-64bit)
+- **CPU:** PQC-DDS build — macOS Apple Silicon CI — 10 cores, 32 GB RAM
 - **Python:** 3.12.13 (CPython)
 - **Crypto backends:** cryptography 49.0.0, oqs 0.15.0, argon2 25.1.0, psutil 7.2.2, blake3 1.0.9
 - **Fidelity tier:** 3-baremetal-partial (real hardware, some noise controls)
@@ -884,6 +893,22 @@ Optional backends unlock more rows: `cryptography` (AEAD, ECDH, classical signat
 | `FastDDS` | — | — | — | ○ _skipped_ — PQC-DDS test binary not built in this environment — the handshake is built + measured on the dev machine |
 
 **Darwin · Apple M5**
+
+| Algorithm | Config | Class | Throughput / rate | p50 | p99 | Status |
+|---|---|---|---|---|---|---|
+| `CycloneDDS classical (RSA id · ECDH P-256)` | — | classical | 1.97 ms | 1.97 ms | 5.99 ms | ok · ISOLATED handshake window (FSM begin->OK), excludes startup/discovery/teardown |
+| `CycloneDDS classical (RSA id · ECDH P-256) — full process` | — | classical | 105.30 ms | 105.30 ms | 281.52 ms | ok · whole test process: startup + participant create + SPDP discovery + handshake + teardown |
+| `CycloneDDS hybrid ECDH+ML-KEM-768` | CYCLONEDDS_PQC_KAGREE=ECDH+ML-KEM-768 | HYBRID | 2.04 ms | 2.04 ms | 3.52 ms | ok · ISOLATED handshake window (FSM begin->OK), excludes startup/discovery/teardown |
+| `CycloneDDS hybrid ECDH+ML-KEM-768 — full process` | CYCLONEDDS_PQC_KAGREE=ECDH+ML-KEM-768 | HYBRID | 101.79 ms | 101.79 ms | 134.79 ms | ok · whole test process: startup + participant create + SPDP discovery + handshake + teardown |
+| `CycloneDDS hybrid ECDH+ML-KEM-1024` | CYCLONEDDS_PQC_KAGREE=ECDH+ML-KEM-1024 | HYBRID | 1.99 ms | 1.99 ms | 2.18 ms | ok · ISOLATED handshake window (FSM begin->OK), excludes startup/discovery/teardown |
+| `CycloneDDS hybrid ECDH+ML-KEM-1024 — full process` | CYCLONEDDS_PQC_KAGREE=ECDH+ML-KEM-1024 | HYBRID | 98.95 ms | 98.95 ms | 112.49 ms | ok · whole test process: startup + participant create + SPDP discovery + handshake + teardown |
+| `CycloneDDS ML-DSA-87 identity (PQ auth)` | — | PQC | 2.30 ms | 2.30 ms | 4.40 ms | ok · ISOLATED handshake window (FSM begin->OK), excludes startup/discovery/teardown |
+| `CycloneDDS ML-DSA-87 identity (PQ auth) — full process` | — | PQC | 59.72 ms | 59.72 ms | 64.67 ms | ok · whole test process: startup + participant create + SPDP discovery + handshake + teardown |
+| `CycloneDDS full CNSA 2.0 (ML-DSA-87 · ML-KEM-1024)` | CYCLONEDDS_PQC_KAGREE=ECDH+ML-KEM-1024 | PQC | 2.55 ms | 2.55 ms | 7.62 ms | ok · ISOLATED handshake window (FSM begin->OK), excludes startup/discovery/teardown |
+| `CycloneDDS full CNSA 2.0 (ML-DSA-87 · ML-KEM-1024) — full process` | CYCLONEDDS_PQC_KAGREE=ECDH+ML-KEM-1024 | PQC | 59.30 ms | 59.30 ms | 67.62 ms | ok · whole test process: startup + participant create + SPDP discovery + handshake + teardown |
+| `FastDDS PKI-DH local-identity validate — full process` | — | classical | 37.70 ms | 37.70 ms | 86.47 ms | ok · whole test process: startup + participant create + SPDP discovery + handshake + teardown |
+
+**Darwin · PQC-DDS build — macOS Apple Silicon CI**
 
 | Algorithm | Config | Class | Throughput / rate | p50 | p99 | Status |
 |---|---|---|---|---|---|---|
