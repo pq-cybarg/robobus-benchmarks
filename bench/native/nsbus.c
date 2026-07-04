@@ -34,7 +34,9 @@
 #if defined(_WIN32)
   #define WIN32_LEAN_AND_MEAN
   #include <windows.h>
-  #include <process.h>
+  #include <timeapi.h>    /* timeBeginPeriod (winmm) -- excluded by WIN32_LEAN_AND_MEAN */
+  #include <avrt.h>       /* MMCSS: AvSetMmThreadCharacteristics / AvSetMmThreadPriority */
+  #include <process.h>    /* _beginthreadex */
   static double NS_PER_TICK = 1.0;
   static inline uint64_t rawclock(void){ LARGE_INTEGER c; QueryPerformanceCounter(&c); return (uint64_t)c.QuadPart; }
   static void clock_init(void){ LARGE_INTEGER f; QueryPerformanceFrequency(&f); NS_PER_TICK = 1.0e9/(double)f.QuadPart; }

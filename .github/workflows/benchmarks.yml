@@ -55,6 +55,14 @@ jobs:
         run: |
           if (-not (Get-Command clang -ErrorAction SilentlyContinue)) { choco install llvm -y --no-progress }
           "C:\Program Files\LLVM\bin" | Out-File -FilePath $env:GITHUB_PATH -Append
+      - name: (debug) compile nsbus on Windows -- show full error
+        if: matrix.os == 'windows-latest'
+        shell: pwsh
+        continue-on-error: true
+        run: |
+          clang -O3 -std=c11 bench/native/nsbus.c -o nsbus_dbg.exe -lwinmm -lavrt
+          Write-Host "clang exit: $LASTEXITCODE"
+          if ($LASTEXITCODE -eq 0) { .\nsbus_dbg.exe 200000 2000 | Select-Object -First 4 }
       - name: Run the identical harness
         shell: bash
         run: python bench/run_benchmarks.py --quick --label "GitHub Actions ${{ matrix.os }}"
