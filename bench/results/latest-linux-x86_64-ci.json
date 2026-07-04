@@ -2194,26 +2194,6 @@
       }
     },
     {
-      "group": "dds_handshake",
-      "name": "CycloneDDS",
-      "config": {},
-      "unit": "",
-      "dependency": "cunit_security_core",
-      "status": "skipped",
-      "note": "CycloneDDS PQC test binary not built on this platform",
-      "metrics": {}
-    },
-    {
-      "group": "dds_handshake",
-      "name": "FastDDS",
-      "config": {},
-      "unit": "",
-      "dependency": "BuiltinPKIDH",
-      "status": "skipped",
-      "note": "Fast DDS PKI-DH test binary not built on this platform",
-      "metrics": {}
-    },
-    {
       "group": "gpu",
       "name": "swapover",
       "config": {},
@@ -2252,6 +2232,18 @@
       "status": "skipped",
       "note": "n/a here \u2014 needs the robobus package (private repo); the portable `bus` group measures the same ring on this platform",
       "metrics": {}
+    },
+    {
+      "group": "dds_handshake",
+      "name": "\u2192 see the \u2018PQC-DDS-Security\u2019 column",
+      "config": {},
+      "unit": "pass",
+      "dependency": "dds-benchmarks workflow",
+      "status": "skipped",
+      "metrics": {
+        "passed": null
+      },
+      "note": "DDS handshake is built + measured by the dedicated dds-benchmarks workflow (debian trixie); see the PQC-DDS column"
     }
   ],
   "note": "Measured on this host only. Numbers are platform/CPU/build-specific. Re-run the identical script on each target OS to compare. Skipped rows indicate a capability/dependency absent on THIS platform, not a failure."
