@@ -1,6 +1,6 @@
 {
   "schema": "robobus-bench/1",
-  "generated_unix": 1783058534,
+  "generated_unix": 1783146553,
   "label": "emulated linux/riscv64",
   "quick": false,
   "platform": {
@@ -47,10 +47,10 @@
     },
     "dependencies": {
       "available": {
-        "cryptography": "43.0.0"
+        "cryptography": "43.0.0",
+        "oqs": "0.15.0"
       },
       "missing": {
-        "oqs": "ModuleNotFoundError: No module named 'oqs'",
         "argon2": "ModuleNotFoundError: No module named 'argon2'",
         "psutil": "ModuleNotFoundError: No module named 'psutil'"
       }
@@ -200,16 +200,30 @@
     },
     {
       "group": "correctness",
-      "name": "ML-KEM/ML-DSA round-trips (oqs)",
+      "name": "ML-KEM-768 encap/decap secret match",
       "config": {
         "arch": "riscv64"
       },
       "unit": "pass",
       "dependency": "stdlib",
-      "status": "skipped",
-      "note": "liboqs/oqs not built here (ModuleNotFoundError); ML-KEM/ML-DSA use fixed byte encodings (FIPS 203/204) over SHA-3/SHAKE, whose KATs pass above",
+      "status": "ok",
+      "note": "FIPS 203 across this ISA",
       "metrics": {
-        "passed": null
+        "passed": true
+      }
+    },
+    {
+      "group": "correctness",
+      "name": "ML-DSA-87 sign/verify",
+      "config": {
+        "arch": "riscv64"
+      },
+      "unit": "pass",
+      "dependency": "stdlib",
+      "status": "ok",
+      "note": "FIPS 204 across this ISA",
+      "metrics": {
+        "passed": true
       }
     }
   ],

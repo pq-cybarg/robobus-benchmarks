@@ -4,7 +4,7 @@
 
 > ⚠️ **Platform caveat.** These figures were measured **on macOS only** so far. They are inherently CPU-, OS- and build-specific and are **not** portable claims. The value here is the *method*: the identical script is designed to run on macOS, Windows, every supported Linux, Android and iOS, skipping only what a given platform lacks. Re-run it on each target to populate that platform's column.
 
-_Generated 2026-07-04 05:29 UTC from `bench/results/latest-*.json`._
+_Generated 2026-07-04 06:51 UTC from `bench/results/latest-*.json`._
 
 ## Platforms measured
 
@@ -70,8 +70,8 @@ _Generated 2026-07-04 05:29 UTC from `bench/results/latest-*.json`._
 - **OS:** Linux 6.12.76-linuxkit (Linux-6.12.76-linuxkit-ppc64le-with-glibc2.41)
 - **CPU:** ppc64le — 10 cores
 - **Python:** 3.13.5 (CPython)
-- **Crypto backends:** cryptography 43.0.0
-- **Absent on this host (SKIPPED):** oqs, argon2, psutil
+- **Crypto backends:** cryptography 43.0.0, oqs 0.15.0
+- **Absent on this host (SKIPPED):** argon2, psutil
 - **Fidelity tier:** 2-baremetal-untuned (real hardware, default OS noise)
 - **Measurement conditions:** isolcpus=none, pinned=False
 - **Uncontrolled noise:** no isolated cores (isolcpus=) -> scheduler + IRQ noise
@@ -82,8 +82,8 @@ _Generated 2026-07-04 05:29 UTC from `bench/results/latest-*.json`._
 - **OS:** Linux 6.12.76-linuxkit (Linux-6.12.76-linuxkit-riscv64-with-glibc2.41)
 - **CPU:** riscv64 — 10 cores
 - **Python:** 3.13.5 (CPython)
-- **Crypto backends:** cryptography 43.0.0
-- **Absent on this host (SKIPPED):** oqs, argon2, psutil
+- **Crypto backends:** cryptography 43.0.0, oqs 0.15.0
+- **Absent on this host (SKIPPED):** argon2, psutil
 - **Fidelity tier:** 2-baremetal-untuned (real hardware, default OS noise)
 - **Measurement conditions:** isolcpus=none, pinned=False
 - **Uncontrolled noise:** no isolated cores (isolcpus=) -> scheduler + IRQ noise
@@ -94,8 +94,8 @@ _Generated 2026-07-04 05:29 UTC from `bench/results/latest-*.json`._
 - **OS:** Linux 6.12.76-linuxkit (Linux-6.12.76-linuxkit-s390x-with-glibc2.41)
 - **CPU:** s390x — 10 cores
 - **Python:** 3.13.5 (CPython)
-- **Crypto backends:** cryptography 43.0.0
-- **Absent on this host (SKIPPED):** oqs, argon2, psutil
+- **Crypto backends:** cryptography 43.0.0, oqs 0.15.0
+- **Absent on this host (SKIPPED):** argon2, psutil
 - **Fidelity tier:** 2-baremetal-untuned (real hardware, default OS noise)
 - **Measurement conditions:** isolcpus=none, pinned=False
 - **Uncontrolled noise:** no isolated cores (isolcpus=) -> scheduler + IRQ noise
@@ -176,7 +176,8 @@ Optional backends unlock more rows: `cryptography` (AEAD, ECDH, classical signat
 | `AES-256-GCM seal/open round-trip` | arch=ppc64le | — | — | ok · AES-256 → NIST Level 5, CNSA 2.0 (Grover leaves 128-bit) · encrypt then decrypt |
 | `ECDH-P256 shared-secret agreement` | arch=ppc64le | — | — | ok · both parties derive the same key |
 | `Ed25519 sign/verify` | arch=ppc64le | — | — | ok · signature verifies |
-| `ML-KEM/ML-DSA round-trips (oqs)` | arch=ppc64le | — | — | ○ _skipped_ — liboqs/oqs not built here (ModuleNotFoundError); ML-KEM/ML-DSA use fixed byte encodings (FIPS 203/204) over SHA-3/SHAKE, whose KATs pass above |
+| `ML-KEM-768 encap/decap secret match` | arch=ppc64le | — | — | ok · FIPS 203 across this ISA |
+| `ML-DSA-87 sign/verify` | arch=ppc64le | — | — | ok · FIPS 204 across this ISA |
 
 **Linux · riscv64**
 
@@ -192,7 +193,8 @@ Optional backends unlock more rows: `cryptography` (AEAD, ECDH, classical signat
 | `AES-256-GCM seal/open round-trip` | arch=riscv64 | — | — | ok · AES-256 → NIST Level 5, CNSA 2.0 (Grover leaves 128-bit) · encrypt then decrypt |
 | `ECDH-P256 shared-secret agreement` | arch=riscv64 | — | — | ok · both parties derive the same key |
 | `Ed25519 sign/verify` | arch=riscv64 | — | — | ok · signature verifies |
-| `ML-KEM/ML-DSA round-trips (oqs)` | arch=riscv64 | — | — | ○ _skipped_ — liboqs/oqs not built here (ModuleNotFoundError); ML-KEM/ML-DSA use fixed byte encodings (FIPS 203/204) over SHA-3/SHAKE, whose KATs pass above |
+| `ML-KEM-768 encap/decap secret match` | arch=riscv64 | — | — | ok · FIPS 203 across this ISA |
+| `ML-DSA-87 sign/verify` | arch=riscv64 | — | — | ok · FIPS 204 across this ISA |
 
 **Linux · s390x**
 
@@ -208,7 +210,8 @@ Optional backends unlock more rows: `cryptography` (AEAD, ECDH, classical signat
 | `AES-256-GCM seal/open round-trip` | arch=s390x | — | — | ok · AES-256 → NIST Level 5, CNSA 2.0 (Grover leaves 128-bit) · encrypt then decrypt |
 | `ECDH-P256 shared-secret agreement` | arch=s390x | — | — | ok · both parties derive the same key |
 | `Ed25519 sign/verify` | arch=s390x | — | — | ok · signature verifies |
-| `ML-KEM/ML-DSA round-trips (oqs)` | arch=s390x | — | — | ○ _skipped_ — liboqs/oqs not built here (ModuleNotFoundError); ML-KEM/ML-DSA use fixed byte encodings (FIPS 203/204) over SHA-3/SHAKE, whose KATs pass above |
+| `ML-KEM-768 encap/decap secret match` | arch=s390x | — | — | ok · FIPS 203 across this ISA |
+| `ML-DSA-87 sign/verify` | arch=s390x | — | — | ok · FIPS 204 across this ISA |
 
 ## Formal verification — machine-checked proofs of the C bus ring (cbmc) & RTL (SymbiYosys)
 
