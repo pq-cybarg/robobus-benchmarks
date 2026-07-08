@@ -96,6 +96,7 @@ Reproduce locally: `bash scripts/qemu_test.sh` (needs Docker; QEMU auto-register
 | Platform | Verified how |
 |---|---|
 | macOS, Windows 10/11 | native GitHub-Actions runners (`test` job) + local macOS |
+| PQC DDS-Security handshake | built + measured green on CI: Linux, macOS, **Windows native MSVC (VS2022) AND WSL2** (`dds-benchmarks` workflow) |
 | Linux x86_64 / aarch64 / armv7, Alpine (musl) | QEMU/container `cross-arch` CI matrix (above) |
 | Raspberry Pi OS (64 & 32-bit) | covered by Debian aarch64 + armv7 cells |
 | Android / GrapheneOS (Termux) | aarch64 substrate cell + documented Termux install |

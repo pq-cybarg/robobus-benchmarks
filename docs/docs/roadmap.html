@@ -75,6 +75,17 @@ h2.title{font-size:clamp(24px,3.5vw,34px);margin:0 0 8px}
 .fcard p{color:var(--muted);font-size:14.5px;margin:0}
 .fcard .pqc{color:var(--pqc)}.fcard .hybrid{color:var(--hybrid)}.fcard .qr{color:var(--qr)}
 
+/* transports */
+.xgrid{display:grid;gap:14px}
+@media(min-width:720px){.xgrid{grid-template-columns:1fr 1fr}}
+.xgrp{border:1px solid var(--line);border-radius:14px;background:linear-gradient(180deg,var(--panel),var(--panel2));padding:16px 18px}
+.xgrp .xh{font-family:'JetBrains Mono';font-size:11.5px;letter-spacing:.11em;text-transform:uppercase;color:var(--signal);margin:0 0 13px}
+.xrow{display:flex;flex-wrap:wrap;gap:8px}
+.chip{display:inline-flex;align-items:baseline;gap:7px;padding:8px 12px;border:1px solid var(--line);border-radius:9px;background:var(--bg2);font-size:14px;color:var(--fg);font-weight:500}
+.chip small{color:var(--muted);font-size:11px;font-family:'JetBrains Mono';font-weight:400}
+.lock{display:inline-flex;align-items:center;gap:8px;margin-top:20px;padding:9px 14px;border:1px solid color-mix(in srgb,var(--qr) 34%,var(--line));border-radius:999px;background:color-mix(in srgb,var(--qr) 7%,transparent);font-size:13.5px;color:#bfe8cf}
+.lock b{color:var(--qr)}
+
 /* layer table */
 .ltab{width:100%;border-collapse:collapse;font-size:14.5px}
 .ltab th,.ltab td{text-align:left;padding:11px 14px;border-bottom:1px solid var(--line)}
@@ -132,25 +143,25 @@ footer.site a{color:var(--muted)}
 bus + PQC crypto + compliance) is complete and tested today; these extend reach.</p>
 <h2 id="1-pqc-in-sros2-dds-security">1. PQC in SROS2 / DDS-Security</h2>
 <ul>
-<li><strong>Key agreement — AUTHORED (build-validation pending).</strong> <code>patches/fastdds/0001-cnsa2-pqc-dds-security.patch</code>
+<li><strong>Key agreement — LIVE on CI.</strong> <code>patches/fastdds/0001-cnsa2-pqc-dds-security.patch</code>
   adds hybrid <strong>ECDH+ML-KEM-768/1024</strong> to Fast DDS's built-in PKI-DH auth plugin
   (<code>SharedSecret = HKDF-SHA384(ECDH‖ML-KEM)</code>, CNSA 2.0). The ML-KEM material rides
   inside the already-signed <code>dh1</code>/<code>dh2</code> properties, so no signature-code changes.
-  Crypto core + full handshake math are conformance-verified vs real liboqs 0.15.0 +
-  OpenSSL 3, and <code>git apply --check</code> is clean vs pristine v3.1.0. <strong>Remaining:</strong> the
-  full Fast DDS tree build + two-peer secure interop (~30–45 min). See
-  ../patches/fastdds/INTEGRATION.md.</li>
+  The whole patched Fast DDS tree builds green on CI and links liboqs 0.15.0; crypto core</li>
+<li>full handshake math are conformance-verified vs OpenSSL 3, and <code>git apply --check</code> is
+  clean vs pristine v3.1.0.</li>
 <li><strong>Identity/auth — dependency-gated.</strong> DDS identity certs signed with <strong>ML-DSA-87</strong>
   (FIPS 204) need Fast DDS built against an OpenSSL that exposes ML-DSA (OpenSSL 3.5+ /
   <code>oqs-provider</code>); no plugin code change once the cert path accepts PQC signatures.
   Until then, run RSA-3072/ECDSA-P384 identities with the hybrid ML-KEM key agreement
   above (confidentiality is already quantum-safe).</li>
-<li><strong>CycloneDDS — AUTHORED (parity).</strong> <code>patches/cyclonedds/0001-cnsa2-pqc-dds-security.patch</code>
-  ports the same hybrid ECDH+ML-KEM design to CycloneDDS's C auth plugin. The C crypto core
-  (<code>patches/cyclonedds/pqc/auth_pqc.c</code>) is conformance-verified vs liboqs 0.15.0 + OpenSSL 3
-  (KEM both levels + full handshake simulation → identical secret); <code>git apply --check</code> clean
-  vs 0.10.5. See ../patches/cyclonedds/INTEGRATION.md.
-  Remaining: the dh1/dh2 embed/split wiring + full CycloneDDS build (same final step as Fast DDS).</li>
+<li><strong>CycloneDDS — LIVE-VERIFIED, incl. ML-DSA-87 identity.</strong> <code>patches/cyclonedds/0001-cnsa2-pqc-dds-security.patch</code>
+  ports the same hybrid ECDH+ML-KEM design to CycloneDDS's C auth plugin, plus <strong>ML-DSA-87</strong>
+  (FIPS 204) post-quantum identity signatures. From-scratch on CI it passes CycloneDDS's own
+  two-peer <code>ddssec_handshake</code> suite — classical, hybrid ML-KEM-768 <strong>and</strong> 1024, and a full
+  CNSA 2.0 handshake (ML-DSA-87 identity + ML-KEM-1024) — measured live on <strong>Linux, macOS and
+  Windows (native MSVC + WSL2)</strong>. A separate <code>0002</code> patch makes the handshake <code>INITIAL_DELAY</code>
+  env-tunable (the 10 ms settle, not crypto, dominates the end-to-end time; ~9 ms recoverable).</li>
 <li><strong>Available now (defence in depth):</strong> even without the DDS build, layer <strong>robobus
   app-layer PQC</strong> (<code>--security cnsa20</code>) on the payloads — quantum-safe end-to-end across
   DDS <strong>and</strong> ROS 1 / LSL (which DDS-Security can't touch).</li>

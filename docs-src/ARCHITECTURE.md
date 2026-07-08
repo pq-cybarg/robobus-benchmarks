@@ -48,6 +48,15 @@ Proven end-to-end by `scripts/e2e_demo.sh`: ROS1→bus→ROS2 topic and ROS2→b
 stream, all delivering at ~27 µs (dominated by ROS serialization + thread poll, not the
 bus).
 
+Beyond ROS/LSL, `robobus.transports.*` bridges the bus to the wider streaming world —
+**MQTT, Apache Kafka, AMQP/RabbitMQ, Eclipse Zenoh, DDS, CAN/CAN-FD, ZeroCM, raw TCP,
+UDP (unicast/multicast) and serial/radio**. Each maps a protocol's topics onto bus channels,
+and *any* bridge accepts `--security <suite> --keyfile`, so CNSA 2.0 post-quantum crypto
+(ML-KEM key agreement, AES-256-GCM, ML-DSA identity) wraps that link even when the wire
+protocol has no security of its own. The same PQC-hardened frames carry across five native
+language implementations (Python, C, Rust, JS/Node, Java — bidirectionally conformance-tested)
+plus schema codegen for fourteen more.
+
 ## 4. Latency engineering
 
 Three transports, each tuned for localhost:

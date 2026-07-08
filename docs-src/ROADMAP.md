@@ -5,25 +5,25 @@ bus + PQC crypto + compliance) is complete and tested today; these extend reach.
 
 ## 1. PQC in SROS2 / DDS-Security
 
-* **Key agreement — AUTHORED (build-validation pending).** `patches/fastdds/0001-cnsa2-pqc-dds-security.patch`
+* **Key agreement — LIVE on CI.** `patches/fastdds/0001-cnsa2-pqc-dds-security.patch`
   adds hybrid **ECDH+ML-KEM-768/1024** to Fast DDS's built-in PKI-DH auth plugin
   (`SharedSecret = HKDF-SHA384(ECDH‖ML-KEM)`, CNSA 2.0). The ML-KEM material rides
   inside the already-signed `dh1`/`dh2` properties, so no signature-code changes.
-  Crypto core + full handshake math are conformance-verified vs real liboqs 0.15.0 +
-  OpenSSL 3, and `git apply --check` is clean vs pristine v3.1.0. **Remaining:** the
-  full Fast DDS tree build + two-peer secure interop (~30–45 min). See
-  ../patches/fastdds/INTEGRATION.md.
+  The whole patched Fast DDS tree builds green on CI and links liboqs 0.15.0; crypto core
+  + full handshake math are conformance-verified vs OpenSSL 3, and `git apply --check` is
+  clean vs pristine v3.1.0.
 * **Identity/auth — dependency-gated.** DDS identity certs signed with **ML-DSA-87**
   (FIPS 204) need Fast DDS built against an OpenSSL that exposes ML-DSA (OpenSSL 3.5+ /
   `oqs-provider`); no plugin code change once the cert path accepts PQC signatures.
   Until then, run RSA-3072/ECDSA-P384 identities with the hybrid ML-KEM key agreement
   above (confidentiality is already quantum-safe).
-* **CycloneDDS — AUTHORED (parity).** `patches/cyclonedds/0001-cnsa2-pqc-dds-security.patch`
-  ports the same hybrid ECDH+ML-KEM design to CycloneDDS's C auth plugin. The C crypto core
-  (`patches/cyclonedds/pqc/auth_pqc.c`) is conformance-verified vs liboqs 0.15.0 + OpenSSL 3
-  (KEM both levels + full handshake simulation → identical secret); `git apply --check` clean
-  vs 0.10.5. See ../patches/cyclonedds/INTEGRATION.md.
-  Remaining: the dh1/dh2 embed/split wiring + full CycloneDDS build (same final step as Fast DDS).
+* **CycloneDDS — LIVE-VERIFIED, incl. ML-DSA-87 identity.** `patches/cyclonedds/0001-cnsa2-pqc-dds-security.patch`
+  ports the same hybrid ECDH+ML-KEM design to CycloneDDS's C auth plugin, plus **ML-DSA-87**
+  (FIPS 204) post-quantum identity signatures. From-scratch on CI it passes CycloneDDS's own
+  two-peer `ddssec_handshake` suite — classical, hybrid ML-KEM-768 **and** 1024, and a full
+  CNSA 2.0 handshake (ML-DSA-87 identity + ML-KEM-1024) — measured live on **Linux, macOS and
+  Windows (native MSVC + WSL2)**. A separate `0002` patch makes the handshake `INITIAL_DELAY`
+  env-tunable (the 10 ms settle, not crypto, dominates the end-to-end time; ~9 ms recoverable).
 * **Available now (defence in depth):** even without the DDS build, layer **robobus
   app-layer PQC** (`--security cnsa20`) on the payloads — quantum-safe end-to-end across
   DDS **and** ROS 1 / LSL (which DDS-Security can't touch).
