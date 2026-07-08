@@ -4,7 +4,7 @@
 
 > ⚠️ **Platform caveat.** These figures were measured **on macOS only** so far. They are inherently CPU-, OS- and build-specific and are **not** portable claims. The value here is the *method*: the identical script is designed to run on macOS, Windows, every supported Linux, Android and iOS, skipping only what a given platform lacks. Re-run it on each target to populate that platform's column.
 
-_Generated 2026-07-06 09:56 UTC from `bench/results/latest-*.json`._
+_Generated 2026-07-08 15:04 UTC from `bench/results/latest-*.json`._
 
 ## Platforms measured
 

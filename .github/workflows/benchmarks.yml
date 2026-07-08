@@ -109,14 +109,16 @@ jobs:
         uses: actions/download-artifact@v4
         with:
           path: _artifacts
-      - name: Merge + render into docs/
+      - name: Merge + build the project site into docs/
         shell: bash
         run: |
           find _artifacts -name 'latest-*.json' -exec cp {} bench/results/ \; || true
           ls -la bench/results/
-          python bench/render_report.py
-          cp bench/site/index.html docs/index.html
-          cp bench/site/data-*.json docs/ 2>/dev/null || true
+          python -m pip install --quiet markdown       # renders docs-src/*.md -> Docs pages
+          python bench/render_report.py                 # -> bench/site/data-*.json + BENCHMARKS.md
+          python bench/build_site.py                    # -> Home + Benchmarks + Docs (multi-page site)
+          mkdir -p docs
+          cp -r bench/site/. docs/                       # publish the whole site (Pages source = docs/)
           touch docs/.nojekyll
       - name: Commit refreshed site
         shell: bash

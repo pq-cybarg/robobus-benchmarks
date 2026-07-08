@@ -1,0 +1,348 @@
+<!doctype html><html lang='en'><head><meta charset='utf-8'><meta name='viewport' content='width=device-width,initial-scale=1'><title>Determinism · robobus docs</title><meta name='description' content='Forcing the tail to ~100%: hardware &amp; firmware workarounds'><link rel='preconnect' href='https://fonts.googleapis.com'><link rel='preconnect' href='https://fonts.gstatic.com' crossorigin><link href='https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=JetBrains+Mono:wght@400;500;700&family=Inter:wght@400;500;600&display=swap' rel='stylesheet'><style>
+:root{
+  --bg:#0a0e13; --bg2:#0d131b; --panel:#111a24; --panel2:#0f1620; --line:#1e2a37;
+  --fg:#e9eef4; --muted:#8a9bab; --dim:#5f7183;
+  --signal:#4fd1c5; --signal-ink:#0a0e13; --amber:#f4b46a; --violet:#8b7cff;
+  --pqc:#8b7cff; --hybrid:#22c3e6; --qr:#4ec97a; --classical:#8a9bab;
+  --maxw:1080px;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth;overflow-x:hidden}
+body{margin:0;max-width:100%;overflow-x:hidden;background:
+  radial-gradient(1200px 600px at 78% -8%, #10202a 0%, transparent 60%),
+  radial-gradient(900px 500px at 0% 0%, #131024 0%, transparent 55%),
+  var(--bg);
+  color:var(--fg);font-family:'Inter',ui-sans-serif,system-ui,-apple-system,Segoe UI,Roboto,sans-serif;
+  font-size:16px;line-height:1.6;-webkit-font-smoothing:antialiased}
+.mono{font-family:'JetBrains Mono',ui-monospace,SFMono-Regular,Menlo,monospace}
+a{color:var(--signal);text-decoration:none}a:hover{text-decoration:underline}
+h1,h2,h3{font-family:'Space Grotesk',ui-sans-serif,system-ui,sans-serif;line-height:1.12;letter-spacing:-.01em;font-weight:600}
+.wrap{max-width:var(--maxw);margin:0 auto;padding:0 22px}
+
+/* ---- nav ---- */
+.nav{position:sticky;top:0;z-index:50;backdrop-filter:blur(10px);
+  background:color-mix(in srgb,var(--bg) 82%,transparent);border-bottom:1px solid var(--line)}
+.nav .row{max-width:var(--maxw);margin:0 auto;padding:12px 22px;display:flex;align-items:center;gap:8px 10px;flex-wrap:wrap}
+.brand{display:flex;align-items:center;gap:11px;font-family:'Space Grotesk';font-weight:600;font-size:18px;color:var(--fg);letter-spacing:-.02em}
+.brand:hover{text-decoration:none}
+.brand .glyph{width:26px;height:26px;flex:0 0 auto}
+.nav .links{margin-left:auto;display:flex;gap:4px;align-items:center;flex-wrap:wrap}
+.nav a.tab{color:var(--muted);padding:7px 13px;border-radius:8px;font-size:14.5px;font-weight:500}
+.nav a.tab:hover{color:var(--fg);background:var(--panel);text-decoration:none}
+.nav a.tab.active{color:var(--signal);background:color-mix(in srgb,var(--signal) 12%,transparent)}
+.nav a.gh{color:var(--muted);display:inline-flex;padding:7px 10px;border-radius:8px}
+.nav a.gh:hover{color:var(--fg);background:var(--panel)}
+
+/* ---- hero ---- */
+.hero{padding:74px 0 30px;position:relative}
+.eyebrow{font-family:'JetBrains Mono';font-size:12.5px;letter-spacing:.16em;text-transform:uppercase;color:var(--signal);margin:0 0 18px}
+.hero h1{font-size:clamp(34px,6vw,62px);margin:0 0 20px;max-width:15ch}
+.hero h1 em{font-style:normal;color:var(--signal)}
+.lede{font-size:clamp(17px,2.4vw,21px);color:var(--muted);max-width:60ch;margin:0 0 30px}
+.cta{display:flex;gap:12px;flex-wrap:wrap}
+.btn{display:inline-flex;align-items:center;gap:8px;padding:11px 18px;border-radius:10px;font-weight:600;font-size:15px;border:1px solid transparent}
+.btn.primary{background:var(--signal);color:var(--signal-ink)}
+.btn.primary:hover{background:#6fe0d6;text-decoration:none}
+.btn.ghost{border-color:var(--line);color:var(--fg)}
+.btn.ghost:hover{border-color:var(--signal);background:var(--panel);text-decoration:none}
+
+/* ---- latency spectrum (signature) ---- */
+.spectrum{margin:52px 0 8px}
+.spectrum .cap{display:flex;justify-content:space-between;align-items:baseline;margin:0 0 14px}
+.spectrum .cap b{font-family:'Space Grotesk';font-weight:600;font-size:15px}
+.spectrum .cap span{font-family:'JetBrains Mono';font-size:12px;color:var(--dim)}
+.spec-scroll{overflow-x:auto;overflow-y:hidden;margin:0 -2px;padding:0 2px}
+.spec-svg{width:100%;min-width:580px;height:auto;display:block}
+
+/* ---- generic sections ---- */
+section{padding:56px 0;border-top:1px solid var(--line)}
+.sec-eyebrow{font-family:'JetBrains Mono';font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:var(--dim);margin:0 0 10px}
+h2.title{font-size:clamp(24px,3.5vw,34px);margin:0 0 8px}
+.sec-lede{color:var(--muted);max-width:64ch;margin:0 0 26px}
+
+/* stat strip */
+.stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:1px;background:var(--line);border:1px solid var(--line);border-radius:14px;overflow:hidden}
+.stat{background:var(--panel);padding:18px 18px}
+.stat .n{font-family:'JetBrains Mono';font-size:clamp(22px,3vw,30px);font-weight:700;color:var(--fg);letter-spacing:-.02em}
+.stat .n small{font-size:.5em;color:var(--muted);font-weight:500;margin-left:3px}
+.stat .l{font-size:12.5px;color:var(--muted);margin-top:5px;line-height:1.4}
+
+/* feature cards */
+.cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:16px}
+.fcard{background:linear-gradient(180deg,var(--panel),var(--panel2));border:1px solid var(--line);border-radius:14px;padding:22px}
+.fcard .k{font-family:'JetBrains Mono';font-size:12px;color:var(--signal);letter-spacing:.04em;margin:0 0 12px}
+.fcard h3{font-size:18px;margin:0 0 8px}
+.fcard p{color:var(--muted);font-size:14.5px;margin:0}
+.fcard .pqc{color:var(--pqc)}.fcard .hybrid{color:var(--hybrid)}.fcard .qr{color:var(--qr)}
+
+/* layer table */
+.ltab{width:100%;border-collapse:collapse;font-size:14.5px}
+.ltab th,.ltab td{text-align:left;padding:11px 14px;border-bottom:1px solid var(--line)}
+.ltab th{font-size:11.5px;text-transform:uppercase;letter-spacing:.06em;color:var(--dim);font-weight:600}
+.ltab td.reg{font-family:'JetBrains Mono';color:var(--signal);font-size:13px}
+.ltab td.n{font-family:'JetBrains Mono';color:var(--fg)}
+.ltab tr:hover td{background:var(--panel2)}
+
+/* callout */
+.note{background:color-mix(in srgb,var(--amber) 8%,var(--panel));border:1px solid color-mix(in srgb,var(--amber) 34%,var(--line));border-radius:12px;padding:14px 18px;color:#f1d9b3;font-size:14.5px}
+.note b{color:var(--amber)}
+code{font-family:'JetBrains Mono';background:#060a10;border:1px solid var(--line);padding:1px 6px;border-radius:5px;font-size:.86em}
+
+footer.site{border-top:1px solid var(--line);margin-top:20px;padding:34px 0 60px;color:var(--dim);font-size:13.5px}
+footer.site .row{display:flex;flex-wrap:wrap;gap:18px 40px;justify-content:space-between}
+footer.site a{color:var(--muted)}
+.pill{display:inline-flex;gap:7px;align-items:center;font-family:'JetBrains Mono';font-size:12px;color:var(--qr);border:1px solid color-mix(in srgb,var(--qr) 40%,var(--line));border-radius:999px;padding:4px 11px}
+.pill .d{width:7px;height:7px;border-radius:50%;background:var(--qr);box-shadow:0 0 8px var(--qr)}
+
+@media (max-width:640px){.hero{padding:48px 0 20px}.nav a.tab{padding:6px 9px}}
+@media (prefers-reduced-motion:no-preference){
+  .reveal{animation:rise .7s cubic-bezier(.2,.7,.2,1) both}
+  @keyframes rise{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:none}}
+  .spec-mark{animation:pop .5s ease both}@keyframes pop{from{opacity:0}to{opacity:1}}
+}
+</style>
+<style>
+.dwrap{max-width:var(--maxw);margin:0 auto;padding:34px 22px 40px;display:grid;grid-template-columns:220px 1fr;gap:34px;align-items:start}
+.dside{position:sticky;top:70px;font-size:14px}
+.dside-t{font-family:'JetBrains Mono';font-size:11.5px;letter-spacing:.12em;text-transform:uppercase;color:var(--dim);margin:0 0 10px;padding-left:12px}
+.dside a.ditem{display:block;color:var(--muted);padding:7px 12px;border-radius:8px;border-left:2px solid transparent}
+.dside a.ditem:hover{color:var(--fg);background:var(--panel);text-decoration:none}
+.dside a.ditem.active{color:var(--signal);border-left-color:var(--signal);background:color-mix(in srgb,var(--signal) 9%,transparent)}
+.dbody{min-width:0}
+.dbody h1{font-size:clamp(26px,4vw,38px);margin:0 0 8px;letter-spacing:-.02em}
+.dbody h2{font-size:23px;margin:36px 0 10px;padding-top:14px;border-top:1px solid var(--line)}
+.dbody h3{font-size:18px;margin:26px 0 8px;color:var(--fg)}
+.dbody p,.dbody li{color:#cdd6e0}
+.dbody a{color:var(--signal)}
+.dbody code{font-family:'JetBrains Mono';background:#060a10;border:1px solid var(--line);padding:1px 6px;border-radius:5px;font-size:.85em}
+.dbody pre{background:#060a10;border:1px solid var(--line);border-radius:10px;padding:15px 17px;overflow:auto;font-size:13px}
+.dbody pre code{background:none;border:none;padding:0}
+.dbody table{border-collapse:collapse;width:100%;margin:16px 0;font-size:14px;display:block;overflow-x:auto}
+.dbody th,.dbody td{border:1px solid var(--line);padding:9px 12px;text-align:left}
+.dbody th{background:var(--panel);color:var(--fg);font-family:'Space Grotesk'}
+.dbody tr:hover td{background:var(--panel2)}
+.dbody blockquote{border-left:3px solid var(--signal);margin:14px 0;padding:2px 16px;color:var(--muted);background:var(--panel2);border-radius:0 8px 8px 0}
+.dbody hr{border:none;border-top:1px solid var(--line);margin:26px 0}
+.dbody ul,.dbody ol{padding-left:22px}
+.dbody li{margin:5px 0}
+.dlede{color:var(--muted);margin:0 0 22px;font-size:15px}
+@media (max-width:760px){.dwrap{grid-template-columns:1fr}.dside{position:static;display:flex;flex-wrap:wrap;gap:4px}.dside-t{width:100%}}
+</style></head><body><div class='nav'><div class='row'><a class='brand' href='../index.html'><svg class='glyph' viewBox='0 0 32 32' fill='none' aria-hidden='true'><rect x='1.5' y='1.5' width='29' height='29' rx='8' stroke='#1e2a37' stroke-width='1.5'/><path d='M7 20 L11 20 L13 10 L16 24 L19 13 L21 20 L25 20' stroke='#4fd1c5' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'/></svg>robobus</a><nav class='links'><a class='tab' href='../index.html'>Home</a><a class='tab' href='../benchmarks.html'>Benchmarks</a><a class='tab active' href='../docs/index.html'>Docs</a><a class='gh' href='https://github.com/pq-cybarg/robobus-benchmarks' aria-label='GitHub'><svg width='19' height='19' viewBox='0 0 16 16' fill='currentColor'><path d='M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.01 8.01 0 0016 8c0-4.42-3.58-8-8-8z'/></svg></a></nav></div></div><div class='dwrap'><aside class='dside'><div class='dside-t'>Documentation</div><a href='architecture.html' class='ditem'>Architecture</a><a href='protocol.html' class='ditem'>Wire protocol</a><a href='security.html' class='ditem'>Security model</a><a href='compliance.html' class='ditem'>Compliance</a><a href='cmvp-readiness.html' class='ditem'>CMVP readiness</a><a href='crypto-provenance.html' class='ditem'>Crypto provenance</a><a href='portability.html' class='ditem'>Portability</a><a href='determinism.html' class='ditem active'>Determinism</a><a href='realtime.html' class='ditem'>Real-time</a><a href='supply-chain.html' class='ditem'>Supply chain</a><a href='bindings.html' class='ditem'>Language bindings</a><a href='roadmap.html' class='ditem'>Roadmap</a></aside><article class='dbody'><h1 id="forcing-the-tail-to-100-hardware-firmware-workarounds">Forcing the tail to ~100%: hardware &amp; firmware workarounds</h1>
+<p><code>docs/REALTIME.md</code> bounds the <em>scheduler</em> tail. This document goes deeper — the exotic
+hardware/firmware tricks that attack the <strong>last 0.2%</strong> of µs outliers, so the native poller
+approaches a <em>guaranteed</em> ns-scale worst case. The outliers come from four independent
+layers; you have to beat all four. The robobus ring is already <strong>OS-bypass</strong> (userspace
+busy-poll over mmap'd shared memory, zero syscalls in the hot loop), so what's left is
+memory, CPU-state, and firmware jitter.</p>
+<table>
+<thead>
+<tr>
+<th>Layer</th>
+<th>Source of the outlier</th>
+<th>The workaround</th>
+<th>Ceiling</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1. OS preemption</td>
+<td>scheduler, IRQs, RCU, timer tick</td>
+<td>isolated core + PREEMPT_RT (REALTIME.md)</td>
+<td>hard bound (Linux)</td>
+</tr>
+<tr>
+<td>2. Memory / cache</td>
+<td>DRAM refresh, LLC eviction, TLB miss</td>
+<td><strong>cache pseudo-lock</strong>, <strong>hedged channels</strong>, huge pages</td>
+<td>near-eliminated</td>
+</tr>
+<tr>
+<td>3. CPU state</td>
+<td>C-state wake-up, freq/turbo, SMT</td>
+<td>idle=poll, perf governor, UMWAIT/WFE</td>
+<td>ns-scale</td>
+</tr>
+<tr>
+<td>4. Firmware</td>
+<td><strong>SMIs</strong> (invisible to the OS)</td>
+<td>detect + BIOS suppression</td>
+<td>platform-dependent</td>
+</tr>
+</tbody>
+</table>
+<h2 id="layer-2-the-memorydram-tail-the-deepest-tricks">Layer 2 — the memory/DRAM tail (the deepest tricks)</h2>
+<p>Even with a core to yourself, a memory read can stall for hundreds of ns to µs when the
+DRAM row is mid-<strong>refresh</strong> or the line was evicted from LLC. Two ways to beat it:</p>
+<h3 id="a-intel-cache-pseudo-locking-cat-rdt-resctrl-never-touch-dram">(a) Intel Cache Pseudo-Locking (CAT / RDT / resctrl) — <em>never touch DRAM</em></h3>
+<p>Intel <strong>Cache Allocation Technology</strong> + Linux <strong>resctrl</strong> can <strong>pin a memory region into
+L2/L3</strong> so it is never evicted by any other core/thread — every access is a cache hit,
+deterministic, and DRAM refresh becomes irrelevant. Load the ring into a pseudo-locked
+region and the poll loop runs entirely from cache.
+<a href="https://events19.linuxfoundation.org/wp-content/uploads/2017/11/Introducing-Cache-Pseudo-Locking-to-Reduce-Memory-Access-Latency-Reinette-Chatre-Intel.pdf">[Intel: Introducing Cache Pseudo-Locking]</a>,
+<a href="https://www.kernel.org/doc/Documentation/x86/resctrl.rst">[kernel resctrl.rst]</a>.
+Setup (model-specific — needs <code>cat_l2</code>/<code>cat_l3</code> in <code>/proc/cpuinfo</code>): see
+<code>scripts/cache_pseudolock.sh</code>. Caveat: only some Intel SKUs expose it; not on AMD/ARM/Apple.</p>
+<h3 id="b-tailslayer-hedge-across-independent-dram-channels-works-everywhere">(b) "TailSlayer" — hedge across independent DRAM channels (works everywhere)</h3>
+<p>When you <em>can't</em> lock cache, dodge the DRAM refresh stall instead. LaurieWired's
+<strong>TailSlayer</strong> cut <em>worst-case</em> memory latency by <strong>up to 93%</strong> by <strong>duplicating the working
+set across memory-addressing boundaries so each copy lands on a different physical memory
+channel with independent refresh timing</strong>, then reading both copies on two cores and taking
+whichever isn't mid-refresh
+<a href="https://www.tomshardware.com/software/ambitious-hacker-reduces-worst-case-memory-latency-by-up-to-93-percent-but-with-severe-downsides-1960s-bottleneck-overcome-by-hedging-memory-accesses-to-avoid-running-into-dram-refresh-stalls">[Tom's Hardware]</a>.
+Mapped to robobus: mirror the ring into two buffers placed a channel-stride apart (so they
+map to different DRAM channels/ranks), have a hedge reader on a second isolated core, and
+consume whichever slot resolves first. Cost: 2× memory bandwidth + a core — the "severe
+downside" — but it directly kills the refresh-induced tail on Intel <strong>and</strong> ARM.</p>
+<h3 id="c-cheaper-memory-wins-always-do-these">(c) Cheaper memory wins (always do these)</h3>
+<ul>
+<li><strong>Huge pages</strong> (2 MiB / 1 GiB, <code>MAP_HUGETLB</code>) — the ring fits in one or two TLB entries, so
+  no TLB-miss stalls on the hot path. Implemented in <code>native/shm_bench.c</code> (<code>SHM_BENCH_HUGE=1</code>).</li>
+<li><strong>Cache-line isolation</strong> — keep the writer's cursor on its own 64 B line (no false sharing
+  with reader-touched fields).</li>
+<li><strong>Non-temporal / streaming stores</strong> (<code>movnti</code> / <code>_mm_stream</code>, ARM <code>STNP</code>) for the <em>payload</em>
+  so it doesn't evict the hot cursor/seq lines from cache.</li>
+<li><strong>Prefetch</strong> the next slot (<code>__builtin_prefetch</code>) a few iterations ahead.</li>
+<li><strong>NUMA locality</strong> — allocate the ring on the same NUMA node as the poll core (<code>numactl
+  --membind</code>), so reads never cross the interconnect.</li>
+</ul>
+<h2 id="layer-3-cpu-state-jitter">Layer 3 — CPU-state jitter</h2>
+<ul>
+<li><strong>C-states</strong> — an idle core takes µs to wake from a deep C-state. Force it awake:
+  <code>idle=poll intel_idle.max_cstate=0 processor.max_cstate=1</code>. A busy-poller never idles, so
+  this mostly matters for the <em>writer</em> side and for wakeups.</li>
+<li><strong>Frequency/turbo transitions</strong> add latency — pin the clock: <code>cpupower frequency-set -g
+  performance</code>, disable turbo, keep the die thermally steady.</li>
+<li><strong>SMT/hyperthreading</strong> — a busy sibling steals the core's execution ports; isolate or
+  disable the sibling of the poll core.</li>
+<li><strong>UMWAIT / UMONITOR / TPAUSE (x86)</strong> — the low-power way to <em>busy-wait</em>. <code>UMONITOR</code> arms a
+  cache line (the cursor); <code>UMWAIT</code> parks the core in the shallow <strong>C0.1/C0.2</strong> substate until
+  the writer writes that line — near-instant wakeup, no power/thermal burn, and no sibling
+  starvation (unlike a raw spin loop)
+  <a href="https://www.felixcloutier.com/x86/umwait">[UMWAIT — felixcloutier]</a>,
+  <a href="https://lwn.net/Articles/790812/">[LWN: user wait instructions]</a>. Available Tremont / Ice
+  Lake+; AMD has <code>MONITORX/MWAITX</code>. <strong>ARM equivalent:</strong> <code>WFE</code> (wait-for-event) on an exclusive
+  monitor of the cursor address; the writer's store + <code>SEV</code>/event-stream wakes it. This lets
+  you keep ~spin-latency wakeup without pegging the core.</li>
+</ul>
+<h2 id="layer-4-firmware-smis-the-classic-hard-rt-killer">Layer 4 — firmware SMIs (the classic hard-RT killer)</h2>
+<p><strong>System Management Interrupts</strong> switch the CPU into SMM to run firmware code the OS cannot
+see, preempt, or bound — a single SMI can stall a core for µs–ms
+<a href="https://wiki.linuxfoundation.org/realtime/documentation/howto/debugging/smi-latency/start">[Linux Foundation RT wiki: SMI latency]</a>.</p>
+<ul>
+<li><strong>Detect</strong> — <code>hwlatdetect</code> / the kernel <code>hwlat</code> tracer stops the machine, polls the TSC, and
+  any gap with interrupts off <em>must</em> be an SMI
+  <a href="https://www.kernel.org/doc/html/latest/trace/hwlat_detector.html">[kernel: Hardware Latency Detector]</a>,
+  <a href="https://manpages.debian.org/testing/rt-tests/hwlatdetect.8.en.html">[hwlatdetect(8)]</a>. On
+  x86 also read <strong><code>MSR_SMI_COUNT</code> (MSR 0x34)</strong> before/after a run to count SMIs.</li>
+<li><strong>Reduce</strong> — in BIOS/UEFI: enable the vendor "low-latency"/"determinism" profile, and disable
+  <strong>USB legacy emulation</strong>, <strong>hardware health/thermal polling</strong>, and other periodic SMI sources.
+  Some server platforms can get to ~0 SMIs; consumer/laptop firmware (incl. Apple) often can't,
+  which is why certifiable determinism ultimately means an RTOS/bare-metal core with no SMM.</li>
+</ul>
+<h2 id="also-turn-off-the-mitigations-tax-trusted-rt-box">Also: turn off the mitigations tax (trusted RT box)</h2>
+<p>Spectre/Meltdown mitigations add overhead to every syscall/context switch/indirect branch.
+On a dedicated, physically-trusted RT machine, <code>mitigations=off</code> on the kernel cmdline removes
+that variable cost (a real jitter source). Only on a box where the security trade-off is
+acceptable.</p>
+<h2 id="per-platform-how-close-to-100-you-can-actually-get">Per-platform: how close to 100 % you can actually get</h2>
+<table>
+<thead>
+<tr>
+<th>platform</th>
+<th>isolate core</th>
+<th>cache lock</th>
+<th>UMWAIT/WFE</th>
+<th>SMI-free</th>
+<th>realistic result</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Linux x86 (Intel) + PREEMPT_RT</strong></td>
+<td>✅ isolcpus</td>
+<td>✅ CAT pseudo-lock</td>
+<td>✅ UMWAIT</td>
+<td>BIOS-dependent</td>
+<td><strong>effectively 100 %</strong>, hard ns bound</td>
+</tr>
+<tr>
+<td><strong>Linux ARM64 + PREEMPT_RT</strong></td>
+<td>✅ isolcpus</td>
+<td>TCM (Cortex-R) / ✗</td>
+<td>✅ WFE</td>
+<td>usually clean</td>
+<td><strong>effectively 100 %</strong></td>
+</tr>
+<tr>
+<td><strong>Windows</strong></td>
+<td>affinity only</td>
+<td>✗</td>
+<td>✅ (x86)</td>
+<td>✗</td>
+<td>soft real-time (best-effort)</td>
+</tr>
+<tr>
+<td><strong>macOS / Apple Silicon</strong></td>
+<td>✗ (no isolcpus)</td>
+<td>✗</td>
+<td>✗ (no user WFE hook)</td>
+<td>✗ (SMC)</td>
+<td>~99.8 %, µs outliers remain</td>
+</tr>
+<tr>
+<td><strong>RTOS / bare-metal / FPGA</strong></td>
+<td>N/A (no GP OS)</td>
+<td>SRAM/TCM</td>
+<td>native</td>
+<td>no SMM</td>
+<td><strong>provable 100 %</strong></td>
+</tr>
+</tbody>
+</table>
+<p><strong>Bottom line:</strong> a truly <em>guaranteed</em> 100 % is only reachable by removing the general-purpose
+OS from the hot path (RTOS/bare-metal/FPGA). The best you can force on a general-purpose OS is
+<strong>Linux + PREEMPT_RT + isolated core + cache pseudo-lock (or TailSlayer hedging) + UMWAIT/WFE +
+an SMI-clean BIOS</strong>, which in practice yields no observable outliers over billions of messages —
+"almost-guaranteed 100 %". Because the robobus wire format is OS/arch-agnostic
+(<a href="PROTOCOL.md">PROTOCOL.md</a>), the same frames flow between that hardened core and everything else.</p>
+<h2 id="adaptive-probe-the-hardware-apply-what-it-supports">Adaptive: probe the hardware, apply what it supports</h2>
+<p>Because every trick here is hardware-specific, robobus <strong>detects capabilities at runtime and
+adapts</strong> rather than hard-coding any of them — <code>robobus.determinism</code>:</p>
+<pre><code>$ robobus determinism                     # report what THIS machine supports + recommendations
+$ python -c &quot;from robobus.determinism import optimize; print(optimize(core=3))&quot;
+</code></pre>
+<p><code>capabilities()</code> probes CPU vendor/arch, <code>waitpkg</code> (UMWAIT), CAT/resctrl (cache pseudo-lock),
+<code>isolcpus</code>, PREEMPT_RT, huge pages, NUMA nodes, macOS time-constraint, spare cores (TailSlayer).
+<code>optimize()</code> then applies the best available combination — pin to an isolated core <em>if one
+exists</em>, RT policy, <code>mlockall</code> — and returns the rest as actionable recommendations. The native
+poller is adaptive too: it picks the spin primitive at compile+runtime (<code>PAUSE</code> on x86,
+<code>YIELD</code> on ARM) and reports <code>+umwait-capable</code> / <code>+wfe-capable</code> when the CPU exposes the
+low-power monitor-wait.</p>
+<h2 id="what-robobus-implements-vs-what-is-deploymentbios">What robobus implements vs. what is deployment/BIOS</h2>
+<ul>
+<li><strong>Implemented (code):</strong> OS-bypass busy-poll (no hot-loop syscalls); <strong>adaptive capability
+  probe + apply</strong> (<code>robobus.determinism</code>); <code>robobus.realtime</code> (SCHED_FIFO / macOS
+  time-constraint / Windows REALTIME+MMCSS, <code>pin_cpu</code>, <code>mlockall</code>); the C poller's RT policy
+  (<code>SHM_BENCH_RT=1</code>) and arch-adaptive spin hint (<code>PAUSE</code>/<code>YIELD</code>) with runtime WAITPKG/WFE
+  detection.</li>
+<li><strong>Deployment (scripts/docs):</strong> the kernel cmdline recipe (REALTIME.md),
+  <code>scripts/cache_pseudolock.sh</code> (resctrl CAT pseudo-lock), <code>scripts/rt_latency.py</code> gate, and the
+  SMI-detection + BIOS checklist above.</li>
+<li><strong>Advanced / opt-in:</strong> full UMWAIT/WFE monitor-wait, huge-page ring, and the TailSlayer
+  dual-channel hedge reader are documented here with the exact instructions/APIs; enable per the
+  capability report on hardware that supports them.</li>
+<li><strong>Not software:</strong> SMI suppression (BIOS), memory-channel placement for TailSlayer (board/BIOS),
+  and true certifiable 100 % (RTOS/FPGA).</li>
+</ul>
+<h2 id="sources">Sources</h2>
+<ul>
+<li>Tom's Hardware — LaurieWired "TailSlayer" (hedge DRAM channels, up to 93% worst-case): https://www.tomshardware.com/software/ambitious-hacker-reduces-worst-case-memory-latency-by-up-to-93-percent-but-with-severe-downsides-1960s-bottleneck-overcome-by-hedging-memory-accesses-to-avoid-running-into-dram-refresh-stalls</li>
+<li>Intel — Introducing Cache Pseudo-Locking: https://events19.linuxfoundation.org/wp-content/uploads/2017/11/Introducing-Cache-Pseudo-Locking-to-Reduce-Memory-Access-Latency-Reinette-Chatre-Intel.pdf</li>
+<li>Linux kernel — resctrl / Intel RDT: https://www.kernel.org/doc/Documentation/x86/resctrl.rst</li>
+<li>UMWAIT — Felix Cloutier x86 reference: https://www.felixcloutier.com/x86/umwait</li>
+<li>LWN — x86 user wait instructions (UMWAIT/UMONITOR/TPAUSE): https://lwn.net/Articles/790812/</li>
+<li>Linux kernel — Hardware Latency Detector: https://www.kernel.org/doc/html/latest/trace/hwlat_detector.html</li>
+<li>hwlatdetect(8) manpage: https://manpages.debian.org/testing/rt-tests/hwlatdetect.8.en.html</li>
+<li>Linux Foundation RT wiki — SMI latency debugging: https://wiki.linuxfoundation.org/realtime/documentation/howto/debugging/smi-latency/start</li>
+<li>Red Hat — Optimizing RHEL for Real Time (hardware/firmware latency): https://docs.redhat.com/en/documentation/red_hat_enterprise_linux_for_real_time/9/html/optimizing_rhel_9_for_real_time_for_low_latency_operation/assembly_running-and-interpreting-hardware-and-firmware-latency-tests_optimizing-rhel9-for-real-time-for-low-latency-operation</li>
+</ul></article></div><footer class='site'><div class='wrap'><div class='row'><div>robobus — post-quantum, real-time robotics middleware. CNSA 2.0 (FIPS 203 ML-KEM · FIPS 204 ML-DSA).</div><div><a href='../index.html'>Home</a> · <a href='../benchmarks.html'>Benchmarks</a> · <a href='../docs/index.html'>Docs</a> · <a href='https://github.com/pq-cybarg/robobus-benchmarks'>GitHub</a></div></div></div></footer></body></html>

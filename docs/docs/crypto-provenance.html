@@ -1,0 +1,350 @@
+<!doctype html><html lang='en'><head><meta charset='utf-8'><meta name='viewport' content='width=device-width,initial-scale=1'><title>Crypto provenance · robobus docs</title><meta name='description' content='Cryptographic provenance — what&#x27;s audited COTS vs. our code'><link rel='preconnect' href='https://fonts.googleapis.com'><link rel='preconnect' href='https://fonts.gstatic.com' crossorigin><link href='https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=JetBrains+Mono:wght@400;500;700&family=Inter:wght@400;500;600&display=swap' rel='stylesheet'><style>
+:root{
+  --bg:#0a0e13; --bg2:#0d131b; --panel:#111a24; --panel2:#0f1620; --line:#1e2a37;
+  --fg:#e9eef4; --muted:#8a9bab; --dim:#5f7183;
+  --signal:#4fd1c5; --signal-ink:#0a0e13; --amber:#f4b46a; --violet:#8b7cff;
+  --pqc:#8b7cff; --hybrid:#22c3e6; --qr:#4ec97a; --classical:#8a9bab;
+  --maxw:1080px;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth;overflow-x:hidden}
+body{margin:0;max-width:100%;overflow-x:hidden;background:
+  radial-gradient(1200px 600px at 78% -8%, #10202a 0%, transparent 60%),
+  radial-gradient(900px 500px at 0% 0%, #131024 0%, transparent 55%),
+  var(--bg);
+  color:var(--fg);font-family:'Inter',ui-sans-serif,system-ui,-apple-system,Segoe UI,Roboto,sans-serif;
+  font-size:16px;line-height:1.6;-webkit-font-smoothing:antialiased}
+.mono{font-family:'JetBrains Mono',ui-monospace,SFMono-Regular,Menlo,monospace}
+a{color:var(--signal);text-decoration:none}a:hover{text-decoration:underline}
+h1,h2,h3{font-family:'Space Grotesk',ui-sans-serif,system-ui,sans-serif;line-height:1.12;letter-spacing:-.01em;font-weight:600}
+.wrap{max-width:var(--maxw);margin:0 auto;padding:0 22px}
+
+/* ---- nav ---- */
+.nav{position:sticky;top:0;z-index:50;backdrop-filter:blur(10px);
+  background:color-mix(in srgb,var(--bg) 82%,transparent);border-bottom:1px solid var(--line)}
+.nav .row{max-width:var(--maxw);margin:0 auto;padding:12px 22px;display:flex;align-items:center;gap:8px 10px;flex-wrap:wrap}
+.brand{display:flex;align-items:center;gap:11px;font-family:'Space Grotesk';font-weight:600;font-size:18px;color:var(--fg);letter-spacing:-.02em}
+.brand:hover{text-decoration:none}
+.brand .glyph{width:26px;height:26px;flex:0 0 auto}
+.nav .links{margin-left:auto;display:flex;gap:4px;align-items:center;flex-wrap:wrap}
+.nav a.tab{color:var(--muted);padding:7px 13px;border-radius:8px;font-size:14.5px;font-weight:500}
+.nav a.tab:hover{color:var(--fg);background:var(--panel);text-decoration:none}
+.nav a.tab.active{color:var(--signal);background:color-mix(in srgb,var(--signal) 12%,transparent)}
+.nav a.gh{color:var(--muted);display:inline-flex;padding:7px 10px;border-radius:8px}
+.nav a.gh:hover{color:var(--fg);background:var(--panel)}
+
+/* ---- hero ---- */
+.hero{padding:74px 0 30px;position:relative}
+.eyebrow{font-family:'JetBrains Mono';font-size:12.5px;letter-spacing:.16em;text-transform:uppercase;color:var(--signal);margin:0 0 18px}
+.hero h1{font-size:clamp(34px,6vw,62px);margin:0 0 20px;max-width:15ch}
+.hero h1 em{font-style:normal;color:var(--signal)}
+.lede{font-size:clamp(17px,2.4vw,21px);color:var(--muted);max-width:60ch;margin:0 0 30px}
+.cta{display:flex;gap:12px;flex-wrap:wrap}
+.btn{display:inline-flex;align-items:center;gap:8px;padding:11px 18px;border-radius:10px;font-weight:600;font-size:15px;border:1px solid transparent}
+.btn.primary{background:var(--signal);color:var(--signal-ink)}
+.btn.primary:hover{background:#6fe0d6;text-decoration:none}
+.btn.ghost{border-color:var(--line);color:var(--fg)}
+.btn.ghost:hover{border-color:var(--signal);background:var(--panel);text-decoration:none}
+
+/* ---- latency spectrum (signature) ---- */
+.spectrum{margin:52px 0 8px}
+.spectrum .cap{display:flex;justify-content:space-between;align-items:baseline;margin:0 0 14px}
+.spectrum .cap b{font-family:'Space Grotesk';font-weight:600;font-size:15px}
+.spectrum .cap span{font-family:'JetBrains Mono';font-size:12px;color:var(--dim)}
+.spec-scroll{overflow-x:auto;overflow-y:hidden;margin:0 -2px;padding:0 2px}
+.spec-svg{width:100%;min-width:580px;height:auto;display:block}
+
+/* ---- generic sections ---- */
+section{padding:56px 0;border-top:1px solid var(--line)}
+.sec-eyebrow{font-family:'JetBrains Mono';font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:var(--dim);margin:0 0 10px}
+h2.title{font-size:clamp(24px,3.5vw,34px);margin:0 0 8px}
+.sec-lede{color:var(--muted);max-width:64ch;margin:0 0 26px}
+
+/* stat strip */
+.stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:1px;background:var(--line);border:1px solid var(--line);border-radius:14px;overflow:hidden}
+.stat{background:var(--panel);padding:18px 18px}
+.stat .n{font-family:'JetBrains Mono';font-size:clamp(22px,3vw,30px);font-weight:700;color:var(--fg);letter-spacing:-.02em}
+.stat .n small{font-size:.5em;color:var(--muted);font-weight:500;margin-left:3px}
+.stat .l{font-size:12.5px;color:var(--muted);margin-top:5px;line-height:1.4}
+
+/* feature cards */
+.cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:16px}
+.fcard{background:linear-gradient(180deg,var(--panel),var(--panel2));border:1px solid var(--line);border-radius:14px;padding:22px}
+.fcard .k{font-family:'JetBrains Mono';font-size:12px;color:var(--signal);letter-spacing:.04em;margin:0 0 12px}
+.fcard h3{font-size:18px;margin:0 0 8px}
+.fcard p{color:var(--muted);font-size:14.5px;margin:0}
+.fcard .pqc{color:var(--pqc)}.fcard .hybrid{color:var(--hybrid)}.fcard .qr{color:var(--qr)}
+
+/* layer table */
+.ltab{width:100%;border-collapse:collapse;font-size:14.5px}
+.ltab th,.ltab td{text-align:left;padding:11px 14px;border-bottom:1px solid var(--line)}
+.ltab th{font-size:11.5px;text-transform:uppercase;letter-spacing:.06em;color:var(--dim);font-weight:600}
+.ltab td.reg{font-family:'JetBrains Mono';color:var(--signal);font-size:13px}
+.ltab td.n{font-family:'JetBrains Mono';color:var(--fg)}
+.ltab tr:hover td{background:var(--panel2)}
+
+/* callout */
+.note{background:color-mix(in srgb,var(--amber) 8%,var(--panel));border:1px solid color-mix(in srgb,var(--amber) 34%,var(--line));border-radius:12px;padding:14px 18px;color:#f1d9b3;font-size:14.5px}
+.note b{color:var(--amber)}
+code{font-family:'JetBrains Mono';background:#060a10;border:1px solid var(--line);padding:1px 6px;border-radius:5px;font-size:.86em}
+
+footer.site{border-top:1px solid var(--line);margin-top:20px;padding:34px 0 60px;color:var(--dim);font-size:13.5px}
+footer.site .row{display:flex;flex-wrap:wrap;gap:18px 40px;justify-content:space-between}
+footer.site a{color:var(--muted)}
+.pill{display:inline-flex;gap:7px;align-items:center;font-family:'JetBrains Mono';font-size:12px;color:var(--qr);border:1px solid color-mix(in srgb,var(--qr) 40%,var(--line));border-radius:999px;padding:4px 11px}
+.pill .d{width:7px;height:7px;border-radius:50%;background:var(--qr);box-shadow:0 0 8px var(--qr)}
+
+@media (max-width:640px){.hero{padding:48px 0 20px}.nav a.tab{padding:6px 9px}}
+@media (prefers-reduced-motion:no-preference){
+  .reveal{animation:rise .7s cubic-bezier(.2,.7,.2,1) both}
+  @keyframes rise{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:none}}
+  .spec-mark{animation:pop .5s ease both}@keyframes pop{from{opacity:0}to{opacity:1}}
+}
+</style>
+<style>
+.dwrap{max-width:var(--maxw);margin:0 auto;padding:34px 22px 40px;display:grid;grid-template-columns:220px 1fr;gap:34px;align-items:start}
+.dside{position:sticky;top:70px;font-size:14px}
+.dside-t{font-family:'JetBrains Mono';font-size:11.5px;letter-spacing:.12em;text-transform:uppercase;color:var(--dim);margin:0 0 10px;padding-left:12px}
+.dside a.ditem{display:block;color:var(--muted);padding:7px 12px;border-radius:8px;border-left:2px solid transparent}
+.dside a.ditem:hover{color:var(--fg);background:var(--panel);text-decoration:none}
+.dside a.ditem.active{color:var(--signal);border-left-color:var(--signal);background:color-mix(in srgb,var(--signal) 9%,transparent)}
+.dbody{min-width:0}
+.dbody h1{font-size:clamp(26px,4vw,38px);margin:0 0 8px;letter-spacing:-.02em}
+.dbody h2{font-size:23px;margin:36px 0 10px;padding-top:14px;border-top:1px solid var(--line)}
+.dbody h3{font-size:18px;margin:26px 0 8px;color:var(--fg)}
+.dbody p,.dbody li{color:#cdd6e0}
+.dbody a{color:var(--signal)}
+.dbody code{font-family:'JetBrains Mono';background:#060a10;border:1px solid var(--line);padding:1px 6px;border-radius:5px;font-size:.85em}
+.dbody pre{background:#060a10;border:1px solid var(--line);border-radius:10px;padding:15px 17px;overflow:auto;font-size:13px}
+.dbody pre code{background:none;border:none;padding:0}
+.dbody table{border-collapse:collapse;width:100%;margin:16px 0;font-size:14px;display:block;overflow-x:auto}
+.dbody th,.dbody td{border:1px solid var(--line);padding:9px 12px;text-align:left}
+.dbody th{background:var(--panel);color:var(--fg);font-family:'Space Grotesk'}
+.dbody tr:hover td{background:var(--panel2)}
+.dbody blockquote{border-left:3px solid var(--signal);margin:14px 0;padding:2px 16px;color:var(--muted);background:var(--panel2);border-radius:0 8px 8px 0}
+.dbody hr{border:none;border-top:1px solid var(--line);margin:26px 0}
+.dbody ul,.dbody ol{padding-left:22px}
+.dbody li{margin:5px 0}
+.dlede{color:var(--muted);margin:0 0 22px;font-size:15px}
+@media (max-width:760px){.dwrap{grid-template-columns:1fr}.dside{position:static;display:flex;flex-wrap:wrap;gap:4px}.dside-t{width:100%}}
+</style></head><body><div class='nav'><div class='row'><a class='brand' href='../index.html'><svg class='glyph' viewBox='0 0 32 32' fill='none' aria-hidden='true'><rect x='1.5' y='1.5' width='29' height='29' rx='8' stroke='#1e2a37' stroke-width='1.5'/><path d='M7 20 L11 20 L13 10 L16 24 L19 13 L21 20 L25 20' stroke='#4fd1c5' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'/></svg>robobus</a><nav class='links'><a class='tab' href='../index.html'>Home</a><a class='tab' href='../benchmarks.html'>Benchmarks</a><a class='tab active' href='../docs/index.html'>Docs</a><a class='gh' href='https://github.com/pq-cybarg/robobus-benchmarks' aria-label='GitHub'><svg width='19' height='19' viewBox='0 0 16 16' fill='currentColor'><path d='M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.01 8.01 0 0016 8c0-4.42-3.58-8-8-8z'/></svg></a></nav></div></div><div class='dwrap'><aside class='dside'><div class='dside-t'>Documentation</div><a href='architecture.html' class='ditem'>Architecture</a><a href='protocol.html' class='ditem'>Wire protocol</a><a href='security.html' class='ditem'>Security model</a><a href='compliance.html' class='ditem'>Compliance</a><a href='cmvp-readiness.html' class='ditem'>CMVP readiness</a><a href='crypto-provenance.html' class='ditem active'>Crypto provenance</a><a href='portability.html' class='ditem'>Portability</a><a href='determinism.html' class='ditem'>Determinism</a><a href='realtime.html' class='ditem'>Real-time</a><a href='supply-chain.html' class='ditem'>Supply chain</a><a href='bindings.html' class='ditem'>Language bindings</a><a href='roadmap.html' class='ditem'>Roadmap</a></aside><article class='dbody'><h1 id="cryptographic-provenance-whats-audited-cots-vs-our-code">Cryptographic provenance — what's audited COTS vs. our code</h1>
+<p><strong>Design rule: never reimplement an audited primitive.</strong> Every cryptographic
+<em>primitive</em> (cipher, hash, MAC, KDF, KEM, signature, RNG) comes from an established,
+audited/validated library. Our code is the <em>composition</em> around them — framing,
+key schedule, handshake wiring, anti-replay — which is protocol code, not new math.</p>
+<p>This is the answer to "what should we be using audited COTS for, and where is our
+implementation actually better?": <strong>use COTS for all primitives; our value is
+integration, and integration is what should be reviewed — not primitives.</strong></p>
+<h2 id="primitive-provider-all-audited-cots">Primitive → provider (all audited COTS)</h2>
+<table>
+<thead>
+<tr>
+<th>Primitive</th>
+<th>Provider (default)</th>
+<th>Validation pedigree</th>
+<th>Our code</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>AES-256-GCM, AES-GCM-SIV, ChaCha20-Poly1305</td>
+<td><strong>OpenSSL 3</strong> via pyca <code>cryptography</code></td>
+<td>FIPS 140-3 (OpenSSL FIPS provider); CAVP</td>
+<td>none — direct call</td>
+</tr>
+<tr>
+<td>SHA-2 / SHA-3 / SHAKE</td>
+<td><strong>OpenSSL 3</strong> via pyca <code>cryptography</code></td>
+<td>FIPS 180-4 / 202; CAVP</td>
+<td>none — direct call</td>
+</tr>
+<tr>
+<td>HKDF (HMAC extract/expand)</td>
+<td><strong>OpenSSL 3</strong> via pyca <code>cryptography</code></td>
+<td>RFC 5869; SP 800-56C; CAVP HMAC</td>
+<td>none — direct call</td>
+</tr>
+<tr>
+<td><strong>KMAC256</strong></td>
+<td><strong>OpenSSL 3 <code>EVP_MAC</code></strong> (<code>_kmac_openssl.py</code>, ctypes)</td>
+<td>FIPS SP 800-185; CAVP</td>
+<td>ctypes <em>binding</em> only; primitive is OpenSSL's</td>
+</tr>
+<tr>
+<td>PBKDF2-HMAC-SHA-512</td>
+<td><strong>OpenSSL 3</strong> via pyca</td>
+<td>SP 800-132; CAVP</td>
+<td>none — direct call</td>
+</tr>
+<tr>
+<td>scrypt</td>
+<td><strong>OpenSSL</strong> via <code>hashlib.scrypt</code></td>
+<td>RFC 7914</td>
+<td>none — stdlib call</td>
+</tr>
+<tr>
+<td>Argon2id</td>
+<td><strong>argon2-cffi</strong> (PHC reference C impl)</td>
+<td>PHC winner; RFC 9106</td>
+<td>none — direct call</td>
+</tr>
+<tr>
+<td>ML-KEM 512/768/1024</td>
+<td><strong>liboqs</strong> (Open Quantum Safe)</td>
+<td>FIPS 203; NIST KAT-tested in liboqs</td>
+<td>none — direct call</td>
+</tr>
+<tr>
+<td>ML-DSA 44/65/87, Falcon, SLH-DSA</td>
+<td><strong>liboqs</strong></td>
+<td>FIPS 204/205; NIST KAT</td>
+<td>none — direct call</td>
+</tr>
+<tr>
+<td>X25519 / X448 / Ed25519 / P-256 ECDH</td>
+<td><strong>OpenSSL 3</strong> via pyca / DDS plugin</td>
+<td>FIPS 186-5 / RFC 7748</td>
+<td>none — direct call</td>
+</tr>
+<tr>
+<td>CSPRNG (key/nonce generation)</td>
+<td><strong>OS RNG</strong> (<code>os.urandom</code>) + liboqs/OpenSSL RNG</td>
+<td>SP 800-90A/B (OS entropy)</td>
+<td>none — direct call</td>
+</tr>
+</tbody>
+</table>
+<h3 id="the-one-reimplementation-and-why-its-a-fallback-only">The one reimplementation, and why it's a <em>fallback</em> only</h3>
+<p><code>robobus/crypto/kmac.py</code> contains a pure-Python Keccak-f[1600] → cSHAKE256 → KMAC256.
+It exists because Python's <code>hashlib</code> exposes SHAKE256 but <strong>not</strong> cSHAKE/KMAC (different
+domain-separation suffix). It is <strong>not</strong> the default: <code>primitives.kmac256</code> routes to
+<strong>OpenSSL's audited <code>EVP_MAC</code> KMAC-256</strong> whenever OpenSSL 3 is present (i.e. essentially
+always — pyca and liboqs both link it). The pure-Python path is used only on a
+stdlib-only platform with no OpenSSL 3, and even then it is gated by:</p>
+<ul>
+<li>byte-for-byte agreement with OpenSSL's KMAC-256 (cross-implementation), <strong>and</strong></li>
+<li>the NIST SP 800-185 KMAC256 sample vectors,</li>
+</ul>
+<p>both enforced in <code>tests/test_kmac.py</code>. <code>primitives.KMAC_BACKEND</code> reports which is live
+(<code>"openssl"</code> or <code>"python-keccak"</code>), and <code>robobus crypto backends</code> prints it.</p>
+<blockquote>
+<p>Should we have written it at all? For the default path, no — OpenSSL is the right
+answer, and that is now the default. The fallback earns its place only as a
+KAT-gated portability shim, never as a primitive we ask you to trust on its own.</p>
+</blockquote>
+<h2 id="where-our-code-legitimately-lives-and-what-to-review">Where our code legitimately lives (and what to review)</h2>
+<p>None of these introduce new primitives; they <em>compose</em> the COTS ones. This is the
+surface that warrants review (not the algorithms):</p>
+<table>
+<thead>
+<tr>
+<th>Our component</th>
+<th>What it is</th>
+<th>Built on</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>RBX1</code> AEAD frame</td>
+<td>self-describing nonce+tag framing</td>
+<td>OpenSSL AEAD</td>
+</tr>
+<tr>
+<td>Hybrid KEM combiner</td>
+<td><code>KDF(ECDH ‖ ML-KEM, transcript)</code> construction (SP 800-56C rev3)</td>
+<td>OpenSSL HKDF/KMAC + liboqs</td>
+</tr>
+<tr>
+<td>Anti-replay window</td>
+<td>RFC 6479 sliding window + per-channel HKDF binding + epoch rekey</td>
+<td>OpenSSL HKDF</td>
+</tr>
+<tr>
+<td>Passphrase keyfile</td>
+<td>Argon2id/scrypt/PBKDF2 → AES-GCM-wrap of a random key</td>
+<td>argon2-cffi / OpenSSL</td>
+</tr>
+<tr>
+<td>PKI-DH PQC patch</td>
+<td>carries ML-KEM in the signed <code>dh1</code>/<code>dh2</code>; <code>HKDF-SHA384(ECDH‖ML-KEM)</code></td>
+<td>OpenSSL + liboqs</td>
+</tr>
+<tr>
+<td>Native AES fast path (<code>_native.py</code>)</td>
+<td>cffi <em>plumbing</em> to OpenSSL <code>EVP_*</code></td>
+<td>OpenSSL AES-GCM</td>
+</tr>
+</tbody>
+</table>
+<p>So the honest scope of any "reaudit" is: (1) the combiner/handshake <strong>construction</strong>,
+(2) the anti-replay and key-schedule logic, (3) the framing/serialization, and (4) the
+one KMAC ctypes binding + its KAT-gated fallback. The primitives themselves are already
+FIPS/CAVP-validated COTS and are not re-audited.</p>
+<h2 id="implementation-security-functional-correctness">Implementation security ≠ functional correctness</h2>
+<p>Interop + KATs prove an implementation computes the <em>right answer</em>. They do <strong>not</strong> prove
+it computes it <em>safely</em>: two implementations can interoperate perfectly while one leaks
+the private key. The distinct threat classes, and how this stack handles each:</p>
+<table>
+<thead>
+<tr>
+<th>Threat</th>
+<th>Example</th>
+<th>Our posture</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Timing side-channel</strong></td>
+<td>KyberSlash (secret-dependent division in ML-KEM); non-constant-time ML-DSA rejection sampling / NTT</td>
+<td>Use only constant-time implementations (liboqs, OpenSSL); <strong>verify with valgrind TIMECOP</strong> (<code>scripts/ct_verify_liboqs.sh</code>) on the pinned liboqs</td>
+</tr>
+<tr>
+<td><strong>Weak/reused signing randomness</strong></td>
+<td>deterministic-nonce fault attacks on Dilithium/ML-DSA</td>
+<td>FIPS 204 <strong>hedged</strong> signing (fresh randomness per sig) — asserted for OpenSSL <em>and</em> liboqs in <code>tests/test_mldsa_openssl.py</code></td>
+</tr>
+<tr>
+<td><strong>Missing zeroization</strong></td>
+<td>secret key lingers in freed memory</td>
+<td>liboqs &amp; OpenSSL zeroize key material on free; robobus <code>SecretBuffer</code> (mlock + wipe-on-drop) for app-layer keys</td>
+</tr>
+<tr>
+<td><strong>Fault / power / EM</strong></td>
+<td>glitching, DPA on an embedded target</td>
+<td>Out of software scope — use a certified HSM/secure element; documented as an honest limit</td>
+</tr>
+</tbody>
+</table>
+<h3 id="the-implementations-we-allow-and-the-ones-we-dont">The implementations we allow (and the ones we don't)</h3>
+<p>ML-KEM / ML-DSA come from <strong>exactly two</strong> places, both mainstream and constant-time-reviewed:</p>
+<ul>
+<li><strong>liboqs 0.15.0</strong> (Open Quantum Safe) — PQClean-derived reference code; its CI runs
+  <strong>valgrind TIMECOP constant-time tests</strong>, and 0.15.0 post-dates the KyberSlash fixes.
+  This is robobus's ML-KEM/ML-DSA backend.</li>
+<li><strong>OpenSSL ≥ 3.5.1 native default provider</strong> — the DDS identity-cert path. We require
+  <strong>≥ 3.5.1</strong> (not the first-cut 3.5.0) and verify at test time; the env ships <strong>3.6.3</strong>.</li>
+</ul>
+<p>We do <strong>not</strong> roll our own PQC, and we do <strong>not</strong> accept unaudited third-party providers.
+<code>tests/test_mldsa_openssl.py</code> enforces the version floor and <strong>cross-verifies OpenSSL
+against liboqs both directions</strong> — two independent FIPS 204 implementations agreeing is
+strong evidence neither has a functional defect; TIMECOP covers the timing dimension.</p>
+<h3 id="what-we-verify-vs-what-needs-a-lab">What we verify vs. what needs a lab</h3>
+<ul>
+<li><strong>Automated (CI):</strong> correctness (interop + FIPS 204 sizes), tamper rejection, hedged
+  randomization, OpenSSL version floor, and <strong>constant-timeness via TIMECOP on Linux</strong>
+  (<code>make ct-verify</code>; skipped on macOS where valgrind has no arm64 target).</li>
+<li><strong>Not automated (needs hardware):</strong> power/EM side-channel and active fault-injection
+  resistance. For those threat models, run the PQC in a certified HSM / secure element —
+  no pure-software stack can attest to them.</li>
+</ul>
+<h2 id="is-kmac-the-default-kdf-no-and-thats-deliberate">Is KMAC the default KDF? No — and that's deliberate</h2>
+<p>KMAC is <em>offered</em> (suite <code>nist5-kmac</code>), but the <strong>default KDF is HKDF-HMAC-SHA-384</strong>,
+because:</p>
+<ul>
+<li>CNSA 2.0 lists <strong>SHA-384 / HMAC</strong>, not KMAC, so HKDF-SHA384 is the compliance-first choice;</li>
+<li>HMAC-SHA-384 is hardware-accelerated (SHA-NI / ARMv8 crypto) — faster than software Keccak.</li>
+</ul>
+<p>KMAC is the right pick when a deployment wants a single Keccak primitive end-to-end
+(hash + MAC + KDF) with no HMAC nesting and built-in domain separation. Both are
+SP 800-56C rev3-approved; it's a per-suite choice, and either way the <em>implementation</em>
+is OpenSSL's audited one.</p></article></div><footer class='site'><div class='wrap'><div class='row'><div>robobus — post-quantum, real-time robotics middleware. CNSA 2.0 (FIPS 203 ML-KEM · FIPS 204 ML-DSA).</div><div><a href='../index.html'>Home</a> · <a href='../benchmarks.html'>Benchmarks</a> · <a href='../docs/index.html'>Docs</a> · <a href='https://github.com/pq-cybarg/robobus-benchmarks'>GitHub</a></div></div></div></footer></body></html>

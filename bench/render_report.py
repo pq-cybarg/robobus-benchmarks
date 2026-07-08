@@ -498,11 +498,13 @@ def render_html(docs: list[dict]) -> str:
     P.append("<p class='sub'>Post-quantum &amp; classical key encapsulation, hybrid key "
              "agreement, signatures, AEAD, hashing, MACs, KDFs, live DDS-Security handshakes "
              "and the robobus bus — measured end to end by one portable script.</p>")
-    P.append("<div class='callout'>⚠️ <b>Measured on macOS only (so far).</b> These numbers are "
-             "CPU/OS/build-specific and are not portable claims. The deliverable is the "
-             "<i>method</i>: the identical <code>run_benchmarks.py</code> is built to run on "
-             "macOS, Windows, all supported Linux, Android and iOS — each platform measures what "
-             "it has and records the rest as <b>SKIPPED</b>. Re-run to add a platform's column.</div>")
+    P.append("<div class='callout'>ℹ️ <b>Coverage &amp; fidelity.</b> These numbers are "
+             "CPU/OS/build-specific — the deliverable is the <i>method</i>: the identical "
+             "<code>run_benchmarks.py</code> runs on macOS, Windows, all supported Linux (and "
+             "five emulated ISAs), Android and iOS — each host measures what it has and records "
+             "the rest as <b>SKIPPED</b>. Public-CI columns come from <b>virtualized</b> runners "
+             "(shared vCPUs, no real-time scheduling): coverage and relative comparison, not "
+             "bare-metal nanosecond claims. Each run self-labels its measurement fidelity.</div>")
     P.append(f"<p class='muted'>Generated {now}. "
              "<a href='https://github.com/pq-cybarg'>pq-cybarg</a>.</p>")
     P.append("<div class='legend'>"
