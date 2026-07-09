@@ -23,9 +23,10 @@ import subprocess
 import time
 
 REPO = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-ENV_LIB = os.environ.get("ROBOBUS_ENV_LIB",
-                         os.path.expanduser("~/robotics-stack/mf/envs/ros2_kilted/lib"))
-OQS_LIB = os.path.expanduser("~/_oqs/lib")
+# Library dirs are supplied by the environment (the ROS/OpenSSL env's lib and the liboqs
+# lib); both default to empty so no local layout is assumed or embedded.
+ENV_LIB = os.environ.get("ROBOBUS_ENV_LIB", "")
+OQS_LIB = os.environ.get("ROBOBUS_OQS_LIB", "")
 
 _TS = re.compile(r"^(\d{10}\.\d+)\s")
 _BEGIN = re.compile(r"handle begin handshake|begin_handshake", re.I)
