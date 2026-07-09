@@ -343,6 +343,22 @@ portability by running the suite on those substrates via <strong>Docker + QEMU</
 <strong>PQC</strong> layer (ML-KEM/ML-DSA via liboqs) runs wherever liboqs is installed and <strong>skips
 gracefully</strong> (never errors) where it isn't — so the matrix stays green on minimal images.
 Reproduce locally: <code>bash scripts/qemu_test.sh</code> (needs Docker; QEMU auto-registered).</p>
+<h3 id="the-c-abi-shared-library-every-binding-byte-identical-on-six-isas">The C-ABI shared library + every binding, byte-identical on six ISAs</h3>
+<p><code>librobobus</code> (the embeddable C-ABI shared library) and the language bindings are compiled and
+tested under QEMU on <strong>x86-64, aarch64, armv7 (32-bit ARM), ppc64le, riscv64, and big-endian
+s390x</strong> (<code>.github/workflows/shared-lib.yml</code>, <code>conformance-matrix.yml</code>). The wire format is
+<strong>little-endian-canonical on every host</strong>: the codec serialises IEEE-754 doubles as LE regardless
+of native byte order, so a frame sealed on any architecture opens on any other. The proof is
+byte-level — the C self-test embeds the exact bytes the x86 Python reference emits, and a <code>ctypes</code>
+cross-check seals/opens both directions — and it passes on <strong>big-endian s390x</strong>, confirming the
+canonicalisation is real, not an assumption. AES-256-GCM is byte-oriented and endian-neutral by
+construction.</p>
+<h3 id="every-language-toolchain-run-green-together">Every language toolchain, run green together</h3>
+<p><code>tools/all-languages.Dockerfile</code> proves the <em>language</em> axis the same way it proves the <em>arch</em>
+axis: one image with <strong>every</strong> toolchain (gcc/clang, Go, Rust, JDK, .NET, Node+TypeScript, Julia,
+Octave, Swift, Kotlin, Ruby, Lua, Python+Cython), a hard "versions print or abort" gate, and the
+full polyglot conformance — 12-language schema codegen + the six native seal/open bindings — green
+with <strong>zero silent skips</strong>. Reproduce: <code>docker build -f tools/all-languages.Dockerfile -t robobus-all-langs . &amp;&amp; docker run --rm -v "$PWD":/src:ro robobus-all-langs</code>.</p>
 <table>
 <thead>
 <tr>

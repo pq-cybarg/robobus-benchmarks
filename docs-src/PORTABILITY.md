@@ -93,6 +93,26 @@ The pure-stdlib **core** (ring, codec, bus, schema) and the **classical crypto**
 gracefully** (never errors) where it isn't — so the matrix stays green on minimal images.
 Reproduce locally: `bash scripts/qemu_test.sh` (needs Docker; QEMU auto-registered).
 
+### The C-ABI shared library + every binding, byte-identical on six ISAs
+
+`librobobus` (the embeddable C-ABI shared library) and the language bindings are compiled and
+tested under QEMU on **x86-64, aarch64, armv7 (32-bit ARM), ppc64le, riscv64, and big-endian
+s390x** (`.github/workflows/shared-lib.yml`, `conformance-matrix.yml`). The wire format is
+**little-endian-canonical on every host**: the codec serialises IEEE-754 doubles as LE regardless
+of native byte order, so a frame sealed on any architecture opens on any other. The proof is
+byte-level — the C self-test embeds the exact bytes the x86 Python reference emits, and a `ctypes`
+cross-check seals/opens both directions — and it passes on **big-endian s390x**, confirming the
+canonicalisation is real, not an assumption. AES-256-GCM is byte-oriented and endian-neutral by
+construction.
+
+### Every language toolchain, run green together
+
+`tools/all-languages.Dockerfile` proves the *language* axis the same way it proves the *arch*
+axis: one image with **every** toolchain (gcc/clang, Go, Rust, JDK, .NET, Node+TypeScript, Julia,
+Octave, Swift, Kotlin, Ruby, Lua, Python+Cython), a hard "versions print or abort" gate, and the
+full polyglot conformance — 12-language schema codegen + the six native seal/open bindings — green
+with **zero silent skips**. Reproduce: `docker build -f tools/all-languages.Dockerfile -t robobus-all-langs . && docker run --rm -v "$PWD":/src:ro robobus-all-langs`.
+
 | Platform | Verified how |
 |---|---|
 | macOS, Windows 10/11 | native GitHub-Actions runners (`test` job) + local macOS |

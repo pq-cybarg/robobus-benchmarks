@@ -133,7 +133,7 @@ footer.site a{color:var(--muted)}
   <h2 class='title'>What it does, in numbers</h2>
   <p class='sec-lede'>Every figure below is produced by <code>run_benchmarks.py</code> and refreshed
   on CI. Numbers are CPU/OS/build-specific — the deliverable is the method.</p>
-  <div class='stats'><div class='stat'><div class='n mono'>3.9<small>ns</small></div><div class='l'>Shared-memory bus op (amortized), Apple M5</div></div><div class='stat'><div class='n mono'>83<small>ns</small></div><div class='l'>Bus one-way IPC · p50 · 98%+ &lt; 100 ns (RT)</div></div><div class='stat'><div class='n mono'>≈135<small>µs</small></div><div class='l'>PQC key agreement — ECDH ‖ ML-KEM → HKDF-384</div></div><div class='stat'><div class='n mono'>5<small>ISAs</small></div><div class='l'>PQC byte-portable: x86-64, aarch64, armv7, s390x (BE), riscv64, ppc64le</div></div><div class='stat'><div class='n mono'>4<small>OS</small></div><div class='l'>Handshake measured on Linux, macOS, Windows (MSVC + WSL2)</div></div><div class='stat'><div class='n mono'>9<small>orders</small></div><div class='l'>Latency regimes spanned — ns to ms — each measured on its own terms</div></div></div>
+  <div class='stats'><div class='stat'><div class='n mono'>3.9<small>ns</small></div><div class='l'>Shared-memory bus op (amortized), Apple M5</div></div><div class='stat'><div class='n mono'>83<small>ns</small></div><div class='l'>Bus one-way IPC · p50 · 98%+ &lt; 100 ns (RT)</div></div><div class='stat'><div class='n mono'>≈135<small>µs</small></div><div class='l'>PQC key agreement — ECDH ‖ ML-KEM → HKDF-384</div></div><div class='stat'><div class='n mono'>6<small>ISAs</small></div><div class='l'>Bindings + C-ABI lib byte-identical: x86-64, aarch64, armv7, ppc64le, riscv64, s390x (BE)</div></div><div class='stat'><div class='n mono'>4<small>OS</small></div><div class='l'>Handshake measured on Linux, macOS, Windows (MSVC + WSL2)</div></div><div class='stat'><div class='n mono'>9<small>orders</small></div><div class='l'>Latency regimes spanned — ns to ms — each measured on its own terms</div></div></div>
 </div></section>
 
 <section><div class='wrap'>
@@ -160,28 +160,35 @@ footer.site a{color:var(--muted)}
 
 <section><div class='wrap'>
   <p class='sec-eyebrow'>reach it from any language</p>
-  <h2 class='title'>Five native implementations, fourteen generated</h2>
+  <h2 class='title'>Six native implementations, fourteen generated</h2>
   <p class='sec-lede'>The wire format is small — an mmap seqlock ring, a codec frame, an
-  AES-256-GCM frame, fixed-layout schema structs. Five languages implement it natively and are
+  AES-256-GCM frame, fixed-layout schema structs. Six languages implement it natively and are
   <b>bidirectionally conformance-tested against Python</b> (Python seals → the other opens, and
   back); the schema layout is code-generated for fourteen more, each compile/run-verified
-  against Python's packed bytes.</p>
+  against Python's packed little-endian bytes. Every one of these toolchains is installed and
+  run green together — no language is ever silently skipped.</p>
   <div class='xrow' style='margin:0 0 16px'>
     <div class='chip'>Python<small>reference</small></div>
-    <div class='chip'>C<small>native ring</small></div>
+    <div class='chip'>C<small>native ring + C ABI</small></div>
+    <div class='chip'>Cython<small>typed → C, 3.4× Python</small></div>
     <div class='chip'>Rust<small>crates.io</small></div>
     <div class='chip'>JavaScript · Node<small>npm</small></div>
     <div class='chip'>Java<small>Maven Central</small></div>
   </div>
-  <p style='color:var(--muted);font-size:13.5px;margin:0'><span style='font-family:"JetBrains Mono";
+  <p style='color:var(--muted);font-size:13.5px;margin:0 0 14px'><span style='font-family:"JetBrains Mono";
   font-size:11.5px;letter-spacing:.06em;color:var(--dim)'>SCHEMA CODEGEN · 14 &nbsp;</span>
   C · C++ · Rust · Go · Java · C# · TypeScript · Python · Julia · MATLAB/Octave · Swift · Kotlin · Ruby · Lua</p>
+  <div class='note'><b>Embed it anywhere — <code>librobobus</code>.</b> A dependency-light C-ABI
+  shared library (<code>robobus.dll</code> · <code>librobobus.dylib</code> · <code>librobobus.so</code>,
+  built by CMake on every OS) exposes AES-256-GCM RBX1 seal/open + the codec, so software in any
+  language links robobus over its FFI. Proven byte-identical to the Python reference on Linux,
+  macOS, Windows and five emulated ISAs — including big-endian s390x.</div>
 </div></section>
 
 <section><div class='wrap'>
   <p class='sec-eyebrow'>architecture</p>
   <h2 class='title'>Four things, done to standard</h2>
-  <div class='cards'><div class='fcard'><div class='k'>crypto</div><h3 class='pqc'>CNSA 2.0 post-quantum</h3><p>FIPS 203 ML-KEM and FIPS 204 ML-DSA, hybridised with classical ECDH/ECDSA through HKDF-SHA384 — the NSA CNSA 2.0 transition profile, not a toy.</p></div><div class='fcard'><div class='k'>transport</div><h3 class=''>Sub-microsecond bus</h3><p>A lock-free shared-memory SPSC ring in C: single-digit-nanosecond ops, p50 one-way IPC under 100 ns, formally proven (CBMC) and RT-hardened.</p></div><div class='fcard'><div class='k'>dds</div><h3 class='hybrid'>PQC-hardened DDS-Security</h3><p>Patched CycloneDDS & Fast DDS authentication: hybrid ECDH+ML-KEM key agreement and ML-DSA-87 identity signatures, measured live on Linux, macOS and Windows.</p></div><div class='fcard'><div class='k'>proof</div><h3 class='qr'>Measured, not claimed</h3><p>One capability-detecting script across every platform; QEMU byte-portability on five ISAs incl. big-endian s390x; CBMC + SymbiYosys formal proofs of the ring.</p></div></div>
+  <div class='cards'><div class='fcard'><div class='k'>crypto</div><h3 class='pqc'>CNSA 2.0 post-quantum</h3><p>FIPS 203 ML-KEM and FIPS 204 ML-DSA, hybridised with classical ECDH/ECDSA through HKDF-SHA384 — the NSA CNSA 2.0 transition profile, not a toy.</p></div><div class='fcard'><div class='k'>transport</div><h3 class=''>Sub-microsecond bus</h3><p>A lock-free shared-memory SPSC ring in C: single-digit-nanosecond ops, p50 one-way IPC under 100 ns, formally proven (CBMC) and RT-hardened.</p></div><div class='fcard'><div class='k'>dds</div><h3 class='hybrid'>PQC-hardened DDS-Security</h3><p>Patched CycloneDDS & Fast DDS authentication: hybrid ECDH+ML-KEM key agreement and ML-DSA-87 identity signatures, measured live on Linux, macOS and Windows.</p></div><div class='fcard'><div class='k'>proof</div><h3 class='qr'>Measured, not claimed</h3><p>Every language toolchain installed and run green together — 6 native seal/open bindings plus 14 schema-codegen targets, no silent skips; the C-ABI shared library proven byte-identical on six ISAs incl. big-endian s390x; CBMC + SymbiYosys proofs of the ring.</p></div></div>
 </div></section>
 
 <section><div class='wrap'>

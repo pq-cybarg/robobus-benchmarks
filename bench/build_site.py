@@ -260,7 +260,7 @@ def home():
         ("3.9<small>ns</small>", "Shared-memory bus op (amortized), Apple M5"),
         ("83<small>ns</small>", "Bus one-way IPC · p50 · 98%+ &lt; 100 ns (RT)"),
         ("≈135<small>µs</small>", "PQC key agreement — ECDH ‖ ML-KEM → HKDF-384"),
-        ("5<small>ISAs</small>", "PQC byte-portable: x86-64, aarch64, armv7, s390x (BE), riscv64, ppc64le"),
+        ("6<small>ISAs</small>", "Bindings + C-ABI lib byte-identical: x86-64, aarch64, armv7, ppc64le, riscv64, s390x (BE)"),
         ("4<small>OS</small>", "Handshake measured on Linux, macOS, Windows (MSVC + WSL2)"),
         ("9<small>orders</small>", "Latency regimes spanned — ns to ms — each measured on its own terms"),
     ]
@@ -288,8 +288,9 @@ def home():
          "Patched CycloneDDS & Fast DDS authentication: hybrid ECDH+ML-KEM key agreement and "
          "ML-DSA-87 identity signatures, measured live on Linux, macOS and Windows."),
         ("proof", "qr", "Measured, not claimed",
-         "One capability-detecting script across every platform; QEMU byte-portability on five "
-         "ISAs incl. big-endian s390x; CBMC + SymbiYosys formal proofs of the ring."),
+         "Every language toolchain installed and run green together — 6 native seal/open bindings "
+         "plus 14 schema-codegen targets, no silent skips; the C-ABI shared library proven "
+         "byte-identical on six ISAs incl. big-endian s390x; CBMC + SymbiYosys proofs of the ring."),
     ]
     feat_html = "".join(
         f"<div class='fcard'><div class='k'>{html.escape(k)}</div>"
@@ -361,22 +362,29 @@ def home():
 
 <section><div class='wrap'>
   <p class='sec-eyebrow'>reach it from any language</p>
-  <h2 class='title'>Five native implementations, fourteen generated</h2>
+  <h2 class='title'>Six native implementations, fourteen generated</h2>
   <p class='sec-lede'>The wire format is small — an mmap seqlock ring, a codec frame, an
-  AES-256-GCM frame, fixed-layout schema structs. Five languages implement it natively and are
+  AES-256-GCM frame, fixed-layout schema structs. Six languages implement it natively and are
   <b>bidirectionally conformance-tested against Python</b> (Python seals → the other opens, and
   back); the schema layout is code-generated for fourteen more, each compile/run-verified
-  against Python's packed bytes.</p>
+  against Python's packed little-endian bytes. Every one of these toolchains is installed and
+  run green together — no language is ever silently skipped.</p>
   <div class='xrow' style='margin:0 0 16px'>
     <div class='chip'>Python<small>reference</small></div>
-    <div class='chip'>C<small>native ring</small></div>
+    <div class='chip'>C<small>native ring + C ABI</small></div>
+    <div class='chip'>Cython<small>typed → C, 3.4× Python</small></div>
     <div class='chip'>Rust<small>crates.io</small></div>
     <div class='chip'>JavaScript · Node<small>npm</small></div>
     <div class='chip'>Java<small>Maven Central</small></div>
   </div>
-  <p style='color:var(--muted);font-size:13.5px;margin:0'><span style='font-family:"JetBrains Mono";
+  <p style='color:var(--muted);font-size:13.5px;margin:0 0 14px'><span style='font-family:"JetBrains Mono";
   font-size:11.5px;letter-spacing:.06em;color:var(--dim)'>SCHEMA CODEGEN · 14 &nbsp;</span>
   C · C++ · Rust · Go · Java · C# · TypeScript · Python · Julia · MATLAB/Octave · Swift · Kotlin · Ruby · Lua</p>
+  <div class='note'><b>Embed it anywhere — <code>librobobus</code>.</b> A dependency-light C-ABI
+  shared library (<code>robobus.dll</code> · <code>librobobus.dylib</code> · <code>librobobus.so</code>,
+  built by CMake on every OS) exposes AES-256-GCM RBX1 seal/open + the codec, so software in any
+  language links robobus over its FFI. Proven byte-identical to the Python reference on Linux,
+  macOS, Windows and five emulated ISAs — including big-endian s390x.</div>
 </div></section>
 
 <section><div class='wrap'>

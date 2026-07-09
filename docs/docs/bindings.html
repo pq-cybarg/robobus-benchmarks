@@ -214,15 +214,33 @@ full, hardened robobus peer. Proven today:</p>
   browsers), <strong>bidirectional Python↔Node conformance tested</strong> — powers web/Electron dashboards.</li>
 <li><strong>Java</strong> — <code>bindings/java/</code> (codec + AES-256-GCM via JCE), <strong>bidirectional Python↔Java
   conformance tested</strong> (<code>tests/test_java.py</code>) — for JVM/Android robotics apps.</li>
+<li><strong>Cython</strong> — <code>bench/cython/cyaead.pyx</code> (typed-Python → C AES-256-GCM on OpenSSL EVP),
+  wire-compatible <code>RBX1</code>, <strong>bidirectional Python↔Cython conformance tested</strong> (<code>tests/test_cython.py</code>).
+  ~3.4× faster than pure Python (1.4 vs 4.7 µs seal+open), closing most of the gap to native C —
+  the point of Cython: keep Python ergonomics, get near-C throughput.</li>
 </ul>
+<p><strong>Embed it anywhere — <code>librobobus</code> (C ABI):</strong> <code>librobobus/</code> builds a dependency-light shared
+library (<code>robobus.dll</code> / <code>librobobus.dylib</code> / <code>librobobus.so</code> + a static lib, via CMake on every
+OS) exposing AES-256-GCM <code>RBX1</code> seal/open and the codec behind a stable C ABI. Any language links
+it over its FFI (<code>ctypes</code>, P/Invoke, JNA/Panama, <code>ffi-napi</code>, <code>bindgen</code>). It is proven byte-identical
+to the Python reference on Linux, macOS, Windows <strong>and five emulated ISAs including big-endian
+s390x</strong> — its C self-test embeds the exact bytes Python emits, and a <code>ctypes</code> test cross-conforms
+both directions (<code>tests/test_cabi.py</code>, <code>.github/workflows/shared-lib.yml</code>).</p>
 <p><strong>Packaged &amp; publishable:</strong> Rust → <strong>crates.io</strong> (<code>Cargo.toml</code>), JS → <strong>npm</strong>
 (<code>package.json</code> + TypeScript types), Java → <strong>Maven Central</strong> (<code>pom.xml</code>, sources+javadoc+GPG).
 <code>cargo package</code> / <code>npm pack</code> / <code>javac</code> all build locally; a tag runs
 <code>.github/workflows/publish-bindings.yml</code> (each registry gated on a repo variable).
 * <strong>Struct codegen for the layout</strong> — <code>Schema.render(lang)</code> emits all 14: C, C++, Rust, Go,
   Java, C#, TypeScript, Python, Julia, MATLAB/Octave, Swift, Kotlin, Ruby, Lua — and <strong>every one
-  is compile/run-verified</strong>: its generated reader parses Python's packed bytes byte-for-byte in
-  <code>tests/test_codegen.py</code>.</p>
+  is compile/run-verified</strong>: its generated reader parses Python's packed little-endian bytes
+  byte-for-byte in <code>tests/test_codegen.py</code>.</p>
+<p><strong>Every toolchain, actually run — no silent skips.</strong> <code>tools/all-languages.Dockerfile</code> installs
+<em>all</em> of these toolchains in one image (gcc/clang, Go, Rust, JDK, .NET, Node+TypeScript, Julia,
+Octave, Swift, Kotlin, Ruby, Lua, Python+Cython) and runs the full polyglot conformance with a
+hard "versions print or abort" gate — 12-language codegen + the six native seal/open bindings,
+green together. It reproduces on any machine with Docker (<code>docker build -f
+tools/all-languages.Dockerfile …</code>), so "all languages pass" is a command anyone can re-run, not a
+claim.</p>
 <h3 id="2-via-a-transport-client-reach-the-bus-over-a-wire-it-already-speaks">2. Via a transport client (reach the bus over a wire it already speaks)</h3>
 <p>A language with no native binding but <em>any</em> MQTT/AMQP/Zenoh/TCP client can talk to robobus:
 run a <code>robobus &lt;transport&gt;</code> bridge, and have the app implement just the <code>RBX1</code> AEAD (one
@@ -242,7 +260,7 @@ Example: a Swift/iOS app uses an MQTT client + CryptoKit AES-256-GCM.</p>
 <tbody>
 <tr>
 <td>C / C++</td>
-<td>✅ (<code>native/</code>)</td>
+<td>✅ (<code>native/</code> + <code>librobobus</code> C ABI)</td>
 <td>✅</td>
 <td>OpenSSL</td>
 <td>liboqs</td>
@@ -259,6 +277,13 @@ Example: a Swift/iOS app uses an MQTT client + CryptoKit AES-256-GCM.</p>
 <td>✅ (core)</td>
 <td>✅</td>
 <td><code>cryptography</code></td>
+<td>liboqs / quantcrypt</td>
+</tr>
+<tr>
+<td>Cython</td>
+<td>✅ (<code>bench/cython</code>)</td>
+<td>✅ (via Python)</td>
+<td>OpenSSL EVP</td>
 <td>liboqs / quantcrypt</td>
 </tr>
 <tr>

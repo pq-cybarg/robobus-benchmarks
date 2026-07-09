@@ -30,6 +30,18 @@ full, hardened robobus peer. Proven today:
   browsers), **bidirectional Python↔Node conformance tested** — powers web/Electron dashboards.
 * **Java** — `bindings/java/` (codec + AES-256-GCM via JCE), **bidirectional Python↔Java
   conformance tested** (`tests/test_java.py`) — for JVM/Android robotics apps.
+* **Cython** — `bench/cython/cyaead.pyx` (typed-Python → C AES-256-GCM on OpenSSL EVP),
+  wire-compatible `RBX1`, **bidirectional Python↔Cython conformance tested** (`tests/test_cython.py`).
+  ~3.4× faster than pure Python (1.4 vs 4.7 µs seal+open), closing most of the gap to native C —
+  the point of Cython: keep Python ergonomics, get near-C throughput.
+
+**Embed it anywhere — `librobobus` (C ABI):** `librobobus/` builds a dependency-light shared
+library (`robobus.dll` / `librobobus.dylib` / `librobobus.so` + a static lib, via CMake on every
+OS) exposing AES-256-GCM `RBX1` seal/open and the codec behind a stable C ABI. Any language links
+it over its FFI (`ctypes`, P/Invoke, JNA/Panama, `ffi-napi`, `bindgen`). It is proven byte-identical
+to the Python reference on Linux, macOS, Windows **and five emulated ISAs including big-endian
+s390x** — its C self-test embeds the exact bytes Python emits, and a `ctypes` test cross-conforms
+both directions (`tests/test_cabi.py`, `.github/workflows/shared-lib.yml`).
 
 **Packaged & publishable:** Rust → **crates.io** (`Cargo.toml`), JS → **npm**
 (`package.json` + TypeScript types), Java → **Maven Central** (`pom.xml`, sources+javadoc+GPG).
@@ -37,8 +49,16 @@ full, hardened robobus peer. Proven today:
 `.github/workflows/publish-bindings.yml` (each registry gated on a repo variable).
 * **Struct codegen for the layout** — `Schema.render(lang)` emits all 14: C, C++, Rust, Go,
   Java, C#, TypeScript, Python, Julia, MATLAB/Octave, Swift, Kotlin, Ruby, Lua — and **every one
-  is compile/run-verified**: its generated reader parses Python's packed bytes byte-for-byte in
-  `tests/test_codegen.py`.
+  is compile/run-verified**: its generated reader parses Python's packed little-endian bytes
+  byte-for-byte in `tests/test_codegen.py`.
+
+**Every toolchain, actually run — no silent skips.** `tools/all-languages.Dockerfile` installs
+*all* of these toolchains in one image (gcc/clang, Go, Rust, JDK, .NET, Node+TypeScript, Julia,
+Octave, Swift, Kotlin, Ruby, Lua, Python+Cython) and runs the full polyglot conformance with a
+hard "versions print or abort" gate — 12-language codegen + the six native seal/open bindings,
+green together. It reproduces on any machine with Docker (`docker build -f
+tools/all-languages.Dockerfile …`), so "all languages pass" is a command anyone can re-run, not a
+claim.
 
 ### 2. Via a transport client (reach the bus over a wire it already speaks)
 
@@ -51,9 +71,10 @@ Example: a Swift/iOS app uses an MQTT client + CryptoKit AES-256-GCM.
 
 | Language | native binding | struct codegen | AES-256-GCM lib | PQC (ML-KEM/ML-DSA) |
 |---|---|---|---|---|
-| C / C++ | ✅ (`native/`) | ✅ | OpenSSL | liboqs |
+| C / C++ | ✅ (`native/` + `librobobus` C ABI) | ✅ | OpenSSL | liboqs |
 | Rust | ✅ (`bindings/rust`) | ✅ | `aes-gcm` (RustCrypto) | `oqs` crate |
 | Python | ✅ (core) | ✅ | `cryptography` | liboqs / quantcrypt |
+| Cython | ✅ (`bench/cython`) | ✅ (via Python) | OpenSSL EVP | liboqs / quantcrypt |
 | Go | codegen ✅ | ✅ | `crypto/aes`+`cipher` | liboqs-go |
 | Java / Kotlin | codegen ✅ | ✅ | JCE / BouncyCastle | liboqs-java, BC |
 | C# / .NET | codegen ✅ | ✅ | `System.Security.Cryptography` | liboqs / BC |
