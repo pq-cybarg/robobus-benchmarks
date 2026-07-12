@@ -84,6 +84,24 @@ Example: a Swift/iOS app uses an MQTT client + CryptoKit AES-256-GCM.
 Every listed language has an AES-256-GCM implementation and a liboqs binding, so **national-
 security-grade hardening (CNSA 2.0 / FIPS) is reachable in all of them**.
 
+## Build from source & release automation
+
+One portable command builds **every** artifact from source into `dist/` — no conda/ROS, runs
+on Linux, macOS, and Windows (Git Bash); each component is skipped-and-reported if its
+toolchain is absent:
+
+    scripts/build_release.sh            # or: make release
+
+It produces the native `librobobus` C-ABI library (shared + static + header, KAT-self-tested),
+the Rust `.crate`, the npm `.tgz`, the Java `.jar`, the Python wheel + sdist, and a `SHA256SUMS`.
+For the native library on every CPU ISA via Docker/QEMU (aarch64, armv7, ppc64le, riscv64,
+big-endian s390x): `tools/package-librobobus-arches.sh` (`make release-arches`).
+
+On a `v*` tag, `release.yml` runs the same build across Linux/macOS/Windows + the five ISAs and
+attaches the packaged `librobobus` artifacts to the GitHub Release alongside Sigstore-signed +
+SLSA-attested Python wheels and a CycloneDX SBOM; `publish-bindings.yml` publishes the
+Rust/npm/Maven packages — one tag, every language, every platform.
+
 ## Adding a language to `render()`
 
 Add a type map + a `_render_<lang>` method in `robobus/schema.py` (see the eight existing

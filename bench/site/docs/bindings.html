@@ -325,6 +325,20 @@ Example: a Swift/iOS app uses an MQTT client + CryptoKit AES-256-GCM.</p>
 </table>
 <p>Every listed language has an AES-256-GCM implementation and a liboqs binding, so <strong>national-
 security-grade hardening (CNSA 2.0 / FIPS) is reachable in all of them</strong>.</p>
+<h2 id="build-from-source-release-automation">Build from source &amp; release automation</h2>
+<p>One portable command builds <strong>every</strong> artifact from source into <code>dist/</code> — no conda/ROS, runs
+on Linux, macOS, and Windows (Git Bash); each component is skipped-and-reported if its
+toolchain is absent:</p>
+<pre><code>scripts/build_release.sh            # or: make release
+</code></pre>
+<p>It produces the native <code>librobobus</code> C-ABI library (shared + static + header, KAT-self-tested),
+the Rust <code>.crate</code>, the npm <code>.tgz</code>, the Java <code>.jar</code>, the Python wheel + sdist, and a <code>SHA256SUMS</code>.
+For the native library on every CPU ISA via Docker/QEMU (aarch64, armv7, ppc64le, riscv64,
+big-endian s390x): <code>tools/package-librobobus-arches.sh</code> (<code>make release-arches</code>).</p>
+<p>On a <code>v*</code> tag, <code>release.yml</code> runs the same build across Linux/macOS/Windows + the five ISAs and
+attaches the packaged <code>librobobus</code> artifacts to the GitHub Release alongside Sigstore-signed +
+SLSA-attested Python wheels and a CycloneDX SBOM; <code>publish-bindings.yml</code> publishes the
+Rust/npm/Maven packages — one tag, every language, every platform.</p>
 <h2 id="adding-a-language-to-render">Adding a language to <code>render()</code></h2>
 <p>Add a type map + a <code>_render_&lt;lang&gt;</code> method in <code>robobus/schema.py</code> (see the eight existing
 ones). The layout is fixed little-endian packed, so a generator is ~20 lines; add a compile
