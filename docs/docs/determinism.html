@@ -315,7 +315,7 @@ OS from the hot path (RTOS/bare-metal/FPGA). The best you can force on a general
 <strong>Linux + PREEMPT_RT + isolated core + cache pseudo-lock (or TailSlayer hedging) + UMWAIT/WFE +
 an SMI-clean BIOS</strong>, which in practice yields no observable outliers over billions of messages —
 "almost-guaranteed 100 %". Because the robobus wire format is OS/arch-agnostic
-(<a href="PROTOCOL.md">PROTOCOL.md</a>), the same frames flow between that hardened core and everything else.</p>
+(<a href="protocol.html">PROTOCOL.md</a>), the same frames flow between that hardened core and everything else.</p>
 <h2 id="adaptive-probe-the-hardware-apply-what-it-supports">Adaptive: probe the hardware, apply what it supports</h2>
 <p>Because every trick here is hardware-specific, robobus <strong>detects capabilities at runtime and
 adapts</strong> rather than hard-coding any of them — <code>robobus.determinism</code>:</p>

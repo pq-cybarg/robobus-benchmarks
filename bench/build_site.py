@@ -471,6 +471,20 @@ def _slug(name):
     return name.lower()
 
 
+def _rewrite_doc_links(html_body, slugs):
+    """Rewrite intra-docs links that still point at the source *.md files to the rendered pages.
+    The docs are published as lowercase <slug>.html (Pages serves .html, not .md), so a bare
+    cross-reference like [CMVP-READINESS.md](CMVP-READINESS.md) must become cmvp-readiness.html —
+    otherwise every cross-doc link 404s on the public site. Only rewrites bare same-dir links
+    whose target is a known doc; external/anchored/pathed links are left untouched."""
+    def repl(m):
+        slug = m.group(1).lower()
+        if slug in slugs:
+            return f'href="{slug}.html{m.group(2) or ""}"'
+        return m.group(0)
+    return re.sub(r'href="([^":/?#]+)\.md(#[^"]*)?"', repl, html_body)
+
+
 def doc_sidebar(active, present):
     items = "".join(
         f"<a href='{_slug(n)}.html' class='ditem{' active' if n==active else ''}'>{html.escape(DOC_TITLES.get(n,n))}</a>"
@@ -528,7 +542,7 @@ def docs_pages():
     for n in ordered:
         with open(present[n]) as fh:
             md = fh.read()
-        html_body = _md(md)
+        html_body = _rewrite_doc_links(_md(md), {k.lower() for k in present})
         body = (f"<div class='dwrap'>{doc_sidebar(n, present)}"
                 f"<article class='dbody'>{html_body}</article></div>")
         out[_slug(n)] = page(f"{DOC_TITLES.get(n,n)} · robobus docs", "docs", body,

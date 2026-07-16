@@ -248,7 +248,7 @@ and no RT kernel, so rare µs outliers remain. Good enough for soft real-time; n
 general-purpose scheduler at all: a <strong>bare-metal isolated core</strong>, an <strong>RTOS</strong> (Zephyr, QNX,
 VxWorks, FreeRTOS), or an <strong>FPGA / MCU coprocessor</strong>. The robobus ring layout is a handful of
 atomic loads over shared memory — it ports to a bare-metal poll loop unchanged (the wire
-format in <a href="PROTOCOL.md">PROTOCOL.md</a> is language- and OS-agnostic), so the same frames flow
+format in <a href="protocol.html">PROTOCOL.md</a> is language- and OS-agnostic), so the same frames flow
 between the RTOS core and the Linux/Python side. That is the only route to a <em>provable</em> 100 %.</p>
 <p><strong>Summary:</strong> robust hard-100 % = Linux PREEMPT_RT + isolated core (deploy) or an RTOS/bare-metal
 core (certify). macOS/Windows give a bounded best-effort tail, not a guarantee — which is a

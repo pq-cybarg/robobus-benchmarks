@@ -204,7 +204,7 @@ footer.site a{color:var(--muted)}
 <p>So "multi-language" is the <strong>union</strong> of all these ecosystems — effectively every mainstream
 language. Two ways to reach robobus from any language:</p>
 <h3 id="1-native-endpoint-implement-the-wire-format">1. Native endpoint (implement the wire format)</h3>
-<p>The format (<a href="PROTOCOL.md">PROTOCOL.md</a>) is small: an mmap seqlock ring, a codec frame, an
+<p>The format (<a href="protocol.html">PROTOCOL.md</a>) is small: an mmap seqlock ring, a codec frame, an
 AES-256-GCM (<code>RBX1</code>) frame, and fixed-layout schema structs. Implement those and you have a
 full, hardened robobus peer. Proven today:</p>
 <ul>

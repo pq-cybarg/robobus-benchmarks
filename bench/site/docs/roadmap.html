@@ -189,11 +189,11 @@ with an in-memory broker (plaintext + CNSA-2.0), DDS with a real rclpy round-tri
 <p><strong>Multi-language — DONE:</strong> Rust reference binding (<code>bindings/rust/</code>, Python↔Rust AES-256-GCM
 conformance tested); C reference (<code>native/</code>); and <code>Schema.render()</code> codegen for 14 languages
 (C, C++, Rust, Go, Java, C#, TypeScript/JS, Python, Julia, MATLAB/Octave, Swift, Kotlin, Ruby,
-Lua) with C++/Go/Rust compile-verified. See <a href="BINDINGS.md">BINDINGS.md</a>. Any language with
+Lua) with C++/Go/Rust compile-verified. See <a href="bindings.html">BINDINGS.md</a>. Any language with
 AES-256-GCM (all of them) can be a hardened endpoint. Remaining: package the bindings for
 crates.io / npm / Maven and add native ring readers beyond C/Rust.</p>
 <h2 id="3-multi-language-bindings">3. Multi-language bindings</h2>
-<p>The wire format (<a href="PROTOCOL.md">PROTOCOL.md</a>) is language-agnostic and already proven
+<p>The wire format (<a href="protocol.html">PROTOCOL.md</a>) is language-agnostic and already proven
 cross-language: <code>native/shm_bench.c</code> (C) reads/writes the <em>same</em> ring as the Python core.</p>
 <ul>
 <li><strong>Planned bindings:</strong> C/C++ (header-only ring + codec), <strong>Rust</strong> (memmap2 + a seqlock
@@ -209,7 +209,7 @@ cross-language: <code>native/shm_bench.c</code> (C) reads/writes the <em>same</e
 <ul>
 <li><strong>Security:</strong> anti-replay (sliding window), per-channel key binding, rekey ratchet,
   AES-GCM-SIV, <code>SecretBuffer</code> zeroization (mlock + wipe-on-drop), sidecar wipe-on-exit —
-  wired into SecurePub/Sub and all transports. See <a href="SECURITY.md">SECURITY.md</a>.</li>
+  wired into SecurePub/Sub and all transports. See <a href="security.html">SECURITY.md</a>.</li>
 <li><strong>Latency tail:</strong> <code>robobus.realtime</code> (macOS QoS / Linux SCHED_FIFO + <code>mlockall</code> + core
   pinning) cut p90 ~12× on macOS; zero-copy <code>recv_view</code>. <code>robobus bench --realtime</code>.</li>
 <li><strong>Robustness:</strong> fuzz harness for codec + AEAD + the native C parser; ThreadSanitizer
@@ -221,7 +221,7 @@ cross-language: <code>native/shm_bench.c</code> (C) reads/writes the <em>same</e
 access, <code>c_struct()</code> codegen, T_SCHEMA frame, TypedPub/Sub) — layout proven to match C
 byte-for-byte.</p>
 <p><strong>DONE since:</strong> Linux hard-RT p99 harness (<code>scripts/rt_latency.py</code> + <code>robobus.realtime</code> +
-a <code>hard-rt</code> self-hosted CI job — see <a href="REALTIME.md">REALTIME.md</a>); CycloneDX SBOM +
+a <code>hard-rt</code> self-hosted CI job — see <a href="realtime.html">REALTIME.md</a>); CycloneDX SBOM +
 <strong>Sigstore-signed / SLSA-attested</strong> release pipeline (<code>.github/workflows/release.yml</code>);
 <strong>Rust, JS, and Java</strong> reference bindings (all Python-cross-conformance-tested) packaged
 for crates.io / npm / Maven Central.</p>

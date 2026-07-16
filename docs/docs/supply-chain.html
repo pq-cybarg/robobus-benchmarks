@@ -183,7 +183,7 @@ the signing/attestation steps require the CI OIDC identity and run on tag.</p>
 <p><code>robobus crypto compliance</code> prints a SHA3-256 over all robobus sources
 (<code>compliance.module_integrity()</code>). Pin the digest at release and compare on start-up — the
 software-integrity self-test a FIPS 140-3 module runs at load (see
-<a href="CMVP-READINESS.md">CMVP-READINESS.md</a>).</p>
+<a href="cmvp-readiness.html">CMVP-READINESS.md</a>).</p>
 <h2 id="6-provenance">6. Provenance</h2>
 <p>For SLSA build provenance, emit an in-toto attestation from CI (<code>slsa-github-generator</code>) tying
 the artifact to the exact commit + builder. Combined with the Sigstore signature and SBOM
