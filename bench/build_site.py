@@ -110,6 +110,21 @@ h2.title{font-size:clamp(24px,3.5vw,34px);margin:0 0 8px}
 .fcard p{color:var(--muted);font-size:14.5px;margin:0}
 .fcard .pqc{color:var(--pqc)}.fcard .hybrid{color:var(--hybrid)}.fcard .qr{color:var(--qr)}
 
+/* plain-language explainer — the layperson on-ramp */
+.plain{display:grid;gap:16px}
+@media(min-width:760px){.plain{grid-template-columns:repeat(3,1fr)}}
+.pcard{background:linear-gradient(180deg,var(--panel),var(--panel2));border:1px solid var(--line);border-radius:16px;padding:24px 22px}
+.pcard .ic{width:42px;height:42px;border-radius:12px;display:grid;place-items:center;margin:0 0 16px}
+.pcard .ic svg{width:23px;height:23px}
+.pcard .ic.spd{background:color-mix(in srgb,var(--signal) 15%,transparent);color:var(--signal)}
+.pcard .ic.rch{background:color-mix(in srgb,var(--hybrid) 15%,transparent);color:var(--hybrid)}
+.pcard .ic.sec{background:color-mix(in srgb,var(--qr) 15%,transparent);color:var(--qr)}
+.pcard h3{font-size:19.5px;margin:0 0 9px}
+.pcard .an{color:var(--fg);font-weight:600;margin:0 0 9px;font-size:15px}
+.pcard p{color:var(--muted);font-size:14.5px;margin:0}
+.oneline{margin-top:22px;padding:16px 20px;border:1px solid color-mix(in srgb,var(--signal) 26%,var(--line));border-radius:12px;background:color-mix(in srgb,var(--signal) 6%,var(--panel2));color:var(--muted);font-size:15px;line-height:1.55}
+.oneline b{color:var(--fg);font-weight:600}
+
 /* transports */
 .xgrid{display:grid;gap:14px}
 @media(min-width:720px){.xgrid{grid-template-columns:1fr 1fr}}
@@ -313,28 +328,69 @@ def home():
         "".join(f"<div class='chip'>{name}<small>{tag}</small></div>" for name, tag in chips) +
         "</div></div>" for title, chips in xports)
 
+    # plain-language explainer icons (decorative; accent-coloured via .ic.spd/.rch/.sec)
+    ic_spd = ("<svg viewBox='0 0 24 24' fill='currentColor' aria-hidden='true'>"
+              "<path d='M13 2 L4 13.5 h6.2 L9 22 l10-12 h-6.2 z'/></svg>")
+    ic_rch = ("<svg viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='1.9' "
+              "stroke-linecap='round' aria-hidden='true'><circle cx='12' cy='12' r='2.6'/>"
+              "<circle cx='4.5' cy='5' r='1.8'/><circle cx='19.5' cy='5' r='1.8'/>"
+              "<circle cx='4.5' cy='19' r='1.8'/><circle cx='19.5' cy='19' r='1.8'/>"
+              "<path d='M6 6.2 L10 10 M18 6.2 L14 10 M6 17.8 L10 14 M18 17.8 L14 14'/></svg>")
+    ic_sec = ("<svg viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='1.9' "
+              "stroke-linecap='round' stroke-linejoin='round' aria-hidden='true'>"
+              "<path d='M12 3 L19.5 6 v6.2 c0 4.8-3.7 7.6-7.5 8.6 -3.8-1-7.5-3.8-7.5-8.6 V6 z'/>"
+              "<path d='M8.7 12 l2.2 2.2 4.4-4.4'/></svg>")
+
     body = f"""
 <header class='hero'><div class='wrap reveal'>
-  <p class='eyebrow'>post-quantum · real-time · robotics middleware</p>
-  <h1>Latency is not one number. So we measured <em>all nine orders of magnitude.</em></h1>
-  <p class='lede'>A sub-microsecond shared-memory bus that bridges ROS&nbsp;1/2, LSL, MQTT, Kafka,
-  Zenoh, CAN, serial and more — and wraps <em>any</em> link in CNSA&nbsp;2.0 post-quantum crypto,
-  even protocols with no security of their own. Benchmarked end to end by one portable script.</p>
+  <p class='eyebrow'>secure real-time messaging for robots &amp; devices</p>
+  <h1>The nervous system for machines — instant, universal, and <em>quantum-safe</em>.</h1>
+  <p class='lede'>robobus lets robots, sensors and devices react to one another the moment something
+  happens — and locks every message with encryption built to outlast tomorrow's quantum computers.
+  It can even add that protection to older systems that never had any.</p>
   <div class='cta'>
     <a class='btn primary' href='benchmarks.html'>See the benchmarks →</a>
     <a class='btn ghost' href='docs/index.html'>Read the docs</a>
   </div>
   <div class='spectrum'>
-    <div class='cap'><b>The measured stack</b><span>log scale · 1 ns → 10 ms</span></div>
+    <div class='cap'><b>How fast is “instant”?</b><span>billionths → thousandths of a second</span></div>
     <div class='spec-scroll'>{spec}</div>
   </div>
 </div></header>
 
 <section><div class='wrap'>
-  <p class='sec-eyebrow'>headline · Apple M5 baseline</p>
-  <h2 class='title'>What it does, in numbers</h2>
-  <p class='sec-lede'>Every figure below is produced by <code>run_benchmarks.py</code> and refreshed
-  on CI. Numbers are CPU/OS/build-specific — the deliverable is the method.</p>
+  <p class='sec-eyebrow'>what it is, in plain terms</p>
+  <h2 class='title'>A fast, universal, quantum-safe way for machines to talk</h2>
+  <p class='sec-lede'>Not an engineer? Here's the whole idea in three parts — everything further down
+  the page is the measured proof behind them.</p>
+  <div class='plain'>
+    <div class='pcard'><div class='ic spd'>{ic_spd}</div>
+      <h3>Reacts before you can blink</h3>
+      <p class='an'>A message crosses the system in billionths of a second.</p>
+      <p>That's millions of times quicker than an eye-blink — fast enough for a robot to catch
+      itself mid-stumble, or a prosthetic hand to move the instant a nerve signal arrives.</p></div>
+    <div class='pcard'><div class='ic rch'>{ic_rch}</div>
+      <h3>One hub for everything</h3>
+      <p class='an'>Robots, drones, medical sensors, even brain-signal headsets.</p>
+      <p>These devices normally speak incompatible languages. robobus is the common connector that
+      lets them work together — bridging the standards each field already uses.</p></div>
+    <div class='pcard'><div class='ic sec'>{ic_sec}</div>
+      <h3>Safe against tomorrow's computers</h3>
+      <p class='an'>Every message is sealed with post-quantum encryption.</p>
+      <p>Future quantum computers could break today's encryption. robobus uses the U.S. government's
+      post-quantum standard, so messages stay private for decades — even on devices that shipped
+      with no security at all.</p></div>
+  </div>
+  <p class='oneline'><b>In one line:</b> robobus is a super-fast, universal, quantum-safe messaging
+  layer for machines — and everything below is the measurement that backs each claim up.</p>
+</div></section>
+
+<section><div class='wrap'>
+  <p class='sec-eyebrow'>the proof · headline numbers</p>
+  <h2 class='title'>Measured, not marketed</h2>
+  <p class='sec-lede'>From here down the page is for engineers. Every figure is produced by
+  <code>run_benchmarks.py</code> and refreshed on CI; numbers are CPU/OS/build-specific — the
+  deliverable is the method.</p>
   <div class='stats'>{stat_html}</div>
 </div></section>
 
@@ -407,9 +463,11 @@ def home():
   <p style='margin-top:22px'><a class='btn ghost' href='benchmarks.html'>Open the full report →</a></p>
 </div></section>
 """
-    return page("robobus — post-quantum, real-time robotics middleware", "home", body,
-                desc="A sub-microsecond bus, CNSA 2.0 post-quantum crypto, and PQC-hardened "
-                     "DDS-Security — measured across nine orders of magnitude.")
+    return page("robobus — a fast, universal, quantum-safe way for machines to talk", "home", body,
+                desc="robobus is a super-fast, universal messaging system for robots, sensors and "
+                     "devices — locked with CNSA 2.0 post-quantum encryption (FIPS 203 ML-KEM · "
+                     "FIPS 204 ML-DSA) and PQC-hardened DDS-Security, measured across nine orders "
+                     "of magnitude.")
 
 
 # ---------------------------------------------------------------------------------------------
