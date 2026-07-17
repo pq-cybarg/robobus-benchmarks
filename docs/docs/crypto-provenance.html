@@ -75,6 +75,21 @@ h2.title{font-size:clamp(24px,3.5vw,34px);margin:0 0 8px}
 .fcard p{color:var(--muted);font-size:14.5px;margin:0}
 .fcard .pqc{color:var(--pqc)}.fcard .hybrid{color:var(--hybrid)}.fcard .qr{color:var(--qr)}
 
+/* plain-language explainer — the layperson on-ramp */
+.plain{display:grid;gap:16px}
+@media(min-width:760px){.plain{grid-template-columns:repeat(3,1fr)}}
+.pcard{background:linear-gradient(180deg,var(--panel),var(--panel2));border:1px solid var(--line);border-radius:16px;padding:24px 22px}
+.pcard .ic{width:42px;height:42px;border-radius:12px;display:grid;place-items:center;margin:0 0 16px}
+.pcard .ic svg{width:23px;height:23px}
+.pcard .ic.spd{background:color-mix(in srgb,var(--signal) 15%,transparent);color:var(--signal)}
+.pcard .ic.rch{background:color-mix(in srgb,var(--hybrid) 15%,transparent);color:var(--hybrid)}
+.pcard .ic.sec{background:color-mix(in srgb,var(--qr) 15%,transparent);color:var(--qr)}
+.pcard h3{font-size:19.5px;margin:0 0 9px}
+.pcard .an{color:var(--fg);font-weight:600;margin:0 0 9px;font-size:15px}
+.pcard p{color:var(--muted);font-size:14.5px;margin:0}
+.oneline{margin-top:22px;padding:16px 20px;border:1px solid color-mix(in srgb,var(--signal) 26%,var(--line));border-radius:12px;background:color-mix(in srgb,var(--signal) 6%,var(--panel2));color:var(--muted);font-size:15px;line-height:1.55}
+.oneline b{color:var(--fg);font-weight:600}
+
 /* transports */
 .xgrid{display:grid;gap:14px}
 @media(min-width:720px){.xgrid{grid-template-columns:1fr 1fr}}
