@@ -208,11 +208,33 @@ def nav(active, prefix=""):
             f"<nav class='links'>{links}{gh}</nav></div></div>")
 
 
-def page(title, active, body, prefix="", extra_head="", desc=""):
+BASE_URL = "https://pq-cybarg.github.io/robobus-benchmarks/"
+OG_IMAGE = BASE_URL + "og-image.png"       # absolute — X/Slack/Discord require an absolute image URL
+
+
+def page(title, active, body, prefix="", extra_head="", desc="", canon=""):
     d = html.escape(desc or "Post-quantum, real-time robotics middleware — measured, not claimed.")
+    t = html.escape(title)
+    url = BASE_URL + canon
+    og = (
+        f"<link rel='canonical' href='{url}'>"
+        f"<meta property='og:type' content='website'>"
+        f"<meta property='og:site_name' content='robobus'>"
+        f"<meta property='og:title' content='{t}'>"
+        f"<meta property='og:description' content='{d}'>"
+        f"<meta property='og:url' content='{url}'>"
+        f"<meta property='og:image' content='{OG_IMAGE}'>"
+        f"<meta property='og:image:width' content='1200'>"
+        f"<meta property='og:image:height' content='630'>"
+        f"<meta property='og:image:alt' content='robobus — post-quantum, real-time robotics middleware'>"
+        f"<meta name='twitter:card' content='summary_large_image'>"
+        f"<meta name='twitter:title' content='{t}'>"
+        f"<meta name='twitter:description' content='{d}'>"
+        f"<meta name='twitter:image' content='{OG_IMAGE}'>"
+    )
     return (f"<!doctype html><html lang='en'><head><meta charset='utf-8'>"
             f"<meta name='viewport' content='width=device-width,initial-scale=1'>"
-            f"<title>{html.escape(title)}</title><meta name='description' content='{d}'>"
+            f"<title>{t}</title><meta name='description' content='{d}'>{og}"
             f"{FONTS}<style>{CSS}</style>{extra_head}</head><body>"
             f"{nav(active,prefix)}{body}"
             f"<footer class='site'><div class='wrap'><div class='row'>"
@@ -520,7 +542,7 @@ def benchmarks():
               "<div style=\"font-family:'Space Grotesk';font-weight:600;font-size:clamp(26px,4vw,36px);"
               "letter-spacing:-.02em;margin:0 0 22px;color:#e9eef4\">Full-system benchmarks</div>")
     rep_body = rep_body.replace("<div class='wrap'>", "<div class='wrap'>" + header, 1)
-    return page("Benchmarks · robobus", "benchmarks", rep_body, extra_head=override,
+    return page("Benchmarks · robobus", "benchmarks", rep_body, extra_head=override, canon="benchmarks.html",
                 desc="Full-system post-quantum & real-time benchmarks for robobus, refreshed on CI.")
 
 
@@ -784,7 +806,7 @@ def speed():
   product. Measured, never estimated; unprovisioned cells say so.</p>
 </div></header>"""
     body = hero + sec1 + sec2 + sec3 + sec4
-    return page("Speed matrix · robobus", "speed", body,
+    return page("Speed matrix · robobus", "speed", body, canon="speed.html",
                 desc="Native maximum speed across every robobus language and transport — codec, "
                      "crypto, transport throughput, and the full transport × language product.")
 
