@@ -165,6 +165,20 @@ h2.title{font-size:clamp(24px,3.5vw,34px);margin:0 0 8px}
 .heat td b{font-weight:700;color:var(--bg)}
 .speed-skip{color:var(--dim)}.speed-skip td{border-bottom:1px solid var(--line);padding:9px 14px}
 
+/* requirements profiles table */
+.pftab td{vertical-align:top}
+.pf-n{font-weight:600;color:var(--fg)}
+.pf-alg{font:400 11px/1.3 'JetBrains Mono';color:var(--dim);margin-top:3px}
+.pf-sub{font:400 11px/1.3 'JetBrains Mono';color:var(--dim);margin-top:3px}
+.pf-lvl{display:inline-block;font:600 11px/1 'JetBrains Mono';padding:4px 9px;border-radius:6px;white-space:nowrap}
+.pf-lvl.l0{color:var(--dim);border:1px solid var(--line)}
+.pf-lvl.l1{color:var(--hybrid);background:color-mix(in srgb,var(--hybrid) 12%,transparent)}
+.pf-lvl.l3{color:var(--signal);background:color-mix(in srgb,var(--signal) 12%,transparent)}
+.pf-lvl.l5{color:var(--qr);background:color-mix(in srgb,var(--qr) 14%,transparent)}
+.pf-std{max-width:260px}
+.cchip{display:inline-block;font:500 10.5px/1 'JetBrains Mono';color:var(--muted);border:1px solid var(--line);
+  background:var(--panel2);border-radius:5px;padding:4px 7px;margin:0 4px 4px 0;white-space:nowrap}
+
 /* callout */
 .note{background:color-mix(in srgb,var(--amber) 8%,var(--panel));border:1px solid color-mix(in srgb,var(--amber) 34%,var(--line));border-radius:12px;padding:14px 18px;color:#f1d9b3;font-size:14.5px}
 .note b{color:var(--amber)}
@@ -692,6 +706,45 @@ def _hbars(rows, tier_fn):
     return "<div class='hbars'>" + "".join(out) + "</div>"
 
 
+def _profiles_section():
+    pr = _load("profiles.json")
+    if not pr:
+        return ""
+    rows = ""
+    for p in pr["profiles"]:
+        lvl = p["level"]
+        lbadge = ("classical" if lvl == 0 else f"NIST {lvl}")
+        ss = f"{p['session_setup_ns']/1e6:.2f} ms" if p.get("session_setup_ns") else "—"
+        pm = f"{p['per_message_ns']/1000:.2f} µs" if p.get("per_message_ns") else "—"
+        mps = f"{p['msg_per_s']:,.0f}" if p.get("msg_per_s") else "—"
+        km = p["components"].get("kem", {})
+        sg = p["components"].get("sig", {})
+        sub = ""
+        if "encaps_ns" in km and "sign_ns" in sg:
+            sub = (f"<div class='pf-sub'>KEM {(km['keygen_ns']+km['encaps_ns']+km['decaps_ns'])/1e6:.2f}"
+                   f" · sign {sg['sign_ns']/1e6:.2f} · verify {sg['verify_ns']/1e6:.2f} ms</div>")
+        chips = "".join(f"<span class='cchip'>{html.escape(s)}</span>" for s in p["standards"][:4])
+        rows += (f"<tr><td class='pf-n'>{html.escape(p['name'])}<div class='pf-alg'>"
+                 f"{html.escape(p['kem'])} · {html.escape(p['sig'])}</div></td>"
+                 f"<td><span class='pf-lvl l{lvl}'>{lbadge}</span></td>"
+                 f"<td class='n'>{ss}{sub}</td><td class='n'>{pm}</td><td class='n'>{mps}</td>"
+                 f"<td class='pf-std'>{chips}</td></tr>")
+    return f"""<section><div class='wrap'>
+  <p class='sec-eyebrow'>requirements · speed under each profile</p>
+  <h2 class='title'>Pick your requirement, see the cost</h2>
+  <p class='sec-lede'>Security is a spectrum you choose per link, not a mandate — from
+  <b>classical</b> (backwards-compatible with non-PQ peers) through hybrid transition profiles to
+  <b>CNSA&nbsp;2.0</b> for National Security Systems. Each profile splits into two cost centres:
+  <b>session setup</b> (the ML-KEM / ML-DSA handshake, once per peer, amortized) and the
+  <b>per-message</b> hot path (AES-256-GCM, every frame). Session cost swings ~130× with assurance;
+  per-message stays flat at line rate — so higher security buys handshake latency, not throughput.</p>
+  <div style='overflow-x:auto'><table class='ltab pftab'>
+  <thead><tr><th>Profile</th><th>Level</th><th>Session setup</th><th>Per-message</th><th>msg/s</th><th>Standards</th></tr></thead>
+  <tbody>{rows}</tbody></table></div>
+  <p class='sec-lede' style='margin-top:16px'>{html.escape(pr.get('note',''))}</p>
+</div></section>"""
+
+
 def speed():
     lm = _load("lang-matrix.json")
     cl = _load("cross-lang.json")
@@ -805,7 +858,7 @@ def speed():
   bridges — decode speed, crypto seal/open, transport frame rate, and the full transport × language
   product. Measured, never estimated; unprovisioned cells say so.</p>
 </div></header>"""
-    body = hero + sec1 + sec2 + sec3 + sec4
+    body = hero + _profiles_section() + sec1 + sec2 + sec3 + sec4
     return page("Speed matrix · robobus", "speed", body, canon="speed.html",
                 desc="Native maximum speed across every robobus language and transport — codec, "
                      "crypto, transport throughput, and the full transport × language product.")

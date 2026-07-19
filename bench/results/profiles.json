@@ -1,0 +1,436 @@
+{
+  "schema": "robobus-profiles/1",
+  "generated_unix": 1784446128,
+  "host": {
+    "system": "Darwin",
+    "machine": "arm64"
+  },
+  "note": "Session setup is one-time per peer (amortized to ~0 over a session); the per-message hot path is ~constant across profiles (AES-256-GCM at line rate). Higher NIST level buys assurance at handshake latency, not stream throughput.",
+  "profiles": [
+    {
+      "name": "classical",
+      "level": 0,
+      "kem": "x25519",
+      "sig": "ed25519",
+      "aead": "aes256-gcm",
+      "hash": "sha256",
+      "kdf": "hkdf",
+      "standards": [
+        "RFC 7748 (X25519)",
+        "RFC 8032 (Ed25519)",
+        "NIST SP 800-38D (AES-GCM)"
+      ],
+      "note": "Classical only \u2014 use when a peer can't do PQC. NOT quantum-resistant.",
+      "components": {
+        "kem": {
+          "keygen_ns": 68107.87891156462,
+          "encaps_ns": 206379.11522633745,
+          "decaps_ns": 219393.45614035087
+        },
+        "sig": {
+          "keygen_ns": 74527.88077496274,
+          "sign_ns": 136993.60547945206,
+          "verify_ns": 147365.19705882354,
+          "sig_bytes": 64
+        },
+        "per_message": {
+          "encode_ns": 343.614133347994,
+          "seal_ns": 1604.608613330766,
+          "open_ns": 731.4144992832275,
+          "decode_ns": 441.7228386663604
+        }
+      },
+      "session_setup_ns": 778239.2528165285,
+      "per_message_ns": 3121.360084628348,
+      "msg_per_s": 320373.1619830294,
+      "frame_bytes": 41
+    },
+    {
+      "name": "nist1",
+      "level": 1,
+      "kem": "ml-kem-512",
+      "sig": "ml-dsa-44",
+      "aead": "aes256-gcm",
+      "hash": "sha3-256",
+      "kdf": "hkdf",
+      "standards": [
+        "FIPS 203 (ML-KEM-512)",
+        "FIPS 204 (ML-DSA-44)",
+        "FIPS 202 (SHA3-256)",
+        "NIST SP 800-38D"
+      ],
+      "note": "PQC NIST Level 1.",
+      "components": {
+        "kem": {
+          "keygen_ns": 9035.442196531792,
+          "encaps_ns": 15135.971549636804,
+          "decaps_ns": 16491.63093667546
+        },
+        "sig": {
+          "keygen_ns": 36525.32213294375,
+          "sign_ns": 145828.23032069972,
+          "verify_ns": 38673.111368909515,
+          "sig_bytes": 2420
+        },
+        "per_message": {
+          "encode_ns": 315.04503238652114,
+          "seal_ns": 1541.362257636941,
+          "open_ns": 700.6317242345688,
+          "decode_ns": 421.6263734410443
+        }
+      },
+      "session_setup_ns": 225164.38637245327,
+      "per_message_ns": 2978.665387699075,
+      "msg_per_s": 335720.8245443334,
+      "frame_bytes": 41
+    },
+    {
+      "name": "nist3",
+      "level": 3,
+      "kem": "ml-kem-768",
+      "sig": "ml-dsa-65",
+      "aead": "aes256-gcm",
+      "hash": "sha3-384",
+      "kdf": "hkdf",
+      "standards": [
+        "FIPS 203 (ML-KEM-768)",
+        "FIPS 204 (ML-DSA-65)",
+        "FIPS 202 (SHA3-384)"
+      ],
+      "note": "PQC NIST Level 3.",
+      "components": {
+        "kem": {
+          "keygen_ns": 12176.071341611882,
+          "encaps_ns": 18908.11266540643,
+          "decaps_ns": 19380.103488372093
+        },
+        "sig": {
+          "keygen_ns": 65507.58115183246,
+          "sign_ns": 234142.33177570094,
+          "verify_ns": 67529.23886639676,
+          "sig_bytes": 3309
+        },
+        "per_message": {
+          "encode_ns": 306.04743687834736,
+          "seal_ns": 1485.609709718632,
+          "open_ns": 714.0450559808066,
+          "decode_ns": 415.8502195681826
+        }
+      },
+      "session_setup_ns": 352135.85813748813,
+      "per_message_ns": 2921.5524221459686,
+      "msg_per_s": 342283.77776821464,
+      "frame_bytes": 41
+    },
+    {
+      "name": "hybrid3",
+      "level": 3,
+      "kem": "x25519+ml-kem-768",
+      "sig": "ml-dsa-65",
+      "aead": "aes256-gcm",
+      "hash": "sha3-384",
+      "kdf": "hkdf",
+      "standards": [
+        "FIPS 203",
+        "FIPS 204",
+        "RFC 7748",
+        "NIST SP 800-56C (hybrid KDF)"
+      ],
+      "note": "Hybrid X25519+ML-KEM-768 \u2014 recommended default; PQ + classical defence in depth.",
+      "components": {
+        "kem": {
+          "keygen_ns": 83526.64273789649,
+          "encaps_ns": 230905.9124423963,
+          "decaps_ns": 241649.35265700484
+        },
+        "sig": {
+          "keygen_ns": 67196.36375838926,
+          "sign_ns": 235852.99056603774,
+          "verify_ns": 59441.95368171021,
+          "sig_bytes": 3309
+        },
+        "per_message": {
+          "encode_ns": 296.8624761769054,
+          "seal_ns": 1539.4768003941008,
+          "open_ns": 708.3203524528623,
+          "decode_ns": 514.4706651026876
+        }
+      },
+      "session_setup_ns": 851376.8520850455,
+      "per_message_ns": 3059.130294126556,
+      "msg_per_s": 326890.29359748814,
+      "frame_bytes": 41
+    },
+    {
+      "name": "nist5",
+      "level": 5,
+      "kem": "ml-kem-1024",
+      "sig": "ml-dsa-87",
+      "aead": "aes256-gcm",
+      "hash": "sha3-512",
+      "kdf": "hkdf",
+      "standards": [
+        "FIPS 203 (ML-KEM-1024)",
+        "FIPS 204 (ML-DSA-87)",
+        "FIPS 202 (SHA3-512)"
+      ],
+      "note": "PQC NIST Level 5.",
+      "components": {
+        "kem": {
+          "keygen_ns": 17226.619014812262,
+          "encaps_ns": 23968.535697172974,
+          "decaps_ns": 26289.103575184017
+        },
+        "sig": {
+          "keygen_ns": 96527.29479768786,
+          "sign_ns": 283747.8813559322,
+          "verify_ns": 102127.12448979591,
+          "sig_bytes": 4627
+        },
+        "per_message": {
+          "encode_ns": 318.97581545488765,
+          "seal_ns": 1590.2934385038643,
+          "open_ns": 713.5804623947481,
+          "decode_ns": 426.6432697640684
+        }
+      },
+      "session_setup_ns": 453359.26413289737,
+      "per_message_ns": 3049.4929861175683,
+      "msg_per_s": 327923.3644912035,
+      "frame_bytes": 41
+    },
+    {
+      "name": "hybrid5",
+      "level": 5,
+      "kem": "x448+ml-kem-1024",
+      "sig": "ml-dsa-87",
+      "aead": "aes256-gcm",
+      "hash": "sha3-512",
+      "kdf": "hkdf",
+      "standards": [
+        "FIPS 203",
+        "FIPS 204",
+        "RFC 7748 (X448)",
+        "NIST SP 800-56C"
+      ],
+      "note": "Hybrid X448+ML-KEM-1024 \u2014 highest hybrid assurance.",
+      "components": {
+        "kem": {
+          "keygen_ns": 1354254.6875,
+          "encaps_ns": 2270667.1875,
+          "decaps_ns": 2228571.3625
+        },
+        "sig": {
+          "keygen_ns": 90964.4709090909,
+          "sign_ns": 272540.0918918919,
+          "verify_ns": 95836.44636015326,
+          "sig_bytes": 4627
+        },
+        "per_message": {
+          "encode_ns": 298.402810933397,
+          "seal_ns": 1491.923793041714,
+          "open_ns": 706.991247543232,
+          "decode_ns": 426.4104162580271
+        }
+      },
+      "session_setup_ns": 6221869.775752045,
+      "per_message_ns": 2923.72826777637,
+      "msg_per_s": 342029.0493550367,
+      "frame_bytes": 41
+    },
+    {
+      "name": "cnsa20",
+      "level": 5,
+      "kem": "ml-kem-1024",
+      "sig": "ml-dsa-87",
+      "aead": "aes256-gcm",
+      "hash": "sha384",
+      "kdf": "hkdf",
+      "standards": [
+        "CNSA 2.0",
+        "FIPS 203 (ML-KEM-1024)",
+        "FIPS 204 (ML-DSA-87)",
+        "FIPS 180-4 (SHA-384)",
+        "NIST SP 800-38D (AES-256-GCM)"
+      ],
+      "note": "NSA CNSA 2.0: ML-KEM-1024 + ML-DSA-87 + AES-256 + SHA-384 (SHA-2 per CNSA).",
+      "components": {
+        "kem": {
+          "keygen_ns": 16385.362057667102,
+          "encaps_ns": 22121.111897390536,
+          "decaps_ns": 24011.581853096497
+        },
+        "sig": {
+          "keygen_ns": 100100.0,
+          "sign_ns": 274862.86813186813,
+          "verify_ns": 93830.67542213884,
+          "sig_bytes": 4627
+        },
+        "per_message": {
+          "encode_ns": 302.5820266876456,
+          "seal_ns": 1546.6920007423905,
+          "open_ns": 739.5314076111875,
+          "decode_ns": 460.46411633068413
+        }
+      },
+      "session_setup_ns": 431211.59936216107,
+      "per_message_ns": 3049.2695513719077,
+      "msg_per_s": 327947.39302403963,
+      "frame_bytes": 41
+    },
+    {
+      "name": "nist5-kmac",
+      "level": 5,
+      "kem": "ml-kem-1024",
+      "sig": "ml-dsa-87",
+      "aead": "aes256-gcm",
+      "hash": "sha3-512",
+      "kdf": "kmac",
+      "standards": [
+        "FIPS 203 (ML-KEM-1024)",
+        "FIPS 204 (ML-DSA-87)",
+        "FIPS 202 (SHA3-512)",
+        "NIST SP 800-185 (KMAC256)",
+        "NIST SP 800-56C rev3 (KMAC KDF)"
+      ],
+      "note": "PQC Level 5 with KMAC256 KDF (Keccak-native, no HMAC).",
+      "components": {
+        "kem": {
+          "keygen_ns": 17598.448979591838,
+          "encaps_ns": 23811.706666666665,
+          "decaps_ns": 26091.136150234743
+        },
+        "sig": {
+          "keygen_ns": 98357.80943025541,
+          "sign_ns": 300643.4610778443,
+          "verify_ns": 96993.23017408124,
+          "sig_bytes": 4627
+        },
+        "per_message": {
+          "encode_ns": 338.137896765034,
+          "seal_ns": 1597.5257356465063,
+          "open_ns": 723.5839568168333,
+          "decode_ns": 431.36352577817655
+        }
+      },
+      "session_setup_ns": 465137.98304841877,
+      "per_message_ns": 3090.61111500655,
+      "msg_per_s": 323560.6042909998,
+      "frame_bytes": 41
+    },
+    {
+      "name": "falcon5",
+      "level": 5,
+      "kem": "ml-kem-1024",
+      "sig": "falcon-1024",
+      "aead": "aes256-gcm",
+      "hash": "sha3-512",
+      "kdf": "hkdf",
+      "standards": [
+        "FN-DSA/Falcon (NIST round 3 sig)",
+        "FIPS 203",
+        "FIPS 202"
+      ],
+      "note": "Falcon-1024 signatures (compact sigs, fast verify).",
+      "components": {
+        "kem": {
+          "keygen_ns": 17497.740027991604,
+          "encaps_ns": 23746.418803418805,
+          "decaps_ns": 25647.30769230769
+        },
+        "sig": {
+          "keygen_ns": 11305355.2,
+          "sign_ns": 200939.08835341365,
+          "verify_ns": 36111.79277978339,
+          "sig_bytes": 1277
+        },
+        "per_message": {
+          "encode_ns": 334.2530817980052,
+          "seal_ns": 1522.23694705757,
+          "open_ns": 679.7061254452027,
+          "decode_ns": 500.22927317292783
+        }
+      },
+      "session_setup_ns": 303942.34765691514,
+      "per_message_ns": 3036.425427473706,
+      "msg_per_s": 329334.6152854464,
+      "frame_bytes": 41
+    },
+    {
+      "name": "sphincs5",
+      "level": 5,
+      "kem": "ml-kem-1024",
+      "sig": "sphincs-sha2-256f",
+      "aead": "aes256-gcm",
+      "hash": "sha3-512",
+      "kdf": "hkdf",
+      "standards": [
+        "FIPS 205 (SLH-DSA / SPHINCS+)",
+        "FIPS 203",
+        "FIPS 202"
+      ],
+      "note": "Hash-based SLH-DSA signatures (most conservative security assumptions).",
+      "components": {
+        "kem": {
+          "keygen_ns": 17659.11899717514,
+          "encaps_ns": 23204.002320185617,
+          "decaps_ns": 25076.10330992979
+        },
+        "sig": {
+          "keygen_ns": 1384973.975,
+          "sign_ns": 29868608.35,
+          "verify_ns": 740615.2058823529,
+          "sig_bytes": 49856
+        },
+        "per_message": {
+          "encode_ns": 301.97996678242487,
+          "seal_ns": 1482.4433869963532,
+          "open_ns": 694.6630776070466,
+          "decode_ns": 455.5831435079727
+        }
+      },
+      "session_setup_ns": 30675162.780509643,
+      "per_message_ns": 2934.6695748937973,
+      "msg_per_s": 340753.864951283,
+      "frame_bytes": 41
+    },
+    {
+      "name": "csfc",
+      "level": 5,
+      "kem": "x448+ml-kem-1024",
+      "sig": "ml-dsa-87",
+      "aead": "aes256-gcm",
+      "hash": "sha3-512",
+      "kdf": "hkdf",
+      "standards": [
+        "NSA CSfC (two-layer)",
+        "FIPS 203/204/202",
+        "CNSA 2.0 inner"
+      ],
+      "note": "Two independent AEAD layers with independent keys (CSfC defence in depth).",
+      "components": {
+        "kem": {
+          "keygen_ns": 1322388.0125,
+          "encaps_ns": 2632771.875,
+          "decaps_ns": 2389117.1875
+        },
+        "sig": {
+          "keygen_ns": 94296.76647834275,
+          "sign_ns": 254032.78680203046,
+          "verify_ns": 99176.73267326732,
+          "sig_bytes": 4627
+        },
+        "per_message": {
+          "encode_ns": 311.6650003116624,
+          "seal_ns": 1807.42118386817,
+          "open_ns": 977.3715743383244,
+          "decode_ns": 674.347463113317
+        }
+      },
+      "session_setup_ns": 6697486.594475297,
+      "per_message_ns": 3770.8052216314736,
+      "msg_per_s": 265195.3472068602,
+      "frame_bytes": 41
+    }
+  ]
+}

@@ -130,6 +130,20 @@ h2.title{font-size:clamp(24px,3.5vw,34px);margin:0 0 8px}
 .heat td b{font-weight:700;color:var(--bg)}
 .speed-skip{color:var(--dim)}.speed-skip td{border-bottom:1px solid var(--line);padding:9px 14px}
 
+/* requirements profiles table */
+.pftab td{vertical-align:top}
+.pf-n{font-weight:600;color:var(--fg)}
+.pf-alg{font:400 11px/1.3 'JetBrains Mono';color:var(--dim);margin-top:3px}
+.pf-sub{font:400 11px/1.3 'JetBrains Mono';color:var(--dim);margin-top:3px}
+.pf-lvl{display:inline-block;font:600 11px/1 'JetBrains Mono';padding:4px 9px;border-radius:6px;white-space:nowrap}
+.pf-lvl.l0{color:var(--dim);border:1px solid var(--line)}
+.pf-lvl.l1{color:var(--hybrid);background:color-mix(in srgb,var(--hybrid) 12%,transparent)}
+.pf-lvl.l3{color:var(--signal);background:color-mix(in srgb,var(--signal) 12%,transparent)}
+.pf-lvl.l5{color:var(--qr);background:color-mix(in srgb,var(--qr) 14%,transparent)}
+.pf-std{max-width:260px}
+.cchip{display:inline-block;font:500 10.5px/1 'JetBrains Mono';color:var(--muted);border:1px solid var(--line);
+  background:var(--panel2);border-radius:5px;padding:4px 7px;margin:0 4px 4px 0;white-space:nowrap}
+
 /* callout */
 .note{background:color-mix(in srgb,var(--amber) 8%,var(--panel));border:1px solid color-mix(in srgb,var(--amber) 34%,var(--line));border-radius:12px;padding:14px 18px;color:#f1d9b3;font-size:14.5px}
 .note b{color:var(--amber)}
@@ -154,6 +168,19 @@ footer.site a{color:var(--muted)}
   bridges — decode speed, crypto seal/open, transport frame rate, and the full transport × language
   product. Measured, never estimated; unprovisioned cells say so.</p>
 </div></header><section><div class='wrap'>
+  <p class='sec-eyebrow'>requirements · speed under each profile</p>
+  <h2 class='title'>Pick your requirement, see the cost</h2>
+  <p class='sec-lede'>Security is a spectrum you choose per link, not a mandate — from
+  <b>classical</b> (backwards-compatible with non-PQ peers) through hybrid transition profiles to
+  <b>CNSA&nbsp;2.0</b> for National Security Systems. Each profile splits into two cost centres:
+  <b>session setup</b> (the ML-KEM / ML-DSA handshake, once per peer, amortized) and the
+  <b>per-message</b> hot path (AES-256-GCM, every frame). Session cost swings ~130× with assurance;
+  per-message stays flat at line rate — so higher security buys handshake latency, not throughput.</p>
+  <div style='overflow-x:auto'><table class='ltab pftab'>
+  <thead><tr><th>Profile</th><th>Level</th><th>Session setup</th><th>Per-message</th><th>msg/s</th><th>Standards</th></tr></thead>
+  <tbody><tr><td class='pf-n'>classical<div class='pf-alg'>x25519 · ed25519</div></td><td><span class='pf-lvl l0'>classical</span></td><td class='n'>0.78 ms<div class='pf-sub'>KEM 0.49 · sign 0.14 · verify 0.15 ms</div></td><td class='n'>3.12 µs</td><td class='n'>320,373</td><td class='pf-std'><span class='cchip'>RFC 7748 (X25519)</span><span class='cchip'>RFC 8032 (Ed25519)</span><span class='cchip'>NIST SP 800-38D (AES-GCM)</span></td></tr><tr><td class='pf-n'>nist1<div class='pf-alg'>ml-kem-512 · ml-dsa-44</div></td><td><span class='pf-lvl l1'>NIST 1</span></td><td class='n'>0.23 ms<div class='pf-sub'>KEM 0.04 · sign 0.15 · verify 0.04 ms</div></td><td class='n'>2.98 µs</td><td class='n'>335,721</td><td class='pf-std'><span class='cchip'>FIPS 203 (ML-KEM-512)</span><span class='cchip'>FIPS 204 (ML-DSA-44)</span><span class='cchip'>FIPS 202 (SHA3-256)</span><span class='cchip'>NIST SP 800-38D</span></td></tr><tr><td class='pf-n'>nist3<div class='pf-alg'>ml-kem-768 · ml-dsa-65</div></td><td><span class='pf-lvl l3'>NIST 3</span></td><td class='n'>0.35 ms<div class='pf-sub'>KEM 0.05 · sign 0.23 · verify 0.07 ms</div></td><td class='n'>2.92 µs</td><td class='n'>342,284</td><td class='pf-std'><span class='cchip'>FIPS 203 (ML-KEM-768)</span><span class='cchip'>FIPS 204 (ML-DSA-65)</span><span class='cchip'>FIPS 202 (SHA3-384)</span></td></tr><tr><td class='pf-n'>hybrid3<div class='pf-alg'>x25519+ml-kem-768 · ml-dsa-65</div></td><td><span class='pf-lvl l3'>NIST 3</span></td><td class='n'>0.85 ms<div class='pf-sub'>KEM 0.56 · sign 0.24 · verify 0.06 ms</div></td><td class='n'>3.06 µs</td><td class='n'>326,890</td><td class='pf-std'><span class='cchip'>FIPS 203</span><span class='cchip'>FIPS 204</span><span class='cchip'>RFC 7748</span><span class='cchip'>NIST SP 800-56C (hybrid KDF)</span></td></tr><tr><td class='pf-n'>nist5<div class='pf-alg'>ml-kem-1024 · ml-dsa-87</div></td><td><span class='pf-lvl l5'>NIST 5</span></td><td class='n'>0.45 ms<div class='pf-sub'>KEM 0.07 · sign 0.28 · verify 0.10 ms</div></td><td class='n'>3.05 µs</td><td class='n'>327,923</td><td class='pf-std'><span class='cchip'>FIPS 203 (ML-KEM-1024)</span><span class='cchip'>FIPS 204 (ML-DSA-87)</span><span class='cchip'>FIPS 202 (SHA3-512)</span></td></tr><tr><td class='pf-n'>hybrid5<div class='pf-alg'>x448+ml-kem-1024 · ml-dsa-87</div></td><td><span class='pf-lvl l5'>NIST 5</span></td><td class='n'>6.22 ms<div class='pf-sub'>KEM 5.85 · sign 0.27 · verify 0.10 ms</div></td><td class='n'>2.92 µs</td><td class='n'>342,029</td><td class='pf-std'><span class='cchip'>FIPS 203</span><span class='cchip'>FIPS 204</span><span class='cchip'>RFC 7748 (X448)</span><span class='cchip'>NIST SP 800-56C</span></td></tr><tr><td class='pf-n'>cnsa20<div class='pf-alg'>ml-kem-1024 · ml-dsa-87</div></td><td><span class='pf-lvl l5'>NIST 5</span></td><td class='n'>0.43 ms<div class='pf-sub'>KEM 0.06 · sign 0.27 · verify 0.09 ms</div></td><td class='n'>3.05 µs</td><td class='n'>327,947</td><td class='pf-std'><span class='cchip'>CNSA 2.0</span><span class='cchip'>FIPS 203 (ML-KEM-1024)</span><span class='cchip'>FIPS 204 (ML-DSA-87)</span><span class='cchip'>FIPS 180-4 (SHA-384)</span></td></tr><tr><td class='pf-n'>nist5-kmac<div class='pf-alg'>ml-kem-1024 · ml-dsa-87</div></td><td><span class='pf-lvl l5'>NIST 5</span></td><td class='n'>0.47 ms<div class='pf-sub'>KEM 0.07 · sign 0.30 · verify 0.10 ms</div></td><td class='n'>3.09 µs</td><td class='n'>323,561</td><td class='pf-std'><span class='cchip'>FIPS 203 (ML-KEM-1024)</span><span class='cchip'>FIPS 204 (ML-DSA-87)</span><span class='cchip'>FIPS 202 (SHA3-512)</span><span class='cchip'>NIST SP 800-185 (KMAC256)</span></td></tr><tr><td class='pf-n'>falcon5<div class='pf-alg'>ml-kem-1024 · falcon-1024</div></td><td><span class='pf-lvl l5'>NIST 5</span></td><td class='n'>0.30 ms<div class='pf-sub'>KEM 0.07 · sign 0.20 · verify 0.04 ms</div></td><td class='n'>3.04 µs</td><td class='n'>329,335</td><td class='pf-std'><span class='cchip'>FN-DSA/Falcon (NIST round 3 sig)</span><span class='cchip'>FIPS 203</span><span class='cchip'>FIPS 202</span></td></tr><tr><td class='pf-n'>sphincs5<div class='pf-alg'>ml-kem-1024 · sphincs-sha2-256f</div></td><td><span class='pf-lvl l5'>NIST 5</span></td><td class='n'>30.68 ms<div class='pf-sub'>KEM 0.07 · sign 29.87 · verify 0.74 ms</div></td><td class='n'>2.93 µs</td><td class='n'>340,754</td><td class='pf-std'><span class='cchip'>FIPS 205 (SLH-DSA / SPHINCS+)</span><span class='cchip'>FIPS 203</span><span class='cchip'>FIPS 202</span></td></tr><tr><td class='pf-n'>csfc<div class='pf-alg'>x448+ml-kem-1024 · ml-dsa-87</div></td><td><span class='pf-lvl l5'>NIST 5</span></td><td class='n'>6.70 ms<div class='pf-sub'>KEM 6.34 · sign 0.25 · verify 0.10 ms</div></td><td class='n'>3.77 µs</td><td class='n'>265,195</td><td class='pf-std'><span class='cchip'>NSA CSfC (two-layer)</span><span class='cchip'>FIPS 203/204/202</span><span class='cchip'>CNSA 2.0 inner</span></td></tr></tbody></table></div>
+  <p class='sec-lede' style='margin-top:16px'>Session setup is one-time per peer (amortized to ~0 over a session); the per-message hot path is ~constant across profiles (AES-256-GCM at line rate). Higher NIST level buys assurance at handshake latency, not stream throughput.</p>
+</div></section><section><div class='wrap'>
   <p class='sec-eyebrow'>languages · wire codec</p>
   <h2 class='title'>Decode speed, every target language</h2>
   <p class='sec-lede'>The Imu wire record
