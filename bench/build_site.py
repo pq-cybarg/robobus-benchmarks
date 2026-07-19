@@ -706,6 +706,30 @@ def _hbars(rows, tier_fn):
     return "<div class='hbars'>" + "".join(out) + "</div>"
 
 
+def _runtimes_section():
+    rt = _load("runtimes.json")
+    if not rt:
+        return ""
+    oks = [r for r in rt["runtimes"] if r.get("status") == "ok"]
+    if not oks:
+        return ""
+    oks.sort(key=lambda r: -r["ops_per_s"])
+    rows = [(r["config"], r.get("note", ""), r["ops_per_s"], "op/s") for r in oks]
+    def tier(v):
+        return "tier-n" if v > 1e6 else "tier-j" if v > 6e5 else "tier-i"
+    return f"""<section><div class='wrap'>
+  <p class='sec-eyebrow'>python runtimes · choose your config</p>
+  <h2 class='title'>Same code, four runtimes — pick your stack</h2>
+  <p class='sec-lede'>robobus's Python surface runs on whatever runtime fits, and each has a native
+  acceleration path. <b>Cython stacks with CPython</b> (seal/open compiled to C in-process);
+  <b>PyPy does not stack with Cython</b> (its cpyext C-API layer is slow) but <b>stacks with native
+  code via cffi</b> — the JIT optimizes straight through the FFI into <code>librobobus</code>. Same
+  RBX1 seal+open workload, measured on each:</p>
+  {_hbars(rows, tier)}
+  <p class='sec-lede' style='margin-top:16px'>{html.escape(rt.get('note',''))}</p>
+</div></section>"""
+
+
 def _profiles_section():
     pr = _load("profiles.json")
     if not pr:
@@ -860,7 +884,7 @@ def speed():
   bridges — decode speed, crypto seal/open, transport frame rate, and the full transport × language
   product. Measured, never estimated; unprovisioned cells say so.</p>
 </div></header>"""
-    body = hero + _profiles_section() + sec1 + sec2 + sec3 + sec4
+    body = hero + _profiles_section() + sec1 + sec2 + _runtimes_section() + sec3 + sec4
     return page("Speed matrix · robobus", "speed", body, canon="speed.html",
                 desc="Native maximum speed across every robobus language and transport — codec, "
                      "crypto, transport throughput, and the full transport × language product.")

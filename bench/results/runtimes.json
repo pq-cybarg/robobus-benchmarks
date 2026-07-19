@@ -1,0 +1,40 @@
+{
+  "schema": "robobus-runtimes/1",
+  "generated_unix": 1784449359,
+  "host": {
+    "system": "Darwin",
+    "machine": "arm64"
+  },
+  "workload": "codec float frame \u2192 AES-256-GCM RBX1 seal \u2192 open",
+  "note": "Cython stacks with CPython (compiled hot path); PyPy does not stack with Cython (cpyext) but stacks with native code via cffi (JIT optimizes through the FFI).",
+  "runtimes": [
+    {
+      "config": "CPython (pure)",
+      "status": "ok",
+      "ns_per_op": 2115.7237499937764,
+      "ops_per_s": 472651.4980998543,
+      "note": "pyca/cryptography (C backend), CPython dispatch"
+    },
+    {
+      "config": "CPython + Cython",
+      "status": "ok",
+      "ns_per_op": 877.7570652297151,
+      "ops_per_s": 1139267.3891360739,
+      "note": "cyaead: Cython\u2192OpenSSL EVP, in-process"
+    },
+    {
+      "config": "CPython + cffi\u2192librobobus",
+      "status": "ok",
+      "ns_per_op": 1161.5877305505112,
+      "ops_per_s": 860890.6358937435,
+      "note": "cffi ABI-mode \u2192 librobobus (native), CPython"
+    },
+    {
+      "config": "PyPy + cffi\u2192librobobus",
+      "status": "ok",
+      "ns_per_op": 840.8967875008482,
+      "ops_per_s": 1189206.5885660092,
+      "note": "PyPy JIT + cffi \u2192 librobobus (native)"
+    }
+  ]
+}
