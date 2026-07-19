@@ -844,9 +844,11 @@ def speed():
   <p class='sec-eyebrow'>transport × language</p>
   <h2 class='title'>The full product</h2>
   <p class='sec-lede'>Each cell: that language's native client pushing the sealed frame over that
-  transport (frames/s, loopback, pipelined). The universal socket transports come first; broker and
-  runtime transports are filling in per language. Notice the rows are near-flat across languages —
-  the transport, not the caller, sets the ceiling.</p>
+  transport (frames/s, loopback, pipelined). These cells are <b>I/O-syscall-bound</b> — every
+  language issues the same <code>send</code>/<code>recv</code> into the same kernel, so throughput
+  converges to the loopback ceiling and small differences (even Python edging C) are run-to-run
+  noise, not language speed. That's the point: <b>the transport sets the ceiling, not the caller</b>
+  — the opposite of the codec table above, where language speed spans ~20,000×.</p>
   <div class='heatwrap'><table class='heat'><thead><tr><th>transport</th>{head}</tr></thead>
   <tbody>{body}</tbody></table></div>
 </div></section>"""
