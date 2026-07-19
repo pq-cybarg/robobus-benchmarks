@@ -726,8 +726,19 @@ def _runtimes_section():
   code via cffi</b> — the JIT optimizes straight through the FFI into <code>librobobus</code>. Same
   RBX1 seal+open workload, measured on each:</p>
   {_hbars(rows, tier)}
+  {_runtime_pending(rt)}
   <p class='sec-lede' style='margin-top:16px'>{html.escape(rt.get('note',''))}</p>
 </div></section>"""
+
+
+def _runtime_pending(rt):
+    sk = [r for r in rt["runtimes"] if r.get("status") != "ok"]
+    if not sk:
+        return ""
+    rows = "".join(f"<tr class='speed-skip'><td>{html.escape(r['config'])}</td>"
+                   f"<td>{html.escape(r.get('note',''))}</td></tr>" for r in sk)
+    return (f"<table class='ltab' style='margin-top:14px'><thead><tr><th>Runtime mix (tracked)</th>"
+            f"<th>status</th></tr></thead><tbody>{rows}</tbody></table>")
 
 
 def _profiles_section():

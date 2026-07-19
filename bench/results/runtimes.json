@@ -1,6 +1,6 @@
 {
   "schema": "robobus-runtimes/1",
-  "generated_unix": 1784449359,
+  "generated_unix": 1784449710,
   "host": {
     "system": "Darwin",
     "machine": "arm64"
@@ -11,30 +11,55 @@
     {
       "config": "CPython (pure)",
       "status": "ok",
-      "ns_per_op": 2115.7237499937764,
-      "ops_per_s": 472651.4980998543,
+      "ns_per_op": 2307.1608777778843,
+      "ops_per_s": 433433.14704743895,
       "note": "pyca/cryptography (C backend), CPython dispatch"
     },
     {
       "config": "CPython + Cython",
       "status": "ok",
-      "ns_per_op": 877.7570652297151,
-      "ops_per_s": 1139267.3891360739,
+      "ns_per_op": 881.8461043436242,
+      "ops_per_s": 1133984.7112488183,
       "note": "cyaead: Cython\u2192OpenSSL EVP, in-process"
     },
     {
       "config": "CPython + cffi\u2192librobobus",
       "status": "ok",
-      "ns_per_op": 1161.5877305505112,
-      "ops_per_s": 860890.6358937435,
+      "ns_per_op": 1181.1648264590665,
+      "ops_per_s": 846621.8918809425,
       "note": "cffi ABI-mode \u2192 librobobus (native), CPython"
     },
     {
       "config": "PyPy + cffi\u2192librobobus",
       "status": "ok",
-      "ns_per_op": 840.8967875008482,
-      "ops_per_s": 1189206.5885660092,
+      "ns_per_op": 778.2616980805939,
+      "ops_per_s": 1284914.833231898,
       "note": "PyPy JIT + cffi \u2192 librobobus (native)"
+    },
+    {
+      "config": "Mojo (native)",
+      "status": "skipped",
+      "note": "Modular SDK (mojo) not installed"
+    },
+    {
+      "config": "GraalPy",
+      "status": "skipped",
+      "note": "GraalPy not installed"
+    },
+    {
+      "config": "CPython + Nuitka",
+      "status": "skipped",
+      "note": "Nuitka not installed"
+    },
+    {
+      "config": "Codon",
+      "status": "skipped",
+      "note": "Codon not installed"
+    },
+    {
+      "config": "PyPy + Cython",
+      "status": "skipped",
+      "note": "anti-pattern: CPython C-API ext runs on PyPy only via slow cpyext \u2014 use cffi instead"
     }
   ]
 }
