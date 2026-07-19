@@ -741,6 +741,27 @@ def _runtime_pending(rt):
             f"<th>status</th></tr></thead><tbody>{rows}</tbody></table>")
 
 
+def _ruby_runtimes_section():
+    rr = _load("ruby-runtimes.json")
+    if not rr:
+        return ""
+    oks = [r for r in rr["runtimes"] if r.get("status") == "ok"]
+    if not oks:
+        return ""
+    oks.sort(key=lambda r: -r["ops_per_s"])
+    rows = [(r["config"], r.get("note", ""), r["ops_per_s"], "it/s") for r in oks]
+    return f"""<section><div class='wrap'>
+  <p class='sec-eyebrow'>ruby runtimes · the ruby family</p>
+  <h2 class='title'>Ruby, accelerated the Ruby way</h2>
+  <p class='sec-lede'>The same story holds beyond Python. <b>crystalruby</b> compiles Crystal hot
+  paths and calls them from MRI Ruby via FFI — the Ruby analog of CPython+Cython. And <b>Crystal</b>
+  itself (Ruby-like syntax, LLVM-compiled) sits in the codec matrix above at C-class 0.79 ns/op.
+  Same CPU kernel, MRI vs crystalruby:</p>
+  {_hbars(rows, lambda v: 'tier-n' if v > 1e8 else 'tier-i')}
+  <p class='sec-lede' style='margin-top:16px'>{html.escape(rr.get('note',''))}</p>
+</div></section>"""
+
+
 def _profiles_section():
     pr = _load("profiles.json")
     if not pr:
@@ -895,7 +916,7 @@ def speed():
   bridges — decode speed, crypto seal/open, transport frame rate, and the full transport × language
   product. Measured, never estimated; unprovisioned cells say so.</p>
 </div></header>"""
-    body = hero + _profiles_section() + sec1 + sec2 + _runtimes_section() + sec3 + sec4
+    body = hero + _profiles_section() + sec1 + sec2 + _runtimes_section() + _ruby_runtimes_section() + sec3 + sec4
     return page("Speed matrix · robobus", "speed", body, canon="speed.html",
                 desc="Native maximum speed across every robobus language and transport — codec, "
                      "crypto, transport throughput, and the full transport × language product.")

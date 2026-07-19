@@ -1,0 +1,27 @@
+{
+  "schema": "robobus-ruby-runtimes/1",
+  "generated_unix": 1784460880,
+  "host": {
+    "system": "Darwin",
+    "machine": "arm64"
+  },
+  "workload": "sum of i*i, i in 0..20000000",
+  "note": "crystalruby compiles Crystal hot paths and calls them from MRI Ruby via FFI \u2014 the Ruby analog of CPython+Cython. Crystal standalone (Ruby-syntax, native) is in the language codec matrix.",
+  "runtimes": [
+    {
+      "config": "Ruby (MRI)",
+      "status": "ok",
+      "seconds": 0.7609660000016447,
+      "ops_per_s": 26282383.181320548,
+      "note": "interpreter baseline"
+    },
+    {
+      "config": "Ruby + crystalruby",
+      "status": "ok",
+      "seconds": 0.018249999993713573,
+      "ops_per_s": 1095890411.3363965,
+      "speedup_vs_mri": 41.696767137740736,
+      "note": "inline-compiled Crystal hot path (Ruby analog of CPython+Cython)"
+    }
+  ]
+}
