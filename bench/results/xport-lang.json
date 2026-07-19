@@ -1,6 +1,6 @@
 {
   "schema": "robobus-xport-lang/1",
-  "generated_unix": 1784412379,
+  "generated_unix": 1784436508,
   "frame_bytes": 75,
   "batch": 32,
   "host": {
@@ -13,41 +13,105 @@
       "transport": "udp",
       "language": "c",
       "status": "ok",
-      "frames_per_s": 333458.9,
-      "mb_per_s": 25.0094175,
+      "frames_per_s": 323233.4,
+      "mb_per_s": 24.242505,
       "note": "raw AF_INET/SOCK_DGRAM, -O3"
     },
     {
       "transport": "udp",
-      "language": "python",
+      "language": "cpp",
       "status": "ok",
-      "frames_per_s": 318986.5160412338,
-      "mb_per_s": 23.923988703092533,
-      "note": "socket (stdlib)"
-    },
-    {
-      "transport": "udp",
-      "language": "go",
-      "status": "ok",
-      "frames_per_s": 291885.9,
-      "mb_per_s": 21.8914425,
-      "note": "net.UDPConn"
+      "frames_per_s": 328282.7,
+      "mb_per_s": 24.6212025,
+      "note": "raw sockets (C++), -O3"
     },
     {
       "transport": "udp",
       "language": "rust",
       "status": "ok",
-      "frames_per_s": 326702.3,
-      "mb_per_s": 24.5026725,
+      "frames_per_s": 314917.7,
+      "mb_per_s": 23.6188275,
       "note": "std::net::UdpSocket"
     },
     {
       "transport": "udp",
-      "language": "node",
+      "language": "go",
       "status": "ok",
-      "frames_per_s": 204068.0,
-      "mb_per_s": 15.3051,
+      "frames_per_s": 295377.4,
+      "mb_per_s": 22.153305,
+      "note": "net.UDPConn"
+    },
+    {
+      "transport": "udp",
+      "language": "java",
+      "status": "ok",
+      "frames_per_s": 232001.5,
+      "mb_per_s": 17.4001125,
+      "note": "java.net.DatagramSocket"
+    },
+    {
+      "transport": "udp",
+      "language": "csharp",
+      "status": "ok",
+      "frames_per_s": 189090.7,
+      "mb_per_s": 14.1818025,
+      "note": "System.Net.Sockets.Socket"
+    },
+    {
+      "transport": "udp",
+      "language": "typescript",
+      "status": "ok",
+      "frames_per_s": 170423.2,
+      "mb_per_s": 12.78174,
       "note": "dgram (async)"
+    },
+    {
+      "transport": "udp",
+      "language": "python",
+      "status": "ok",
+      "frames_per_s": 263237.818587683,
+      "mb_per_s": 19.742836394076228,
+      "note": "socket (stdlib)"
+    },
+    {
+      "transport": "udp",
+      "language": "ruby",
+      "status": "ok",
+      "frames_per_s": 123823.9,
+      "mb_per_s": 9.2867925,
+      "note": "UDPSocket (stdlib)"
+    },
+    {
+      "transport": "udp",
+      "language": "julia",
+      "status": "ok",
+      "frames_per_s": 27530.4,
+      "mb_per_s": 2.06478,
+      "note": "Sockets.UDPSocket"
+    },
+    {
+      "transport": "udp",
+      "language": "swift",
+      "status": "skipped",
+      "note": "POSIX-socket client pending"
+    },
+    {
+      "transport": "udp",
+      "language": "kotlin",
+      "status": "skipped",
+      "note": "JVM DatagramSocket client pending"
+    },
+    {
+      "transport": "udp",
+      "language": "lua",
+      "status": "skipped",
+      "note": "no stdlib sockets (needs luasocket)"
+    },
+    {
+      "transport": "udp",
+      "language": "octave",
+      "status": "skipped",
+      "note": "no stdlib sockets (needs instrument-control)"
     }
   ]
 }
