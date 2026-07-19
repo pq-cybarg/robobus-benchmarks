@@ -1,6 +1,6 @@
 {
   "schema": "robobus-langmatrix/1",
-  "generated_unix": 1784458971,
+  "generated_unix": 1784494966,
   "record": {
     "name": "Imu",
     "bytes": 32,
@@ -17,120 +17,181 @@
     {
       "language": "c",
       "status": "ok",
-      "ns_per_op": 0.7073,
-      "ops_per_s": 1413827230.3124557,
+      "ns_per_op": 0.6598,
+      "ops_per_s": 1515610791.1488328,
       "checksum": 12367.5,
       "method": "memcpy LE loads, -O3"
     },
     {
       "language": "cpp",
       "status": "ok",
-      "ns_per_op": 0.7056,
-      "ops_per_s": 1417233560.090703,
+      "ns_per_op": 0.7552,
+      "ops_per_s": 1324152542.3728814,
       "checksum": 12367.5,
       "method": "memcpy LE loads (C++), -O3"
     },
     {
       "language": "rust",
       "status": "ok",
-      "ns_per_op": 0.8493,
-      "ops_per_s": 1177440244.9075708,
+      "ns_per_op": 0.8806,
+      "ops_per_s": 1135589370.8834884,
       "checksum": 12367.5,
       "method": "from_le_bytes, -O"
     },
     {
       "language": "go",
       "status": "ok",
-      "ns_per_op": 1.9514,
-      "ops_per_s": 512452598.1346725,
+      "ns_per_op": 1.8996,
+      "ops_per_s": 526426616.1297115,
       "checksum": 12367.5,
       "method": "encoding/binary LittleEndian"
     },
     {
       "language": "swift",
       "status": "ok",
-      "ns_per_op": 4.1661,
-      "ops_per_s": 240032644.43964377,
+      "ns_per_op": 3.2495,
+      "ops_per_s": 307739652.25419295,
       "checksum": 12367.5,
       "method": "loadUnaligned, -O"
     },
     {
       "language": "java",
       "status": "ok",
-      "ns_per_op": 2.9373,
-      "ops_per_s": 340448711.40162736,
+      "ns_per_op": 2.8396,
+      "ops_per_s": 352162276.3769545,
       "checksum": 12367.5,
       "method": "ByteBuffer LE, JIT-warmed"
     },
     {
       "language": "kotlin",
       "status": "ok",
-      "ns_per_op": 3.0401,
-      "ops_per_s": 328936548.13986385,
+      "ns_per_op": 2.8638,
+      "ops_per_s": 349186395.6980236,
       "checksum": 12367.5,
       "method": "ByteBuffer LE (JVM), JIT-warmed"
     },
     {
       "language": "csharp",
       "status": "ok",
-      "ns_per_op": 1.6002,
-      "ops_per_s": 624921884.7644044,
+      "ns_per_op": 1.478,
+      "ops_per_s": 676589986.4682003,
       "checksum": 12367.5,
       "method": "BitConverter (LE host), Release"
     },
     {
       "language": "typescript",
       "status": "ok",
-      "ns_per_op": 1.3907,
-      "ops_per_s": 719062342.7051125,
+      "ns_per_op": 1.2461,
+      "ops_per_s": 802503811.8931065,
       "checksum": 12367.5,
       "method": "DataView LE (Node, TS-transpiled)"
     },
     {
       "language": "julia",
       "status": "ok",
-      "ns_per_op": 0.6536,
-      "ops_per_s": 1529987760.0979192,
+      "ns_per_op": 0.6979,
+      "ops_per_s": 1432870038.6874912,
       "checksum": 12367.5,
       "method": "unsafe_load pointer, JIT-warmed"
     },
     {
       "language": "python",
       "status": "ok",
-      "ns_per_op": 147.83202253069197,
-      "ops_per_s": 6764434.273990848,
+      "ns_per_op": 132.7886445418648,
+      "ops_per_s": 7530764.422290085,
       "checksum": 12367.5,
       "method": "struct.unpack_from '<I3df'"
     },
     {
       "language": "ruby",
       "status": "ok",
-      "ns_per_op": 265.461,
-      "ops_per_s": 3767031.692037625,
+      "ns_per_op": 402.3094,
+      "ops_per_s": 2485649.104892901,
       "checksum": 12367.5,
       "method": "String#unpack 'VE3e'"
     },
     {
       "language": "crystal",
       "status": "ok",
-      "ns_per_op": 0.7874902502794138,
-      "ops_per_s": 1269856991.429652,
+      "ns_per_op": 0.6997226363527069,
+      "ops_per_s": 1429137701.2075586,
       "checksum": 12367.5,
       "method": "unsafe pointer LE, --release (LLVM)"
     },
     {
+      "language": "cobol",
+      "status": "ok",
+      "ns_per_op": 1337.3,
+      "ops_per_s": 747775.3682793688,
+      "checksum": 12367.5,
+      "method": "REDEFINES COMP-2/5, wall-timed (no ns clock in COBOL)"
+    },
+    {
+      "language": "nim",
+      "status": "ok",
+      "ns_per_op": 0.7905046986162709,
+      "ops_per_s": 1265014618.8257167,
+      "checksum": 12367.5,
+      "method": "unchecked ptr cast, -d:release"
+    },
+    {
+      "language": "zig",
+      "status": "skipped",
+      "note": "zig failed: "
+    },
+    {
+      "language": "pascal",
+      "status": "ok",
+      "ns_per_op": 13.3569,
+      "ops_per_s": 74867671.39081673,
+      "checksum": 12367.5,
+      "method": "Move + fpgettimeofday, -O3"
+    },
+    {
+      "language": "haskell",
+      "status": "ok",
+      "ns_per_op": 0.7142670227664989,
+      "ops_per_s": 1400036636.3363664,
+      "checksum": 12367.500044164071,
+      "method": "unsafe peek, -O2"
+    },
+    {
+      "language": "perl",
+      "status": "ok",
+      "ns_per_op": 279.7519,
+      "ops_per_s": 3574595.918740856,
+      "checksum": 12367.5,
+      "method": "unpack 'V d<3 f<'"
+    },
+    {
       "language": "lua",
       "status": "ok",
-      "ns_per_op": 74.9292,
-      "ops_per_s": 13345931.893040365,
+      "ns_per_op": 68.6425,
+      "ops_per_s": 14568233.965837492,
       "checksum": 12367.5,
       "method": "string.unpack '<I4dddf' (os.clock, ~ms res)"
     },
     {
+      "language": "fortran",
+      "status": "ok",
+      "ns_per_op": 9.8538,
+      "ops_per_s": 101483691.57076459,
+      "checksum": 12367.5,
+      "method": "transfer() LE, -O3"
+    },
+    {
+      "language": "ocaml",
+      "status": "ok",
+      "ns_per_op": 20.7831,
+      "ops_per_s": 48116017.34101265,
+      "checksum": 12367.5,
+      "method": "Bytes.get_intXX_le, ocamlopt"
+    },
+    {
       "language": "octave",
       "status": "ok",
-      "ns_per_op": 12975.026,
-      "ops_per_s": 77071.1365048517,
+      "ns_per_op": 14209.122,
+      "ops_per_s": 70377.32521404208,
       "checksum": 12367.5,
       "method": "typecast LE (host), Octave"
     }

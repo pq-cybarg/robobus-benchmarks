@@ -718,7 +718,7 @@ def _runtimes_section():
     def tier(v):
         return "tier-n" if v > 1e6 else "tier-j" if v > 6e5 else "tier-i"
     return f"""<section><div class='wrap'>
-  <p class='sec-eyebrow'>python runtimes · choose your config</p>
+  <p class='sec-eyebrow'>python runtimes · CPython · Cython · PyPy+cffi</p>
   <h2 class='title'>Same code, four runtimes — pick your stack</h2>
   <p class='sec-lede'>robobus's Python surface runs on whatever runtime fits, and each has a native
   acceleration path. <b>Cython stacks with CPython</b> (seal/open compiled to C in-process);
