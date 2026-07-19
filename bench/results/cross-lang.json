@@ -1,0 +1,47 @@
+{
+  "host": {
+    "system": "Darwin",
+    "machine": "arm64",
+    "processor": "arm"
+  },
+  "workload": "seal(codec.encode_floats[4]) + open, AES-256-GCM RBX1 frame",
+  "iterations": 100000,
+  "languages": [
+    {
+      "language": "Python",
+      "ns_per_op": 2248.61792,
+      "ops_per_s": 444717.61569880217,
+      "note": ""
+    },
+    {
+      "language": "Cython",
+      "ns_per_op": null,
+      "ops_per_s": null,
+      "note": "build failed on this host (toolchain unavailable)"
+    },
+    {
+      "language": "C",
+      "ns_per_op": 325.8,
+      "ops_per_s": 3069367.710251688,
+      "note": "raw AES-256-GCM (OpenSSL)"
+    },
+    {
+      "language": "Rust",
+      "ns_per_op": 3426.7,
+      "ops_per_s": 291825.95500043774,
+      "note": "codec + AES-256-GCM"
+    },
+    {
+      "language": "JavaScript/Node",
+      "ns_per_op": 21856.7,
+      "ops_per_s": 45752.56099960195,
+      "note": "codec + AES-256-GCM (node:crypto)"
+    },
+    {
+      "language": "Java",
+      "ns_per_op": 7238.6,
+      "ops_per_s": 138148.2607133976,
+      "note": "codec + AES-256-GCM (JCE)"
+    }
+  ]
+}

@@ -109,6 +109,27 @@ h2.title{font-size:clamp(24px,3.5vw,34px);margin:0 0 8px}
 .ltab td.n{font-family:'JetBrains Mono';color:var(--fg)}
 .ltab tr:hover td{background:var(--panel2)}
 
+/* speed matrices — horizontal bars + transport×language heatmap */
+.hbars{display:flex;flex-direction:column;gap:7px;margin:6px 0 4px}
+.hrow{display:grid;grid-template-columns:118px 1fr 132px;align-items:center;gap:12px}
+.hrow .lname{font-weight:600;font-size:13.5px}
+.hrow .lname small{display:block;font:400 10.5px/1.3 'JetBrains Mono';color:var(--dim);letter-spacing:.02em}
+.htrack{height:19px;border-radius:5px;background:var(--panel2);overflow:hidden}
+.htrack>i{display:block;height:100%;border-radius:5px}
+.hrow .hval{font-family:'JetBrains Mono';font-size:12.5px;text-align:right;color:var(--fg);font-variant-numeric:tabular-nums}
+.hrow .hval small{color:var(--dim);font-size:11px}
+.tier-n>i{background:linear-gradient(90deg,var(--signal),#6fe0d6)}
+.tier-j>i{background:linear-gradient(90deg,var(--hybrid),var(--signal))}
+.tier-i>i{background:linear-gradient(90deg,var(--violet),var(--hybrid))}
+.heatwrap{overflow-x:auto}
+.heat{border-collapse:collapse;font-size:12.5px;min-width:520px}
+.heat th,.heat td{padding:9px 12px;text-align:center;border:1px solid var(--line);font-variant-numeric:tabular-nums}
+.heat th{font:600 11px/1 'JetBrains Mono';text-transform:uppercase;letter-spacing:.05em;color:var(--dim)}
+.heat td.rl{text-align:left;font-weight:600;color:var(--fg);font-family:'Inter'}
+.heat td.na{color:var(--dim)}
+.heat td b{font-weight:700;color:var(--bg)}
+.speed-skip{color:var(--dim)}.speed-skip td{border-bottom:1px solid var(--line);padding:9px 14px}
+
 /* callout */
 .note{background:color-mix(in srgb,var(--amber) 8%,var(--panel));border:1px solid color-mix(in srgb,var(--amber) 34%,var(--line));border-radius:12px;padding:14px 18px;color:#f1d9b3;font-size:14.5px}
 .note b{color:var(--amber)}
@@ -153,7 +174,7 @@ footer.site a{color:var(--muted)}
 .dbody li{margin:5px 0}
 .dlede{color:var(--muted);margin:0 0 22px;font-size:15px}
 @media (max-width:760px){.dwrap{grid-template-columns:1fr}.dside{position:static;display:flex;flex-wrap:wrap;gap:4px}.dside-t{width:100%}}
-</style></head><body><div class='nav'><div class='row'><a class='brand' href='../index.html'><svg class='glyph' viewBox='0 0 32 32' fill='none' aria-hidden='true'><rect x='1.5' y='1.5' width='29' height='29' rx='8' stroke='#1e2a37' stroke-width='1.5'/><path d='M7 20 L11 20 L13 10 L16 24 L19 13 L21 20 L25 20' stroke='#4fd1c5' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'/></svg>robobus</a><nav class='links'><a class='tab' href='../index.html'>Home</a><a class='tab' href='../benchmarks.html'>Benchmarks</a><a class='tab active' href='../docs/index.html'>Docs</a><a class='gh' href='https://github.com/pq-cybarg/robobus-benchmarks' aria-label='GitHub'><svg width='19' height='19' viewBox='0 0 16 16' fill='currentColor'><path d='M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.01 8.01 0 0016 8c0-4.42-3.58-8-8-8z'/></svg></a></nav></div></div><div class='dwrap'><aside class='dside'><div class='dside-t'>Documentation</div><a href='architecture.html' class='ditem'>Architecture</a><a href='protocol.html' class='ditem'>Wire protocol</a><a href='security.html' class='ditem active'>Security model</a><a href='compliance.html' class='ditem'>Compliance</a><a href='cmvp-readiness.html' class='ditem'>CMVP readiness</a><a href='crypto-provenance.html' class='ditem'>Crypto provenance</a><a href='portability.html' class='ditem'>Portability</a><a href='determinism.html' class='ditem'>Determinism</a><a href='realtime.html' class='ditem'>Real-time</a><a href='supply-chain.html' class='ditem'>Supply chain</a><a href='bindings.html' class='ditem'>Language bindings</a><a href='roadmap.html' class='ditem'>Roadmap</a></aside><article class='dbody'><h1 id="security-model">Security model</h1>
+</style></head><body><div class='nav'><div class='row'><a class='brand' href='../index.html'><svg class='glyph' viewBox='0 0 32 32' fill='none' aria-hidden='true'><rect x='1.5' y='1.5' width='29' height='29' rx='8' stroke='#1e2a37' stroke-width='1.5'/><path d='M7 20 L11 20 L13 10 L16 24 L19 13 L21 20 L25 20' stroke='#4fd1c5' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'/></svg>robobus</a><nav class='links'><a class='tab' href='../index.html'>Home</a><a class='tab' href='../benchmarks.html'>Benchmarks</a><a class='tab' href='../speed.html'>Speed matrix</a><a class='tab active' href='../docs/index.html'>Docs</a><a class='gh' href='https://github.com/pq-cybarg/robobus-benchmarks' aria-label='GitHub'><svg width='19' height='19' viewBox='0 0 16 16' fill='currentColor'><path d='M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.01 8.01 0 0016 8c0-4.42-3.58-8-8-8z'/></svg></a></nav></div></div><div class='dwrap'><aside class='dside'><div class='dside-t'>Documentation</div><a href='architecture.html' class='ditem'>Architecture</a><a href='protocol.html' class='ditem'>Wire protocol</a><a href='security.html' class='ditem active'>Security model</a><a href='compliance.html' class='ditem'>Compliance</a><a href='cmvp-readiness.html' class='ditem'>CMVP readiness</a><a href='crypto-provenance.html' class='ditem'>Crypto provenance</a><a href='portability.html' class='ditem'>Portability</a><a href='determinism.html' class='ditem'>Determinism</a><a href='realtime.html' class='ditem'>Real-time</a><a href='supply-chain.html' class='ditem'>Supply chain</a><a href='bindings.html' class='ditem'>Language bindings</a><a href='roadmap.html' class='ditem'>Roadmap</a></aside><article class='dbody'><h1 id="security-model">Security model</h1>
 <p>Encryption is <strong>optional and opt-in</strong> (<code>--security &lt;suite&gt;</code>); the core bus runs with
 zero crypto installed. When enabled, every link gets the same protections regardless of
 runtime or transport (the crypto sits on opaque bytes below the codec).</p>

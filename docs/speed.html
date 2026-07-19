@@ -1,0 +1,189 @@
+<!doctype html><html lang='en'><head><meta charset='utf-8'><meta name='viewport' content='width=device-width,initial-scale=1'><title>Speed matrix · robobus</title><meta name='description' content='Native maximum speed across every robobus language and transport — codec, crypto, transport throughput, and the full transport × language product.'><link rel='preconnect' href='https://fonts.googleapis.com'><link rel='preconnect' href='https://fonts.gstatic.com' crossorigin><link href='https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=JetBrains+Mono:wght@400;500;700&family=Inter:wght@400;500;600&display=swap' rel='stylesheet'><style>
+:root{
+  --bg:#0a0e13; --bg2:#0d131b; --panel:#111a24; --panel2:#0f1620; --line:#1e2a37;
+  --fg:#e9eef4; --muted:#8a9bab; --dim:#5f7183;
+  --signal:#4fd1c5; --signal-ink:#0a0e13; --amber:#f4b46a; --violet:#8b7cff;
+  --pqc:#8b7cff; --hybrid:#22c3e6; --qr:#4ec97a; --classical:#8a9bab;
+  --maxw:1080px;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth;overflow-x:hidden}
+body{margin:0;max-width:100%;overflow-x:hidden;background:
+  radial-gradient(1200px 600px at 78% -8%, #10202a 0%, transparent 60%),
+  radial-gradient(900px 500px at 0% 0%, #131024 0%, transparent 55%),
+  var(--bg);
+  color:var(--fg);font-family:'Inter',ui-sans-serif,system-ui,-apple-system,Segoe UI,Roboto,sans-serif;
+  font-size:16px;line-height:1.6;-webkit-font-smoothing:antialiased}
+.mono{font-family:'JetBrains Mono',ui-monospace,SFMono-Regular,Menlo,monospace}
+a{color:var(--signal);text-decoration:none}a:hover{text-decoration:underline}
+h1,h2,h3{font-family:'Space Grotesk',ui-sans-serif,system-ui,sans-serif;line-height:1.12;letter-spacing:-.01em;font-weight:600}
+.wrap{max-width:var(--maxw);margin:0 auto;padding:0 22px}
+
+/* ---- nav ---- */
+.nav{position:sticky;top:0;z-index:50;backdrop-filter:blur(10px);
+  background:color-mix(in srgb,var(--bg) 82%,transparent);border-bottom:1px solid var(--line)}
+.nav .row{max-width:var(--maxw);margin:0 auto;padding:12px 22px;display:flex;align-items:center;gap:8px 10px;flex-wrap:wrap}
+.brand{display:flex;align-items:center;gap:11px;font-family:'Space Grotesk';font-weight:600;font-size:18px;color:var(--fg);letter-spacing:-.02em}
+.brand:hover{text-decoration:none}
+.brand .glyph{width:26px;height:26px;flex:0 0 auto}
+.nav .links{margin-left:auto;display:flex;gap:4px;align-items:center;flex-wrap:wrap}
+.nav a.tab{color:var(--muted);padding:7px 13px;border-radius:8px;font-size:14.5px;font-weight:500}
+.nav a.tab:hover{color:var(--fg);background:var(--panel);text-decoration:none}
+.nav a.tab.active{color:var(--signal);background:color-mix(in srgb,var(--signal) 12%,transparent)}
+.nav a.gh{color:var(--muted);display:inline-flex;padding:7px 10px;border-radius:8px}
+.nav a.gh:hover{color:var(--fg);background:var(--panel)}
+
+/* ---- hero ---- */
+.hero{padding:74px 0 30px;position:relative}
+.eyebrow{font-family:'JetBrains Mono';font-size:12.5px;letter-spacing:.16em;text-transform:uppercase;color:var(--signal);margin:0 0 18px}
+.hero h1{font-size:clamp(34px,6vw,62px);margin:0 0 20px;max-width:15ch}
+.hero h1 em{font-style:normal;color:var(--signal)}
+.lede{font-size:clamp(17px,2.4vw,21px);color:var(--muted);max-width:60ch;margin:0 0 30px}
+.cta{display:flex;gap:12px;flex-wrap:wrap}
+.btn{display:inline-flex;align-items:center;gap:8px;padding:11px 18px;border-radius:10px;font-weight:600;font-size:15px;border:1px solid transparent}
+.btn.primary{background:var(--signal);color:var(--signal-ink)}
+.btn.primary:hover{background:#6fe0d6;text-decoration:none}
+.btn.ghost{border-color:var(--line);color:var(--fg)}
+.btn.ghost:hover{border-color:var(--signal);background:var(--panel);text-decoration:none}
+
+/* ---- latency spectrum (signature) ---- */
+.spectrum{margin:52px 0 8px}
+.spectrum .cap{display:flex;justify-content:space-between;align-items:baseline;margin:0 0 14px}
+.spectrum .cap b{font-family:'Space Grotesk';font-weight:600;font-size:15px}
+.spectrum .cap span{font-family:'JetBrains Mono';font-size:12px;color:var(--dim)}
+.spec-scroll{overflow-x:auto;overflow-y:hidden;margin:0 -2px;padding:0 2px}
+.spec-svg{width:100%;min-width:580px;height:auto;display:block}
+
+/* ---- generic sections ---- */
+section{padding:56px 0;border-top:1px solid var(--line)}
+.sec-eyebrow{font-family:'JetBrains Mono';font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:var(--dim);margin:0 0 10px}
+h2.title{font-size:clamp(24px,3.5vw,34px);margin:0 0 8px}
+.sec-lede{color:var(--muted);max-width:64ch;margin:0 0 26px}
+
+/* stat strip */
+.stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:1px;background:var(--line);border:1px solid var(--line);border-radius:14px;overflow:hidden}
+.stat{background:var(--panel);padding:18px 18px}
+.stat .n{font-family:'JetBrains Mono';font-size:clamp(22px,3vw,30px);font-weight:700;color:var(--fg);letter-spacing:-.02em}
+.stat .n small{font-size:.5em;color:var(--muted);font-weight:500;margin-left:3px}
+.stat .l{font-size:12.5px;color:var(--muted);margin-top:5px;line-height:1.4}
+
+/* feature cards */
+.cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:16px}
+.fcard{background:linear-gradient(180deg,var(--panel),var(--panel2));border:1px solid var(--line);border-radius:14px;padding:22px}
+.fcard .k{font-family:'JetBrains Mono';font-size:12px;color:var(--signal);letter-spacing:.04em;margin:0 0 12px}
+.fcard h3{font-size:18px;margin:0 0 8px}
+.fcard p{color:var(--muted);font-size:14.5px;margin:0}
+.fcard .pqc{color:var(--pqc)}.fcard .hybrid{color:var(--hybrid)}.fcard .qr{color:var(--qr)}
+
+/* plain-language explainer — the layperson on-ramp */
+.plain{display:grid;gap:16px}
+@media(min-width:760px){.plain{grid-template-columns:repeat(3,1fr)}}
+.pcard{background:linear-gradient(180deg,var(--panel),var(--panel2));border:1px solid var(--line);border-radius:16px;padding:24px 22px}
+.pcard .ic{width:42px;height:42px;border-radius:12px;display:grid;place-items:center;margin:0 0 16px}
+.pcard .ic svg{width:23px;height:23px}
+.pcard .ic.spd{background:color-mix(in srgb,var(--signal) 15%,transparent);color:var(--signal)}
+.pcard .ic.rch{background:color-mix(in srgb,var(--hybrid) 15%,transparent);color:var(--hybrid)}
+.pcard .ic.sec{background:color-mix(in srgb,var(--qr) 15%,transparent);color:var(--qr)}
+.pcard h3{font-size:19.5px;margin:0 0 9px}
+.pcard .an{color:var(--fg);font-weight:600;margin:0 0 9px;font-size:15px}
+.pcard p{color:var(--muted);font-size:14.5px;margin:0}
+.oneline{margin-top:22px;padding:16px 20px;border:1px solid color-mix(in srgb,var(--signal) 26%,var(--line));border-radius:12px;background:color-mix(in srgb,var(--signal) 6%,var(--panel2));color:var(--muted);font-size:15px;line-height:1.55}
+.oneline b{color:var(--fg);font-weight:600}
+
+/* transports */
+.xgrid{display:grid;gap:14px}
+@media(min-width:720px){.xgrid{grid-template-columns:1fr 1fr}}
+.xgrp{border:1px solid var(--line);border-radius:14px;background:linear-gradient(180deg,var(--panel),var(--panel2));padding:16px 18px}
+.xgrp .xh{font-family:'JetBrains Mono';font-size:11.5px;letter-spacing:.11em;text-transform:uppercase;color:var(--signal);margin:0 0 13px}
+.xrow{display:flex;flex-wrap:wrap;gap:8px}
+.chip{display:inline-flex;align-items:baseline;gap:7px;padding:8px 12px;border:1px solid var(--line);border-radius:9px;background:var(--bg2);font-size:14px;color:var(--fg);font-weight:500}
+.chip small{color:var(--muted);font-size:11px;font-family:'JetBrains Mono';font-weight:400}
+.lock{display:inline-flex;align-items:center;gap:8px;margin-top:20px;padding:9px 14px;border:1px solid color-mix(in srgb,var(--qr) 34%,var(--line));border-radius:999px;background:color-mix(in srgb,var(--qr) 7%,transparent);font-size:13.5px;color:#bfe8cf}
+.lock b{color:var(--qr)}
+
+/* layer table */
+.ltab{width:100%;border-collapse:collapse;font-size:14.5px}
+.ltab th,.ltab td{text-align:left;padding:11px 14px;border-bottom:1px solid var(--line)}
+.ltab th{font-size:11.5px;text-transform:uppercase;letter-spacing:.06em;color:var(--dim);font-weight:600}
+.ltab td.reg{font-family:'JetBrains Mono';color:var(--signal);font-size:13px}
+.ltab td.n{font-family:'JetBrains Mono';color:var(--fg)}
+.ltab tr:hover td{background:var(--panel2)}
+
+/* speed matrices — horizontal bars + transport×language heatmap */
+.hbars{display:flex;flex-direction:column;gap:7px;margin:6px 0 4px}
+.hrow{display:grid;grid-template-columns:118px 1fr 132px;align-items:center;gap:12px}
+.hrow .lname{font-weight:600;font-size:13.5px}
+.hrow .lname small{display:block;font:400 10.5px/1.3 'JetBrains Mono';color:var(--dim);letter-spacing:.02em}
+.htrack{height:19px;border-radius:5px;background:var(--panel2);overflow:hidden}
+.htrack>i{display:block;height:100%;border-radius:5px}
+.hrow .hval{font-family:'JetBrains Mono';font-size:12.5px;text-align:right;color:var(--fg);font-variant-numeric:tabular-nums}
+.hrow .hval small{color:var(--dim);font-size:11px}
+.tier-n>i{background:linear-gradient(90deg,var(--signal),#6fe0d6)}
+.tier-j>i{background:linear-gradient(90deg,var(--hybrid),var(--signal))}
+.tier-i>i{background:linear-gradient(90deg,var(--violet),var(--hybrid))}
+.heatwrap{overflow-x:auto}
+.heat{border-collapse:collapse;font-size:12.5px;min-width:520px}
+.heat th,.heat td{padding:9px 12px;text-align:center;border:1px solid var(--line);font-variant-numeric:tabular-nums}
+.heat th{font:600 11px/1 'JetBrains Mono';text-transform:uppercase;letter-spacing:.05em;color:var(--dim)}
+.heat td.rl{text-align:left;font-weight:600;color:var(--fg);font-family:'Inter'}
+.heat td.na{color:var(--dim)}
+.heat td b{font-weight:700;color:var(--bg)}
+.speed-skip{color:var(--dim)}.speed-skip td{border-bottom:1px solid var(--line);padding:9px 14px}
+
+/* callout */
+.note{background:color-mix(in srgb,var(--amber) 8%,var(--panel));border:1px solid color-mix(in srgb,var(--amber) 34%,var(--line));border-radius:12px;padding:14px 18px;color:#f1d9b3;font-size:14.5px}
+.note b{color:var(--amber)}
+code{font-family:'JetBrains Mono';background:#060a10;border:1px solid var(--line);padding:1px 6px;border-radius:5px;font-size:.86em}
+
+footer.site{border-top:1px solid var(--line);margin-top:20px;padding:34px 0 60px;color:var(--dim);font-size:13.5px}
+footer.site .row{display:flex;flex-wrap:wrap;gap:18px 40px;justify-content:space-between}
+footer.site a{color:var(--muted)}
+.pill{display:inline-flex;gap:7px;align-items:center;font-family:'JetBrains Mono';font-size:12px;color:var(--qr);border:1px solid color-mix(in srgb,var(--qr) 40%,var(--line));border-radius:999px;padding:4px 11px}
+.pill .d{width:7px;height:7px;border-radius:50%;background:var(--qr);box-shadow:0 0 8px var(--qr)}
+
+@media (max-width:640px){.hero{padding:48px 0 20px}.nav a.tab{padding:6px 9px}}
+@media (prefers-reduced-motion:no-preference){
+  .reveal{animation:rise .7s cubic-bezier(.2,.7,.2,1) both}
+  @keyframes rise{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:none}}
+  .spec-mark{animation:pop .5s ease both}@keyframes pop{from{opacity:0}to{opacity:1}}
+}
+</style></head><body><div class='nav'><div class='row'><a class='brand' href='index.html'><svg class='glyph' viewBox='0 0 32 32' fill='none' aria-hidden='true'><rect x='1.5' y='1.5' width='29' height='29' rx='8' stroke='#1e2a37' stroke-width='1.5'/><path d='M7 20 L11 20 L13 10 L16 24 L19 13 L21 20 L25 20' stroke='#4fd1c5' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'/></svg>robobus</a><nav class='links'><a class='tab' href='index.html'>Home</a><a class='tab' href='benchmarks.html'>Benchmarks</a><a class='tab active' href='speed.html'>Speed matrix</a><a class='tab' href='docs/index.html'>Docs</a><a class='gh' href='https://github.com/pq-cybarg/robobus-benchmarks' aria-label='GitHub'><svg width='19' height='19' viewBox='0 0 16 16' fill='currentColor'><path d='M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.01 8.01 0 0016 8c0-4.42-3.58-8-8-8z'/></svg></a></nav></div></div><header class='hero'><div class='wrap reveal'>
+  <p class='eyebrow'>native maximum speed · languages · transports · interop</p>
+  <h1>The speed matrix</h1>
+  <p class='lede'>Real measured throughput across every language robobus targets and every transport it
+  bridges — decode speed, crypto seal/open, transport frame rate, and the full transport × language
+  product. Measured, never estimated; unprovisioned cells say so.</p>
+</div></header><section><div class='wrap'>
+  <p class='sec-eyebrow'>languages · wire codec</p>
+  <h2 class='title'>Decode speed, every target language</h2>
+  <p class='sec-lede'>The Imu wire record
+  (u32 id, f64[3] accel, f32 temp, 32 B) parsed at native maximum in each
+  language robobus code-generates for — measured on this host (Darwin · arm64), decode in a
+  tight loop with a field checksum (no dead-code elision). Log scale; the span is ~20,000×.</p>
+  <div class='hbars'><div class='hrow'><div class='lname'>julia<small>unsafe_load pointer, JIT-warmed</small></div><div class='htrack tier-n'><i style='width:100.0%'></i></div><div class='hval'>1,554,243,084<small> dec/s</small></div></div><div class='hrow'><div class='lname'>c<small>memcpy LE loads, -O3</small></div><div class='htrack tier-n'><i style='width:98.4%'></i></div><div class='hval'>1,320,132,013<small> dec/s</small></div></div><div class='hrow'><div class='lname'>cpp<small>memcpy LE loads (C++), -O3</small></div><div class='htrack tier-n'><i style='width:98.2%'></i></div><div class='hval'>1,294,163,323<small> dec/s</small></div></div><div class='hrow'><div class='lname'>rust<small>from_le_bytes, -O</small></div><div class='htrack tier-n'><i style='width:97.2%'></i></div><div class='hval'>1,157,809,425<small> dec/s</small></div></div><div class='hrow'><div class='lname'>typescript<small>DataView LE (Node, TS-transpiled)</small></div><div class='htrack tier-n'><i style='width:95.2%'></i></div><div class='hval'>943,040,362<small> dec/s</small></div></div><div class='hrow'><div class='lname'>csharp<small>BitConverter (LE host), Release</small></div><div class='htrack tier-n'><i style='width:93.4%'></i></div><div class='hval'>787,959,972<small> dec/s</small></div></div><div class='hrow'><div class='lname'>go<small>encoding/binary LittleEndian</small></div><div class='htrack tier-n'><i style='width:89.7%'></i></div><div class='hval'>534,216,571<small> dec/s</small></div></div><div class='hrow'><div class='lname'>java<small>ByteBuffer LE, JIT-warmed</small></div><div class='htrack tier-n'><i style='width:86.1%'></i></div><div class='hval'>369,699,434<small> dec/s</small></div></div><div class='hrow'><div class='lname'>kotlin<small>ByteBuffer LE (JVM), JIT-warmed</small></div><div class='htrack tier-n'><i style='width:85.8%'></i></div><div class='hval'>355,113,636<small> dec/s</small></div></div><div class='hrow'><div class='lname'>swift<small>loadUnaligned, -O</small></div><div class='htrack tier-n'><i style='width:84.8%'></i></div><div class='hval'>320,656,705<small> dec/s</small></div></div><div class='hrow'><div class='lname'>lua<small>string.unpack &#x27;&lt;I4dddf&#x27; (os.clock, ~ms res)</small></div><div class='htrack tier-i'><i style='width:54.3%'></i></div><div class='hval'>13,545,492<small> dec/s</small></div></div><div class='hrow'><div class='lname'>python<small>struct.unpack_from &#x27;&lt;I3df&#x27;</small></div><div class='htrack tier-i'><i style='width:49.3%'></i></div><div class='hval'>8,124,430<small> dec/s</small></div></div><div class='hrow'><div class='lname'>ruby<small>String#unpack &#x27;VE3e&#x27;</small></div><div class='htrack tier-i'><i style='width:43.0%'></i></div><div class='hval'>4,238,583<small> dec/s</small></div></div><div class='hrow'><div class='lname'>octave<small>typecast LE (host), Octave</small></div><div class='htrack tier-i'><i style='width:4.0%'></i></div><div class='hval'>74,010<small> dec/s</small></div></div></div>
+  
+</div></section><section><div class='wrap'>
+  <p class='sec-eyebrow'>languages · crypto</p>
+  <h2 class='title'>Seal + open, native per language</h2>
+  <p class='sec-lede'>The full RBX1 round trip — codec encode → AES-256-GCM seal → open — in each
+  language's own crypto stack. This is the app-layer post-quantum envelope's per-message cost.</p>
+  <div class='hbars'><div class='hrow'><div class='lname'>C<small>raw AES-256-GCM (OpenSSL)</small></div><div class='htrack tier-n'><i style='width:100.0%'></i></div><div class='hval'>3,069,368<small> op/s</small></div></div><div class='hrow'><div class='lname'>Python<small></small></div><div class='htrack tier-j'><i style='width:55.9%'></i></div><div class='hval'>444,718<small> op/s</small></div></div><div class='hrow'><div class='lname'>Rust<small>codec + AES-256-GCM</small></div><div class='htrack tier-i'><i style='width:46.3%'></i></div><div class='hval'>291,826<small> op/s</small></div></div><div class='hrow'><div class='lname'>Java<small>codec + AES-256-GCM (JCE)</small></div><div class='htrack tier-i'><i style='width:29.2%'></i></div><div class='hval'>138,148<small> op/s</small></div></div><div class='hrow'><div class='lname'>JavaScript/Node<small>codec + AES-256-GCM (node:crypto)</small></div><div class='htrack tier-i'><i style='width:4.0%'></i></div><div class='hval'>45,753<small> op/s</small></div></div></div>
+</div></section><section><div class='wrap'>
+  <p class='sec-eyebrow'>transports · throughput</p>
+  <h2 class='title'>Every transport, moving a sealed frame</h2>
+  <p class='sec-lede'>Sustained one-way throughput of the 75-byte AES-256-GCM sealed
+  robobus frame over each transport, loopback on one host (the transport's software ceiling).
+  Rows still being provisioned on this host show why.</p>
+  <div style='overflow-x:auto'><table class='ltab'>
+  <thead><tr><th>Transport</th><th>Backend</th><th>frames/s</th><th>MB/s</th><th>lat p50</th></tr></thead>
+  <tbody><tr><td>Zenoh</td><td class='reg'>zenoh</td><td class='n'>829,791</td><td class='n'>62.2</td><td class='n'>—</td></tr><tr><td>Shared-memory bus</td><td class='reg'>robobus (native)</td><td class='n'>735,489</td><td class='n'>55.2</td><td class='n'>—</td></tr><tr><td>TCP</td><td class='reg'>socket (stdlib)</td><td class='n'>217,169</td><td class='n'>16.3</td><td class='n'>7.9 µs</td></tr><tr><td>UDP</td><td class='reg'>socket (stdlib)</td><td class='n'>182,255</td><td class='n'>13.7</td><td class='n'>3.2 µs</td></tr><tr><td>MQTT</td><td class='reg'>paho-mqtt + mosquitto</td><td class='n'>39,536</td><td class='n'>3.0</td><td class='n'>—</td></tr><tr><td>CAN</td><td class='reg'>python-can</td><td class='n'>27,771</td><td class='n'>2.1</td><td class='n'>—</td></tr><tr><td>Serial</td><td class='reg'>pyserial (loop://)</td><td class='n'>15,916</td><td class='n'>1.2</td><td class='n'>—</td></tr><tr><td>LSL</td><td class='reg'>pylsl + liblsl</td><td class='n'>14,838</td><td class='n'>1.1</td><td class='n'>—</td></tr><tr class='speed-skip'><td>AMQP</td><td colspan='4'>RabbitMQ broker not yet provisioned on this host</td></tr><tr class='speed-skip'><td>Kafka</td><td colspan='4'>Kafka broker not yet provisioned on this host</td></tr><tr class='speed-skip'><td>ZeroCM</td><td colspan='4'>zcm runtime not yet built on this host</td></tr><tr class='speed-skip'><td>DDS</td><td colspan='4'>patched CycloneDDS core not yet built here (PQC handshake latency is measured separately)</td></tr><tr class='speed-skip'><td>ROS 2</td><td colspan='4'>ROS 2 runtime not yet installed</td></tr><tr class='speed-skip'><td>ROS 1</td><td colspan='4'>ROS 1 runtime not yet installed</td></tr></tbody></table></div>
+</div></section><section><div class='wrap'>
+  <p class='sec-eyebrow'>transport × language</p>
+  <h2 class='title'>The full product</h2>
+  <p class='sec-lede'>Each cell: that language's native client pushing the sealed frame over that
+  transport (frames/s, loopback, pipelined). The universal socket transports come first; broker and
+  runtime transports are filling in per language. Notice the rows are near-flat across languages —
+  the transport, not the caller, sets the ceiling.</p>
+  <div class='heatwrap'><table class='heat'><thead><tr><th>transport</th><th>c</th><th>python</th><th>go</th><th>rust</th><th>node</th></tr></thead>
+  <tbody><tr><td class='rl'>UDP</td><td style='background:color-mix(in srgb, var(--signal) 84%, transparent)'>333k</td><td style='background:color-mix(in srgb, var(--signal) 80%, transparent)'>319k</td><td style='background:color-mix(in srgb, var(--signal) 75%, transparent)'>292k</td><td style='background:color-mix(in srgb, var(--signal) 82%, transparent)'>327k</td><td style='background:color-mix(in srgb, var(--signal) 56%, transparent)'>204k</td></tr></tbody></table></div>
+</div></section><footer class='site'><div class='wrap'><div class='row'><div>robobus — post-quantum, real-time robotics middleware. CNSA 2.0 (FIPS 203 ML-KEM · FIPS 204 ML-DSA).</div><div><a href='index.html'>Home</a> · <a href='benchmarks.html'>Benchmarks</a> · <a href='docs/index.html'>Docs</a> · <a href='https://github.com/pq-cybarg/robobus-benchmarks'>GitHub</a></div></div></div></footer></body></html>

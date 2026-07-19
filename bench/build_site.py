@@ -144,6 +144,27 @@ h2.title{font-size:clamp(24px,3.5vw,34px);margin:0 0 8px}
 .ltab td.n{font-family:'JetBrains Mono';color:var(--fg)}
 .ltab tr:hover td{background:var(--panel2)}
 
+/* speed matrices — horizontal bars + transport×language heatmap */
+.hbars{display:flex;flex-direction:column;gap:7px;margin:6px 0 4px}
+.hrow{display:grid;grid-template-columns:118px 1fr 132px;align-items:center;gap:12px}
+.hrow .lname{font-weight:600;font-size:13.5px}
+.hrow .lname small{display:block;font:400 10.5px/1.3 'JetBrains Mono';color:var(--dim);letter-spacing:.02em}
+.htrack{height:19px;border-radius:5px;background:var(--panel2);overflow:hidden}
+.htrack>i{display:block;height:100%;border-radius:5px}
+.hrow .hval{font-family:'JetBrains Mono';font-size:12.5px;text-align:right;color:var(--fg);font-variant-numeric:tabular-nums}
+.hrow .hval small{color:var(--dim);font-size:11px}
+.tier-n>i{background:linear-gradient(90deg,var(--signal),#6fe0d6)}
+.tier-j>i{background:linear-gradient(90deg,var(--hybrid),var(--signal))}
+.tier-i>i{background:linear-gradient(90deg,var(--violet),var(--hybrid))}
+.heatwrap{overflow-x:auto}
+.heat{border-collapse:collapse;font-size:12.5px;min-width:520px}
+.heat th,.heat td{padding:9px 12px;text-align:center;border:1px solid var(--line);font-variant-numeric:tabular-nums}
+.heat th{font:600 11px/1 'JetBrains Mono';text-transform:uppercase;letter-spacing:.05em;color:var(--dim)}
+.heat td.rl{text-align:left;font-weight:600;color:var(--fg);font-family:'Inter'}
+.heat td.na{color:var(--dim)}
+.heat td b{font-weight:700;color:var(--bg)}
+.speed-skip{color:var(--dim)}.speed-skip td{border-bottom:1px solid var(--line);padding:9px 14px}
+
 /* callout */
 .note{background:color-mix(in srgb,var(--amber) 8%,var(--panel));border:1px solid color-mix(in srgb,var(--amber) 34%,var(--line));border-radius:12px;padding:14px 18px;color:#f1d9b3;font-size:14.5px}
 .note b{color:var(--amber)}
@@ -174,7 +195,7 @@ GLYPH = ("<svg class='glyph' viewBox='0 0 32 32' fill='none' aria-hidden='true'>
          "stroke-width='2' stroke-linecap='round' stroke-linejoin='round'/></svg>")
 
 TABS = [("Home", "index.html", "home"), ("Benchmarks", "benchmarks.html", "benchmarks"),
-        ("Docs", "docs/index.html", "docs")]
+        ("Speed matrix", "speed.html", "speed"), ("Docs", "docs/index.html", "docs")]
 
 
 def nav(active, prefix=""):
@@ -621,11 +642,159 @@ def _first_line(path):
     return ""
 
 
+RESULTS = os.path.join(HERE, "results")
+
+
+def _load(name):
+    try:
+        return json.load(open(os.path.join(RESULTS, name)))
+    except Exception:
+        return None
+
+
+def _hbars(rows, tier_fn):
+    """rows: list of (label, sublabel, value, unit). Log-scaled bar widths (values span decades)."""
+    import math
+    vals = [r[2] for r in rows if r[2]]
+    if not vals:
+        return ""
+    lo, hi = math.log10(min(vals)), math.log10(max(vals))
+    span = (hi - lo) or 1
+    out = []
+    for label, sub, val, unit in rows:
+        w = 4 + 96 * (math.log10(val) - lo) / span if val else 0
+        out.append(f"<div class='hrow'><div class='lname'>{html.escape(label)}"
+                   f"<small>{html.escape(sub)}</small></div>"
+                   f"<div class='htrack {tier_fn(val)}'><i style='width:{w:.1f}%'></i></div>"
+                   f"<div class='hval'>{val:,.0f}<small> {unit}</small></div></div>")
+    return "<div class='hbars'>" + "".join(out) + "</div>"
+
+
+def speed():
+    lm = _load("lang-matrix.json")
+    cl = _load("cross-lang.json")
+    tm = _load("transport-matrix.json")
+    xl = _load("xport-lang.json")
+    host = (lm or {}).get("host", {})
+    hoststr = f"{host.get('system','')} · {host.get('machine','')}"
+
+    # 1) language codec-decode throughput (log bars)
+    def codec_tier(v):
+        return "tier-n" if v > 3e8 else "tier-j" if v > 5e7 else "tier-i"
+    sec1 = ""
+    if lm:
+        oks = [x for x in lm["languages"] if x.get("status") == "ok"]
+        oks.sort(key=lambda x: -x["ops_per_s"])
+        rows = [(x["language"], x.get("method", ""), x["ops_per_s"], "dec/s") for x in oks]
+        skips = [x for x in lm["languages"] if x.get("status") != "ok"]
+        sk = ("".join(f"<tr class='speed-skip'><td>{html.escape(x['language'])}</td>"
+                      f"<td>{html.escape(x.get('note',''))}</td></tr>" for x in skips))
+        rec = lm.get("record", {})
+        sec1 = f"""<section><div class='wrap'>
+  <p class='sec-eyebrow'>languages · wire codec</p>
+  <h2 class='title'>Decode speed, every target language</h2>
+  <p class='sec-lede'>The {html.escape(rec.get('name','record'))} wire record
+  ({html.escape(rec.get('fields',''))}, {rec.get('bytes','?')} B) parsed at native maximum in each
+  language robobus code-generates for — measured on this host ({html.escape(hoststr)}), decode in a
+  tight loop with a field checksum (no dead-code elision). Log scale; the span is ~20,000×.</p>
+  {_hbars(rows, codec_tier)}
+  {'<table class="ltab" style="margin-top:14px"><tbody>'+sk+'</tbody></table>' if sk else ''}
+</div></section>"""
+
+    # 2) native seal+open crypto per language
+    sec2 = ""
+    if cl and cl.get("languages"):
+        ls = sorted([x for x in cl["languages"] if x.get("ops_per_s")], key=lambda x: -x["ops_per_s"])
+        rows = [(x["language"], x.get("note", "AES-256-GCM RBX1"), x["ops_per_s"], "op/s") for x in ls]
+        sec2 = f"""<section><div class='wrap'>
+  <p class='sec-eyebrow'>languages · crypto</p>
+  <h2 class='title'>Seal + open, native per language</h2>
+  <p class='sec-lede'>The full RBX1 round trip — codec encode → AES-256-GCM seal → open — in each
+  language's own crypto stack. This is the app-layer post-quantum envelope's per-message cost.</p>
+  {_hbars(rows, lambda v: 'tier-n' if v > 2e6 else 'tier-j' if v > 3e5 else 'tier-i')}
+</div></section>"""
+
+    # 3) transport throughput
+    sec3 = ""
+    if tm:
+        okr = [r for r in tm["results"] if r["status"] == "ok" and r["metrics"].get("ops_per_s")]
+        okr.sort(key=lambda r: -r["metrics"]["ops_per_s"])
+        trows = "".join(
+            f"<tr><td>{html.escape(r['name'])}</td><td class='reg'>{html.escape(r['dependency'])}</td>"
+            f"<td class='n'>{r['metrics']['ops_per_s']:,.0f}</td>"
+            f"<td class='n'>{r['metrics']['mb_per_s']:.1f}</td>"
+            f"<td class='n'>{(str(round(r['metrics']['p50_ns']/1000,1))+' µs') if r['metrics'].get('p50_ns') else '—'}</td></tr>"
+            for r in okr)
+        skr = "".join(
+            f"<tr class='speed-skip'><td>{html.escape(r['name'])}</td><td colspan='4'>{html.escape(r['note'])}</td></tr>"
+            for r in tm["results"] if r["status"] != "ok")
+        sec3 = f"""<section><div class='wrap'>
+  <p class='sec-eyebrow'>transports · throughput</p>
+  <h2 class='title'>Every transport, moving a sealed frame</h2>
+  <p class='sec-lede'>Sustained one-way throughput of the {tm['frame_bytes']}-byte AES-256-GCM sealed
+  robobus frame over each transport, loopback on one host (the transport's software ceiling).
+  Rows still being provisioned on this host show why.</p>
+  <div style='overflow-x:auto'><table class='ltab'>
+  <thead><tr><th>Transport</th><th>Backend</th><th>frames/s</th><th>MB/s</th><th>lat p50</th></tr></thead>
+  <tbody>{trows}{skr}</tbody></table></div>
+</div></section>"""
+
+    # 4) transport × language grid (heatmap)
+    sec4 = ""
+    if xl and xl.get("cells"):
+        cells = xl["cells"]
+        langs, xports = [], []
+        for c in cells:
+            if c["language"] not in langs:
+                langs.append(c["language"])
+            if c["transport"] not in xports:
+                xports.append(c["transport"])
+        grid = {(c["transport"], c["language"]): c for c in cells}
+        vals = [c["frames_per_s"] for c in cells if c.get("frames_per_s")]
+        mx = max(vals) if vals else 1
+        head = "".join(f"<th>{html.escape(l)}</th>" for l in langs)
+        body = ""
+        for xp in xports:
+            tds = ""
+            for l in langs:
+                c = grid.get((xp, l))
+                if c and c.get("frames_per_s"):
+                    t = c["frames_per_s"] / mx
+                    bg = f"color-mix(in srgb, var(--signal) {int(14+t*70)}%, transparent)"
+                    tds += f"<td style='background:{bg}'>{c['frames_per_s']/1000:,.0f}k</td>"
+                else:
+                    tds += "<td class='na'>—</td>"
+            body += f"<tr><td class='rl'>{html.escape(xp.upper())}</td>{tds}</tr>"
+        sec4 = f"""<section><div class='wrap'>
+  <p class='sec-eyebrow'>transport × language</p>
+  <h2 class='title'>The full product</h2>
+  <p class='sec-lede'>Each cell: that language's native client pushing the sealed frame over that
+  transport (frames/s, loopback, pipelined). The universal socket transports come first; broker and
+  runtime transports are filling in per language. Notice the rows are near-flat across languages —
+  the transport, not the caller, sets the ceiling.</p>
+  <div class='heatwrap'><table class='heat'><thead><tr><th>transport</th>{head}</tr></thead>
+  <tbody>{body}</tbody></table></div>
+</div></section>"""
+
+    hero = """<header class='hero'><div class='wrap reveal'>
+  <p class='eyebrow'>native maximum speed · languages · transports · interop</p>
+  <h1>The speed matrix</h1>
+  <p class='lede'>Real measured throughput across every language robobus targets and every transport it
+  bridges — decode speed, crypto seal/open, transport frame rate, and the full transport × language
+  product. Measured, never estimated; unprovisioned cells say so.</p>
+</div></header>"""
+    body = hero + sec1 + sec2 + sec3 + sec4
+    return page("Speed matrix · robobus", "speed", body,
+                desc="Native maximum speed across every robobus language and transport — codec, "
+                     "crypto, transport throughput, and the full transport × language product.")
+
+
 def main():
     os.makedirs(SITE, exist_ok=True)
     os.makedirs(os.path.join(SITE, "docs"), exist_ok=True)
     open(os.path.join(SITE, "index.html"), "w").write(home())
     open(os.path.join(SITE, "benchmarks.html"), "w").write(benchmarks())
+    open(os.path.join(SITE, "speed.html"), "w").write(speed())
     docs, present = docs_pages()
     for slug, content in docs.items():
         open(os.path.join(SITE, "docs", f"{slug}.html"), "w").write(content)

@@ -1,0 +1,130 @@
+{
+  "schema": "robobus-langmatrix/1",
+  "generated_unix": 1784394765,
+  "record": {
+    "name": "Imu",
+    "bytes": 32,
+    "fields": "u32 id, f64[3] accel, f32 temp"
+  },
+  "budget_ms": 200,
+  "host": {
+    "system": "Darwin",
+    "machine": "arm64",
+    "processor": "arm",
+    "python": "3.14.6"
+  },
+  "languages": [
+    {
+      "language": "c",
+      "status": "ok",
+      "ns_per_op": 0.7575,
+      "ops_per_s": 1320132013.2013202,
+      "checksum": 12367.5,
+      "method": "memcpy LE loads, -O3"
+    },
+    {
+      "language": "cpp",
+      "status": "ok",
+      "ns_per_op": 0.7727,
+      "ops_per_s": 1294163323.4114144,
+      "checksum": 12367.5,
+      "method": "memcpy LE loads (C++), -O3"
+    },
+    {
+      "language": "rust",
+      "status": "ok",
+      "ns_per_op": 0.8637,
+      "ops_per_s": 1157809424.568716,
+      "checksum": 12367.5,
+      "method": "from_le_bytes, -O"
+    },
+    {
+      "language": "go",
+      "status": "ok",
+      "ns_per_op": 1.8719,
+      "ops_per_s": 534216571.3980448,
+      "checksum": 12367.5,
+      "method": "encoding/binary LittleEndian"
+    },
+    {
+      "language": "swift",
+      "status": "ok",
+      "ns_per_op": 3.1186,
+      "ops_per_s": 320656704.93170017,
+      "checksum": 12367.5,
+      "method": "loadUnaligned, -O"
+    },
+    {
+      "language": "java",
+      "status": "ok",
+      "ns_per_op": 2.7049,
+      "ops_per_s": 369699434.3598654,
+      "checksum": 12367.5,
+      "method": "ByteBuffer LE, JIT-warmed"
+    },
+    {
+      "language": "kotlin",
+      "status": "ok",
+      "ns_per_op": 2.816,
+      "ops_per_s": 355113636.3636364,
+      "checksum": 12367.5,
+      "method": "ByteBuffer LE (JVM), JIT-warmed"
+    },
+    {
+      "language": "csharp",
+      "status": "ok",
+      "ns_per_op": 1.2691,
+      "ops_per_s": 787959971.6334411,
+      "checksum": 12367.5,
+      "method": "BitConverter (LE host), Release"
+    },
+    {
+      "language": "typescript",
+      "status": "ok",
+      "ns_per_op": 1.0604,
+      "ops_per_s": 943040362.1274991,
+      "checksum": 12367.5,
+      "method": "DataView LE (Node, TS-transpiled)"
+    },
+    {
+      "language": "julia",
+      "status": "ok",
+      "ns_per_op": 0.6434,
+      "ops_per_s": 1554243083.618278,
+      "checksum": 12367.5,
+      "method": "unsafe_load pointer, JIT-warmed"
+    },
+    {
+      "language": "python",
+      "status": "ok",
+      "ns_per_op": 123.08555603027344,
+      "ops_per_s": 8124430.130161216,
+      "checksum": 12367.5,
+      "method": "struct.unpack_from '<I3df'"
+    },
+    {
+      "language": "ruby",
+      "status": "ok",
+      "ns_per_op": 235.9279,
+      "ops_per_s": 4238583.0586378295,
+      "checksum": 12367.5,
+      "method": "String#unpack 'VE3e'"
+    },
+    {
+      "language": "lua",
+      "status": "ok",
+      "ns_per_op": 73.8253,
+      "ops_per_s": 13545491.85712757,
+      "checksum": 12367.5,
+      "method": "string.unpack '<I4dddf' (os.clock, ~ms res)"
+    },
+    {
+      "language": "octave",
+      "status": "ok",
+      "ns_per_op": 13511.5988,
+      "ops_per_s": 74010.48645701351,
+      "checksum": 12367.5,
+      "method": "typecast LE (host), Octave"
+    }
+  ]
+}

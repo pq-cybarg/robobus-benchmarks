@@ -1,0 +1,53 @@
+{
+  "schema": "robobus-xport-lang/1",
+  "generated_unix": 1784412379,
+  "frame_bytes": 75,
+  "batch": 32,
+  "host": {
+    "system": "Darwin",
+    "machine": "arm64"
+  },
+  "note": "Each cell: that language's native client pushing the sealed frame over the transport, loopback on one host (software ceiling). Pipelined batches of 32.",
+  "cells": [
+    {
+      "transport": "udp",
+      "language": "c",
+      "status": "ok",
+      "frames_per_s": 333458.9,
+      "mb_per_s": 25.0094175,
+      "note": "raw AF_INET/SOCK_DGRAM, -O3"
+    },
+    {
+      "transport": "udp",
+      "language": "python",
+      "status": "ok",
+      "frames_per_s": 318986.5160412338,
+      "mb_per_s": 23.923988703092533,
+      "note": "socket (stdlib)"
+    },
+    {
+      "transport": "udp",
+      "language": "go",
+      "status": "ok",
+      "frames_per_s": 291885.9,
+      "mb_per_s": 21.8914425,
+      "note": "net.UDPConn"
+    },
+    {
+      "transport": "udp",
+      "language": "rust",
+      "status": "ok",
+      "frames_per_s": 326702.3,
+      "mb_per_s": 24.5026725,
+      "note": "std::net::UdpSocket"
+    },
+    {
+      "transport": "udp",
+      "language": "node",
+      "status": "ok",
+      "frames_per_s": 204068.0,
+      "mb_per_s": 15.3051,
+      "note": "dgram (async)"
+    }
+  ]
+}
