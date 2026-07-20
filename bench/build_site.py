@@ -838,6 +838,54 @@ def _ffi_bindings_section():
 </div></section>"""
 
 
+def _crypto_matrix_section():
+    cm = _load("crypto-matrix.json")
+    if not cm or not cm.get("techniques"):
+        return ""
+    tech = cm["techniques"]
+    kind_tier = {
+        "aead": lambda v: "tier-n" if v > 1.5e6 else "tier-j" if v > 4e5 else "tier-i",
+        "hash": lambda v: "tier-n" if v > 8e6 else "tier-j" if v > 2e6 else "tier-i",
+        "kem":  lambda v: "tier-n" if v > 3e4 else "tier-j" if v > 2e4 else "tier-i",
+        "sig":  lambda v: "tier-n" if v > 4e3 else "tier-j" if v > 2e3 else "tier-i",
+    }
+    blocks = []
+    for grp in cm.get("groups", []):
+        techs = [t for t in grp["techniques"] if tech.get(t, {}).get("rows")]
+        if not techs:
+            continue
+        inner = []
+        for t in techs:
+            info = tech[t]
+            rows = [(r["language"], r.get("impl", ""), 1e9 / r["ns"], "op/s") for r in info["rows"]]
+            inner.append(
+                f"<div class='tech'><div class='tech-h'><span class='tech-n'>{html.escape(t)}</span>"
+                f"<span class='tech-m'>{html.escape(info.get('metric',''))}</span></div>"
+                f"{_hbars(rows, kind_tier.get(info['kind'], kind_tier['aead']))}</div>")
+        blocks.append(f"<div class='cgroup'><h3 class='cgroup-t'>{html.escape(grp['title'])}</h3>"
+                      + "".join(inner) + "</div>")
+    css = ("<style>.cgroup{margin:26px 0}.cgroup-t{font:600 15px/1.3 'Inter';color:var(--signal);"
+           "margin:0 0 6px;padding-bottom:8px;border-bottom:1px solid var(--line)}"
+           ".tech{margin:16px 0}.tech-h{display:flex;justify-content:space-between;align-items:baseline;"
+           "gap:12px;margin-bottom:6px;flex-wrap:wrap}.tech-n{font:600 13.5px/1 'JetBrains Mono';color:var(--fg)}"
+           ".tech-m{font:400 11px/1.3 'JetBrains Mono';color:var(--dim)}</style>")
+    return f"""<section><div class='wrap'>{css}
+  <p class='sec-eyebrow'>crypto · every primitive · every language · grouped by technique</p>
+  <h2 class='title'>The crypto matrix</h2>
+  <p class='sec-lede'>robobus is a post-quantum bus, so its crypto is a whole suite, not one cipher.
+  Here is every primitive it uses, measured in every language that can do it natively — <b>grouped
+  per technique</b> so each bar chart is a coherent apples-to-apples comparison (identical workload,
+  languages ranked fastest first). The <b>AEAD</b> and <b>hash</b> groups are each language's
+  native-maximum stack (stdlib where it exists, else the platform OpenSSL through the language's FFI).
+  The <b>post-quantum</b> groups have essentially no native per-language implementations, so they show
+  the real distinct backends instead — <b>OpenSSL&nbsp;3.6.3 EVP</b>, <b>liboqs</b>, and Go's native
+  pure-Go <b>crypto/mlkem</b> — a genuine implementation comparison; every language reaches the
+  OpenSSL/liboqs numbers via FFI at ~the same cost (see the FFI-bindings section).</p>
+  {"".join(blocks)}
+  <p class='sec-lede' style='margin-top:16px'>{html.escape(cm.get('note',''))}</p>
+</div></section>"""
+
+
 def speed():
     lm = _load("lang-matrix.json")
     cl = _load("cross-lang.json")
@@ -953,7 +1001,9 @@ def speed():
   bridges — decode speed, crypto seal/open, transport frame rate, and the full transport × language
   product. Measured, never estimated; unprovisioned cells say so.</p>
 </div></header>"""
-    body = (hero + _profiles_section() + sec1 + sec2 + _runtimes_section()
+    # the per-technique crypto matrix supersedes the old 6-language sec2 (kept as fallback only)
+    crypto = _crypto_matrix_section() or sec2
+    body = (hero + _profiles_section() + sec1 + crypto + _runtimes_section()
             + _ruby_runtimes_section() + _ffi_bindings_section() + sec3 + sec4)
     return page("Speed matrix · robobus", "speed", body, canon="speed.html",
                 desc="Native maximum speed across every robobus language and transport — codec, "

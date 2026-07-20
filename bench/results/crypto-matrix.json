@@ -1,0 +1,691 @@
+{
+  "schema": "robobus-cryptomatrix/2",
+  "generated_unix": 1784560948,
+  "host": {
+    "system": "Darwin",
+    "machine": "arm64"
+  },
+  "groups": [
+    {
+      "title": "AEAD ciphers (per-message envelope)",
+      "kind": "aead",
+      "techniques": [
+        "AES-256-GCM",
+        "AES-128-GCM",
+        "ChaCha20-Poly1305"
+      ]
+    },
+    {
+      "title": "Hashes",
+      "kind": "hash",
+      "techniques": [
+        "SHA-256",
+        "SHA-384",
+        "BLAKE3"
+      ]
+    },
+    {
+      "title": "Post-quantum KEM (session key establishment)",
+      "kind": "kem",
+      "techniques": [
+        "ML-KEM-512",
+        "ML-KEM-768",
+        "ML-KEM-1024"
+      ]
+    },
+    {
+      "title": "Post-quantum signatures (authentication)",
+      "kind": "sig",
+      "techniques": [
+        "ML-DSA-44",
+        "ML-DSA-65",
+        "ML-DSA-87"
+      ]
+    }
+  ],
+  "techniques": {
+    "AES-256-GCM": {
+      "kind": "aead",
+      "metric": "ns per seal+open of a 41-byte payload",
+      "rows": [
+        {
+          "language": "Go",
+          "ns": 354.58271,
+          "impl": "stdlib"
+        },
+        {
+          "language": "Zig",
+          "ns": 466.475,
+          "impl": "std.crypto"
+        },
+        {
+          "language": "Nim",
+          "ns": 623.00979,
+          "impl": "OpenSSL EVP via FFI"
+        },
+        {
+          "language": "LuaJIT",
+          "ns": 668.83,
+          "impl": "OpenSSL EVP via ffi"
+        },
+        {
+          "language": "Haskell",
+          "ns": 702.64,
+          "impl": "OpenSSL EVP via FFI"
+        },
+        {
+          "language": "C",
+          "ns": 733.66,
+          "impl": "OpenSSL EVP + libblake3"
+        },
+        {
+          "language": "OCaml",
+          "ns": 737.88292,
+          "impl": "mirage-crypto / digestif"
+        },
+        {
+          "language": "C++",
+          "ns": 804.077,
+          "impl": "OpenSSL EVP + libblake3"
+        },
+        {
+          "language": "Crystal",
+          "ns": 1390.12646,
+          "impl": "stdlib OpenSSL"
+        },
+        {
+          "language": "Swift",
+          "ns": 1659.525,
+          "impl": "CryptoKit"
+        },
+        {
+          "language": "Julia",
+          "ns": 1696.900205,
+          "impl": "ccall libcrypto"
+        },
+        {
+          "language": "Ruby",
+          "ns": 1868.255,
+          "impl": "stdlib OpenSSL"
+        },
+        {
+          "language": "Kotlin",
+          "ns": 1933.85375,
+          "impl": "JCE"
+        },
+        {
+          "language": "Rust",
+          "ns": 2071.802085,
+          "impl": "RustCrypto crates"
+        },
+        {
+          "language": "Python",
+          "ns": 2213.91104,
+          "impl": "pyca/cryptography"
+        },
+        {
+          "language": "Java",
+          "ns": 2484.12792,
+          "impl": "JCE"
+        },
+        {
+          "language": "C#",
+          "ns": 3826.9675,
+          "impl": "System.Security.Cryptography"
+        },
+        {
+          "language": "Perl",
+          "ns": 4459.59,
+          "impl": "CryptX"
+        },
+        {
+          "language": "Node.js",
+          "ns": 18429.13833,
+          "impl": "node:crypto"
+        }
+      ]
+    },
+    "AES-128-GCM": {
+      "kind": "aead",
+      "metric": "ns per seal+open of a 41-byte payload",
+      "rows": [
+        {
+          "language": "Zig",
+          "ns": 301.79,
+          "impl": "std.crypto"
+        },
+        {
+          "language": "Go",
+          "ns": 315.70667,
+          "impl": "stdlib"
+        },
+        {
+          "language": "Nim",
+          "ns": 564.57854,
+          "impl": "OpenSSL EVP via FFI"
+        },
+        {
+          "language": "OCaml",
+          "ns": 566.595835,
+          "impl": "mirage-crypto / digestif"
+        },
+        {
+          "language": "LuaJIT",
+          "ns": 672.55,
+          "impl": "OpenSSL EVP via ffi"
+        },
+        {
+          "language": "C",
+          "ns": 738.31,
+          "impl": "OpenSSL EVP + libblake3"
+        },
+        {
+          "language": "Haskell",
+          "ns": 739.08,
+          "impl": "OpenSSL EVP via FFI"
+        },
+        {
+          "language": "C++",
+          "ns": 749.395,
+          "impl": "OpenSSL EVP + libblake3"
+        },
+        {
+          "language": "Kotlin",
+          "ns": 877.666665,
+          "impl": "JCE"
+        },
+        {
+          "language": "Java",
+          "ns": 1051.605205,
+          "impl": "JCE"
+        },
+        {
+          "language": "Crystal",
+          "ns": 1184.62625,
+          "impl": "stdlib OpenSSL"
+        },
+        {
+          "language": "Swift",
+          "ns": 1519.665,
+          "impl": "CryptoKit"
+        },
+        {
+          "language": "Rust",
+          "ns": 1538.543955,
+          "impl": "RustCrypto crates"
+        },
+        {
+          "language": "Julia",
+          "ns": 1651.77083,
+          "impl": "ccall libcrypto"
+        },
+        {
+          "language": "Ruby",
+          "ns": 1776.655,
+          "impl": "stdlib OpenSSL"
+        },
+        {
+          "language": "Python",
+          "ns": 1888.716665,
+          "impl": "pyca/cryptography"
+        },
+        {
+          "language": "C#",
+          "ns": 3902.9655,
+          "impl": "System.Security.Cryptography"
+        },
+        {
+          "language": "Perl",
+          "ns": 3955.295,
+          "impl": "CryptX"
+        },
+        {
+          "language": "Node.js",
+          "ns": 19867.99583,
+          "impl": "node:crypto"
+        }
+      ]
+    },
+    "ChaCha20-Poly1305": {
+      "kind": "aead",
+      "metric": "ns per seal+open of a 41-byte payload",
+      "rows": [
+        {
+          "language": "Rust",
+          "ns": 422.17271,
+          "impl": "RustCrypto crates"
+        },
+        {
+          "language": "Go",
+          "ns": 583.378955,
+          "impl": "stdlib"
+        },
+        {
+          "language": "OCaml",
+          "ns": 606.56104,
+          "impl": "mirage-crypto / digestif"
+        },
+        {
+          "language": "Nim",
+          "ns": 816.901875,
+          "impl": "OpenSSL EVP via FFI"
+        },
+        {
+          "language": "Zig",
+          "ns": 845.395,
+          "impl": "std.crypto"
+        },
+        {
+          "language": "LuaJIT",
+          "ns": 869.595,
+          "impl": "OpenSSL EVP via ffi"
+        },
+        {
+          "language": "Haskell",
+          "ns": 899.385,
+          "impl": "OpenSSL EVP via FFI"
+        },
+        {
+          "language": "C",
+          "ns": 922.25,
+          "impl": "OpenSSL EVP + libblake3"
+        },
+        {
+          "language": "C++",
+          "ns": 949.631,
+          "impl": "OpenSSL EVP + libblake3"
+        },
+        {
+          "language": "Julia",
+          "ns": 965.738125,
+          "impl": "ccall libcrypto"
+        },
+        {
+          "language": "Crystal",
+          "ns": 1368.045415,
+          "impl": "stdlib OpenSSL"
+        },
+        {
+          "language": "Perl",
+          "ns": 1885.205,
+          "impl": "CryptX"
+        },
+        {
+          "language": "Swift",
+          "ns": 1930.8,
+          "impl": "CryptoKit"
+        },
+        {
+          "language": "Ruby",
+          "ns": 2002.825,
+          "impl": "stdlib OpenSSL"
+        },
+        {
+          "language": "Python",
+          "ns": 2023.11125,
+          "impl": "pyca/cryptography"
+        },
+        {
+          "language": "Kotlin",
+          "ns": 2095.82729,
+          "impl": "JCE"
+        },
+        {
+          "language": "Java",
+          "ns": 2410.15354,
+          "impl": "JCE"
+        },
+        {
+          "language": "C#",
+          "ns": 4244.1745,
+          "impl": "System.Security.Cryptography"
+        },
+        {
+          "language": "Node.js",
+          "ns": 18930.555,
+          "impl": "node:crypto"
+        }
+      ]
+    },
+    "SHA-256": {
+      "kind": "hash",
+      "metric": "ns per hash of a 41-byte payload",
+      "rows": [
+        {
+          "language": "Zig",
+          "ns": 14.964,
+          "impl": "std.crypto"
+        },
+        {
+          "language": "Go",
+          "ns": 38.0465,
+          "impl": "stdlib"
+        },
+        {
+          "language": "C#",
+          "ns": 77.4276,
+          "impl": "System.Security.Cryptography"
+        },
+        {
+          "language": "Rust",
+          "ns": 112.305,
+          "impl": "RustCrypto crates"
+        },
+        {
+          "language": "C",
+          "ns": 137.398,
+          "impl": "OpenSSL EVP + libblake3"
+        },
+        {
+          "language": "Nim",
+          "ns": 140.275168,
+          "impl": "OpenSSL EVP via FFI"
+        },
+        {
+          "language": "C++",
+          "ns": 142.578,
+          "impl": "OpenSSL EVP + libblake3"
+        },
+        {
+          "language": "Haskell",
+          "ns": 146.064,
+          "impl": "OpenSSL EVP via FFI"
+        },
+        {
+          "language": "LuaJIT",
+          "ns": 148.258,
+          "impl": "OpenSSL EVP via ffi"
+        },
+        {
+          "language": "OCaml",
+          "ns": 173.59875,
+          "impl": "mirage-crypto / digestif"
+        },
+        {
+          "language": "Julia",
+          "ns": 190.996084,
+          "impl": "ccall libcrypto"
+        },
+        {
+          "language": "Swift",
+          "ns": 205.234,
+          "impl": "CryptoKit"
+        },
+        {
+          "language": "Crystal",
+          "ns": 231.148082,
+          "impl": "stdlib OpenSSL"
+        },
+        {
+          "language": "Perl",
+          "ns": 241.122,
+          "impl": "CryptX"
+        },
+        {
+          "language": "Java",
+          "ns": 317.707916,
+          "impl": "JCE"
+        },
+        {
+          "language": "Kotlin",
+          "ns": 326.76925,
+          "impl": "JCE"
+        },
+        {
+          "language": "Node.js",
+          "ns": 438.363666,
+          "impl": "node:crypto"
+        },
+        {
+          "language": "Python",
+          "ns": 694.7805,
+          "impl": "pyca/cryptography"
+        },
+        {
+          "language": "Ruby",
+          "ns": 699.418,
+          "impl": "stdlib OpenSSL"
+        }
+      ]
+    },
+    "SHA-384": {
+      "kind": "hash",
+      "metric": "ns per hash of a 41-byte payload",
+      "rows": [
+        {
+          "language": "Go",
+          "ns": 95.625918,
+          "impl": "stdlib"
+        },
+        {
+          "language": "C#",
+          "ns": 138.0256,
+          "impl": "System.Security.Cryptography"
+        },
+        {
+          "language": "Rust",
+          "ns": 143.394,
+          "impl": "RustCrypto crates"
+        },
+        {
+          "language": "Zig",
+          "ns": 182.858,
+          "impl": "std.crypto"
+        },
+        {
+          "language": "LuaJIT",
+          "ns": 183.264,
+          "impl": "OpenSSL EVP via ffi"
+        },
+        {
+          "language": "C",
+          "ns": 184.612,
+          "impl": "OpenSSL EVP + libblake3"
+        },
+        {
+          "language": "Nim",
+          "ns": 186.279666,
+          "impl": "OpenSSL EVP via FFI"
+        },
+        {
+          "language": "C++",
+          "ns": 189.083,
+          "impl": "OpenSSL EVP + libblake3"
+        },
+        {
+          "language": "Julia",
+          "ns": 208.8815,
+          "impl": "ccall libcrypto"
+        },
+        {
+          "language": "Haskell",
+          "ns": 211.274,
+          "impl": "OpenSSL EVP via FFI"
+        },
+        {
+          "language": "OCaml",
+          "ns": 215.573584,
+          "impl": "mirage-crypto / digestif"
+        },
+        {
+          "language": "Crystal",
+          "ns": 279.881082,
+          "impl": "stdlib OpenSSL"
+        },
+        {
+          "language": "Perl",
+          "ns": 350.4,
+          "impl": "CryptX"
+        },
+        {
+          "language": "Kotlin",
+          "ns": 352.286666,
+          "impl": "JCE"
+        },
+        {
+          "language": "Swift",
+          "ns": 354.13,
+          "impl": "CryptoKit"
+        },
+        {
+          "language": "Node.js",
+          "ns": 531.085582,
+          "impl": "node:crypto"
+        },
+        {
+          "language": "Java",
+          "ns": 596.527334,
+          "impl": "JCE"
+        },
+        {
+          "language": "Ruby",
+          "ns": 655.322,
+          "impl": "stdlib OpenSSL"
+        },
+        {
+          "language": "Python",
+          "ns": 782.42975,
+          "impl": "pyca/cryptography"
+        }
+      ]
+    },
+    "BLAKE3": {
+      "kind": "hash",
+      "metric": "ns per hash of a 41-byte payload",
+      "rows": [
+        {
+          "language": "Rust",
+          "ns": 50.704834,
+          "impl": "RustCrypto crates"
+        },
+        {
+          "language": "C",
+          "ns": 60.918,
+          "impl": "OpenSSL EVP + libblake3"
+        },
+        {
+          "language": "C++",
+          "ns": 61.227,
+          "impl": "OpenSSL EVP + libblake3"
+        },
+        {
+          "language": "Zig",
+          "ns": 77.342,
+          "impl": "std.crypto"
+        },
+        {
+          "language": "Python",
+          "ns": 515.713416,
+          "impl": "pyca/cryptography"
+        }
+      ]
+    },
+    "ML-KEM-512": {
+      "kind": "kem",
+      "metric": "ns per keygen + encapsulate + decapsulate",
+      "rows": [
+        {
+          "language": "liboqs",
+          "ns": 27555.7542,
+          "impl": "C (via python-oqs)"
+        },
+        {
+          "language": "OpenSSL 3.6.3 EVP",
+          "ns": 28052.5,
+          "impl": "C (shared by every libcrypto-FFI language)"
+        }
+      ]
+    },
+    "ML-KEM-768": {
+      "kind": "kem",
+      "metric": "ns per keygen + encapsulate + decapsulate",
+      "rows": [
+        {
+          "language": "OpenSSL 3.6.3 EVP",
+          "ns": 44633.55,
+          "impl": "C (shared by every libcrypto-FFI language)"
+        },
+        {
+          "language": "liboqs",
+          "ns": 44760.8521,
+          "impl": "C (via python-oqs)"
+        },
+        {
+          "language": "Go crypto/mlkem",
+          "ns": 100089.95,
+          "impl": "native pure-Go"
+        }
+      ]
+    },
+    "ML-KEM-1024": {
+      "kind": "kem",
+      "metric": "ns per keygen + encapsulate + decapsulate",
+      "rows": [
+        {
+          "language": "liboqs",
+          "ns": 59615.15415,
+          "impl": "C (via python-oqs)"
+        },
+        {
+          "language": "OpenSSL 3.6.3 EVP",
+          "ns": 63653.25,
+          "impl": "C (shared by every libcrypto-FFI language)"
+        },
+        {
+          "language": "Go crypto/mlkem",
+          "ns": 138682.3667,
+          "impl": "native pure-Go"
+        }
+      ]
+    },
+    "ML-DSA-44": {
+      "kind": "sig",
+      "metric": "ns per sign + verify of a 41-byte message",
+      "rows": [
+        {
+          "language": "liboqs",
+          "ns": 218991.55835,
+          "impl": "C (via python-oqs)"
+        },
+        {
+          "language": "OpenSSL 3.6.3 EVP",
+          "ns": 328574.35,
+          "impl": "C (shared by every libcrypto-FFI language)"
+        }
+      ]
+    },
+    "ML-DSA-65": {
+      "kind": "sig",
+      "metric": "ns per sign + verify of a 41-byte message",
+      "rows": [
+        {
+          "language": "liboqs",
+          "ns": 365592.92085,
+          "impl": "C (via python-oqs)"
+        },
+        {
+          "language": "OpenSSL 3.6.3 EVP",
+          "ns": 516890.5,
+          "impl": "C (shared by every libcrypto-FFI language)"
+        }
+      ]
+    },
+    "ML-DSA-87": {
+      "kind": "sig",
+      "metric": "ns per sign + verify of a 41-byte message",
+      "rows": [
+        {
+          "language": "liboqs",
+          "ns": 450802.83125,
+          "impl": "C (via python-oqs)"
+        },
+        {
+          "language": "OpenSSL 3.6.3 EVP",
+          "ns": 664522.75,
+          "impl": "C (shared by every libcrypto-FFI language)"
+        }
+      ]
+    }
+  },
+  "note": "Grouped per technique so each comparison is coherent (identical workload, languages ranked). AEAD/hash are each language's native-maximum stack. PQC has ~no native per-language implementations, so it is measured on the real distinct backends (OpenSSL 3.6.3 EVP, liboqs, Go native crypto/mlkem); any language reaches the OpenSSL/liboqs numbers via FFI at ~the same cost."
+}
