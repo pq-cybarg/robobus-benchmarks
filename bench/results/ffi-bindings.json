@@ -1,0 +1,44 @@
+{
+  "schema": "robobus-ffi-bindings/1",
+  "generated_unix": 1784529399,
+  "host": {
+    "system": "Darwin",
+    "machine": "arm64"
+  },
+  "workload": "RBX1 seal(41B)+open round-trip, AES-256-GCM, via librobobus C-ABI",
+  "note": "One C-ABI shared library (librobobus) exposes robobus's full seal/open surface to any language through its own FFI. The round-trip is dominated by AES-256-GCM in the shared C, so every binding lands near the C ceiling \u2014 the FFI overhead is nearly free. Each binding is verified to round-trip (open(seal(pt))==pt) before timing.",
+  "bindings": [
+    {
+      "language": "LuaJIT",
+      "mechanism": "native FFI (JIT)",
+      "status": "ok",
+      "ns_per_op": 708.43448275862,
+      "ops_per_s": 1411563.1358118448,
+      "note": "LuaJIT ffi.cdef + ffi.load, JIT-compiled"
+    },
+    {
+      "language": "Perl",
+      "mechanism": "FFI::Platypus (libffi)",
+      "status": "ok",
+      "ns_per_op": 1008.8875,
+      "ops_per_s": 991190.7918375438,
+      "note": "FFI::Platypus (libffi), opaque buffers, verified round-trip"
+    },
+    {
+      "language": "Octave",
+      "mechanism": "compiled .oct (mkoctfile)",
+      "status": "ok",
+      "ns_per_op": 727.88,
+      "ops_per_s": 1373852.8328845415,
+      "note": "compiled .oct wrapper (mkoctfile), links librobobus directly"
+    },
+    {
+      "language": "CPython",
+      "mechanism": "cffi ABI-mode",
+      "status": "ok",
+      "ns_per_op": 1062.0934210524674,
+      "ops_per_s": 941536.7614357909,
+      "note": "cffi ABI-mode dlopen (reference; also in Python runtime matrix)"
+    }
+  ]
+}

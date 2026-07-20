@@ -130,6 +130,20 @@ h2.title{font-size:clamp(24px,3.5vw,34px);margin:0 0 8px}
 .heat td b{font-weight:700;color:var(--bg)}
 .speed-skip{color:var(--dim)}.speed-skip td{border-bottom:1px solid var(--line);padding:9px 14px}
 
+/* requirements profiles table */
+.pftab td{vertical-align:top}
+.pf-n{font-weight:600;color:var(--fg)}
+.pf-alg{font:400 11px/1.3 'JetBrains Mono';color:var(--dim);margin-top:3px}
+.pf-sub{font:400 11px/1.3 'JetBrains Mono';color:var(--dim);margin-top:3px}
+.pf-lvl{display:inline-block;font:600 11px/1 'JetBrains Mono';padding:4px 9px;border-radius:6px;white-space:nowrap}
+.pf-lvl.l0{color:var(--dim);border:1px solid var(--line)}
+.pf-lvl.l1{color:var(--hybrid);background:color-mix(in srgb,var(--hybrid) 12%,transparent)}
+.pf-lvl.l3{color:var(--signal);background:color-mix(in srgb,var(--signal) 12%,transparent)}
+.pf-lvl.l5{color:var(--qr);background:color-mix(in srgb,var(--qr) 14%,transparent)}
+.pf-std{max-width:260px}
+.cchip{display:inline-block;font:500 10.5px/1 'JetBrains Mono';color:var(--muted);border:1px solid var(--line);
+  background:var(--panel2);border-radius:5px;padding:4px 7px;margin:0 4px 4px 0;white-space:nowrap}
+
 /* callout */
 .note{background:color-mix(in srgb,var(--amber) 8%,var(--panel));border:1px solid color-mix(in srgb,var(--amber) 34%,var(--line));border-radius:12px;padding:14px 18px;color:#f1d9b3;font-size:14.5px}
 .note b{color:var(--amber)}

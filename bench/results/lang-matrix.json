@@ -1,6 +1,6 @@
 {
   "schema": "robobus-langmatrix/1",
-  "generated_unix": 1784521370,
+  "generated_unix": 1784529457,
   "record": {
     "name": "Imu",
     "bytes": 32,
@@ -245,6 +245,38 @@
       "ops_per_s": 35625222.65764161,
       "checksum": 12367.5,
       "method": "vectorized typecast/reshape (whole batch) \u2014 Octave native max"
+    },
+    {
+      "language": "perl-pdl",
+      "status": "ok",
+      "ns_per_op": 27.9188,
+      "ops_per_s": 35818158.373569064,
+      "checksum": 12367.5,
+      "method": "PDL byte-piddle dataref + typed reinterpret + dsum (vectorized)"
+    },
+    {
+      "language": "lua-luajit",
+      "status": "ok",
+      "ns_per_op": 1.192,
+      "ops_per_s": 838926174.4966444,
+      "checksum": 12367.5,
+      "method": "LuaJIT FFI ffi.cast native LE (JIT-compiled)"
+    },
+    {
+      "language": "lua-vectorize",
+      "status": "ok",
+      "ns_per_op": 95.8629,
+      "ops_per_s": 10431564.244353134,
+      "checksum": 12367.5,
+      "method": "lua-vectorize vec.sum (C reduction); extraction still string.unpack"
+    },
+    {
+      "language": "nelua",
+      "status": "ok",
+      "ns_per_op": 2.7619,
+      "ops_per_s": 362069589.7751548,
+      "checksum": 12367.5,
+      "method": "compiled Lua\u2192C native, pointer cast (os.clock)"
     }
   ]
 }

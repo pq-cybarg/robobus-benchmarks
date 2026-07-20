@@ -801,6 +801,43 @@ def _profiles_section():
 </div></section>"""
 
 
+def _ffi_bindings_section():
+    fb = _load("ffi-bindings.json")
+    if not fb:
+        return ""
+    oks = [r for r in fb["bindings"] if r.get("status") == "ok"]
+    if not oks:
+        return ""
+    oks.sort(key=lambda r: -r["ops_per_s"])
+    rows = [(f"{r['language']} · {r['mechanism']}", r.get("note", ""), r["ops_per_s"], "op/s")
+            for r in oks]
+    sk = [r for r in fb["bindings"] if r.get("status") != "ok"]
+    sktab = ""
+    if sk:
+        srows = "".join(f"<tr class='speed-skip'><td>{html.escape(r['language'])} · "
+                        f"{html.escape(r.get('mechanism',''))}</td><td>{html.escape(r.get('note',''))}"
+                        f"</td></tr>" for r in sk)
+        sktab = (f"<table class='ltab' style='margin-top:14px'><thead><tr>"
+                 f"<th>Binding (tracked)</th><th>status</th></tr></thead><tbody>{srows}</tbody></table>")
+    # narrow spread — all near the C ceiling — so a linear tier by op/s reads better than log
+    def tier(v):
+        return "tier-n" if v > 1.2e6 else "tier-j" if v > 9e5 else "tier-i"
+    return f"""<section><div class='wrap'>
+  <p class='sec-eyebrow'>one C-ABI · every language's FFI</p>
+  <h2 class='title'>Full robobus from any language — over its own FFI</h2>
+  <p class='sec-lede'>You don't need a native robobus port to get the real thing. <code>librobobus</code>
+  is one C-ABI shared library, and every language reaches its <b>complete</b> seal/open surface
+  through its own foreign-function interface — <b>LuaJIT</b>'s native FFI, <b>Perl</b>'s FFI::Platypus
+  (libffi), <b>Octave</b>'s compiled <code>.oct</code> C-linkage (it has no raw <code>loadlibrary</code>),
+  and <b>CPython</b>'s cffi. The same RBX1 <code>seal(41&nbsp;B)</code>→<code>open</code> round trip
+  (AES-256-GCM), each verified to round-trip before timing. Because the work happens in the shared C,
+  every binding lands near the C ceiling — <b>the FFI overhead is nearly free</b>:</p>
+  {_hbars(rows, tier)}
+  {sktab}
+  <p class='sec-lede' style='margin-top:16px'>{html.escape(fb.get('note',''))}</p>
+</div></section>"""
+
+
 def speed():
     lm = _load("lang-matrix.json")
     cl = _load("cross-lang.json")
@@ -827,7 +864,7 @@ def speed():
   <p class='sec-lede'>The {html.escape(rec.get('name','record'))} wire record
   ({html.escape(rec.get('fields',''))}, {rec.get('bytes','?')} B) parsed at native maximum in each
   language robobus code-generates for — measured on this host ({html.escape(hoststr)}), decode in a
-  tight loop with a field checksum (no dead-code elision). Log scale; the span is ~20,000×.</p>
+  tight loop with a field checksum (no dead-code elision). Log scale; the span is ~1,700×.</p>
   {_hbars(rows, codec_tier)}
   {'<table class="ltab" style="margin-top:14px"><tbody>'+sk+'</tbody></table>' if sk else ''}
 </div></section>"""
@@ -904,7 +941,7 @@ def speed():
   language issues the same <code>send</code>/<code>recv</code> into the same kernel, so throughput
   converges to the loopback ceiling and small differences (even Python edging C) are run-to-run
   noise, not language speed. That's the point: <b>the transport sets the ceiling, not the caller</b>
-  — the opposite of the codec table above, where language speed spans ~20,000×.</p>
+  — the opposite of the codec table above, where language speed spans ~1,700×.</p>
   <div class='heatwrap'><table class='heat'><thead><tr><th>transport</th>{head}</tr></thead>
   <tbody>{body}</tbody></table></div>
 </div></section>"""
@@ -916,7 +953,8 @@ def speed():
   bridges — decode speed, crypto seal/open, transport frame rate, and the full transport × language
   product. Measured, never estimated; unprovisioned cells say so.</p>
 </div></header>"""
-    body = hero + _profiles_section() + sec1 + sec2 + _runtimes_section() + _ruby_runtimes_section() + sec3 + sec4
+    body = (hero + _profiles_section() + sec1 + sec2 + _runtimes_section()
+            + _ruby_runtimes_section() + _ffi_bindings_section() + sec3 + sec4)
     return page("Speed matrix · robobus", "speed", body, canon="speed.html",
                 desc="Native maximum speed across every robobus language and transport — codec, "
                      "crypto, transport throughput, and the full transport × language product.")
