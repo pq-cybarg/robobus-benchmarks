@@ -119,12 +119,28 @@
       "method": "Cython \u2192 C memcpy loads (compiled hot path)"
     },
     {
+      "language": "python-numpy",
+      "status": "ok",
+      "ns_per_op": 3.6520183074943713,
+      "ops_per_s": 273821190.312185,
+      "checksum": 12367.5,
+      "method": "numpy structured dtype, vectorized (batch)"
+    },
+    {
       "language": "ruby",
       "status": "ok",
       "ns_per_op": 265.803,
       "ops_per_s": 3762184.7759430856,
       "checksum": 12367.5,
       "method": "String#unpack 'VE3e'"
+    },
+    {
+      "language": "ruby-batch",
+      "status": "ok",
+      "ns_per_op": 44.7173,
+      "ops_per_s": 22362709.73426392,
+      "checksum": 12367.5,
+      "method": "unpack repeated 'VE3e' whole buffer (batch)"
     },
     {
       "language": "crystal",
