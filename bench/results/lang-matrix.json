@@ -1,6 +1,6 @@
 {
   "schema": "robobus-langmatrix/1",
-  "generated_unix": 1784520413,
+  "generated_unix": 1784520932,
   "record": {
     "name": "Imu",
     "bytes": 32,
@@ -15,196 +15,25 @@
   },
   "languages": [
     {
-      "language": "c",
-      "status": "ok",
-      "ns_per_op": 0.6899,
-      "ops_per_s": 1449485432.6714017,
-      "checksum": 12367.5,
-      "method": "memcpy LE loads, -O3"
-    },
-    {
-      "language": "cpp",
-      "status": "ok",
-      "ns_per_op": 0.6307,
-      "ops_per_s": 1585539876.3278894,
-      "checksum": 12367.5,
-      "method": "memcpy LE loads (C++), -O3"
-    },
-    {
-      "language": "rust",
-      "status": "ok",
-      "ns_per_op": 0.7777,
-      "ops_per_s": 1285842870.001286,
-      "checksum": 12367.5,
-      "method": "from_le_bytes, -O"
-    },
-    {
-      "language": "go",
-      "status": "ok",
-      "ns_per_op": 1.8291,
-      "ops_per_s": 546716964.6274124,
-      "checksum": 12367.5,
-      "method": "encoding/binary LittleEndian"
-    },
-    {
-      "language": "swift",
-      "status": "ok",
-      "ns_per_op": 3.3286,
-      "ops_per_s": 300426605.78020793,
-      "checksum": 12367.5,
-      "method": "loadUnaligned, -O"
-    },
-    {
-      "language": "java",
-      "status": "ok",
-      "ns_per_op": 3.0443,
-      "ops_per_s": 328482738.2321059,
-      "checksum": 12367.5,
-      "method": "ByteBuffer LE, JIT-warmed"
-    },
-    {
-      "language": "kotlin",
-      "status": "ok",
-      "ns_per_op": 2.746,
-      "ops_per_s": 364166059.7232338,
-      "checksum": 12367.5,
-      "method": "ByteBuffer LE (JVM), JIT-warmed"
-    },
-    {
-      "language": "csharp",
-      "status": "ok",
-      "ns_per_op": 1.3293,
-      "ops_per_s": 752275633.7922215,
-      "checksum": 12367.5,
-      "method": "BitConverter (LE host), Release"
-    },
-    {
-      "language": "typescript",
-      "status": "ok",
-      "ns_per_op": 1.1877,
-      "ops_per_s": 841963458.7858887,
-      "checksum": 12367.5,
-      "method": "DataView LE (Node, TS-transpiled)"
-    },
-    {
-      "language": "julia",
-      "status": "ok",
-      "ns_per_op": 0.6341,
-      "ops_per_s": 1577038322.0312254,
-      "checksum": 12367.5,
-      "method": "unsafe_load pointer, JIT-warmed"
-    },
-    {
       "language": "python",
       "status": "ok",
-      "ns_per_op": 128.7088394165039,
-      "ops_per_s": 7769474.144382452,
+      "ns_per_op": 117.65259962815504,
+      "ops_per_s": 8499599.695718864,
       "checksum": 12367.5,
       "method": "struct.unpack_from '<I3df'"
     },
     {
-      "language": "ruby",
+      "language": "python-pypy",
       "status": "ok",
-      "ns_per_op": 246.5245,
-      "ops_per_s": 4056391.9610424116,
+      "ns_per_op": 31.6724,
+      "ops_per_s": 31573230.951869767,
       "checksum": 12367.5,
-      "method": "String#unpack 'VE3e'"
+      "method": "struct.unpack_from, PyPy JIT"
     },
     {
-      "language": "crystal",
-      "status": "ok",
-      "ns_per_op": 0.7095503941216432,
-      "ops_per_s": 1409343167.567268,
-      "checksum": 12367.5,
-      "method": "unsafe pointer LE, --release (LLVM)"
-    },
-    {
-      "language": "mojo",
-      "status": "ok",
-      "ns_per_op": 0.6332555747131094,
-      "ops_per_s": 1579141250.281201,
-      "checksum": 12367.5,
-      "method": "std pointer bitcast, mojo run (-I stdlib)"
-    },
-    {
-      "language": "cobol",
-      "status": "ok",
-      "ns_per_op": 1134.6955673666648,
-      "ops_per_s": 881293.6515833419,
-      "checksum": 12367.5,
-      "method": "REDEFINES COMP-2/5, wall-timed (no ns clock in COBOL)"
-    },
-    {
-      "language": "nim",
-      "status": "ok",
-      "ns_per_op": 0.8978511207627703,
-      "ops_per_s": 1113770397.8700266,
-      "checksum": 12367.5,
-      "method": "unchecked ptr cast, -d:release"
-    },
-    {
-      "language": "zig",
-      "status": "ok",
-      "ns_per_op": 0.6493101728723404,
-      "ops_per_s": 1540096000.0,
-      "checksum": 12367.5,
-      "method": "std.mem.readInt LE, ReleaseFast (Zig 0.16)"
-    },
-    {
-      "language": "pascal",
-      "status": "ok",
-      "ns_per_op": 13.611,
-      "ops_per_s": 73469987.51010212,
-      "checksum": 12367.5,
-      "method": "Move + fpgettimeofday, -O3"
-    },
-    {
-      "language": "haskell",
-      "status": "ok",
-      "ns_per_op": 0.6835014796070129,
-      "ops_per_s": 1463054623.6344092,
-      "checksum": 12367.500042264966,
-      "method": "unsafe peek, -O2"
-    },
-    {
-      "language": "perl",
-      "status": "ok",
-      "ns_per_op": 290.5551,
-      "ops_per_s": 3441687.9965280253,
-      "checksum": 12367.5,
-      "method": "unpack 'V d<3 f<'"
-    },
-    {
-      "language": "lua",
-      "status": "ok",
-      "ns_per_op": 76.237,
-      "ops_per_s": 13116990.437713971,
-      "checksum": 12367.5,
-      "method": "string.unpack '<I4dddf' (os.clock, ~ms res)"
-    },
-    {
-      "language": "fortran",
-      "status": "ok",
-      "ns_per_op": 6.7168,
-      "ops_per_s": 148880419.2472606,
-      "checksum": 12367.5,
-      "method": "transfer() LE, -O3"
-    },
-    {
-      "language": "ocaml",
-      "status": "ok",
-      "ns_per_op": 8.4436,
-      "ops_per_s": 118432895.92117107,
-      "checksum": 12367.5,
-      "method": "Bytes.get_intXX_le, ocamlopt"
-    },
-    {
-      "language": "octave",
-      "status": "ok",
-      "ns_per_op": 15290.2545,
-      "ops_per_s": 65401.135082480156,
-      "checksum": 12367.5,
-      "method": "typecast LE (host), Octave"
+      "language": "python-cython",
+      "status": "skipped",
+      "note": "cythonize failed: h37w16j147x_jywl4l11scx80000gn/T/rb_langmatrix_0z985ezw/cyd/cydec.pyx\n"
     }
   ]
 }
