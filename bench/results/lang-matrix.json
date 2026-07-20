@@ -127,6 +127,14 @@
       "method": "numpy structured dtype, vectorized (batch)"
     },
     {
+      "language": "python-pypy-numpy",
+      "status": "ok",
+      "ns_per_op": 3.7718,
+      "ops_per_s": 265125404.3162416,
+      "checksum": 12367.5,
+      "method": "PyPy JIT + NumPy via cpyext (stack: bulk C amortizes cpyext)"
+    },
+    {
       "language": "ruby",
       "status": "ok",
       "ns_per_op": 265.803,
