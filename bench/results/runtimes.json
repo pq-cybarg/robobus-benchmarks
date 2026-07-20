@@ -1,6 +1,6 @@
 {
   "schema": "robobus-runtimes/1",
-  "generated_unix": 1784449710,
+  "generated_unix": 1784563275,
   "host": {
     "system": "Darwin",
     "machine": "arm64"
@@ -11,35 +11,35 @@
     {
       "config": "CPython (pure)",
       "status": "ok",
-      "ns_per_op": 2307.1608777778843,
-      "ops_per_s": 433433.14704743895,
+      "ns_per_op": 1989.7395863650177,
+      "ops_per_s": 502578.33077888517,
       "note": "pyca/cryptography (C backend), CPython dispatch"
     },
     {
       "config": "CPython + Cython",
       "status": "ok",
-      "ns_per_op": 881.8461043436242,
-      "ops_per_s": 1133984.7112488183,
+      "ns_per_op": 800.8655442329025,
+      "ops_per_s": 1248649.0487711462,
       "note": "cyaead: Cython\u2192OpenSSL EVP, in-process"
     },
     {
       "config": "CPython + cffi\u2192librobobus",
       "status": "ok",
-      "ns_per_op": 1181.1648264590665,
-      "ops_per_s": 846621.8918809425,
+      "ns_per_op": 1082.642871053969,
+      "ops_per_s": 923665.6211724603,
       "note": "cffi ABI-mode \u2192 librobobus (native), CPython"
     },
     {
       "config": "PyPy + cffi\u2192librobobus",
       "status": "ok",
-      "ns_per_op": 778.2616980805939,
-      "ops_per_s": 1284914.833231898,
+      "ns_per_op": 760.267205556307,
+      "ops_per_s": 1315327.022777833,
       "note": "PyPy JIT + cffi \u2192 librobobus (native)"
     },
     {
       "config": "Mojo (native)",
       "status": "skipped",
-      "note": "Modular SDK (mojo) not installed"
+      "note": "Mojo installed; measured native in the codec matrix (0.63 ns/op) \u2014 seal+open FFI row pending Mojo 1.0's shifting DLHandle/UnsafePointer API"
     },
     {
       "config": "GraalPy",

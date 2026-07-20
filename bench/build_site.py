@@ -838,6 +838,136 @@ def _ffi_bindings_section():
 </div></section>"""
 
 
+def _config_chooser_section():
+    lm, cm = _load("lang-matrix.json"), _load("crypto-matrix.json")
+    tm, pr = _load("transport-matrix.json"), _load("profiles.json")
+    if not (lm and cm and tm and pr):
+        return ""
+    # reconcile language naming: crypto-matrix uses display names, lang-matrix uses lowercase keys
+    disp2codec = {"C": "c", "C++": "cpp", "Rust": "rust", "Go": "go", "Zig": "zig", "Swift": "swift",
+                  "Nim": "nim", "Haskell": "haskell", "OCaml": "ocaml", "LuaJIT": "lua-luajit",
+                  "Crystal": "crystal", "Julia": "julia", "Python": "python", "Java": "java",
+                  "Kotlin": "kotlin", "C#": "csharp", "Ruby": "ruby", "Perl": "perl", "Node.js": "typescript",
+                  "Fortran": "fortran", "Pascal": "pascal", "Nelua": "nelua", "COBOL": "cobol", "Octave": "octave"}
+    codec = {x["language"]: x.get("ns_per_op") for x in lm["languages"] if x.get("status") == "ok"}
+    ciphers = ["AES-256-GCM", "AES-128-GCM", "ChaCha20-Poly1305"]
+    tech = cm.get("techniques", {})
+    langs = {}
+    for disp, ckey in disp2codec.items():
+        aead = {c: next((r["ns"] for r in tech.get(c, {}).get("rows", []) if r["language"] == disp), None)
+                for c in ciphers}
+        impl = next((r.get("impl", "") for r in tech.get("AES-256-GCM", {}).get("rows", [])
+                     if r["language"] == disp), "")
+        if codec.get(ckey) is None and all(v is None for v in aead.values()):
+            continue
+        langs[disp] = {"codec": codec.get(ckey), "aead": aead, "impl": impl}
+    transports = {r["name"]: {"fps": r["metrics"].get("ops_per_s"), "mbps": r["metrics"].get("mb_per_s"),
+                              "p50": r["metrics"].get("p50_ns")}
+                  for r in tm["results"] if r["status"] == "ok" and r["metrics"].get("ops_per_s")}
+    profiles = [{"name": p["name"], "level": p["level"], "setup": p.get("session_setup_ns"),
+                 "permsg": p.get("per_message_ns"), "mps": p.get("msg_per_s")} for p in pr["profiles"]]
+    blob = json.dumps({"langs": langs, "ciphers": ciphers, "transports": transports, "profiles": profiles})
+    css = """<style>
+.cfg{display:grid;grid-template-columns:320px 1fr;gap:26px;margin-top:20px}
+@media(max-width:820px){.cfg{grid-template-columns:1fr}}
+.cfg-controls{display:flex;flex-direction:column;gap:14px}
+.cfg-f label{display:block;font:600 11px/1 'JetBrains Mono';letter-spacing:.06em;text-transform:uppercase;color:var(--dim);margin-bottom:6px}
+.cfg-f select{width:100%;padding:10px 12px;background:var(--panel2,var(--panel));color:var(--fg);
+  border:1px solid var(--line);border-radius:8px;font:500 14px/1.2 'Inter';cursor:pointer}
+.cfg-f select:focus{outline:2px solid var(--signal);outline-offset:1px}
+.cfg-out{display:flex;flex-direction:column;gap:14px}
+.cfg-cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:12px}
+.cfg-card{background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:14px 16px}
+.cfg-card .k{font:600 10.5px/1.2 'JetBrains Mono';letter-spacing:.05em;text-transform:uppercase;color:var(--dim)}
+.cfg-card .v{font:700 22px/1.1 'Inter';color:var(--fg);margin-top:6px;font-variant-numeric:tabular-nums}
+.cfg-card .u{font:400 12px 'JetBrains Mono';color:var(--muted)}
+.cfg-card .s{font:400 11px/1.3 'JetBrains Mono';color:var(--muted);margin-top:5px}
+.cfg-bar{background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:16px}
+.cfg-bar .bt{font:600 12px/1 'JetBrains Mono';color:var(--dim);margin-bottom:10px;text-transform:uppercase;letter-spacing:.05em}
+.cfg-seg{display:flex;height:26px;border-radius:6px;overflow:hidden;background:var(--line)}
+.cfg-seg i{display:block;height:100%}
+.cfg-seg i.c1{background:var(--signal)}.cfg-seg i.c2{background:var(--hybrid,#e0a458)}.cfg-seg i.c3{background:var(--qr,#b57edc)}
+.cfg-leg{display:flex;gap:16px;flex-wrap:wrap;margin-top:10px;font:400 11.5px 'JetBrains Mono';color:var(--muted)}
+.cfg-leg span{display:inline-flex;align-items:center;gap:6px}
+.cfg-leg b{width:10px;height:10px;border-radius:2px;display:inline-block}
+.cfg-note{font:400 12px/1.5 'JetBrains Mono';color:var(--muted)}
+</style>"""
+    opts_lang = "".join(f"<option value='{html.escape(k)}'>{html.escape(k)}</option>" for k in langs)
+    opts_ciph = "".join(f"<option value='{html.escape(c)}'>{html.escape(c)}</option>" for c in ciphers)
+    opts_xport = "".join(f"<option value='{html.escape(k)}'>{html.escape(k)}</option>" for k in transports)
+    opts_prof = "".join(f"<option value='{html.escape(p['name'])}'>{html.escape(p['name'])}"
+                        f"{' · classical' if p['level']==0 else ' · NIST '+str(p['level'])}</option>"
+                        for p in profiles)
+    js = """<script>(function(){
+var D=JSON.parse(document.getElementById('cfg-data').textContent);
+var $=function(id){return document.getElementById(id)};
+function ns(v){ if(v==null) return '—';
+  if(v<1000) return v.toFixed(v<100?1:0)+' ns';
+  if(v<1e6) return (v/1e3).toFixed(2)+' µs';
+  return (v/1e6).toFixed(2)+' ms'; }
+function fmt(v){ return v==null?'—':v.toLocaleString(undefined,{maximumFractionDigits:0}); }
+function upd(){
+  var L=D.langs[$('cf-lang').value], c=$('cf-ciph').value,
+      X=D.transports[$('cf-xport').value],
+      P=D.profiles.find(function(p){return p.name==$('cf-prof').value});
+  var dec=L?L.codec:null, seal=L&&L.aead?L.aead[c]:null;
+  var sealNote = seal==null && L ? 'no native '+c+' — via librobobus FFI (~0.75 µs)' : (L?L.impl:'');
+  var xns = X&&X.fps? 1e9/X.fps : null;
+  $('r-dec').innerHTML = ns(dec);
+  $('r-seal').innerHTML = ns(seal); $('r-seal-s').textContent = sealNote||'';
+  $('r-hs').innerHTML = P&&P.setup? ns(P.setup):'—';
+  $('r-pm').innerHTML = P&&P.permsg? ns(P.permsg):'—';
+  $('r-xt').innerHTML = X? fmt(X.fps):'—'; $('r-xt-s').textContent = X? X.mbps.toFixed(0)+' MB/s'+(X.p50?' · p50 '+ (X.p50/1000).toFixed(1)+' µs':''):'';
+  var d=dec||0, s=(seal!=null?seal:750), t=xns||0, tot=d+s+t;
+  if(tot>0){
+    $('seg1').style.width=(100*d/tot)+'%'; $('seg2').style.width=(100*s/tot)+'%'; $('seg3').style.width=(100*t/tot)+'%';
+    var rate = 1e9/tot;
+    $('r-e2e').innerHTML = ns(tot); $('r-e2e-s').textContent = '≈ '+fmt(rate)+' msg/s single-thread pipeline';
+    var bott = t>=s&&t>=d?'transport':(s>=d?'crypto seal/open':'codec decode');
+    $('cfg-bott').textContent = 'Bottleneck: '+bott+(seal==null?' (crypto via FFI estimate)':'');
+  }
+}
+['cf-lang','cf-ciph','cf-xport','cf-prof'].forEach(function(id){$(id).addEventListener('change',upd)});
+upd();
+})();</script>"""
+    return f"""<section><div class='wrap'>{css}
+  <p class='sec-eyebrow'>interactive · build your config</p>
+  <h2 class='title'>Configure your bus, see the numbers</h2>
+  <p class='sec-lede'>Pick a language, an AEAD cipher, a transport, and a security profile — every number
+  below is a real measurement from the matrices on this page, composed into one per-message pipeline.
+  The crypto figure is that language's native stack (or a librobobus-FFI estimate where it has no
+  native AEAD); the handshake and per-message envelope come from the chosen security profile.</p>
+  <script type='application/json' id='cfg-data'>{blob}</script>
+  <div class='cfg'>
+    <div class='cfg-controls'>
+      <div class='cfg-f'><label>Language</label><select id='cf-lang'>{opts_lang}</select></div>
+      <div class='cfg-f'><label>AEAD cipher</label><select id='cf-ciph'>{opts_ciph}</select></div>
+      <div class='cfg-f'><label>Transport</label><select id='cf-xport'>{opts_xport}</select></div>
+      <div class='cfg-f'><label>Security profile</label><select id='cf-prof'>{opts_prof}</select></div>
+    </div>
+    <div class='cfg-out'>
+      <div class='cfg-cards'>
+        <div class='cfg-card'><div class='k'>Codec decode</div><div class='v' id='r-dec'>—</div><div class='u'>per frame</div></div>
+        <div class='cfg-card'><div class='k'>Seal + open</div><div class='v' id='r-seal'>—</div><div class='s' id='r-seal-s'></div></div>
+        <div class='cfg-card'><div class='k'>Transport rate</div><div class='v' id='r-xt'>—</div><div class='s' id='r-xt-s'></div></div>
+        <div class='cfg-card'><div class='k'>Session handshake</div><div class='v' id='r-hs'>—</div><div class='u'>once per peer</div></div>
+        <div class='cfg-card'><div class='k'>Per-message envelope</div><div class='v' id='r-pm'>—</div><div class='u'>profile hot path</div></div>
+        <div class='cfg-card'><div class='k'>Pipeline / message</div><div class='v' id='r-e2e'>—</div><div class='s' id='r-e2e-s'></div></div>
+      </div>
+      <div class='cfg-bar'>
+        <div class='bt'>Per-message pipeline breakdown</div>
+        <div class='cfg-seg'><i class='c1' id='seg1'></i><i class='c2' id='seg2'></i><i class='c3' id='seg3'></i></div>
+        <div class='cfg-leg'><span><b style='background:var(--signal)'></b>codec decode</span>
+          <span><b style='background:var(--hybrid,#e0a458)'></b>seal + open</span>
+          <span><b style='background:var(--qr,#b57edc)'></b>transport send</span></div>
+        <div class='cfg-note' id='cfg-bott' style='margin-top:10px'></div>
+      </div>
+    </div>
+  </div>
+  {js}
+</div></section>"""
+
+
 def _crypto_matrix_section():
     cm = _load("crypto-matrix.json")
     if not cm or not cm.get("techniques"):
@@ -846,6 +976,7 @@ def _crypto_matrix_section():
     kind_tier = {
         "aead": lambda v: "tier-n" if v > 1.5e6 else "tier-j" if v > 4e5 else "tier-i",
         "hash": lambda v: "tier-n" if v > 8e6 else "tier-j" if v > 2e6 else "tier-i",
+        "kdf":  lambda v: "tier-n" if v > 40 else "tier-j" if v > 20 else "tier-i",
         "kem":  lambda v: "tier-n" if v > 3e4 else "tier-j" if v > 2e4 else "tier-i",
         "sig":  lambda v: "tier-n" if v > 4e3 else "tier-j" if v > 2e3 else "tier-i",
     }
@@ -1003,8 +1134,8 @@ def speed():
 </div></header>"""
     # the per-technique crypto matrix supersedes the old 6-language sec2 (kept as fallback only)
     crypto = _crypto_matrix_section() or sec2
-    body = (hero + _profiles_section() + sec1 + crypto + _runtimes_section()
-            + _ruby_runtimes_section() + _ffi_bindings_section() + sec3 + sec4)
+    body = (hero + _config_chooser_section() + _profiles_section() + sec1 + crypto
+            + _runtimes_section() + _ruby_runtimes_section() + _ffi_bindings_section() + sec3 + sec4)
     return page("Speed matrix · robobus", "speed", body, canon="speed.html",
                 desc="Native maximum speed across every robobus language and transport — codec, "
                      "crypto, transport throughput, and the full transport × language product.")
