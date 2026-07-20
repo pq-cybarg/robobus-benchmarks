@@ -136,8 +136,11 @@
     },
     {
       "language": "zig",
-      "status": "skipped",
-      "note": "zig failed: "
+      "status": "ok",
+      "ns_per_op": 0.71,
+      "ops_per_s": 1408450704.2253523,
+      "checksum": 12367.5,
+      "method": "std.mem.readInt LE, ReleaseFast (Zig 0.16)"
     },
     {
       "language": "pascal",
