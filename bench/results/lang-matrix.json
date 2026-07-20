@@ -217,10 +217,10 @@
     {
       "language": "octave",
       "status": "ok",
-      "ns_per_op": 13520.8102,
-      "ops_per_s": 73960.06490794464,
+      "ns_per_op": 28.07,
+      "ops_per_s": 35625222.65764161,
       "checksum": 12367.5,
-      "method": "typecast LE (host), Octave"
+      "method": "vectorized typecast/reshape (whole batch) \u2014 Octave native max"
     }
   ]
 }
