@@ -1161,14 +1161,19 @@ def speed():
   <p class='sec-eyebrow'>transport × language</p>
   <h2 class='title'>The full product</h2>
   <p class='sec-lede'>Each cell: that language's native client pushing the sealed frame over that
-  transport (frames/s, loopback, pipelined), across the three universal socket transports every
-  language ships natively — <b>UDP</b>, <b>TCP</b>, and <b>Unix-domain sockets</b> (the fastest local
-  socket, no IP stack). These cells are <b>I/O-syscall-bound</b>: every language issues the same
+  transport (frames/s, loopback, pipelined), across the three universal socket transports — <b>UDP</b>,
+  <b>TCP</b>, and <b>Unix-domain sockets</b> (the fastest local socket, no IP stack) — in every
+  language that ships them (native stdlib, or libc BSD sockets via each language's C interop for
+  Fortran/Nelua/Pascal). These cells are <b>I/O-syscall-bound</b>: every language issues the same
   <code>send</code>/<code>recv</code> into the same kernel, so within a row throughput converges to
   that transport's loopback ceiling and small per-language differences (even Python edging C) are
   run-to-run noise, not language speed. Read it by <i>row</i>, not by cell: the ranking is
   UDS&nbsp;&gt;&nbsp;TCP&nbsp;&gt;&nbsp;UDP (their kernel paths), and <b>the transport sets the
-  ceiling, not the caller</b> — the opposite of the codec table, where language spans ~1,700×.</p>
+  ceiling, not the caller</b> — the opposite of the codec table, where language spans ~1,700×. A
+  blank cell is honest: that language has no client for that transport (e.g. no datagram Unix socket
+  in the JVM/Node stdlib). Runtime/accelerator variants (PyPy, Cython, NumPy…) share their base
+  language's socket path. The broker &amp; middleware transports (MQTT, Kafka, Zenoh, DDS, ROS, ZeroCM…)
+  are client-library-gated — measured in the transport table above.</p>
   <div class='heatwrap'><table class='heat'><thead><tr><th>transport</th>{head}</tr></thead>
   <tbody>{body}</tbody></table></div>
 </div></section>"""
