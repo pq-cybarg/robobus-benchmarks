@@ -1,6 +1,6 @@
 {
   "schema": "robobus-cryptomatrix/2",
-  "generated_unix": 1784654859,
+  "generated_unix": 1784669250,
   "host": {
     "system": "Darwin",
     "machine": "arm64"
@@ -12,41 +12,54 @@
       "techniques": [
         "AES-256-GCM",
         "AES-128-GCM",
-        "ChaCha20-Poly1305"
+        "ChaCha20-Poly1305",
+        "AES-256-GCM-SIV"
       ]
     },
     {
-      "title": "Hashes",
+      "title": "Hashes (SHA-2 \u00b7 SHA-3 \u00b7 BLAKE3)",
       "kind": "hash",
       "techniques": [
         "SHA-256",
         "SHA-384",
+        "SHA-512",
+        "SHA3-256",
+        "SHA3-512",
         "BLAKE3"
       ]
     },
     {
-      "title": "Keystore KDF (passphrase \u2192 key, at max speed)",
+      "title": "KDF / MAC (keystore + key schedule)",
       "kind": "kdf",
       "techniques": [
-        "Argon2id"
+        "Argon2id",
+        "scrypt",
+        "PBKDF2",
+        "HKDF-SHA384",
+        "KMAC256"
       ]
     },
     {
-      "title": "Post-quantum KEM (session key establishment)",
+      "title": "KEM \u2014 post-quantum ML-KEM + classical X25519 (session establishment)",
       "kind": "kem",
       "techniques": [
         "ML-KEM-512",
         "ML-KEM-768",
-        "ML-KEM-1024"
+        "ML-KEM-1024",
+        "X25519"
       ]
     },
     {
-      "title": "Post-quantum signatures (authentication)",
+      "title": "Signatures \u2014 post-quantum ML-DSA/SLH-DSA/Falcon + classical Ed25519",
       "kind": "sig",
       "techniques": [
         "ML-DSA-44",
         "ML-DSA-65",
-        "ML-DSA-87"
+        "ML-DSA-87",
+        "Ed25519",
+        "SLH-DSA-SHAKE-256f",
+        "Falcon-512",
+        "Falcon-1024"
       ]
     }
   ],
@@ -57,143 +70,168 @@
       "rows": [
         {
           "language": "Zig",
-          "ns": 321.03,
-          "impl": "std.crypto"
+          "ns": 302.195,
+          "impl": "std.crypto + librbcrypto shim"
         },
         {
           "language": "Go",
-          "ns": 519.60021,
+          "ns": 357.49875,
           "impl": "stdlib"
         },
         {
           "language": "Nim",
-          "ns": 640.51292,
+          "ns": 665.386665,
           "impl": "OpenSSL EVP via FFI"
         },
         {
-          "language": "OCaml",
-          "ns": 688.83292,
-          "impl": "mirage-crypto / digestif / OpenSSL Argon2id"
-        },
-        {
-          "language": "Octave",
-          "ns": 745.615,
-          "impl": "compiled .oct \u2192 C shim over OpenSSL"
-        },
-        {
-          "language": "Lua",
-          "ns": 746.805,
-          "impl": "plain Lua 5.5 (no FFI) C module \u2192 C shim over OpenSSL"
-        },
-        {
-          "language": "LuaJIT",
-          "ns": 748.24,
-          "impl": "OpenSSL EVP via ffi"
-        },
-        {
-          "language": "Python (PyPy)",
-          "ns": 784.46,
-          "impl": "PyPy cffi ABI dlopen \u2192 C shim over OpenSSL"
-        },
-        {
-          "language": "C++",
-          "ns": 789.772,
-          "impl": "OpenSSL EVP + libblake3"
-        },
-        {
-          "language": "Pascal",
-          "ns": 798.035,
-          "impl": "OpenSSL via FPC external \u2192 C shim"
-        },
-        {
-          "language": "C",
-          "ns": 813.895,
-          "impl": "OpenSSL EVP + libblake3"
-        },
-        {
           "language": "Nelua",
-          "ns": 842.405,
+          "ns": 673.12,
           "impl": "compiles to C, OpenSSL via cimport \u2192 C shim"
         },
         {
+          "language": "C",
+          "ns": 690.27,
+          "impl": "OpenSSL EVP + libblake3 + liboqs (Falcon)"
+        },
+        {
+          "language": "Octave",
+          "ns": 692.755,
+          "impl": "compiled .oct \u2192 C shim over OpenSSL"
+        },
+        {
+          "language": "C++",
+          "ns": 696.656,
+          "impl": "OpenSSL EVP + libblake3 + liboqs (Falcon)"
+        },
+        {
+          "language": "OCaml",
+          "ns": 712.26521,
+          "impl": "mirage-crypto / digestif / Argon2id native; librbcrypto shim (C stub) for AES-GCM-SIV/BLAKE3/scrypt/PBKDF2/HKDF/KMAC/ML-KEM/X25519/ML-DSA/Ed25519/SLH-DSA/Falcon"
+        },
+        {
+          "language": "Pascal",
+          "ns": 727.825,
+          "impl": "OpenSSL via FPC external \u2192 C shim"
+        },
+        {
+          "language": "COBOL",
+          "ns": 741.774,
+          "impl": "GnuCOBOL CALL \u2192 C shim over OpenSSL"
+        },
+        {
+          "language": "Kotlin",
+          "ns": 752.585625,
+          "impl": "JCE + BouncyCastle native; librbcrypto shim (FFM) for AES-GCM-SIV/BLAKE3/scrypt/HKDF/KMAC/ML-KEM/ML-DSA/SLH-DSA/Falcon"
+        },
+        {
           "language": "Fortran",
-          "ns": 864.315,
+          "ns": 752.745,
           "impl": "OpenSSL via iso_c_binding \u2192 C shim"
         },
         {
+          "language": "Lua",
+          "ns": 766.08,
+          "impl": "plain Lua 5.5 (no FFI) C module \u2192 C shim over OpenSSL"
+        },
+        {
+          "language": "Lua (vectorize)",
+          "ns": 766.08,
+          "impl": "crypto identical to Lua (accelerator applies to the codec, not crypto)"
+        },
+        {
           "language": "Python (Cython)",
-          "ns": 869.74,
+          "ns": 775.97,
           "impl": "Cython in-process cdef extern \u2192 C shim over OpenSSL"
         },
         {
           "language": "Haskell",
-          "ns": 918.88,
-          "impl": "OpenSSL EVP via FFI"
+          "ns": 805.205,
+          "impl": "OpenSSL EVP + librbcrypto shim via FFI"
         },
         {
           "language": "Mojo",
-          "ns": 1014.34,
+          "ns": 915.7,
           "impl": "Mojo OwnedDLHandle C-interop \u2192 C shim over OpenSSL"
         },
         {
+          "language": "Python (PyPy)",
+          "ns": 969.635,
+          "impl": "PyPy cffi ABI dlopen \u2192 C shim over OpenSSL"
+        },
+        {
+          "language": "Python (PyPy+NumPy)",
+          "ns": 969.635,
+          "impl": "crypto identical to Python (PyPy) (accelerator applies to the codec, not crypto)"
+        },
+        {
           "language": "Julia",
-          "ns": 1160.91479,
+          "ns": 994.623125,
           "impl": "ccall libcrypto"
         },
         {
-          "language": "COBOL",
-          "ns": 1310.554,
-          "impl": "GnuCOBOL CALL \u2192 C shim over OpenSSL"
-        },
-        {
-          "language": "Crystal",
-          "ns": 1427.144795,
-          "impl": "stdlib OpenSSL"
-        },
-        {
-          "language": "Swift",
-          "ns": 1612.395,
-          "impl": "CryptoKit"
-        },
-        {
-          "language": "Python",
-          "ns": 1630.197085,
-          "impl": "pyca/cryptography"
+          "language": "LuaJIT",
+          "ns": 1114.91,
+          "impl": "OpenSSL EVP via ffi"
         },
         {
           "language": "Java",
-          "ns": 1980.00042,
-          "impl": "JCE + BouncyCastle (Argon2id)"
+          "ns": 1122.90125,
+          "impl": "JCE + BouncyCastle native; librbcrypto shim (FFM) for AES-GCM-SIV/BLAKE3/scrypt/HKDF/KMAC/ML-KEM/ML-DSA/SLH-DSA/Falcon"
+        },
+        {
+          "language": "Crystal",
+          "ns": 1516.214585,
+          "impl": "stdlib OpenSSL native (AEAD/SHA-2/SHA-3/PBKDF2/Argon2id); librbcrypto shim (lib binding) for AES-GCM-SIV/BLAKE3/scrypt/HKDF/KMAC/ML-KEM/X25519/ML-DSA/Ed25519/SLH-DSA/Falcon"
+        },
+        {
+          "language": "Swift",
+          "ns": 1632.7,
+          "impl": "CryptoKit + librbcrypto shim"
+        },
+        {
+          "language": "Python",
+          "ns": 1829.929165,
+          "impl": "pyca/cryptography + blake3 + argon2-cffi native (AEAD incl. GCM-SIV/SHA-2/SHA-3/BLAKE3/Argon2id/scrypt/PBKDF2/HKDF); librbcrypto shim (ctypes) for KMAC/ML-KEM/X25519/ML-DSA/Ed25519/SLH-DSA/Falcon"
+        },
+        {
+          "language": "Python (NumPy)",
+          "ns": 1829.929165,
+          "impl": "crypto identical to Python (accelerator applies to the codec, not crypto)"
         },
         {
           "language": "Ruby",
-          "ns": 2010.15,
-          "impl": "stdlib OpenSSL"
+          "ns": 2118.29,
+          "impl": "stdlib OpenSSL native (AEAD incl. GCM-SIV/SHA-2/SHA-3/scrypt/PBKDF2/HKDF/Argon2id); librbcrypto shim (Fiddle) for BLAKE3/KMAC/ML-KEM/X25519/ML-DSA/Ed25519/SLH-DSA/Falcon"
+        },
+        {
+          "language": "Ruby (batch)",
+          "ns": 2118.29,
+          "impl": "crypto identical to Ruby (accelerator applies to the codec, not crypto)"
         },
         {
           "language": "Rust",
-          "ns": 2137.2375,
+          "ns": 2281.89479,
           "impl": "RustCrypto crates"
         },
         {
-          "language": "Kotlin",
-          "ns": 2243.20458,
-          "impl": "JCE + BouncyCastle (Argon2id)"
+          "language": "C#",
+          "ns": 3789.7725,
+          "impl": "System.Security.Cryptography + Konscious native (AEAD/SHA-2/SHA-3/KMAC/PBKDF2/HKDF/Argon2id); librbcrypto shim (P/Invoke) for AES-GCM-SIV/BLAKE3/scrypt/ML-KEM/X25519/ML-DSA/Ed25519/SLH-DSA/Falcon"
         },
         {
           "language": "Perl",
-          "ns": 4570.405,
-          "impl": "CryptX"
+          "ns": 4009.85,
+          "impl": "CryptX native (AEAD/SHA-2/SHA-3/PBKDF2/HKDF/Argon2id); librbcrypto shim (FFI::Platypus) for AES-GCM-SIV/BLAKE3/scrypt/KMAC/ML-KEM/X25519/ML-DSA/Ed25519/SLH-DSA/Falcon"
         },
         {
-          "language": "C#",
-          "ns": 5620.951,
-          "impl": "System.Security.Cryptography"
+          "language": "Perl (PDL)",
+          "ns": 4009.85,
+          "impl": "crypto identical to Perl (accelerator applies to the codec, not crypto)"
         },
         {
           "language": "Node.js",
-          "ns": 19388.67458,
-          "impl": "node:crypto"
+          "ns": 16814.464165,
+          "impl": "node:crypto native (AEAD/SHA-2/SHA-3/scrypt/PBKDF2/HKDF/Argon2id); librbcrypto shim (N-API addon) for AES-GCM-SIV/BLAKE3/KMAC/ML-KEM/X25519/ML-DSA/Ed25519/SLH-DSA/Falcon"
         }
       ]
     },
@@ -203,98 +241,168 @@
       "rows": [
         {
           "language": "Zig",
-          "ns": 319.895,
-          "impl": "std.crypto"
+          "ns": 302.92,
+          "impl": "std.crypto + librbcrypto shim"
         },
         {
           "language": "Go",
-          "ns": 467.429165,
+          "ns": 344.936045,
           "impl": "stdlib"
         },
         {
-          "language": "OCaml",
-          "ns": 621.244375,
-          "impl": "mirage-crypto / digestif / OpenSSL Argon2id"
-        },
-        {
-          "language": "Nim",
-          "ns": 631.502915,
-          "impl": "OpenSSL EVP via FFI"
-        },
-        {
-          "language": "Julia",
-          "ns": 722.2875,
-          "impl": "ccall libcrypto"
-        },
-        {
-          "language": "LuaJIT",
-          "ns": 773.205,
-          "impl": "OpenSSL EVP via ffi"
-        },
-        {
-          "language": "C++",
-          "ns": 774.283,
-          "impl": "OpenSSL EVP + libblake3"
-        },
-        {
-          "language": "C",
-          "ns": 778.41,
-          "impl": "OpenSSL EVP + libblake3"
-        },
-        {
-          "language": "Haskell",
-          "ns": 902.965,
-          "impl": "OpenSSL EVP via FFI"
-        },
-        {
           "language": "Kotlin",
-          "ns": 1024.6925,
-          "impl": "JCE + BouncyCastle (Argon2id)"
+          "ns": 443.053335,
+          "impl": "JCE + BouncyCastle native; librbcrypto shim (FFM) for AES-GCM-SIV/BLAKE3/scrypt/HKDF/KMAC/ML-KEM/ML-DSA/SLH-DSA/Falcon"
         },
         {
           "language": "Java",
-          "ns": 1079.84521,
-          "impl": "JCE + BouncyCastle (Argon2id)"
+          "ns": 482.775,
+          "impl": "JCE + BouncyCastle native; librbcrypto shim (FFM) for AES-GCM-SIV/BLAKE3/scrypt/HKDF/KMAC/ML-KEM/ML-DSA/SLH-DSA/Falcon"
+        },
+        {
+          "language": "OCaml",
+          "ns": 633.486665,
+          "impl": "mirage-crypto / digestif / Argon2id native; librbcrypto shim (C stub) for AES-GCM-SIV/BLAKE3/scrypt/PBKDF2/HKDF/KMAC/ML-KEM/X25519/ML-DSA/Ed25519/SLH-DSA/Falcon"
+        },
+        {
+          "language": "Nim",
+          "ns": 641.159375,
+          "impl": "OpenSSL EVP via FFI"
+        },
+        {
+          "language": "Nelua",
+          "ns": 671.525,
+          "impl": "compiles to C, OpenSSL via cimport \u2192 C shim"
+        },
+        {
+          "language": "Octave",
+          "ns": 682.295,
+          "impl": "compiled .oct \u2192 C shim over OpenSSL"
+        },
+        {
+          "language": "C",
+          "ns": 685.79,
+          "impl": "OpenSSL EVP + libblake3 + liboqs (Falcon)"
+        },
+        {
+          "language": "Fortran",
+          "ns": 690.815,
+          "impl": "OpenSSL via iso_c_binding \u2192 C shim"
+        },
+        {
+          "language": "COBOL",
+          "ns": 692.729,
+          "impl": "GnuCOBOL CALL \u2192 C shim over OpenSSL"
+        },
+        {
+          "language": "C++",
+          "ns": 707.803,
+          "impl": "OpenSSL EVP + libblake3 + liboqs (Falcon)"
+        },
+        {
+          "language": "Pascal",
+          "ns": 711.945,
+          "impl": "OpenSSL via FPC external \u2192 C shim"
+        },
+        {
+          "language": "Python (Cython)",
+          "ns": 817.2,
+          "impl": "Cython in-process cdef extern \u2192 C shim over OpenSSL"
+        },
+        {
+          "language": "Julia",
+          "ns": 863.26125,
+          "impl": "ccall libcrypto"
+        },
+        {
+          "language": "Lua",
+          "ns": 863.58,
+          "impl": "plain Lua 5.5 (no FFI) C module \u2192 C shim over OpenSSL"
+        },
+        {
+          "language": "Lua (vectorize)",
+          "ns": 863.58,
+          "impl": "crypto identical to Lua (accelerator applies to the codec, not crypto)"
+        },
+        {
+          "language": "Haskell",
+          "ns": 871.875,
+          "impl": "OpenSSL EVP + librbcrypto shim via FFI"
+        },
+        {
+          "language": "Mojo",
+          "ns": 885.845,
+          "impl": "Mojo OwnedDLHandle C-interop \u2192 C shim over OpenSSL"
+        },
+        {
+          "language": "Python (PyPy)",
+          "ns": 886.575,
+          "impl": "PyPy cffi ABI dlopen \u2192 C shim over OpenSSL"
+        },
+        {
+          "language": "Python (PyPy+NumPy)",
+          "ns": 886.575,
+          "impl": "crypto identical to Python (PyPy) (accelerator applies to the codec, not crypto)"
         },
         {
           "language": "Crystal",
-          "ns": 1390.23583,
-          "impl": "stdlib OpenSSL"
+          "ns": 1347.23604,
+          "impl": "stdlib OpenSSL native (AEAD/SHA-2/SHA-3/PBKDF2/Argon2id); librbcrypto shim (lib binding) for AES-GCM-SIV/BLAKE3/scrypt/HKDF/KMAC/ML-KEM/X25519/ML-DSA/Ed25519/SLH-DSA/Falcon"
         },
         {
           "language": "Swift",
-          "ns": 1605.99,
-          "impl": "CryptoKit"
-        },
-        {
-          "language": "Python",
-          "ns": 1669.89083,
-          "impl": "pyca/cryptography"
+          "ns": 1642.405,
+          "impl": "CryptoKit + librbcrypto shim"
         },
         {
           "language": "Rust",
-          "ns": 1684.269375,
+          "ns": 1672.974585,
           "impl": "RustCrypto crates"
         },
         {
-          "language": "Ruby",
-          "ns": 1852.125,
-          "impl": "stdlib OpenSSL"
+          "language": "Python",
+          "ns": 1800.574375,
+          "impl": "pyca/cryptography + blake3 + argon2-cffi native (AEAD incl. GCM-SIV/SHA-2/SHA-3/BLAKE3/Argon2id/scrypt/PBKDF2/HKDF); librbcrypto shim (ctypes) for KMAC/ML-KEM/X25519/ML-DSA/Ed25519/SLH-DSA/Falcon"
         },
         {
-          "language": "Perl",
-          "ns": 4404.13,
-          "impl": "CryptX"
+          "language": "Python (NumPy)",
+          "ns": 1800.574375,
+          "impl": "crypto identical to Python (accelerator applies to the codec, not crypto)"
+        },
+        {
+          "language": "Ruby",
+          "ns": 1856.445,
+          "impl": "stdlib OpenSSL native (AEAD incl. GCM-SIV/SHA-2/SHA-3/scrypt/PBKDF2/HKDF/Argon2id); librbcrypto shim (Fiddle) for BLAKE3/KMAC/ML-KEM/X25519/ML-DSA/Ed25519/SLH-DSA/Falcon"
+        },
+        {
+          "language": "Ruby (batch)",
+          "ns": 1856.445,
+          "impl": "crypto identical to Ruby (accelerator applies to the codec, not crypto)"
+        },
+        {
+          "language": "LuaJIT",
+          "ns": 2365.73,
+          "impl": "OpenSSL EVP via ffi"
         },
         {
           "language": "C#",
-          "ns": 4586.691,
-          "impl": "System.Security.Cryptography"
+          "ns": 3514.448,
+          "impl": "System.Security.Cryptography + Konscious native (AEAD/SHA-2/SHA-3/KMAC/PBKDF2/HKDF/Argon2id); librbcrypto shim (P/Invoke) for AES-GCM-SIV/BLAKE3/scrypt/ML-KEM/X25519/ML-DSA/Ed25519/SLH-DSA/Falcon"
+        },
+        {
+          "language": "Perl",
+          "ns": 3829.565,
+          "impl": "CryptX native (AEAD/SHA-2/SHA-3/PBKDF2/HKDF/Argon2id); librbcrypto shim (FFI::Platypus) for AES-GCM-SIV/BLAKE3/scrypt/KMAC/ML-KEM/X25519/ML-DSA/Ed25519/SLH-DSA/Falcon"
+        },
+        {
+          "language": "Perl (PDL)",
+          "ns": 3829.565,
+          "impl": "crypto identical to Perl (accelerator applies to the codec, not crypto)"
         },
         {
           "language": "Node.js",
-          "ns": 17148.355415,
-          "impl": "node:crypto"
+          "ns": 16122.95146,
+          "impl": "node:crypto native (AEAD/SHA-2/SHA-3/scrypt/PBKDF2/HKDF/Argon2id); librbcrypto shim (N-API addon) for AES-GCM-SIV/BLAKE3/KMAC/ML-KEM/X25519/ML-DSA/Ed25519/SLH-DSA/Falcon"
         }
       ]
     },
@@ -304,98 +412,339 @@
       "rows": [
         {
           "language": "Rust",
-          "ns": 444.01354,
+          "ns": 456.83125,
           "impl": "RustCrypto crates"
         },
         {
           "language": "Go",
-          "ns": 658.30896,
+          "ns": 664.06625,
           "impl": "stdlib"
         },
         {
           "language": "OCaml",
-          "ns": 671.00104,
-          "impl": "mirage-crypto / digestif / OpenSSL Argon2id"
-        },
-        {
-          "language": "Nim",
-          "ns": 850.230415,
-          "impl": "OpenSSL EVP via FFI"
+          "ns": 695.286665,
+          "impl": "mirage-crypto / digestif / Argon2id native; librbcrypto shim (C stub) for AES-GCM-SIV/BLAKE3/scrypt/PBKDF2/HKDF/KMAC/ML-KEM/X25519/ML-DSA/Ed25519/SLH-DSA/Falcon"
         },
         {
           "language": "Zig",
-          "ns": 897.99,
-          "impl": "std.crypto"
+          "ns": 849.13,
+          "impl": "std.crypto + librbcrypto shim"
         },
         {
-          "language": "Julia",
-          "ns": 936.23125,
-          "impl": "ccall libcrypto"
+          "language": "Octave",
+          "ns": 881.66,
+          "impl": "compiled .oct \u2192 C shim over OpenSSL"
         },
         {
-          "language": "Haskell",
-          "ns": 983.29,
-          "impl": "OpenSSL EVP via FFI"
-        },
-        {
-          "language": "C++",
-          "ns": 1009.76,
-          "impl": "OpenSSL EVP + libblake3"
+          "language": "Nelua",
+          "ns": 883.305,
+          "impl": "compiles to C, OpenSSL via cimport \u2192 C shim"
         },
         {
           "language": "C",
-          "ns": 1032.095,
-          "impl": "OpenSSL EVP + libblake3"
+          "ns": 887.05,
+          "impl": "OpenSSL EVP + libblake3 + liboqs (Falcon)"
         },
         {
-          "language": "LuaJIT",
-          "ns": 1191.9,
-          "impl": "OpenSSL EVP via ffi"
+          "language": "COBOL",
+          "ns": 900.484,
+          "impl": "GnuCOBOL CALL \u2192 C shim over OpenSSL"
         },
         {
-          "language": "Crystal",
-          "ns": 1562.637915,
-          "impl": "stdlib OpenSSL"
+          "language": "C++",
+          "ns": 926.211,
+          "impl": "OpenSSL EVP + libblake3 + liboqs (Falcon)"
         },
         {
-          "language": "Perl",
-          "ns": 1866.225,
-          "impl": "CryptX"
+          "language": "Pascal",
+          "ns": 933.05,
+          "impl": "OpenSSL via FPC external \u2192 C shim"
         },
         {
-          "language": "Python",
-          "ns": 2050.465625,
-          "impl": "pyca/cryptography"
+          "language": "Julia",
+          "ns": 979.07396,
+          "impl": "ccall libcrypto"
         },
         {
-          "language": "Ruby",
-          "ns": 2094.66,
-          "impl": "stdlib OpenSSL"
+          "language": "Python (PyPy)",
+          "ns": 1009.495,
+          "impl": "PyPy cffi ABI dlopen \u2192 C shim over OpenSSL"
         },
         {
-          "language": "Swift",
-          "ns": 2117.385,
-          "impl": "CryptoKit"
+          "language": "Python (PyPy+NumPy)",
+          "ns": 1009.495,
+          "impl": "crypto identical to Python (PyPy) (accelerator applies to the codec, not crypto)"
+        },
+        {
+          "language": "Fortran",
+          "ns": 1014.805,
+          "impl": "OpenSSL via iso_c_binding \u2192 C shim"
+        },
+        {
+          "language": "Python (Cython)",
+          "ns": 1048.26,
+          "impl": "Cython in-process cdef extern \u2192 C shim over OpenSSL"
+        },
+        {
+          "language": "Haskell",
+          "ns": 1060.225,
+          "impl": "OpenSSL EVP + librbcrypto shim via FFI"
+        },
+        {
+          "language": "Lua",
+          "ns": 1089.07,
+          "impl": "plain Lua 5.5 (no FFI) C module \u2192 C shim over OpenSSL"
+        },
+        {
+          "language": "Lua (vectorize)",
+          "ns": 1089.07,
+          "impl": "crypto identical to Lua (accelerator applies to the codec, not crypto)"
+        },
+        {
+          "language": "Mojo",
+          "ns": 1251.595,
+          "impl": "Mojo OwnedDLHandle C-interop \u2192 C shim over OpenSSL"
         },
         {
           "language": "Kotlin",
-          "ns": 2208.146665,
-          "impl": "JCE + BouncyCastle (Argon2id)"
+          "ns": 1454.38979,
+          "impl": "JCE + BouncyCastle native; librbcrypto shim (FFM) for AES-GCM-SIV/BLAKE3/scrypt/HKDF/KMAC/ML-KEM/ML-DSA/SLH-DSA/Falcon"
+        },
+        {
+          "language": "Crystal",
+          "ns": 1573.12333,
+          "impl": "stdlib OpenSSL native (AEAD/SHA-2/SHA-3/PBKDF2/Argon2id); librbcrypto shim (lib binding) for AES-GCM-SIV/BLAKE3/scrypt/HKDF/KMAC/ML-KEM/X25519/ML-DSA/Ed25519/SLH-DSA/Falcon"
+        },
+        {
+          "language": "Nim",
+          "ns": 1584.58375,
+          "impl": "OpenSSL EVP via FFI"
+        },
+        {
+          "language": "Perl",
+          "ns": 1749.37,
+          "impl": "CryptX native (AEAD/SHA-2/SHA-3/PBKDF2/HKDF/Argon2id); librbcrypto shim (FFI::Platypus) for AES-GCM-SIV/BLAKE3/scrypt/KMAC/ML-KEM/X25519/ML-DSA/Ed25519/SLH-DSA/Falcon"
+        },
+        {
+          "language": "Perl (PDL)",
+          "ns": 1749.37,
+          "impl": "crypto identical to Perl (accelerator applies to the codec, not crypto)"
+        },
+        {
+          "language": "Ruby",
+          "ns": 1876.73,
+          "impl": "stdlib OpenSSL native (AEAD incl. GCM-SIV/SHA-2/SHA-3/scrypt/PBKDF2/HKDF/Argon2id); librbcrypto shim (Fiddle) for BLAKE3/KMAC/ML-KEM/X25519/ML-DSA/Ed25519/SLH-DSA/Falcon"
+        },
+        {
+          "language": "Ruby (batch)",
+          "ns": 1876.73,
+          "impl": "crypto identical to Ruby (accelerator applies to the codec, not crypto)"
+        },
+        {
+          "language": "Swift",
+          "ns": 2016.245,
+          "impl": "CryptoKit + librbcrypto shim"
         },
         {
           "language": "Java",
-          "ns": 2641.08,
-          "impl": "JCE + BouncyCastle (Argon2id)"
+          "ns": 2121.13125,
+          "impl": "JCE + BouncyCastle native; librbcrypto shim (FFM) for AES-GCM-SIV/BLAKE3/scrypt/HKDF/KMAC/ML-KEM/ML-DSA/SLH-DSA/Falcon"
+        },
+        {
+          "language": "Python",
+          "ns": 2178.038125,
+          "impl": "pyca/cryptography + blake3 + argon2-cffi native (AEAD incl. GCM-SIV/SHA-2/SHA-3/BLAKE3/Argon2id/scrypt/PBKDF2/HKDF); librbcrypto shim (ctypes) for KMAC/ML-KEM/X25519/ML-DSA/Ed25519/SLH-DSA/Falcon"
+        },
+        {
+          "language": "Python (NumPy)",
+          "ns": 2178.038125,
+          "impl": "crypto identical to Python (accelerator applies to the codec, not crypto)"
+        },
+        {
+          "language": "LuaJIT",
+          "ns": 2774.355,
+          "impl": "OpenSSL EVP via ffi"
         },
         {
           "language": "C#",
-          "ns": 4887.8085,
-          "impl": "System.Security.Cryptography"
+          "ns": 4029.626,
+          "impl": "System.Security.Cryptography + Konscious native (AEAD/SHA-2/SHA-3/KMAC/PBKDF2/HKDF/Argon2id); librbcrypto shim (P/Invoke) for AES-GCM-SIV/BLAKE3/scrypt/ML-KEM/X25519/ML-DSA/Ed25519/SLH-DSA/Falcon"
         },
         {
           "language": "Node.js",
-          "ns": 19563.52854,
-          "impl": "node:crypto"
+          "ns": 16523.805,
+          "impl": "node:crypto native (AEAD/SHA-2/SHA-3/scrypt/PBKDF2/HKDF/Argon2id); librbcrypto shim (N-API addon) for AES-GCM-SIV/BLAKE3/KMAC/ML-KEM/X25519/ML-DSA/Ed25519/SLH-DSA/Falcon"
+        }
+      ]
+    },
+    "AES-256-GCM-SIV": {
+      "kind": "aead",
+      "metric": "ns per seal+open of a 41-byte payload",
+      "rows": [
+        {
+          "language": "C",
+          "ns": 1116.555,
+          "impl": "OpenSSL EVP + libblake3 + liboqs (Falcon)"
+        },
+        {
+          "language": "C++",
+          "ns": 1122.513,
+          "impl": "OpenSSL EVP + libblake3 + liboqs (Falcon)"
+        },
+        {
+          "language": "C#",
+          "ns": 1128.976,
+          "impl": "System.Security.Cryptography + Konscious native (AEAD/SHA-2/SHA-3/KMAC/PBKDF2/HKDF/Argon2id); librbcrypto shim (P/Invoke) for AES-GCM-SIV/BLAKE3/scrypt/ML-KEM/X25519/ML-DSA/Ed25519/SLH-DSA/Falcon"
+        },
+        {
+          "language": "Octave",
+          "ns": 1140.625,
+          "impl": "compiled .oct \u2192 C shim over OpenSSL"
+        },
+        {
+          "language": "COBOL",
+          "ns": 1179.554,
+          "impl": "GnuCOBOL CALL \u2192 C shim over OpenSSL"
+        },
+        {
+          "language": "Swift",
+          "ns": 1218.26,
+          "impl": "CryptoKit + librbcrypto shim"
+        },
+        {
+          "language": "Perl",
+          "ns": 1234.165,
+          "impl": "CryptX native (AEAD/SHA-2/SHA-3/PBKDF2/HKDF/Argon2id); librbcrypto shim (FFI::Platypus) for AES-GCM-SIV/BLAKE3/scrypt/KMAC/ML-KEM/X25519/ML-DSA/Ed25519/SLH-DSA/Falcon"
+        },
+        {
+          "language": "Perl (PDL)",
+          "ns": 1234.165,
+          "impl": "crypto identical to Perl (accelerator applies to the codec, not crypto)"
+        },
+        {
+          "language": "Zig",
+          "ns": 1234.85,
+          "impl": "std.crypto + librbcrypto shim"
+        },
+        {
+          "language": "Lua",
+          "ns": 1266.095,
+          "impl": "plain Lua 5.5 (no FFI) C module \u2192 C shim over OpenSSL"
+        },
+        {
+          "language": "Lua (vectorize)",
+          "ns": 1266.095,
+          "impl": "crypto identical to Lua (accelerator applies to the codec, not crypto)"
+        },
+        {
+          "language": "Nelua",
+          "ns": 1266.19,
+          "impl": "compiles to C, OpenSSL via cimport \u2192 C shim"
+        },
+        {
+          "language": "Julia",
+          "ns": 1274.300415,
+          "impl": "ccall libcrypto"
+        },
+        {
+          "language": "Fortran",
+          "ns": 1305.645,
+          "impl": "OpenSSL via iso_c_binding \u2192 C shim"
+        },
+        {
+          "language": "Rust",
+          "ns": 1314.35979,
+          "impl": "RustCrypto crates"
+        },
+        {
+          "language": "Python (PyPy)",
+          "ns": 1315.115,
+          "impl": "PyPy cffi ABI dlopen \u2192 C shim over OpenSSL"
+        },
+        {
+          "language": "Python (PyPy+NumPy)",
+          "ns": 1315.115,
+          "impl": "crypto identical to Python (PyPy) (accelerator applies to the codec, not crypto)"
+        },
+        {
+          "language": "OCaml",
+          "ns": 1328.638125,
+          "impl": "mirage-crypto / digestif / Argon2id native; librbcrypto shim (C stub) for AES-GCM-SIV/BLAKE3/scrypt/PBKDF2/HKDF/KMAC/ML-KEM/X25519/ML-DSA/Ed25519/SLH-DSA/Falcon"
+        },
+        {
+          "language": "Haskell",
+          "ns": 1344.6,
+          "impl": "OpenSSL EVP + librbcrypto shim via FFI"
+        },
+        {
+          "language": "Pascal",
+          "ns": 1345.1,
+          "impl": "OpenSSL via FPC external \u2192 C shim"
+        },
+        {
+          "language": "Python (Cython)",
+          "ns": 1362.56,
+          "impl": "Cython in-process cdef extern \u2192 C shim over OpenSSL"
+        },
+        {
+          "language": "Kotlin",
+          "ns": 1365.77479,
+          "impl": "JCE + BouncyCastle native; librbcrypto shim (FFM) for AES-GCM-SIV/BLAKE3/scrypt/HKDF/KMAC/ML-KEM/ML-DSA/SLH-DSA/Falcon"
+        },
+        {
+          "language": "Go",
+          "ns": 1369.32604,
+          "impl": "stdlib"
+        },
+        {
+          "language": "Java",
+          "ns": 1379.34896,
+          "impl": "JCE + BouncyCastle native; librbcrypto shim (FFM) for AES-GCM-SIV/BLAKE3/scrypt/HKDF/KMAC/ML-KEM/ML-DSA/SLH-DSA/Falcon"
+        },
+        {
+          "language": "Crystal",
+          "ns": 1404.277295,
+          "impl": "stdlib OpenSSL native (AEAD/SHA-2/SHA-3/PBKDF2/Argon2id); librbcrypto shim (lib binding) for AES-GCM-SIV/BLAKE3/scrypt/HKDF/KMAC/ML-KEM/X25519/ML-DSA/Ed25519/SLH-DSA/Falcon"
+        },
+        {
+          "language": "Node.js",
+          "ns": 1519.469375,
+          "impl": "node:crypto native (AEAD/SHA-2/SHA-3/scrypt/PBKDF2/HKDF/Argon2id); librbcrypto shim (N-API addon) for AES-GCM-SIV/BLAKE3/KMAC/ML-KEM/X25519/ML-DSA/Ed25519/SLH-DSA/Falcon"
+        },
+        {
+          "language": "Nim",
+          "ns": 2275.920835,
+          "impl": "OpenSSL EVP via FFI"
+        },
+        {
+          "language": "Mojo",
+          "ns": 2422.305,
+          "impl": "Mojo OwnedDLHandle C-interop \u2192 C shim over OpenSSL"
+        },
+        {
+          "language": "Python",
+          "ns": 3264.9975,
+          "impl": "pyca/cryptography + blake3 + argon2-cffi native (AEAD incl. GCM-SIV/SHA-2/SHA-3/BLAKE3/Argon2id/scrypt/PBKDF2/HKDF); librbcrypto shim (ctypes) for KMAC/ML-KEM/X25519/ML-DSA/Ed25519/SLH-DSA/Falcon"
+        },
+        {
+          "language": "Python (NumPy)",
+          "ns": 3264.9975,
+          "impl": "crypto identical to Python (accelerator applies to the codec, not crypto)"
+        },
+        {
+          "language": "LuaJIT",
+          "ns": 3707.81,
+          "impl": "OpenSSL EVP via ffi"
+        },
+        {
+          "language": "Ruby",
+          "ns": 7542.625,
+          "impl": "stdlib OpenSSL native (AEAD incl. GCM-SIV/SHA-2/SHA-3/scrypt/PBKDF2/HKDF/Argon2id); librbcrypto shim (Fiddle) for BLAKE3/KMAC/ML-KEM/X25519/ML-DSA/Ed25519/SLH-DSA/Falcon"
+        },
+        {
+          "language": "Ruby (batch)",
+          "ns": 7542.625,
+          "impl": "crypto identical to Ruby (accelerator applies to the codec, not crypto)"
         }
       ]
     },
@@ -405,143 +754,168 @@
       "rows": [
         {
           "language": "Zig",
-          "ns": 15.102,
-          "impl": "std.crypto"
+          "ns": 16.544,
+          "impl": "std.crypto + librbcrypto shim"
         },
         {
           "language": "Go",
-          "ns": 40.707334,
+          "ns": 43.154084,
           "impl": "stdlib"
         },
         {
           "language": "C#",
-          "ns": 75.2758,
-          "impl": "System.Security.Cryptography"
-        },
-        {
-          "language": "Rust",
-          "ns": 118.649,
-          "impl": "RustCrypto crates"
-        },
-        {
-          "language": "Octave",
-          "ns": 139.534,
-          "impl": "compiled .oct \u2192 C shim over OpenSSL"
-        },
-        {
-          "language": "Pascal",
-          "ns": 145.76,
-          "impl": "OpenSSL via FPC external \u2192 C shim"
-        },
-        {
-          "language": "C",
-          "ns": 145.824,
-          "impl": "OpenSSL EVP + libblake3"
-        },
-        {
-          "language": "Julia",
-          "ns": 149.042,
-          "impl": "ccall libcrypto"
-        },
-        {
-          "language": "Python (PyPy)",
-          "ns": 151.634,
-          "impl": "PyPy cffi ABI dlopen \u2192 C shim over OpenSSL"
-        },
-        {
-          "language": "Nim",
-          "ns": 155.3915,
-          "impl": "OpenSSL EVP via FFI"
-        },
-        {
-          "language": "Python (Cython)",
-          "ns": 155.736,
-          "impl": "Cython in-process cdef extern \u2192 C shim over OpenSSL"
-        },
-        {
-          "language": "C++",
-          "ns": 156.356,
-          "impl": "OpenSSL EVP + libblake3"
-        },
-        {
-          "language": "Haskell",
-          "ns": 158.252,
-          "impl": "OpenSSL EVP via FFI"
-        },
-        {
-          "language": "Lua",
-          "ns": 159.816,
-          "impl": "plain Lua 5.5 (no FFI) C module \u2192 C shim over OpenSSL"
-        },
-        {
-          "language": "LuaJIT",
-          "ns": 171.022,
-          "impl": "OpenSSL EVP via ffi"
-        },
-        {
-          "language": "Nelua",
-          "ns": 173.476,
-          "impl": "compiles to C, OpenSSL via cimport \u2192 C shim"
-        },
-        {
-          "language": "Fortran",
-          "ns": 180.574,
-          "impl": "OpenSSL via iso_c_binding \u2192 C shim"
-        },
-        {
-          "language": "OCaml",
-          "ns": 181.041916,
-          "impl": "mirage-crypto / digestif / OpenSSL Argon2id"
-        },
-        {
-          "language": "COBOL",
-          "ns": 214.645,
-          "impl": "GnuCOBOL CALL \u2192 C shim over OpenSSL"
-        },
-        {
-          "language": "Swift",
-          "ns": 218.574,
-          "impl": "CryptoKit"
-        },
-        {
-          "language": "Perl",
-          "ns": 240.848,
-          "impl": "CryptX"
-        },
-        {
-          "language": "Mojo",
-          "ns": 242.846,
-          "impl": "Mojo OwnedDLHandle C-interop \u2192 C shim over OpenSSL"
-        },
-        {
-          "language": "Crystal",
-          "ns": 271.535084,
-          "impl": "stdlib OpenSSL"
+          "ns": 63.4508,
+          "impl": "System.Security.Cryptography + Konscious native (AEAD/SHA-2/SHA-3/KMAC/PBKDF2/HKDF/Argon2id); librbcrypto shim (P/Invoke) for AES-GCM-SIV/BLAKE3/scrypt/ML-KEM/X25519/ML-DSA/Ed25519/SLH-DSA/Falcon"
         },
         {
           "language": "Java",
-          "ns": 315.896832,
-          "impl": "JCE + BouncyCastle (Argon2id)"
+          "ns": 76.875584,
+          "impl": "JCE + BouncyCastle native; librbcrypto shim (FFM) for AES-GCM-SIV/BLAKE3/scrypt/HKDF/KMAC/ML-KEM/ML-DSA/SLH-DSA/Falcon"
         },
         {
           "language": "Kotlin",
-          "ns": 394.854082,
-          "impl": "JCE + BouncyCastle (Argon2id)"
+          "ns": 84.131166,
+          "impl": "JCE + BouncyCastle native; librbcrypto shim (FFM) for AES-GCM-SIV/BLAKE3/scrypt/HKDF/KMAC/ML-KEM/ML-DSA/SLH-DSA/Falcon"
         },
         {
-          "language": "Ruby",
-          "ns": 589.462,
-          "impl": "stdlib OpenSSL"
+          "language": "Rust",
+          "ns": 126.119,
+          "impl": "RustCrypto crates"
+        },
+        {
+          "language": "Fortran",
+          "ns": 138.912,
+          "impl": "OpenSSL via iso_c_binding \u2192 C shim"
+        },
+        {
+          "language": "Octave",
+          "ns": 139.03,
+          "impl": "compiled .oct \u2192 C shim over OpenSSL"
+        },
+        {
+          "language": "C++",
+          "ns": 140.842,
+          "impl": "OpenSSL EVP + libblake3 + liboqs (Falcon)"
+        },
+        {
+          "language": "C",
+          "ns": 141.902,
+          "impl": "OpenSSL EVP + libblake3 + liboqs (Falcon)"
+        },
+        {
+          "language": "Pascal",
+          "ns": 146.162,
+          "impl": "OpenSSL via FPC external \u2192 C shim"
+        },
+        {
+          "language": "Nim",
+          "ns": 150.906082,
+          "impl": "OpenSSL EVP via FFI"
+        },
+        {
+          "language": "Nelua",
+          "ns": 157.232,
+          "impl": "compiles to C, OpenSSL via cimport \u2192 C shim"
+        },
+        {
+          "language": "Python (Cython)",
+          "ns": 158.632,
+          "impl": "Cython in-process cdef extern \u2192 C shim over OpenSSL"
+        },
+        {
+          "language": "Python (PyPy)",
+          "ns": 165.198,
+          "impl": "PyPy cffi ABI dlopen \u2192 C shim over OpenSSL"
+        },
+        {
+          "language": "Python (PyPy+NumPy)",
+          "ns": 165.198,
+          "impl": "crypto identical to Python (PyPy) (accelerator applies to the codec, not crypto)"
+        },
+        {
+          "language": "Lua",
+          "ns": 166.98,
+          "impl": "plain Lua 5.5 (no FFI) C module \u2192 C shim over OpenSSL"
+        },
+        {
+          "language": "Lua (vectorize)",
+          "ns": 166.98,
+          "impl": "crypto identical to Lua (accelerator applies to the codec, not crypto)"
+        },
+        {
+          "language": "COBOL",
+          "ns": 168.109,
+          "impl": "GnuCOBOL CALL \u2192 C shim over OpenSSL"
+        },
+        {
+          "language": "Julia",
+          "ns": 178.041918,
+          "impl": "ccall libcrypto"
+        },
+        {
+          "language": "Haskell",
+          "ns": 180.112,
+          "impl": "OpenSSL EVP + librbcrypto shim via FFI"
+        },
+        {
+          "language": "LuaJIT",
+          "ns": 194.712,
+          "impl": "OpenSSL EVP via ffi"
+        },
+        {
+          "language": "OCaml",
+          "ns": 201.447416,
+          "impl": "mirage-crypto / digestif / Argon2id native; librbcrypto shim (C stub) for AES-GCM-SIV/BLAKE3/scrypt/PBKDF2/HKDF/KMAC/ML-KEM/X25519/ML-DSA/Ed25519/SLH-DSA/Falcon"
+        },
+        {
+          "language": "Swift",
+          "ns": 219.852,
+          "impl": "CryptoKit + librbcrypto shim"
+        },
+        {
+          "language": "Perl",
+          "ns": 225.544,
+          "impl": "CryptX native (AEAD/SHA-2/SHA-3/PBKDF2/HKDF/Argon2id); librbcrypto shim (FFI::Platypus) for AES-GCM-SIV/BLAKE3/scrypt/KMAC/ML-KEM/X25519/ML-DSA/Ed25519/SLH-DSA/Falcon"
+        },
+        {
+          "language": "Perl (PDL)",
+          "ns": 225.544,
+          "impl": "crypto identical to Perl (accelerator applies to the codec, not crypto)"
+        },
+        {
+          "language": "Crystal",
+          "ns": 269.683832,
+          "impl": "stdlib OpenSSL native (AEAD/SHA-2/SHA-3/PBKDF2/Argon2id); librbcrypto shim (lib binding) for AES-GCM-SIV/BLAKE3/scrypt/HKDF/KMAC/ML-KEM/X25519/ML-DSA/Ed25519/SLH-DSA/Falcon"
+        },
+        {
+          "language": "Mojo",
+          "ns": 270.096,
+          "impl": "Mojo OwnedDLHandle C-interop \u2192 C shim over OpenSSL"
         },
         {
           "language": "Node.js",
-          "ns": 647.310416,
-          "impl": "node:crypto"
+          "ns": 453.753418,
+          "impl": "node:crypto native (AEAD/SHA-2/SHA-3/scrypt/PBKDF2/HKDF/Argon2id); librbcrypto shim (N-API addon) for AES-GCM-SIV/BLAKE3/KMAC/ML-KEM/X25519/ML-DSA/Ed25519/SLH-DSA/Falcon"
+        },
+        {
+          "language": "Ruby",
+          "ns": 576.178,
+          "impl": "stdlib OpenSSL native (AEAD incl. GCM-SIV/SHA-2/SHA-3/scrypt/PBKDF2/HKDF/Argon2id); librbcrypto shim (Fiddle) for BLAKE3/KMAC/ML-KEM/X25519/ML-DSA/Ed25519/SLH-DSA/Falcon"
+        },
+        {
+          "language": "Ruby (batch)",
+          "ns": 576.178,
+          "impl": "crypto identical to Ruby (accelerator applies to the codec, not crypto)"
         },
         {
           "language": "Python",
-          "ns": 673.020582,
-          "impl": "pyca/cryptography"
+          "ns": 787.373834,
+          "impl": "pyca/cryptography + blake3 + argon2-cffi native (AEAD incl. GCM-SIV/SHA-2/SHA-3/BLAKE3/Argon2id/scrypt/PBKDF2/HKDF); librbcrypto shim (ctypes) for KMAC/ML-KEM/X25519/ML-DSA/Ed25519/SLH-DSA/Falcon"
+        },
+        {
+          "language": "Python (NumPy)",
+          "ns": 787.373834,
+          "impl": "crypto identical to Python (accelerator applies to the codec, not crypto)"
         }
       ]
     },
@@ -551,98 +925,681 @@
       "rows": [
         {
           "language": "Go",
-          "ns": 103.584,
+          "ns": 105.7975,
           "impl": "stdlib"
         },
         {
           "language": "C#",
-          "ns": 133.1088,
-          "impl": "System.Security.Cryptography"
+          "ns": 129.2656,
+          "impl": "System.Security.Cryptography + Konscious native (AEAD/SHA-2/SHA-3/KMAC/PBKDF2/HKDF/Argon2id); librbcrypto shim (P/Invoke) for AES-GCM-SIV/BLAKE3/scrypt/ML-KEM/X25519/ML-DSA/Ed25519/SLH-DSA/Falcon"
+        },
+        {
+          "language": "Java",
+          "ns": 152.092,
+          "impl": "JCE + BouncyCastle native; librbcrypto shim (FFM) for AES-GCM-SIV/BLAKE3/scrypt/HKDF/KMAC/ML-KEM/ML-DSA/SLH-DSA/Falcon"
         },
         {
           "language": "Rust",
-          "ns": 158.667584,
+          "ns": 156.866084,
           "impl": "RustCrypto crates"
         },
         {
-          "language": "Zig",
-          "ns": 183.868,
-          "impl": "std.crypto"
+          "language": "Kotlin",
+          "ns": 173.924916,
+          "impl": "JCE + BouncyCastle native; librbcrypto shim (FFM) for AES-GCM-SIV/BLAKE3/scrypt/HKDF/KMAC/ML-KEM/ML-DSA/SLH-DSA/Falcon"
+        },
+        {
+          "language": "Fortran",
+          "ns": 184.486,
+          "impl": "OpenSSL via iso_c_binding \u2192 C shim"
+        },
+        {
+          "language": "Octave",
+          "ns": 184.564,
+          "impl": "compiled .oct \u2192 C shim over OpenSSL"
         },
         {
           "language": "C++",
-          "ns": 196.819,
-          "impl": "OpenSSL EVP + libblake3"
+          "ns": 186.09,
+          "impl": "OpenSSL EVP + libblake3 + liboqs (Falcon)"
         },
         {
           "language": "C",
-          "ns": 197.426,
-          "impl": "OpenSSL EVP + libblake3"
+          "ns": 189.75,
+          "impl": "OpenSSL EVP + libblake3 + liboqs (Falcon)"
         },
         {
-          "language": "Julia",
-          "ns": 200.65125,
-          "impl": "ccall libcrypto"
+          "language": "Pascal",
+          "ns": 192.746,
+          "impl": "OpenSSL via FPC external \u2192 C shim"
         },
         {
-          "language": "OCaml",
-          "ns": 222.796418,
-          "impl": "mirage-crypto / digestif / OpenSSL Argon2id"
+          "language": "Nelua",
+          "ns": 202.286,
+          "impl": "compiles to C, OpenSSL via cimport \u2192 C shim"
+        },
+        {
+          "language": "Zig",
+          "ns": 206.438,
+          "impl": "std.crypto + librbcrypto shim"
+        },
+        {
+          "language": "COBOL",
+          "ns": 209.395,
+          "impl": "GnuCOBOL CALL \u2192 C shim over OpenSSL"
+        },
+        {
+          "language": "Python (Cython)",
+          "ns": 210.638,
+          "impl": "Cython in-process cdef extern \u2192 C shim over OpenSSL"
         },
         {
           "language": "Nim",
-          "ns": 241.0375,
+          "ns": 212.221916,
           "impl": "OpenSSL EVP via FFI"
         },
         {
+          "language": "Julia",
+          "ns": 213.489584,
+          "impl": "ccall libcrypto"
+        },
+        {
+          "language": "Python (PyPy)",
+          "ns": 216.658,
+          "impl": "PyPy cffi ABI dlopen \u2192 C shim over OpenSSL"
+        },
+        {
+          "language": "Python (PyPy+NumPy)",
+          "ns": 216.658,
+          "impl": "crypto identical to Python (PyPy) (accelerator applies to the codec, not crypto)"
+        },
+        {
+          "language": "Lua",
+          "ns": 218.206,
+          "impl": "plain Lua 5.5 (no FFI) C module \u2192 C shim over OpenSSL"
+        },
+        {
+          "language": "Lua (vectorize)",
+          "ns": 218.206,
+          "impl": "crypto identical to Lua (accelerator applies to the codec, not crypto)"
+        },
+        {
           "language": "LuaJIT",
-          "ns": 271.492,
+          "ns": 231.688,
           "impl": "OpenSSL EVP via ffi"
         },
         {
           "language": "Haskell",
-          "ns": 272.002,
+          "ns": 234.876,
+          "impl": "OpenSSL EVP + librbcrypto shim via FFI"
+        },
+        {
+          "language": "OCaml",
+          "ns": 242.226416,
+          "impl": "mirage-crypto / digestif / Argon2id native; librbcrypto shim (C stub) for AES-GCM-SIV/BLAKE3/scrypt/PBKDF2/HKDF/KMAC/ML-KEM/X25519/ML-DSA/Ed25519/SLH-DSA/Falcon"
+        },
+        {
+          "language": "Crystal",
+          "ns": 301.41875,
+          "impl": "stdlib OpenSSL native (AEAD/SHA-2/SHA-3/PBKDF2/Argon2id); librbcrypto shim (lib binding) for AES-GCM-SIV/BLAKE3/scrypt/HKDF/KMAC/ML-KEM/X25519/ML-DSA/Ed25519/SLH-DSA/Falcon"
+        },
+        {
+          "language": "Perl",
+          "ns": 341.078,
+          "impl": "CryptX native (AEAD/SHA-2/SHA-3/PBKDF2/HKDF/Argon2id); librbcrypto shim (FFI::Platypus) for AES-GCM-SIV/BLAKE3/scrypt/KMAC/ML-KEM/X25519/ML-DSA/Ed25519/SLH-DSA/Falcon"
+        },
+        {
+          "language": "Perl (PDL)",
+          "ns": 341.078,
+          "impl": "crypto identical to Perl (accelerator applies to the codec, not crypto)"
+        },
+        {
+          "language": "Mojo",
+          "ns": 357.86,
+          "impl": "Mojo OwnedDLHandle C-interop \u2192 C shim over OpenSSL"
+        },
+        {
+          "language": "Swift",
+          "ns": 363.346,
+          "impl": "CryptoKit + librbcrypto shim"
+        },
+        {
+          "language": "Node.js",
+          "ns": 492.539916,
+          "impl": "node:crypto native (AEAD/SHA-2/SHA-3/scrypt/PBKDF2/HKDF/Argon2id); librbcrypto shim (N-API addon) for AES-GCM-SIV/BLAKE3/KMAC/ML-KEM/X25519/ML-DSA/Ed25519/SLH-DSA/Falcon"
+        },
+        {
+          "language": "Ruby",
+          "ns": 621.592,
+          "impl": "stdlib OpenSSL native (AEAD incl. GCM-SIV/SHA-2/SHA-3/scrypt/PBKDF2/HKDF/Argon2id); librbcrypto shim (Fiddle) for BLAKE3/KMAC/ML-KEM/X25519/ML-DSA/Ed25519/SLH-DSA/Falcon"
+        },
+        {
+          "language": "Ruby (batch)",
+          "ns": 621.592,
+          "impl": "crypto identical to Ruby (accelerator applies to the codec, not crypto)"
+        },
+        {
+          "language": "Python",
+          "ns": 829.44,
+          "impl": "pyca/cryptography + blake3 + argon2-cffi native (AEAD incl. GCM-SIV/SHA-2/SHA-3/BLAKE3/Argon2id/scrypt/PBKDF2/HKDF); librbcrypto shim (ctypes) for KMAC/ML-KEM/X25519/ML-DSA/Ed25519/SLH-DSA/Falcon"
+        },
+        {
+          "language": "Python (NumPy)",
+          "ns": 829.44,
+          "impl": "crypto identical to Python (accelerator applies to the codec, not crypto)"
+        }
+      ]
+    },
+    "SHA-512": {
+      "kind": "hash",
+      "metric": "ns per hash of a 41-byte payload",
+      "rows": [
+        {
+          "language": "Kotlin",
+          "ns": 95.488832,
+          "impl": "JCE + BouncyCastle native; librbcrypto shim (FFM) for AES-GCM-SIV/BLAKE3/scrypt/HKDF/KMAC/ML-KEM/ML-DSA/SLH-DSA/Falcon"
+        },
+        {
+          "language": "Java",
+          "ns": 112.342916,
+          "impl": "JCE + BouncyCastle native; librbcrypto shim (FFM) for AES-GCM-SIV/BLAKE3/scrypt/HKDF/KMAC/ML-KEM/ML-DSA/SLH-DSA/Falcon"
+        },
+        {
+          "language": "Go",
+          "ns": 127.865082,
+          "impl": "stdlib"
+        },
+        {
+          "language": "C#",
+          "ns": 132.961,
+          "impl": "System.Security.Cryptography + Konscious native (AEAD/SHA-2/SHA-3/KMAC/PBKDF2/HKDF/Argon2id); librbcrypto shim (P/Invoke) for AES-GCM-SIV/BLAKE3/scrypt/ML-KEM/X25519/ML-DSA/Ed25519/SLH-DSA/Falcon"
+        },
+        {
+          "language": "Rust",
+          "ns": 156.6285,
+          "impl": "RustCrypto crates"
+        },
+        {
+          "language": "Fortran",
+          "ns": 187.792,
+          "impl": "OpenSSL via iso_c_binding \u2192 C shim"
+        },
+        {
+          "language": "C++",
+          "ns": 189.493,
+          "impl": "OpenSSL EVP + libblake3 + liboqs (Falcon)"
+        },
+        {
+          "language": "Octave",
+          "ns": 189.752,
+          "impl": "compiled .oct \u2192 C shim over OpenSSL"
+        },
+        {
+          "language": "C",
+          "ns": 193.646,
+          "impl": "OpenSSL EVP + libblake3 + liboqs (Falcon)"
+        },
+        {
+          "language": "Pascal",
+          "ns": 197.076,
+          "impl": "OpenSSL via FPC external \u2192 C shim"
+        },
+        {
+          "language": "Nelua",
+          "ns": 203.186,
+          "impl": "compiles to C, OpenSSL via cimport \u2192 C shim"
+        },
+        {
+          "language": "Julia",
+          "ns": 206.073916,
+          "impl": "ccall libcrypto"
+        },
+        {
+          "language": "COBOL",
+          "ns": 210.389,
+          "impl": "GnuCOBOL CALL \u2192 C shim over OpenSSL"
+        },
+        {
+          "language": "Zig",
+          "ns": 212.822,
+          "impl": "std.crypto + librbcrypto shim"
+        },
+        {
+          "language": "Python (Cython)",
+          "ns": 214.242,
+          "impl": "Cython in-process cdef extern \u2192 C shim over OpenSSL"
+        },
+        {
+          "language": "Lua",
+          "ns": 217.606,
+          "impl": "plain Lua 5.5 (no FFI) C module \u2192 C shim over OpenSSL"
+        },
+        {
+          "language": "Lua (vectorize)",
+          "ns": 217.606,
+          "impl": "crypto identical to Lua (accelerator applies to the codec, not crypto)"
+        },
+        {
+          "language": "Haskell",
+          "ns": 219.606,
+          "impl": "OpenSSL EVP + librbcrypto shim via FFI"
+        },
+        {
+          "language": "Nim",
+          "ns": 219.99375,
+          "impl": "OpenSSL EVP via FFI"
+        },
+        {
+          "language": "OCaml",
+          "ns": 242.618082,
+          "impl": "mirage-crypto / digestif / Argon2id native; librbcrypto shim (C stub) for AES-GCM-SIV/BLAKE3/scrypt/PBKDF2/HKDF/KMAC/ML-KEM/X25519/ML-DSA/Ed25519/SLH-DSA/Falcon"
+        },
+        {
+          "language": "LuaJIT",
+          "ns": 292.452,
+          "impl": "OpenSSL EVP via ffi"
+        },
+        {
+          "language": "Mojo",
+          "ns": 312.144,
+          "impl": "Mojo OwnedDLHandle C-interop \u2192 C shim over OpenSSL"
+        },
+        {
+          "language": "Perl",
+          "ns": 312.292,
+          "impl": "CryptX native (AEAD/SHA-2/SHA-3/PBKDF2/HKDF/Argon2id); librbcrypto shim (FFI::Platypus) for AES-GCM-SIV/BLAKE3/scrypt/KMAC/ML-KEM/X25519/ML-DSA/Ed25519/SLH-DSA/Falcon"
+        },
+        {
+          "language": "Perl (PDL)",
+          "ns": 312.292,
+          "impl": "crypto identical to Perl (accelerator applies to the codec, not crypto)"
+        },
+        {
+          "language": "Crystal",
+          "ns": 319.717666,
+          "impl": "stdlib OpenSSL native (AEAD/SHA-2/SHA-3/PBKDF2/Argon2id); librbcrypto shim (lib binding) for AES-GCM-SIV/BLAKE3/scrypt/HKDF/KMAC/ML-KEM/X25519/ML-DSA/Ed25519/SLH-DSA/Falcon"
+        },
+        {
+          "language": "Python (PyPy)",
+          "ns": 328.742,
+          "impl": "PyPy cffi ABI dlopen \u2192 C shim over OpenSSL"
+        },
+        {
+          "language": "Python (PyPy+NumPy)",
+          "ns": 328.742,
+          "impl": "crypto identical to Python (PyPy) (accelerator applies to the codec, not crypto)"
+        },
+        {
+          "language": "Swift",
+          "ns": 363.734,
+          "impl": "CryptoKit + librbcrypto shim"
+        },
+        {
+          "language": "Node.js",
+          "ns": 506.2565,
+          "impl": "node:crypto native (AEAD/SHA-2/SHA-3/scrypt/PBKDF2/HKDF/Argon2id); librbcrypto shim (N-API addon) for AES-GCM-SIV/BLAKE3/KMAC/ML-KEM/X25519/ML-DSA/Ed25519/SLH-DSA/Falcon"
+        },
+        {
+          "language": "Ruby",
+          "ns": 632.852,
+          "impl": "stdlib OpenSSL native (AEAD incl. GCM-SIV/SHA-2/SHA-3/scrypt/PBKDF2/HKDF/Argon2id); librbcrypto shim (Fiddle) for BLAKE3/KMAC/ML-KEM/X25519/ML-DSA/Ed25519/SLH-DSA/Falcon"
+        },
+        {
+          "language": "Ruby (batch)",
+          "ns": 632.852,
+          "impl": "crypto identical to Ruby (accelerator applies to the codec, not crypto)"
+        },
+        {
+          "language": "Python",
+          "ns": 892.7815,
+          "impl": "pyca/cryptography + blake3 + argon2-cffi native (AEAD incl. GCM-SIV/SHA-2/SHA-3/BLAKE3/Argon2id/scrypt/PBKDF2/HKDF); librbcrypto shim (ctypes) for KMAC/ML-KEM/X25519/ML-DSA/Ed25519/SLH-DSA/Falcon"
+        },
+        {
+          "language": "Python (NumPy)",
+          "ns": 892.7815,
+          "impl": "crypto identical to Python (accelerator applies to the codec, not crypto)"
+        }
+      ]
+    },
+    "SHA3-256": {
+      "kind": "hash",
+      "metric": "ns per hash of a 41-byte payload",
+      "rows": [
+        {
+          "language": "Zig",
+          "ns": 142.542,
+          "impl": "std.crypto + librbcrypto shim"
+        },
+        {
+          "language": "Kotlin",
+          "ns": 171.875,
+          "impl": "JCE + BouncyCastle native; librbcrypto shim (FFM) for AES-GCM-SIV/BLAKE3/scrypt/HKDF/KMAC/ML-KEM/ML-DSA/SLH-DSA/Falcon"
+        },
+        {
+          "language": "Go",
+          "ns": 174.816082,
+          "impl": "stdlib"
+        },
+        {
+          "language": "Java",
+          "ns": 187.931666,
+          "impl": "JCE + BouncyCastle native; librbcrypto shim (FFM) for AES-GCM-SIV/BLAKE3/scrypt/HKDF/KMAC/ML-KEM/ML-DSA/SLH-DSA/Falcon"
+        },
+        {
+          "language": "C++",
+          "ns": 276.576,
+          "impl": "OpenSSL EVP + libblake3 + liboqs (Falcon)"
+        },
+        {
+          "language": "Octave",
+          "ns": 279.798,
+          "impl": "compiled .oct \u2192 C shim over OpenSSL"
+        },
+        {
+          "language": "C",
+          "ns": 281.848,
+          "impl": "OpenSSL EVP + libblake3 + liboqs (Falcon)"
+        },
+        {
+          "language": "C#",
+          "ns": 282.6224,
+          "impl": "System.Security.Cryptography + Konscious native (AEAD/SHA-2/SHA-3/KMAC/PBKDF2/HKDF/Argon2id); librbcrypto shim (P/Invoke) for AES-GCM-SIV/BLAKE3/scrypt/ML-KEM/X25519/ML-DSA/Ed25519/SLH-DSA/Falcon"
+        },
+        {
+          "language": "Fortran",
+          "ns": 299.066,
+          "impl": "OpenSSL via iso_c_binding \u2192 C shim"
+        },
+        {
+          "language": "Pascal",
+          "ns": 310.422,
+          "impl": "OpenSSL via FPC external \u2192 C shim"
+        },
+        {
+          "language": "Julia",
+          "ns": 311.070084,
+          "impl": "ccall libcrypto"
+        },
+        {
+          "language": "COBOL",
+          "ns": 314.215,
+          "impl": "GnuCOBOL CALL \u2192 C shim over OpenSSL"
+        },
+        {
+          "language": "Nelua",
+          "ns": 316.104,
+          "impl": "compiles to C, OpenSSL via cimport \u2192 C shim"
+        },
+        {
+          "language": "Rust",
+          "ns": 317.188,
+          "impl": "RustCrypto crates"
+        },
+        {
+          "language": "Lua",
+          "ns": 318.654,
+          "impl": "plain Lua 5.5 (no FFI) C module \u2192 C shim over OpenSSL"
+        },
+        {
+          "language": "Lua (vectorize)",
+          "ns": 318.654,
+          "impl": "crypto identical to Lua (accelerator applies to the codec, not crypto)"
+        },
+        {
+          "language": "Python (Cython)",
+          "ns": 334.062,
+          "impl": "Cython in-process cdef extern \u2192 C shim over OpenSSL"
+        },
+        {
+          "language": "LuaJIT",
+          "ns": 336.522,
+          "impl": "OpenSSL EVP via ffi"
+        },
+        {
+          "language": "Haskell",
+          "ns": 347.73,
+          "impl": "OpenSSL EVP + librbcrypto shim via FFI"
+        },
+        {
+          "language": "Swift",
+          "ns": 361.28,
+          "impl": "CryptoKit + librbcrypto shim"
+        },
+        {
+          "language": "Nim",
+          "ns": 383.64025,
           "impl": "OpenSSL EVP via FFI"
         },
         {
           "language": "Crystal",
-          "ns": 325.3305,
-          "impl": "stdlib OpenSSL"
+          "ns": 409.392918,
+          "impl": "stdlib OpenSSL native (AEAD/SHA-2/SHA-3/PBKDF2/Argon2id); librbcrypto shim (lib binding) for AES-GCM-SIV/BLAKE3/scrypt/HKDF/KMAC/ML-KEM/X25519/ML-DSA/Ed25519/SLH-DSA/Falcon"
         },
         {
-          "language": "Swift",
-          "ns": 356.824,
-          "impl": "CryptoKit"
+          "language": "Python (PyPy)",
+          "ns": 412.742,
+          "impl": "PyPy cffi ABI dlopen \u2192 C shim over OpenSSL"
+        },
+        {
+          "language": "Python (PyPy+NumPy)",
+          "ns": 412.742,
+          "impl": "crypto identical to Python (PyPy) (accelerator applies to the codec, not crypto)"
+        },
+        {
+          "language": "Mojo",
+          "ns": 473.934,
+          "impl": "Mojo OwnedDLHandle C-interop \u2192 C shim over OpenSSL"
         },
         {
           "language": "Perl",
-          "ns": 358.13,
-          "impl": "CryptX"
+          "ns": 523.122,
+          "impl": "CryptX native (AEAD/SHA-2/SHA-3/PBKDF2/HKDF/Argon2id); librbcrypto shim (FFI::Platypus) for AES-GCM-SIV/BLAKE3/scrypt/KMAC/ML-KEM/X25519/ML-DSA/Ed25519/SLH-DSA/Falcon"
         },
         {
-          "language": "Java",
-          "ns": 372.529,
-          "impl": "JCE + BouncyCastle (Argon2id)"
+          "language": "Perl (PDL)",
+          "ns": 523.122,
+          "impl": "crypto identical to Perl (accelerator applies to the codec, not crypto)"
         },
         {
-          "language": "Kotlin",
-          "ns": 379.69275,
-          "impl": "JCE + BouncyCastle (Argon2id)"
+          "language": "OCaml",
+          "ns": 572.194084,
+          "impl": "mirage-crypto / digestif / Argon2id native; librbcrypto shim (C stub) for AES-GCM-SIV/BLAKE3/scrypt/PBKDF2/HKDF/KMAC/ML-KEM/X25519/ML-DSA/Ed25519/SLH-DSA/Falcon"
         },
         {
           "language": "Ruby",
-          "ns": 615.43,
-          "impl": "stdlib OpenSSL"
+          "ns": 772.432,
+          "impl": "stdlib OpenSSL native (AEAD incl. GCM-SIV/SHA-2/SHA-3/scrypt/PBKDF2/HKDF/Argon2id); librbcrypto shim (Fiddle) for BLAKE3/KMAC/ML-KEM/X25519/ML-DSA/Ed25519/SLH-DSA/Falcon"
+        },
+        {
+          "language": "Ruby (batch)",
+          "ns": 772.432,
+          "impl": "crypto identical to Ruby (accelerator applies to the codec, not crypto)"
         },
         {
           "language": "Python",
-          "ns": 701.976084,
-          "impl": "pyca/cryptography"
+          "ns": 950.98425,
+          "impl": "pyca/cryptography + blake3 + argon2-cffi native (AEAD incl. GCM-SIV/SHA-2/SHA-3/BLAKE3/Argon2id/scrypt/PBKDF2/HKDF); librbcrypto shim (ctypes) for KMAC/ML-KEM/X25519/ML-DSA/Ed25519/SLH-DSA/Falcon"
+        },
+        {
+          "language": "Python (NumPy)",
+          "ns": 950.98425,
+          "impl": "crypto identical to Python (accelerator applies to the codec, not crypto)"
         },
         {
           "language": "Node.js",
-          "ns": 774.266166,
-          "impl": "node:crypto"
+          "ns": 975.018084,
+          "impl": "node:crypto native (AEAD/SHA-2/SHA-3/scrypt/PBKDF2/HKDF/Argon2id); librbcrypto shim (N-API addon) for AES-GCM-SIV/BLAKE3/KMAC/ML-KEM/X25519/ML-DSA/Ed25519/SLH-DSA/Falcon"
+        }
+      ]
+    },
+    "SHA3-512": {
+      "kind": "hash",
+      "metric": "ns per hash of a 41-byte payload",
+      "rows": [
+        {
+          "language": "Zig",
+          "ns": 140.994,
+          "impl": "std.crypto + librbcrypto shim"
+        },
+        {
+          "language": "Kotlin",
+          "ns": 156.0915,
+          "impl": "JCE + BouncyCastle native; librbcrypto shim (FFM) for AES-GCM-SIV/BLAKE3/scrypt/HKDF/KMAC/ML-KEM/ML-DSA/SLH-DSA/Falcon"
+        },
+        {
+          "language": "Go",
+          "ns": 157.270666,
+          "impl": "stdlib"
+        },
+        {
+          "language": "Java",
+          "ns": 164.99525,
+          "impl": "JCE + BouncyCastle native; librbcrypto shim (FFM) for AES-GCM-SIV/BLAKE3/scrypt/HKDF/KMAC/ML-KEM/ML-DSA/SLH-DSA/Falcon"
+        },
+        {
+          "language": "C++",
+          "ns": 277.064,
+          "impl": "OpenSSL EVP + libblake3 + liboqs (Falcon)"
+        },
+        {
+          "language": "C#",
+          "ns": 279.4296,
+          "impl": "System.Security.Cryptography + Konscious native (AEAD/SHA-2/SHA-3/KMAC/PBKDF2/HKDF/Argon2id); librbcrypto shim (P/Invoke) for AES-GCM-SIV/BLAKE3/scrypt/ML-KEM/X25519/ML-DSA/Ed25519/SLH-DSA/Falcon"
+        },
+        {
+          "language": "C",
+          "ns": 279.492,
+          "impl": "OpenSSL EVP + libblake3 + liboqs (Falcon)"
+        },
+        {
+          "language": "Octave",
+          "ns": 305.194,
+          "impl": "compiled .oct \u2192 C shim over OpenSSL"
+        },
+        {
+          "language": "Pascal",
+          "ns": 308.392,
+          "impl": "OpenSSL via FPC external \u2192 C shim"
+        },
+        {
+          "language": "COBOL",
+          "ns": 309.215,
+          "impl": "GnuCOBOL CALL \u2192 C shim over OpenSSL"
+        },
+        {
+          "language": "Rust",
+          "ns": 312.538834,
+          "impl": "RustCrypto crates"
+        },
+        {
+          "language": "Python (PyPy)",
+          "ns": 318.466,
+          "impl": "PyPy cffi ABI dlopen \u2192 C shim over OpenSSL"
+        },
+        {
+          "language": "Python (PyPy+NumPy)",
+          "ns": 318.466,
+          "impl": "crypto identical to Python (PyPy) (accelerator applies to the codec, not crypto)"
+        },
+        {
+          "language": "Lua",
+          "ns": 319.2,
+          "impl": "plain Lua 5.5 (no FFI) C module \u2192 C shim over OpenSSL"
+        },
+        {
+          "language": "Lua (vectorize)",
+          "ns": 319.2,
+          "impl": "crypto identical to Lua (accelerator applies to the codec, not crypto)"
+        },
+        {
+          "language": "Julia",
+          "ns": 319.85475,
+          "impl": "ccall libcrypto"
+        },
+        {
+          "language": "Nim",
+          "ns": 320.902416,
+          "impl": "OpenSSL EVP via FFI"
+        },
+        {
+          "language": "Python (Cython)",
+          "ns": 328.18,
+          "impl": "Cython in-process cdef extern \u2192 C shim over OpenSSL"
+        },
+        {
+          "language": "Swift",
+          "ns": 360.464,
+          "impl": "CryptoKit + librbcrypto shim"
+        },
+        {
+          "language": "Haskell",
+          "ns": 386.668,
+          "impl": "OpenSSL EVP + librbcrypto shim via FFI"
+        },
+        {
+          "language": "LuaJIT",
+          "ns": 392.83,
+          "impl": "OpenSSL EVP via ffi"
+        },
+        {
+          "language": "Fortran",
+          "ns": 407.616,
+          "impl": "OpenSSL via iso_c_binding \u2192 C shim"
+        },
+        {
+          "language": "Mojo",
+          "ns": 415.994,
+          "impl": "Mojo OwnedDLHandle C-interop \u2192 C shim over OpenSSL"
+        },
+        {
+          "language": "Crystal",
+          "ns": 442.752166,
+          "impl": "stdlib OpenSSL native (AEAD/SHA-2/SHA-3/PBKDF2/Argon2id); librbcrypto shim (lib binding) for AES-GCM-SIV/BLAKE3/scrypt/HKDF/KMAC/ML-KEM/X25519/ML-DSA/Ed25519/SLH-DSA/Falcon"
+        },
+        {
+          "language": "Perl",
+          "ns": 515.786,
+          "impl": "CryptX native (AEAD/SHA-2/SHA-3/PBKDF2/HKDF/Argon2id); librbcrypto shim (FFI::Platypus) for AES-GCM-SIV/BLAKE3/scrypt/KMAC/ML-KEM/X25519/ML-DSA/Ed25519/SLH-DSA/Falcon"
+        },
+        {
+          "language": "Perl (PDL)",
+          "ns": 515.786,
+          "impl": "crypto identical to Perl (accelerator applies to the codec, not crypto)"
+        },
+        {
+          "language": "OCaml",
+          "ns": 529.350832,
+          "impl": "mirage-crypto / digestif / Argon2id native; librbcrypto shim (C stub) for AES-GCM-SIV/BLAKE3/scrypt/PBKDF2/HKDF/KMAC/ML-KEM/X25519/ML-DSA/Ed25519/SLH-DSA/Falcon"
+        },
+        {
+          "language": "Nelua",
+          "ns": 578.01,
+          "impl": "compiles to C, OpenSSL via cimport \u2192 C shim"
+        },
+        {
+          "language": "Node.js",
+          "ns": 646.81875,
+          "impl": "node:crypto native (AEAD/SHA-2/SHA-3/scrypt/PBKDF2/HKDF/Argon2id); librbcrypto shim (N-API addon) for AES-GCM-SIV/BLAKE3/KMAC/ML-KEM/X25519/ML-DSA/Ed25519/SLH-DSA/Falcon"
+        },
+        {
+          "language": "Ruby",
+          "ns": 737.374,
+          "impl": "stdlib OpenSSL native (AEAD incl. GCM-SIV/SHA-2/SHA-3/scrypt/PBKDF2/HKDF/Argon2id); librbcrypto shim (Fiddle) for BLAKE3/KMAC/ML-KEM/X25519/ML-DSA/Ed25519/SLH-DSA/Falcon"
+        },
+        {
+          "language": "Ruby (batch)",
+          "ns": 737.374,
+          "impl": "crypto identical to Ruby (accelerator applies to the codec, not crypto)"
+        },
+        {
+          "language": "Python",
+          "ns": 1020.438834,
+          "impl": "pyca/cryptography + blake3 + argon2-cffi native (AEAD incl. GCM-SIV/SHA-2/SHA-3/BLAKE3/Argon2id/scrypt/PBKDF2/HKDF); librbcrypto shim (ctypes) for KMAC/ML-KEM/X25519/ML-DSA/Ed25519/SLH-DSA/Falcon"
+        },
+        {
+          "language": "Python (NumPy)",
+          "ns": 1020.438834,
+          "impl": "crypto identical to Python (accelerator applies to the codec, not crypto)"
         }
       ]
     },
@@ -652,275 +1609,2974 @@
       "rows": [
         {
           "language": "Rust",
-          "ns": 52.344666,
+          "ns": 55.202834,
           "impl": "RustCrypto crates"
         },
         {
           "language": "C",
-          "ns": 63.66,
-          "impl": "OpenSSL EVP + libblake3"
-        },
-        {
-          "language": "Zig",
-          "ns": 81.026,
-          "impl": "std.crypto"
+          "ns": 61.706,
+          "impl": "OpenSSL EVP + libblake3 + liboqs (Falcon)"
         },
         {
           "language": "C++",
-          "ns": 98.038,
-          "impl": "OpenSSL EVP + libblake3"
+          "ns": 61.781,
+          "impl": "OpenSSL EVP + libblake3 + liboqs (Falcon)"
+        },
+        {
+          "language": "Pascal",
+          "ns": 65.946,
+          "impl": "OpenSSL via FPC external \u2192 C shim"
+        },
+        {
+          "language": "Octave",
+          "ns": 67.002,
+          "impl": "compiled .oct \u2192 C shim over OpenSSL"
+        },
+        {
+          "language": "Crystal",
+          "ns": 69.603082,
+          "impl": "stdlib OpenSSL native (AEAD/SHA-2/SHA-3/PBKDF2/Argon2id); librbcrypto shim (lib binding) for AES-GCM-SIV/BLAKE3/scrypt/HKDF/KMAC/ML-KEM/X25519/ML-DSA/Ed25519/SLH-DSA/Falcon"
+        },
+        {
+          "language": "C#",
+          "ns": 69.781,
+          "impl": "System.Security.Cryptography + Konscious native (AEAD/SHA-2/SHA-3/KMAC/PBKDF2/HKDF/Argon2id); librbcrypto shim (P/Invoke) for AES-GCM-SIV/BLAKE3/scrypt/ML-KEM/X25519/ML-DSA/Ed25519/SLH-DSA/Falcon"
+        },
+        {
+          "language": "Haskell",
+          "ns": 69.88,
+          "impl": "OpenSSL EVP + librbcrypto shim via FFI"
+        },
+        {
+          "language": "Nim",
+          "ns": 70.097584,
+          "impl": "OpenSSL EVP via FFI"
+        },
+        {
+          "language": "Nelua",
+          "ns": 70.268,
+          "impl": "compiles to C, OpenSSL via cimport \u2192 C shim"
+        },
+        {
+          "language": "Python (Cython)",
+          "ns": 72.622,
+          "impl": "Cython in-process cdef extern \u2192 C shim over OpenSSL"
+        },
+        {
+          "language": "Julia",
+          "ns": 74.798334,
+          "impl": "ccall libcrypto"
+        },
+        {
+          "language": "COBOL",
+          "ns": 74.975,
+          "impl": "GnuCOBOL CALL \u2192 C shim over OpenSSL"
+        },
+        {
+          "language": "Node.js",
+          "ns": 78.5,
+          "impl": "node:crypto native (AEAD/SHA-2/SHA-3/scrypt/PBKDF2/HKDF/Argon2id); librbcrypto shim (N-API addon) for AES-GCM-SIV/BLAKE3/KMAC/ML-KEM/X25519/ML-DSA/Ed25519/SLH-DSA/Falcon"
+        },
+        {
+          "language": "OCaml",
+          "ns": 78.578666,
+          "impl": "mirage-crypto / digestif / Argon2id native; librbcrypto shim (C stub) for AES-GCM-SIV/BLAKE3/scrypt/PBKDF2/HKDF/KMAC/ML-KEM/X25519/ML-DSA/Ed25519/SLH-DSA/Falcon"
+        },
+        {
+          "language": "Lua",
+          "ns": 79.322,
+          "impl": "plain Lua 5.5 (no FFI) C module \u2192 C shim over OpenSSL"
+        },
+        {
+          "language": "Lua (vectorize)",
+          "ns": 79.322,
+          "impl": "crypto identical to Lua (accelerator applies to the codec, not crypto)"
+        },
+        {
+          "language": "Python (PyPy)",
+          "ns": 79.844,
+          "impl": "PyPy cffi ABI dlopen \u2192 C shim over OpenSSL"
+        },
+        {
+          "language": "Python (PyPy+NumPy)",
+          "ns": 79.844,
+          "impl": "crypto identical to Python (PyPy) (accelerator applies to the codec, not crypto)"
+        },
+        {
+          "language": "LuaJIT",
+          "ns": 84.01,
+          "impl": "OpenSSL EVP via ffi"
+        },
+        {
+          "language": "Zig",
+          "ns": 85.01,
+          "impl": "std.crypto + librbcrypto shim"
+        },
+        {
+          "language": "Java",
+          "ns": 86.775084,
+          "impl": "JCE + BouncyCastle native; librbcrypto shim (FFM) for AES-GCM-SIV/BLAKE3/scrypt/HKDF/KMAC/ML-KEM/ML-DSA/SLH-DSA/Falcon"
+        },
+        {
+          "language": "Go",
+          "ns": 87.052084,
+          "impl": "stdlib"
+        },
+        {
+          "language": "Kotlin",
+          "ns": 88.787584,
+          "impl": "JCE + BouncyCastle native; librbcrypto shim (FFM) for AES-GCM-SIV/BLAKE3/scrypt/HKDF/KMAC/ML-KEM/ML-DSA/SLH-DSA/Falcon"
+        },
+        {
+          "language": "Swift",
+          "ns": 113.268,
+          "impl": "CryptoKit + librbcrypto shim"
+        },
+        {
+          "language": "Mojo",
+          "ns": 144.562,
+          "impl": "Mojo OwnedDLHandle C-interop \u2192 C shim over OpenSSL"
+        },
+        {
+          "language": "Perl",
+          "ns": 149.166,
+          "impl": "CryptX native (AEAD/SHA-2/SHA-3/PBKDF2/HKDF/Argon2id); librbcrypto shim (FFI::Platypus) for AES-GCM-SIV/BLAKE3/scrypt/KMAC/ML-KEM/X25519/ML-DSA/Ed25519/SLH-DSA/Falcon"
+        },
+        {
+          "language": "Perl (PDL)",
+          "ns": 149.166,
+          "impl": "crypto identical to Perl (accelerator applies to the codec, not crypto)"
+        },
+        {
+          "language": "Fortran",
+          "ns": 223.164,
+          "impl": "OpenSSL via iso_c_binding \u2192 C shim"
         },
         {
           "language": "Python",
-          "ns": 317.286834,
-          "impl": "pyca/cryptography"
+          "ns": 326.605832,
+          "impl": "pyca/cryptography + blake3 + argon2-cffi native (AEAD incl. GCM-SIV/SHA-2/SHA-3/BLAKE3/Argon2id/scrypt/PBKDF2/HKDF); librbcrypto shim (ctypes) for KMAC/ML-KEM/X25519/ML-DSA/Ed25519/SLH-DSA/Falcon"
+        },
+        {
+          "language": "Python (NumPy)",
+          "ns": 326.605832,
+          "impl": "crypto identical to Python (accelerator applies to the codec, not crypto)"
+        },
+        {
+          "language": "Ruby",
+          "ns": 667.724,
+          "impl": "stdlib OpenSSL native (AEAD incl. GCM-SIV/SHA-2/SHA-3/scrypt/PBKDF2/HKDF/Argon2id); librbcrypto shim (Fiddle) for BLAKE3/KMAC/ML-KEM/X25519/ML-DSA/Ed25519/SLH-DSA/Falcon"
+        },
+        {
+          "language": "Ruby (batch)",
+          "ns": 667.724,
+          "impl": "crypto identical to Ruby (accelerator applies to the codec, not crypto)"
         }
       ]
     },
     "Argon2id": {
       "kind": "kdf",
-      "metric": "ns per key derivation \u2014 Argon2id t=3, 64 MiB, 4 lanes (robobus keystore params)",
+      "metric": "ns per derivation (Argon2id t=3/64 MiB/4 lanes; scrypt N=16384; PBKDF2 210k; HKDF/KMAC one-shot)",
       "rows": [
         {
-          "language": "Zig",
-          "ns": 31412400.0,
-          "impl": "std.crypto"
-        },
-        {
-          "language": "Python (Cython)",
-          "ns": 32115800.0,
-          "impl": "Cython in-process cdef extern \u2192 C shim over OpenSSL"
-        },
-        {
-          "language": "C",
-          "ns": 32403150.0,
-          "impl": "OpenSSL EVP + libblake3"
-        },
-        {
           "language": "Perl",
-          "ns": 32995700.0,
-          "impl": "CryptX"
+          "ns": 20730000.0,
+          "impl": "CryptX native (AEAD/SHA-2/SHA-3/PBKDF2/HKDF/Argon2id); librbcrypto shim (FFI::Platypus) for AES-GCM-SIV/BLAKE3/scrypt/KMAC/ML-KEM/X25519/ML-DSA/Ed25519/SLH-DSA/Falcon"
         },
         {
-          "language": "Julia",
-          "ns": 33033193.75,
-          "impl": "ccall libcrypto"
+          "language": "Perl (PDL)",
+          "ns": 20730000.0,
+          "impl": "crypto identical to Perl (accelerator applies to the codec, not crypto)"
         },
         {
-          "language": "Haskell",
-          "ns": 33253100.0,
-          "impl": "OpenSSL EVP via FFI"
+          "language": "COBOL",
+          "ns": 23156050.0,
+          "impl": "GnuCOBOL CALL \u2192 C shim over OpenSSL"
+        },
+        {
+          "language": "Node.js",
+          "ns": 24132758.3,
+          "impl": "node:crypto native (AEAD/SHA-2/SHA-3/scrypt/PBKDF2/HKDF/Argon2id); librbcrypto shim (N-API addon) for AES-GCM-SIV/BLAKE3/KMAC/ML-KEM/X25519/ML-DSA/Ed25519/SLH-DSA/Falcon"
+        },
+        {
+          "language": "Swift",
+          "ns": 24423150.0,
+          "impl": "CryptoKit + librbcrypto shim"
         },
         {
           "language": "Octave",
-          "ns": 33747000.0,
+          "ns": 26758700.0,
           "impl": "compiled .oct \u2192 C shim over OpenSSL"
         },
         {
-          "language": "Crystal",
-          "ns": 33840758.35,
-          "impl": "stdlib OpenSSL"
+          "language": "Nelua",
+          "ns": 26760600.0,
+          "impl": "compiles to C, OpenSSL via cimport \u2192 C shim"
         },
         {
-          "language": "Nim",
-          "ns": 34540431.25,
-          "impl": "OpenSSL EVP via FFI"
+          "language": "Pascal",
+          "ns": 27084850.0,
+          "impl": "OpenSSL via FPC external \u2192 C shim"
+        },
+        {
+          "language": "Zig",
+          "ns": 29626900.0,
+          "impl": "std.crypto + librbcrypto shim"
+        },
+        {
+          "language": "C++",
+          "ns": 30028770.8,
+          "impl": "OpenSSL EVP + libblake3 + liboqs (Falcon)"
+        },
+        {
+          "language": "C",
+          "ns": 30745850.0,
+          "impl": "OpenSSL EVP + libblake3 + liboqs (Falcon)"
         },
         {
           "language": "Mojo",
-          "ns": 35228800.0,
+          "ns": 32663550.0,
           "impl": "Mojo OwnedDLHandle C-interop \u2192 C shim over OpenSSL"
         },
         {
           "language": "Ruby",
-          "ns": 35746350.0,
-          "impl": "stdlib OpenSSL"
+          "ns": 33697250.0,
+          "impl": "stdlib OpenSSL native (AEAD incl. GCM-SIV/SHA-2/SHA-3/scrypt/PBKDF2/HKDF/Argon2id); librbcrypto shim (Fiddle) for BLAKE3/KMAC/ML-KEM/X25519/ML-DSA/Ed25519/SLH-DSA/Falcon"
         },
         {
-          "language": "Python",
-          "ns": 36164533.35,
-          "impl": "pyca/cryptography"
-        },
-        {
-          "language": "Lua",
-          "ns": 37419300.0,
-          "impl": "plain Lua 5.5 (no FFI) C module \u2192 C shim over OpenSSL"
-        },
-        {
-          "language": "COBOL",
-          "ns": 37716850.0,
-          "impl": "GnuCOBOL CALL \u2192 C shim over OpenSSL"
-        },
-        {
-          "language": "LuaJIT",
-          "ns": 37958250.0,
-          "impl": "OpenSSL EVP via ffi"
-        },
-        {
-          "language": "Fortran",
-          "ns": 37986950.0,
-          "impl": "OpenSSL via iso_c_binding \u2192 C shim"
+          "language": "Ruby (batch)",
+          "ns": 33697250.0,
+          "impl": "crypto identical to Ruby (accelerator applies to the codec, not crypto)"
         },
         {
           "language": "Python (PyPy)",
-          "ns": 39998850.0,
+          "ns": 34394200.0,
           "impl": "PyPy cffi ABI dlopen \u2192 C shim over OpenSSL"
         },
         {
+          "language": "Python (PyPy+NumPy)",
+          "ns": 34394200.0,
+          "impl": "crypto identical to Python (PyPy) (accelerator applies to the codec, not crypto)"
+        },
+        {
+          "language": "Python (Cython)",
+          "ns": 35452800.0,
+          "impl": "Cython in-process cdef extern \u2192 C shim over OpenSSL"
+        },
+        {
+          "language": "Lua",
+          "ns": 36590400.0,
+          "impl": "plain Lua 5.5 (no FFI) C module \u2192 C shim over OpenSSL"
+        },
+        {
+          "language": "Lua (vectorize)",
+          "ns": 36590400.0,
+          "impl": "crypto identical to Lua (accelerator applies to the codec, not crypto)"
+        },
+        {
+          "language": "Fortran",
+          "ns": 37639600.0,
+          "impl": "OpenSSL via iso_c_binding \u2192 C shim"
+        },
+        {
           "language": "OCaml",
-          "ns": 40393316.65,
-          "impl": "mirage-crypto / digestif / OpenSSL Argon2id"
+          "ns": 37664933.35,
+          "impl": "mirage-crypto / digestif / Argon2id native; librbcrypto shim (C stub) for AES-GCM-SIV/BLAKE3/scrypt/PBKDF2/HKDF/KMAC/ML-KEM/X25519/ML-DSA/Ed25519/SLH-DSA/Falcon"
+        },
+        {
+          "language": "Julia",
+          "ns": 41483687.5,
+          "impl": "ccall libcrypto"
+        },
+        {
+          "language": "Haskell",
+          "ns": 43422200.0,
+          "impl": "OpenSSL EVP + librbcrypto shim via FFI"
+        },
+        {
+          "language": "Crystal",
+          "ns": 43644152.05,
+          "impl": "stdlib OpenSSL native (AEAD/SHA-2/SHA-3/PBKDF2/Argon2id); librbcrypto shim (lib binding) for AES-GCM-SIV/BLAKE3/scrypt/HKDF/KMAC/ML-KEM/X25519/ML-DSA/Ed25519/SLH-DSA/Falcon"
+        },
+        {
+          "language": "Nim",
+          "ns": 44833408.35,
+          "impl": "OpenSSL EVP via FFI"
+        },
+        {
+          "language": "Go",
+          "ns": 47320437.5,
+          "impl": "stdlib"
+        },
+        {
+          "language": "Python",
+          "ns": 50161381.25,
+          "impl": "pyca/cryptography + blake3 + argon2-cffi native (AEAD incl. GCM-SIV/SHA-2/SHA-3/BLAKE3/Argon2id/scrypt/PBKDF2/HKDF); librbcrypto shim (ctypes) for KMAC/ML-KEM/X25519/ML-DSA/Ed25519/SLH-DSA/Falcon"
+        },
+        {
+          "language": "Python (NumPy)",
+          "ns": 50161381.25,
+          "impl": "crypto identical to Python (accelerator applies to the codec, not crypto)"
+        },
+        {
+          "language": "LuaJIT",
+          "ns": 53471150.0,
+          "impl": "OpenSSL EVP via ffi"
+        },
+        {
+          "language": "C#",
+          "ns": 56952915.0,
+          "impl": "System.Security.Cryptography + Konscious native (AEAD/SHA-2/SHA-3/KMAC/PBKDF2/HKDF/Argon2id); librbcrypto shim (P/Invoke) for AES-GCM-SIV/BLAKE3/scrypt/ML-KEM/X25519/ML-DSA/Ed25519/SLH-DSA/Falcon"
+        },
+        {
+          "language": "Rust",
+          "ns": 74245633.35,
+          "impl": "RustCrypto crates"
+        },
+        {
+          "language": "Java",
+          "ns": 111819416.65,
+          "impl": "JCE + BouncyCastle native; librbcrypto shim (FFM) for AES-GCM-SIV/BLAKE3/scrypt/HKDF/KMAC/ML-KEM/ML-DSA/SLH-DSA/Falcon"
+        },
+        {
+          "language": "Kotlin",
+          "ns": 123561487.5,
+          "impl": "JCE + BouncyCastle native; librbcrypto shim (FFM) for AES-GCM-SIV/BLAKE3/scrypt/HKDF/KMAC/ML-KEM/ML-DSA/SLH-DSA/Falcon"
+        }
+      ]
+    },
+    "scrypt": {
+      "kind": "kdf",
+      "metric": "ns per derivation (Argon2id t=3/64 MiB/4 lanes; scrypt N=16384; PBKDF2 210k; HKDF/KMAC one-shot)",
+      "rows": [
+        {
+          "language": "Swift",
+          "ns": 22344500.0,
+          "impl": "CryptoKit + librbcrypto shim"
+        },
+        {
+          "language": "COBOL",
+          "ns": 22646050.0,
+          "impl": "GnuCOBOL CALL \u2192 C shim over OpenSSL"
+        },
+        {
+          "language": "Octave",
+          "ns": 22830550.0,
+          "impl": "compiled .oct \u2192 C shim over OpenSSL"
+        },
+        {
+          "language": "Perl",
+          "ns": 22921933.3,
+          "impl": "CryptX native (AEAD/SHA-2/SHA-3/PBKDF2/HKDF/Argon2id); librbcrypto shim (FFI::Platypus) for AES-GCM-SIV/BLAKE3/scrypt/KMAC/ML-KEM/X25519/ML-DSA/Ed25519/SLH-DSA/Falcon"
+        },
+        {
+          "language": "Perl (PDL)",
+          "ns": 22921933.3,
+          "impl": "crypto identical to Perl (accelerator applies to the codec, not crypto)"
         },
         {
           "language": "Node.js",
-          "ns": 41353962.5,
-          "impl": "node:crypto"
+          "ns": 23096040.266666666,
+          "impl": "node:crypto native (AEAD/SHA-2/SHA-3/scrypt/PBKDF2/HKDF/Argon2id); librbcrypto shim (N-API addon) for AES-GCM-SIV/BLAKE3/KMAC/ML-KEM/X25519/ML-DSA/Ed25519/SLH-DSA/Falcon"
         },
         {
-          "language": "C++",
-          "ns": 41630529.2,
-          "impl": "OpenSSL EVP + libblake3"
+          "language": "C",
+          "ns": 23239633.333333,
+          "impl": "OpenSSL EVP + libblake3 + liboqs (Falcon)"
+        },
+        {
+          "language": "C#",
+          "ns": 23342495.0,
+          "impl": "System.Security.Cryptography + Konscious native (AEAD/SHA-2/SHA-3/KMAC/PBKDF2/HKDF/Argon2id); librbcrypto shim (P/Invoke) for AES-GCM-SIV/BLAKE3/scrypt/ML-KEM/X25519/ML-DSA/Ed25519/SLH-DSA/Falcon"
         },
         {
           "language": "Pascal",
-          "ns": 41856200.0,
+          "ns": 23734950.0,
+          "impl": "OpenSSL via FPC external \u2192 C shim"
+        },
+        {
+          "language": "Nelua",
+          "ns": 24237850.0,
+          "impl": "compiles to C, OpenSSL via cimport \u2192 C shim"
+        },
+        {
+          "language": "Fortran",
+          "ns": 24278650.0,
+          "impl": "OpenSSL via iso_c_binding \u2192 C shim"
+        },
+        {
+          "language": "Zig",
+          "ns": 24328733.333333332,
+          "impl": "std.crypto + librbcrypto shim"
+        },
+        {
+          "language": "Lua",
+          "ns": 25652200.0,
+          "impl": "plain Lua 5.5 (no FFI) C module \u2192 C shim over OpenSSL"
+        },
+        {
+          "language": "Lua (vectorize)",
+          "ns": 25652200.0,
+          "impl": "crypto identical to Lua (accelerator applies to the codec, not crypto)"
+        },
+        {
+          "language": "Ruby",
+          "ns": 25930300.0,
+          "impl": "stdlib OpenSSL native (AEAD incl. GCM-SIV/SHA-2/SHA-3/scrypt/PBKDF2/HKDF/Argon2id); librbcrypto shim (Fiddle) for BLAKE3/KMAC/ML-KEM/X25519/ML-DSA/Ed25519/SLH-DSA/Falcon"
+        },
+        {
+          "language": "Ruby (batch)",
+          "ns": 25930300.0,
+          "impl": "crypto identical to Ruby (accelerator applies to the codec, not crypto)"
+        },
+        {
+          "language": "Kotlin",
+          "ns": 25961512.5,
+          "impl": "JCE + BouncyCastle native; librbcrypto shim (FFM) for AES-GCM-SIV/BLAKE3/scrypt/HKDF/KMAC/ML-KEM/ML-DSA/SLH-DSA/Falcon"
+        },
+        {
+          "language": "Rust",
+          "ns": 25971386.1,
+          "impl": "RustCrypto crates"
+        },
+        {
+          "language": "Haskell",
+          "ns": 25998050.0,
+          "impl": "OpenSSL EVP + librbcrypto shim via FFI"
+        },
+        {
+          "language": "Julia",
+          "ns": 26156197.9,
+          "impl": "ccall libcrypto"
+        },
+        {
+          "language": "Go",
+          "ns": 26266820.833333,
+          "impl": "stdlib"
+        },
+        {
+          "language": "Python (Cython)",
+          "ns": 26437400.0,
+          "impl": "Cython in-process cdef extern \u2192 C shim over OpenSSL"
+        },
+        {
+          "language": "OCaml",
+          "ns": 26506693.066667,
+          "impl": "mirage-crypto / digestif / Argon2id native; librbcrypto shim (C stub) for AES-GCM-SIV/BLAKE3/scrypt/PBKDF2/HKDF/KMAC/ML-KEM/X25519/ML-DSA/Ed25519/SLH-DSA/Falcon"
+        },
+        {
+          "language": "C++",
+          "ns": 26517401.4,
+          "impl": "OpenSSL EVP + libblake3 + liboqs (Falcon)"
+        },
+        {
+          "language": "Nim",
+          "ns": 26927508.35,
+          "impl": "OpenSSL EVP via FFI"
+        },
+        {
+          "language": "Mojo",
+          "ns": 27306850.0,
+          "impl": "Mojo OwnedDLHandle C-interop \u2192 C shim over OpenSSL"
+        },
+        {
+          "language": "Python (PyPy)",
+          "ns": 27349850.0,
+          "impl": "PyPy cffi ABI dlopen \u2192 C shim over OpenSSL"
+        },
+        {
+          "language": "Python (PyPy+NumPy)",
+          "ns": 27349850.0,
+          "impl": "crypto identical to Python (PyPy) (accelerator applies to the codec, not crypto)"
+        },
+        {
+          "language": "Crystal",
+          "ns": 30737180.533333335,
+          "impl": "stdlib OpenSSL native (AEAD/SHA-2/SHA-3/PBKDF2/Argon2id); librbcrypto shim (lib binding) for AES-GCM-SIV/BLAKE3/scrypt/HKDF/KMAC/ML-KEM/X25519/ML-DSA/Ed25519/SLH-DSA/Falcon"
+        },
+        {
+          "language": "Java",
+          "ns": 31150345.85,
+          "impl": "JCE + BouncyCastle native; librbcrypto shim (FFM) for AES-GCM-SIV/BLAKE3/scrypt/HKDF/KMAC/ML-KEM/ML-DSA/SLH-DSA/Falcon"
+        },
+        {
+          "language": "LuaJIT",
+          "ns": 45176550.0,
+          "impl": "OpenSSL EVP via ffi"
+        },
+        {
+          "language": "Python",
+          "ns": 67159136.1,
+          "impl": "pyca/cryptography + blake3 + argon2-cffi native (AEAD incl. GCM-SIV/SHA-2/SHA-3/BLAKE3/Argon2id/scrypt/PBKDF2/HKDF); librbcrypto shim (ctypes) for KMAC/ML-KEM/X25519/ML-DSA/Ed25519/SLH-DSA/Falcon"
+        },
+        {
+          "language": "Python (NumPy)",
+          "ns": 67159136.1,
+          "impl": "crypto identical to Python (accelerator applies to the codec, not crypto)"
+        }
+      ]
+    },
+    "PBKDF2": {
+      "kind": "kdf",
+      "metric": "ns per derivation (Argon2id t=3/64 MiB/4 lanes; scrypt N=16384; PBKDF2 210k; HKDF/KMAC one-shot)",
+      "rows": [
+        {
+          "language": "Node.js",
+          "ns": 15449648.633333333,
+          "impl": "node:crypto native (AEAD/SHA-2/SHA-3/scrypt/PBKDF2/HKDF/Argon2id); librbcrypto shim (N-API addon) for AES-GCM-SIV/BLAKE3/KMAC/ML-KEM/X25519/ML-DSA/Ed25519/SLH-DSA/Falcon"
+        },
+        {
+          "language": "Octave",
+          "ns": 15560900.0,
+          "impl": "compiled .oct \u2192 C shim over OpenSSL"
+        },
+        {
+          "language": "Ruby",
+          "ns": 15662966.666666666,
+          "impl": "stdlib OpenSSL native (AEAD incl. GCM-SIV/SHA-2/SHA-3/scrypt/PBKDF2/HKDF/Argon2id); librbcrypto shim (Fiddle) for BLAKE3/KMAC/ML-KEM/X25519/ML-DSA/Ed25519/SLH-DSA/Falcon"
+        },
+        {
+          "language": "Ruby (batch)",
+          "ns": 15662966.666666666,
+          "impl": "crypto identical to Ruby (accelerator applies to the codec, not crypto)"
+        },
+        {
+          "language": "C++",
+          "ns": 15904779.167,
+          "impl": "OpenSSL EVP + libblake3 + liboqs (Falcon)"
+        },
+        {
+          "language": "C",
+          "ns": 15935266.666667,
+          "impl": "OpenSSL EVP + libblake3 + liboqs (Falcon)"
+        },
+        {
+          "language": "Nelua",
+          "ns": 16083050.0,
+          "impl": "compiles to C, OpenSSL via cimport \u2192 C shim"
+        },
+        {
+          "language": "Fortran",
+          "ns": 16236850.0,
+          "impl": "OpenSSL via iso_c_binding \u2192 C shim"
+        },
+        {
+          "language": "COBOL",
+          "ns": 16370100.0,
+          "impl": "GnuCOBOL CALL \u2192 C shim over OpenSSL"
+        },
+        {
+          "language": "Swift",
+          "ns": 16485733.333333334,
+          "impl": "CryptoKit + librbcrypto shim"
+        },
+        {
+          "language": "Mojo",
+          "ns": 16757600.0,
+          "impl": "Mojo OwnedDLHandle C-interop \u2192 C shim over OpenSSL"
+        },
+        {
+          "language": "Zig",
+          "ns": 16795700.0,
+          "impl": "std.crypto + librbcrypto shim"
+        },
+        {
+          "language": "Crystal",
+          "ns": 16938569.466666665,
+          "impl": "stdlib OpenSSL native (AEAD/SHA-2/SHA-3/PBKDF2/Argon2id); librbcrypto shim (lib binding) for AES-GCM-SIV/BLAKE3/scrypt/HKDF/KMAC/ML-KEM/X25519/ML-DSA/Ed25519/SLH-DSA/Falcon"
+        },
+        {
+          "language": "Rust",
+          "ns": 17267801.4,
+          "impl": "RustCrypto crates"
+        },
+        {
+          "language": "Lua",
+          "ns": 17472800.0,
+          "impl": "plain Lua 5.5 (no FFI) C module \u2192 C shim over OpenSSL"
+        },
+        {
+          "language": "Lua (vectorize)",
+          "ns": 17472800.0,
+          "impl": "crypto identical to Lua (accelerator applies to the codec, not crypto)"
+        },
+        {
+          "language": "Pascal",
+          "ns": 17488800.0,
           "impl": "OpenSSL via FPC external \u2192 C shim"
         },
         {
           "language": "Go",
-          "ns": 44527218.75,
+          "ns": 17521050.0,
           "impl": "stdlib"
         },
         {
-          "language": "Nelua",
-          "ns": 49531250.0,
-          "impl": "compiles to C, OpenSSL via cimport \u2192 C shim"
+          "language": "Julia",
+          "ns": 17599829.15,
+          "impl": "ccall libcrypto"
         },
         {
-          "language": "Rust",
-          "ns": 74357191.7,
-          "impl": "RustCrypto crates"
+          "language": "OCaml",
+          "ns": 18356602.8,
+          "impl": "mirage-crypto / digestif / Argon2id native; librbcrypto shim (C stub) for AES-GCM-SIV/BLAKE3/scrypt/PBKDF2/HKDF/KMAC/ML-KEM/X25519/ML-DSA/Ed25519/SLH-DSA/Falcon"
         },
         {
-          "language": "C#",
-          "ns": 113102990.0,
-          "impl": "System.Security.Cryptography"
-        },
-        {
-          "language": "Kotlin",
-          "ns": 137554477.1,
-          "impl": "JCE + BouncyCastle (Argon2id)"
+          "language": "Python (Cython)",
+          "ns": 18636900.0,
+          "impl": "Cython in-process cdef extern \u2192 C shim over OpenSSL"
         },
         {
           "language": "Java",
-          "ns": 138613089.6,
-          "impl": "JCE + BouncyCastle (Argon2id)"
+          "ns": 18976585.4,
+          "impl": "JCE + BouncyCastle native; librbcrypto shim (FFM) for AES-GCM-SIV/BLAKE3/scrypt/HKDF/KMAC/ML-KEM/ML-DSA/SLH-DSA/Falcon"
+        },
+        {
+          "language": "Python (PyPy)",
+          "ns": 19055800.0,
+          "impl": "PyPy cffi ABI dlopen \u2192 C shim over OpenSSL"
+        },
+        {
+          "language": "Python (PyPy+NumPy)",
+          "ns": 19055800.0,
+          "impl": "crypto identical to Python (PyPy) (accelerator applies to the codec, not crypto)"
+        },
+        {
+          "language": "Haskell",
+          "ns": 22257800.0,
+          "impl": "OpenSSL EVP + librbcrypto shim via FFI"
+        },
+        {
+          "language": "Kotlin",
+          "ns": 22826385.4,
+          "impl": "JCE + BouncyCastle native; librbcrypto shim (FFM) for AES-GCM-SIV/BLAKE3/scrypt/HKDF/KMAC/ML-KEM/ML-DSA/SLH-DSA/Falcon"
+        },
+        {
+          "language": "C#",
+          "ns": 24826475.0,
+          "impl": "System.Security.Cryptography + Konscious native (AEAD/SHA-2/SHA-3/KMAC/PBKDF2/HKDF/Argon2id); librbcrypto shim (P/Invoke) for AES-GCM-SIV/BLAKE3/scrypt/ML-KEM/X25519/ML-DSA/Ed25519/SLH-DSA/Falcon"
+        },
+        {
+          "language": "LuaJIT",
+          "ns": 28148750.0,
+          "impl": "OpenSSL EVP via ffi"
+        },
+        {
+          "language": "Nim",
+          "ns": 28382756.25,
+          "impl": "OpenSSL EVP via FFI"
+        },
+        {
+          "language": "Python",
+          "ns": 38931255.53333333,
+          "impl": "pyca/cryptography + blake3 + argon2-cffi native (AEAD incl. GCM-SIV/SHA-2/SHA-3/BLAKE3/Argon2id/scrypt/PBKDF2/HKDF); librbcrypto shim (ctypes) for KMAC/ML-KEM/X25519/ML-DSA/Ed25519/SLH-DSA/Falcon"
+        },
+        {
+          "language": "Python (NumPy)",
+          "ns": 38931255.53333333,
+          "impl": "crypto identical to Python (accelerator applies to the codec, not crypto)"
+        },
+        {
+          "language": "Perl",
+          "ns": 110281500.0,
+          "impl": "CryptX native (AEAD/SHA-2/SHA-3/PBKDF2/HKDF/Argon2id); librbcrypto shim (FFI::Platypus) for AES-GCM-SIV/BLAKE3/scrypt/KMAC/ML-KEM/X25519/ML-DSA/Ed25519/SLH-DSA/Falcon"
+        },
+        {
+          "language": "Perl (PDL)",
+          "ns": 110281500.0,
+          "impl": "crypto identical to Perl (accelerator applies to the codec, not crypto)"
+        }
+      ]
+    },
+    "HKDF-SHA384": {
+      "kind": "kdf",
+      "metric": "ns per derivation (Argon2id t=3/64 MiB/4 lanes; scrypt N=16384; PBKDF2 210k; HKDF/KMAC one-shot)",
+      "rows": [
+        {
+          "language": "Octave",
+          "ns": 1509.58,
+          "impl": "compiled .oct \u2192 C shim over OpenSSL"
+        },
+        {
+          "language": "Nelua",
+          "ns": 1531.48,
+          "impl": "compiles to C, OpenSSL via cimport \u2192 C shim"
+        },
+        {
+          "language": "C++",
+          "ns": 1554.95,
+          "impl": "OpenSSL EVP + libblake3 + liboqs (Falcon)"
+        },
+        {
+          "language": "C",
+          "ns": 1588.7,
+          "impl": "OpenSSL EVP + libblake3 + liboqs (Falcon)"
+        },
+        {
+          "language": "Zig",
+          "ns": 1596.08,
+          "impl": "std.crypto + librbcrypto shim"
+        },
+        {
+          "language": "Crystal",
+          "ns": 1634.48042,
+          "impl": "stdlib OpenSSL native (AEAD/SHA-2/SHA-3/PBKDF2/Argon2id); librbcrypto shim (lib binding) for AES-GCM-SIV/BLAKE3/scrypt/HKDF/KMAC/ML-KEM/X25519/ML-DSA/Ed25519/SLH-DSA/Falcon"
+        },
+        {
+          "language": "COBOL",
+          "ns": 1656.0,
+          "impl": "GnuCOBOL CALL \u2192 C shim over OpenSSL"
+        },
+        {
+          "language": "Mojo",
+          "ns": 1674.68,
+          "impl": "Mojo OwnedDLHandle C-interop \u2192 C shim over OpenSSL"
+        },
+        {
+          "language": "Pascal",
+          "ns": 1676.04,
+          "impl": "OpenSSL via FPC external \u2192 C shim"
+        },
+        {
+          "language": "Lua",
+          "ns": 1688.22,
+          "impl": "plain Lua 5.5 (no FFI) C module \u2192 C shim over OpenSSL"
+        },
+        {
+          "language": "Lua (vectorize)",
+          "ns": 1688.22,
+          "impl": "crypto identical to Lua (accelerator applies to the codec, not crypto)"
+        },
+        {
+          "language": "OCaml",
+          "ns": 1691.89458,
+          "impl": "mirage-crypto / digestif / Argon2id native; librbcrypto shim (C stub) for AES-GCM-SIV/BLAKE3/scrypt/PBKDF2/HKDF/KMAC/ML-KEM/X25519/ML-DSA/Ed25519/SLH-DSA/Falcon"
+        },
+        {
+          "language": "Rust",
+          "ns": 1708.73834,
+          "impl": "RustCrypto crates"
+        },
+        {
+          "language": "Java",
+          "ns": 1747.1146,
+          "impl": "JCE + BouncyCastle native; librbcrypto shim (FFM) for AES-GCM-SIV/BLAKE3/scrypt/HKDF/KMAC/ML-KEM/ML-DSA/SLH-DSA/Falcon"
+        },
+        {
+          "language": "Go",
+          "ns": 1754.61625,
+          "impl": "stdlib"
+        },
+        {
+          "language": "Julia",
+          "ns": 1755.54666,
+          "impl": "ccall libcrypto"
+        },
+        {
+          "language": "Python (PyPy)",
+          "ns": 1778.66,
+          "impl": "PyPy cffi ABI dlopen \u2192 C shim over OpenSSL"
+        },
+        {
+          "language": "Python (PyPy+NumPy)",
+          "ns": 1778.66,
+          "impl": "crypto identical to Python (PyPy) (accelerator applies to the codec, not crypto)"
+        },
+        {
+          "language": "Perl",
+          "ns": 1814.95,
+          "impl": "CryptX native (AEAD/SHA-2/SHA-3/PBKDF2/HKDF/Argon2id); librbcrypto shim (FFI::Platypus) for AES-GCM-SIV/BLAKE3/scrypt/KMAC/ML-KEM/X25519/ML-DSA/Ed25519/SLH-DSA/Falcon"
+        },
+        {
+          "language": "Perl (PDL)",
+          "ns": 1814.95,
+          "impl": "crypto identical to Perl (accelerator applies to the codec, not crypto)"
+        },
+        {
+          "language": "Python (Cython)",
+          "ns": 1817.3,
+          "impl": "Cython in-process cdef extern \u2192 C shim over OpenSSL"
+        },
+        {
+          "language": "C#",
+          "ns": 1868.785,
+          "impl": "System.Security.Cryptography + Konscious native (AEAD/SHA-2/SHA-3/KMAC/PBKDF2/HKDF/Argon2id); librbcrypto shim (P/Invoke) for AES-GCM-SIV/BLAKE3/scrypt/ML-KEM/X25519/ML-DSA/Ed25519/SLH-DSA/Falcon"
+        },
+        {
+          "language": "Kotlin",
+          "ns": 1914.66455,
+          "impl": "JCE + BouncyCastle native; librbcrypto shim (FFM) for AES-GCM-SIV/BLAKE3/scrypt/HKDF/KMAC/ML-KEM/ML-DSA/SLH-DSA/Falcon"
+        },
+        {
+          "language": "Haskell",
+          "ns": 2035.34,
+          "impl": "OpenSSL EVP + librbcrypto shim via FFI"
+        },
+        {
+          "language": "Nim",
+          "ns": 2349.51834,
+          "impl": "OpenSSL EVP via FFI"
+        },
+        {
+          "language": "Ruby",
+          "ns": 2583.45,
+          "impl": "stdlib OpenSSL native (AEAD incl. GCM-SIV/SHA-2/SHA-3/scrypt/PBKDF2/HKDF/Argon2id); librbcrypto shim (Fiddle) for BLAKE3/KMAC/ML-KEM/X25519/ML-DSA/Ed25519/SLH-DSA/Falcon"
+        },
+        {
+          "language": "Ruby (batch)",
+          "ns": 2583.45,
+          "impl": "crypto identical to Ruby (accelerator applies to the codec, not crypto)"
+        },
+        {
+          "language": "LuaJIT",
+          "ns": 2862.52,
+          "impl": "OpenSSL EVP via ffi"
+        },
+        {
+          "language": "Fortran",
+          "ns": 2891.42,
+          "impl": "OpenSSL via iso_c_binding \u2192 C shim"
+        },
+        {
+          "language": "Python",
+          "ns": 4165.83459,
+          "impl": "pyca/cryptography + blake3 + argon2-cffi native (AEAD incl. GCM-SIV/SHA-2/SHA-3/BLAKE3/Argon2id/scrypt/PBKDF2/HKDF); librbcrypto shim (ctypes) for KMAC/ML-KEM/X25519/ML-DSA/Ed25519/SLH-DSA/Falcon"
+        },
+        {
+          "language": "Python (NumPy)",
+          "ns": 4165.83459,
+          "impl": "crypto identical to Python (accelerator applies to the codec, not crypto)"
+        },
+        {
+          "language": "Swift",
+          "ns": 4656.13,
+          "impl": "CryptoKit + librbcrypto shim"
+        },
+        {
+          "language": "Node.js",
+          "ns": 6199.35209,
+          "impl": "node:crypto native (AEAD/SHA-2/SHA-3/scrypt/PBKDF2/HKDF/Argon2id); librbcrypto shim (N-API addon) for AES-GCM-SIV/BLAKE3/KMAC/ML-KEM/X25519/ML-DSA/Ed25519/SLH-DSA/Falcon"
+        }
+      ]
+    },
+    "KMAC256": {
+      "kind": "kdf",
+      "metric": "ns per derivation (Argon2id t=3/64 MiB/4 lanes; scrypt N=16384; PBKDF2 210k; HKDF/KMAC one-shot)",
+      "rows": [
+        {
+          "language": "Octave",
+          "ns": 788.44,
+          "impl": "compiled .oct \u2192 C shim over OpenSSL"
+        },
+        {
+          "language": "Nelua",
+          "ns": 793.36,
+          "impl": "compiles to C, OpenSSL via cimport \u2192 C shim"
+        },
+        {
+          "language": "C#",
+          "ns": 833.1350000000001,
+          "impl": "System.Security.Cryptography + Konscious native (AEAD/SHA-2/SHA-3/KMAC/PBKDF2/HKDF/Argon2id); librbcrypto shim (P/Invoke) for AES-GCM-SIV/BLAKE3/scrypt/ML-KEM/X25519/ML-DSA/Ed25519/SLH-DSA/Falcon"
+        },
+        {
+          "language": "Swift",
+          "ns": 838.58,
+          "impl": "CryptoKit + librbcrypto shim"
+        },
+        {
+          "language": "COBOL",
+          "ns": 845.659,
+          "impl": "GnuCOBOL CALL \u2192 C shim over OpenSSL"
+        },
+        {
+          "language": "Perl",
+          "ns": 847.36,
+          "impl": "CryptX native (AEAD/SHA-2/SHA-3/PBKDF2/HKDF/Argon2id); librbcrypto shim (FFI::Platypus) for AES-GCM-SIV/BLAKE3/scrypt/KMAC/ML-KEM/X25519/ML-DSA/Ed25519/SLH-DSA/Falcon"
+        },
+        {
+          "language": "Perl (PDL)",
+          "ns": 847.36,
+          "impl": "crypto identical to Perl (accelerator applies to the codec, not crypto)"
+        },
+        {
+          "language": "C++",
+          "ns": 858.102,
+          "impl": "OpenSSL EVP + libblake3 + liboqs (Falcon)"
+        },
+        {
+          "language": "Zig",
+          "ns": 863.23,
+          "impl": "std.crypto + librbcrypto shim"
+        },
+        {
+          "language": "C",
+          "ns": 880.38,
+          "impl": "OpenSSL EVP + libblake3 + liboqs (Falcon)"
+        },
+        {
+          "language": "Lua",
+          "ns": 884.74,
+          "impl": "plain Lua 5.5 (no FFI) C module \u2192 C shim over OpenSSL"
+        },
+        {
+          "language": "Lua (vectorize)",
+          "ns": 884.74,
+          "impl": "crypto identical to Lua (accelerator applies to the codec, not crypto)"
+        },
+        {
+          "language": "Pascal",
+          "ns": 888.38,
+          "impl": "OpenSSL via FPC external \u2192 C shim"
+        },
+        {
+          "language": "Crystal",
+          "ns": 895.13542,
+          "impl": "stdlib OpenSSL native (AEAD/SHA-2/SHA-3/PBKDF2/Argon2id); librbcrypto shim (lib binding) for AES-GCM-SIV/BLAKE3/scrypt/HKDF/KMAC/ML-KEM/X25519/ML-DSA/Ed25519/SLH-DSA/Falcon"
+        },
+        {
+          "language": "Nim",
+          "ns": 896.7125,
+          "impl": "OpenSSL EVP via FFI"
+        },
+        {
+          "language": "Java",
+          "ns": 913.1,
+          "impl": "JCE + BouncyCastle native; librbcrypto shim (FFM) for AES-GCM-SIV/BLAKE3/scrypt/HKDF/KMAC/ML-KEM/ML-DSA/SLH-DSA/Falcon"
+        },
+        {
+          "language": "Julia",
+          "ns": 921.5575,
+          "impl": "ccall libcrypto"
+        },
+        {
+          "language": "Node.js",
+          "ns": 922.35667,
+          "impl": "node:crypto native (AEAD/SHA-2/SHA-3/scrypt/PBKDF2/HKDF/Argon2id); librbcrypto shim (N-API addon) for AES-GCM-SIV/BLAKE3/KMAC/ML-KEM/X25519/ML-DSA/Ed25519/SLH-DSA/Falcon"
+        },
+        {
+          "language": "OCaml",
+          "ns": 927.01,
+          "impl": "mirage-crypto / digestif / Argon2id native; librbcrypto shim (C stub) for AES-GCM-SIV/BLAKE3/scrypt/PBKDF2/HKDF/KMAC/ML-KEM/X25519/ML-DSA/Ed25519/SLH-DSA/Falcon"
+        },
+        {
+          "language": "Python (PyPy)",
+          "ns": 933.9,
+          "impl": "PyPy cffi ABI dlopen \u2192 C shim over OpenSSL"
+        },
+        {
+          "language": "Python (PyPy+NumPy)",
+          "ns": 933.9,
+          "impl": "crypto identical to Python (PyPy) (accelerator applies to the codec, not crypto)"
+        },
+        {
+          "language": "Python (Cython)",
+          "ns": 936.08,
+          "impl": "Cython in-process cdef extern \u2192 C shim over OpenSSL"
+        },
+        {
+          "language": "Rust",
+          "ns": 962.50834,
+          "impl": "RustCrypto crates"
+        },
+        {
+          "language": "Mojo",
+          "ns": 990.22,
+          "impl": "Mojo OwnedDLHandle C-interop \u2192 C shim over OpenSSL"
+        },
+        {
+          "language": "Python",
+          "ns": 1086.51458,
+          "impl": "pyca/cryptography + blake3 + argon2-cffi native (AEAD incl. GCM-SIV/SHA-2/SHA-3/BLAKE3/Argon2id/scrypt/PBKDF2/HKDF); librbcrypto shim (ctypes) for KMAC/ML-KEM/X25519/ML-DSA/Ed25519/SLH-DSA/Falcon"
+        },
+        {
+          "language": "Python (NumPy)",
+          "ns": 1086.51458,
+          "impl": "crypto identical to Python (accelerator applies to the codec, not crypto)"
+        },
+        {
+          "language": "Go",
+          "ns": 1103.865,
+          "impl": "stdlib"
+        },
+        {
+          "language": "Kotlin",
+          "ns": 1202.53125,
+          "impl": "JCE + BouncyCastle native; librbcrypto shim (FFM) for AES-GCM-SIV/BLAKE3/scrypt/HKDF/KMAC/ML-KEM/ML-DSA/SLH-DSA/Falcon"
+        },
+        {
+          "language": "Haskell",
+          "ns": 1238.52,
+          "impl": "OpenSSL EVP + librbcrypto shim via FFI"
+        },
+        {
+          "language": "Ruby",
+          "ns": 1430.53,
+          "impl": "stdlib OpenSSL native (AEAD incl. GCM-SIV/SHA-2/SHA-3/scrypt/PBKDF2/HKDF/Argon2id); librbcrypto shim (Fiddle) for BLAKE3/KMAC/ML-KEM/X25519/ML-DSA/Ed25519/SLH-DSA/Falcon"
+        },
+        {
+          "language": "Ruby (batch)",
+          "ns": 1430.53,
+          "impl": "crypto identical to Ruby (accelerator applies to the codec, not crypto)"
+        },
+        {
+          "language": "Fortran",
+          "ns": 1975.34,
+          "impl": "OpenSSL via iso_c_binding \u2192 C shim"
+        },
+        {
+          "language": "LuaJIT",
+          "ns": 1997.5,
+          "impl": "OpenSSL EVP via ffi"
         }
       ]
     },
     "ML-KEM-512": {
       "kind": "kem",
-      "metric": "ns per keygen + encapsulate + decapsulate",
+      "metric": "ns per keygen + encapsulate + decapsulate (X25519: keygen\u00d72 + ECDH)",
       "rows": [
         {
+          "language": "OpenSSL 3.6.3 EVP",
+          "ns": 27897.45,
+          "impl": "C (shared by every libcrypto-FFI language)"
+        },
+        {
           "language": "liboqs",
-          "ns": 24136.0521,
+          "ns": 28010.49375,
           "impl": "C (via python-oqs)"
         },
         {
-          "language": "OpenSSL 3.6.3 EVP",
-          "ns": 28098.75,
-          "impl": "C (shared by every libcrypto-FFI language)"
+          "language": "Perl",
+          "ns": 41116.5,
+          "impl": "CryptX native (AEAD/SHA-2/SHA-3/PBKDF2/HKDF/Argon2id); librbcrypto shim (FFI::Platypus) for AES-GCM-SIV/BLAKE3/scrypt/KMAC/ML-KEM/X25519/ML-DSA/Ed25519/SLH-DSA/Falcon"
+        },
+        {
+          "language": "Perl (PDL)",
+          "ns": 41116.5,
+          "impl": "crypto identical to Perl (accelerator applies to the codec, not crypto)"
+        },
+        {
+          "language": "C#",
+          "ns": 41139.2,
+          "impl": "System.Security.Cryptography + Konscious native (AEAD/SHA-2/SHA-3/KMAC/PBKDF2/HKDF/Argon2id); librbcrypto shim (P/Invoke) for AES-GCM-SIV/BLAKE3/scrypt/ML-KEM/X25519/ML-DSA/Ed25519/SLH-DSA/Falcon"
+        },
+        {
+          "language": "Octave",
+          "ns": 41513.0,
+          "impl": "compiled .oct \u2192 C shim over OpenSSL"
+        },
+        {
+          "language": "C",
+          "ns": 42964.5,
+          "impl": "OpenSSL EVP + libblake3 + liboqs (Falcon)"
+        },
+        {
+          "language": "Swift",
+          "ns": 43019.0,
+          "impl": "CryptoKit + librbcrypto shim"
+        },
+        {
+          "language": "Nelua",
+          "ns": 43669.5,
+          "impl": "compiles to C, OpenSSL via cimport \u2192 C shim"
+        },
+        {
+          "language": "Ruby",
+          "ns": 43917.5,
+          "impl": "stdlib OpenSSL native (AEAD incl. GCM-SIV/SHA-2/SHA-3/scrypt/PBKDF2/HKDF/Argon2id); librbcrypto shim (Fiddle) for BLAKE3/KMAC/ML-KEM/X25519/ML-DSA/Ed25519/SLH-DSA/Falcon"
+        },
+        {
+          "language": "Ruby (batch)",
+          "ns": 43917.5,
+          "impl": "crypto identical to Ruby (accelerator applies to the codec, not crypto)"
+        },
+        {
+          "language": "COBOL",
+          "ns": 44440.0,
+          "impl": "GnuCOBOL CALL \u2192 C shim over OpenSSL"
+        },
+        {
+          "language": "Mojo",
+          "ns": 44461.0,
+          "impl": "Mojo OwnedDLHandle C-interop \u2192 C shim over OpenSSL"
+        },
+        {
+          "language": "Node.js",
+          "ns": 45739.1875,
+          "impl": "node:crypto native (AEAD/SHA-2/SHA-3/scrypt/PBKDF2/HKDF/Argon2id); librbcrypto shim (N-API addon) for AES-GCM-SIV/BLAKE3/KMAC/ML-KEM/X25519/ML-DSA/Ed25519/SLH-DSA/Falcon"
+        },
+        {
+          "language": "Lua",
+          "ns": 45764.0,
+          "impl": "plain Lua 5.5 (no FFI) C module \u2192 C shim over OpenSSL"
+        },
+        {
+          "language": "Lua (vectorize)",
+          "ns": 45764.0,
+          "impl": "crypto identical to Lua (accelerator applies to the codec, not crypto)"
+        },
+        {
+          "language": "Zig",
+          "ns": 46121.5,
+          "impl": "std.crypto + librbcrypto shim"
+        },
+        {
+          "language": "Pascal",
+          "ns": 46325.0,
+          "impl": "OpenSSL via FPC external \u2192 C shim"
+        },
+        {
+          "language": "Java",
+          "ns": 46568.8545,
+          "impl": "JCE + BouncyCastle native; librbcrypto shim (FFM) for AES-GCM-SIV/BLAKE3/scrypt/HKDF/KMAC/ML-KEM/ML-DSA/SLH-DSA/Falcon"
+        },
+        {
+          "language": "Nim",
+          "ns": 46894.9795,
+          "impl": "OpenSSL EVP via FFI"
+        },
+        {
+          "language": "Python",
+          "ns": 47229.8955,
+          "impl": "pyca/cryptography + blake3 + argon2-cffi native (AEAD incl. GCM-SIV/SHA-2/SHA-3/BLAKE3/Argon2id/scrypt/PBKDF2/HKDF); librbcrypto shim (ctypes) for KMAC/ML-KEM/X25519/ML-DSA/Ed25519/SLH-DSA/Falcon"
+        },
+        {
+          "language": "Python (NumPy)",
+          "ns": 47229.8955,
+          "impl": "crypto identical to Python (accelerator applies to the codec, not crypto)"
+        },
+        {
+          "language": "Julia",
+          "ns": 47484.729,
+          "impl": "ccall libcrypto"
+        },
+        {
+          "language": "Crystal",
+          "ns": 48044.458,
+          "impl": "stdlib OpenSSL native (AEAD/SHA-2/SHA-3/PBKDF2/Argon2id); librbcrypto shim (lib binding) for AES-GCM-SIV/BLAKE3/scrypt/HKDF/KMAC/ML-KEM/X25519/ML-DSA/Ed25519/SLH-DSA/Falcon"
+        },
+        {
+          "language": "C++",
+          "ns": 48344.458,
+          "impl": "OpenSSL EVP + libblake3 + liboqs (Falcon)"
+        },
+        {
+          "language": "Python (Cython)",
+          "ns": 48545.0,
+          "impl": "Cython in-process cdef extern \u2192 C shim over OpenSSL"
+        },
+        {
+          "language": "Rust",
+          "ns": 48776.625,
+          "impl": "RustCrypto crates"
+        },
+        {
+          "language": "OCaml",
+          "ns": 52149.667,
+          "impl": "mirage-crypto / digestif / Argon2id native; librbcrypto shim (C stub) for AES-GCM-SIV/BLAKE3/scrypt/PBKDF2/HKDF/KMAC/ML-KEM/X25519/ML-DSA/Ed25519/SLH-DSA/Falcon"
+        },
+        {
+          "language": "Haskell",
+          "ns": 52927.5,
+          "impl": "OpenSSL EVP + librbcrypto shim via FFI"
+        },
+        {
+          "language": "Kotlin",
+          "ns": 53112.083,
+          "impl": "JCE + BouncyCastle native; librbcrypto shim (FFM) for AES-GCM-SIV/BLAKE3/scrypt/HKDF/KMAC/ML-KEM/ML-DSA/SLH-DSA/Falcon"
+        },
+        {
+          "language": "Python (PyPy)",
+          "ns": 55655.5,
+          "impl": "PyPy cffi ABI dlopen \u2192 C shim over OpenSSL"
+        },
+        {
+          "language": "Python (PyPy+NumPy)",
+          "ns": 55655.5,
+          "impl": "crypto identical to Python (PyPy) (accelerator applies to the codec, not crypto)"
+        },
+        {
+          "language": "Fortran",
+          "ns": 56898.5,
+          "impl": "OpenSSL via iso_c_binding \u2192 C shim"
+        },
+        {
+          "language": "Go",
+          "ns": 66937.25,
+          "impl": "stdlib"
+        },
+        {
+          "language": "LuaJIT",
+          "ns": 78115.0,
+          "impl": "OpenSSL EVP via ffi"
         }
       ]
     },
     "ML-KEM-768": {
       "kind": "kem",
-      "metric": "ns per keygen + encapsulate + decapsulate",
+      "metric": "ns per keygen + encapsulate + decapsulate (X25519: keygen\u00d72 + ECDH)",
       "rows": [
         {
-          "language": "liboqs",
-          "ns": 33292.525,
-          "impl": "C (via python-oqs)"
-        },
-        {
           "language": "OpenSSL 3.6.3 EVP",
-          "ns": 40519.95,
+          "ns": 43433.1,
           "impl": "C (shared by every libcrypto-FFI language)"
         },
         {
+          "language": "liboqs",
+          "ns": 44268.3417,
+          "impl": "C (via python-oqs)"
+        },
+        {
+          "language": "Perl",
+          "ns": 60814.0,
+          "impl": "CryptX native (AEAD/SHA-2/SHA-3/PBKDF2/HKDF/Argon2id); librbcrypto shim (FFI::Platypus) for AES-GCM-SIV/BLAKE3/scrypt/KMAC/ML-KEM/X25519/ML-DSA/Ed25519/SLH-DSA/Falcon"
+        },
+        {
+          "language": "Perl (PDL)",
+          "ns": 60814.0,
+          "impl": "crypto identical to Perl (accelerator applies to the codec, not crypto)"
+        },
+        {
+          "language": "C#",
+          "ns": 61007.15,
+          "impl": "System.Security.Cryptography + Konscious native (AEAD/SHA-2/SHA-3/KMAC/PBKDF2/HKDF/Argon2id); librbcrypto shim (P/Invoke) for AES-GCM-SIV/BLAKE3/scrypt/ML-KEM/X25519/ML-DSA/Ed25519/SLH-DSA/Falcon"
+        },
+        {
+          "language": "Nelua",
+          "ns": 61063.0,
+          "impl": "compiles to C, OpenSSL via cimport \u2192 C shim"
+        },
+        {
+          "language": "Ruby",
+          "ns": 61434.0,
+          "impl": "stdlib OpenSSL native (AEAD incl. GCM-SIV/SHA-2/SHA-3/scrypt/PBKDF2/HKDF/Argon2id); librbcrypto shim (Fiddle) for BLAKE3/KMAC/ML-KEM/X25519/ML-DSA/Ed25519/SLH-DSA/Falcon"
+        },
+        {
+          "language": "Ruby (batch)",
+          "ns": 61434.0,
+          "impl": "crypto identical to Ruby (accelerator applies to the codec, not crypto)"
+        },
+        {
+          "language": "Swift",
+          "ns": 62071.5,
+          "impl": "CryptoKit + librbcrypto shim"
+        },
+        {
+          "language": "COBOL",
+          "ns": 62214.0,
+          "impl": "GnuCOBOL CALL \u2192 C shim over OpenSSL"
+        },
+        {
+          "language": "C",
+          "ns": 62778.0,
+          "impl": "OpenSSL EVP + libblake3 + liboqs (Falcon)"
+        },
+        {
+          "language": "Octave",
+          "ns": 64523.0,
+          "impl": "compiled .oct \u2192 C shim over OpenSSL"
+        },
+        {
+          "language": "Node.js",
+          "ns": 65377.625,
+          "impl": "node:crypto native (AEAD/SHA-2/SHA-3/scrypt/PBKDF2/HKDF/Argon2id); librbcrypto shim (N-API addon) for AES-GCM-SIV/BLAKE3/KMAC/ML-KEM/X25519/ML-DSA/Ed25519/SLH-DSA/Falcon"
+        },
+        {
+          "language": "Lua",
+          "ns": 65996.5,
+          "impl": "plain Lua 5.5 (no FFI) C module \u2192 C shim over OpenSSL"
+        },
+        {
+          "language": "Lua (vectorize)",
+          "ns": 65996.5,
+          "impl": "crypto identical to Lua (accelerator applies to the codec, not crypto)"
+        },
+        {
+          "language": "Zig",
+          "ns": 66760.5,
+          "impl": "std.crypto + librbcrypto shim"
+        },
+        {
+          "language": "Mojo",
+          "ns": 66767.0,
+          "impl": "Mojo OwnedDLHandle C-interop \u2192 C shim over OpenSSL"
+        },
+        {
+          "language": "Pascal",
+          "ns": 67972.0,
+          "impl": "OpenSSL via FPC external \u2192 C shim"
+        },
+        {
+          "language": "Nim",
+          "ns": 68247.333,
+          "impl": "OpenSSL EVP via FFI"
+        },
+        {
+          "language": "Python (PyPy)",
+          "ns": 68396.5,
+          "impl": "PyPy cffi ABI dlopen \u2192 C shim over OpenSSL"
+        },
+        {
+          "language": "Python (PyPy+NumPy)",
+          "ns": 68396.5,
+          "impl": "crypto identical to Python (PyPy) (accelerator applies to the codec, not crypto)"
+        },
+        {
+          "language": "Java",
+          "ns": 68566.6875,
+          "impl": "JCE + BouncyCastle native; librbcrypto shim (FFM) for AES-GCM-SIV/BLAKE3/scrypt/HKDF/KMAC/ML-KEM/ML-DSA/SLH-DSA/Falcon"
+        },
+        {
+          "language": "Rust",
+          "ns": 70104.146,
+          "impl": "RustCrypto crates"
+        },
+        {
+          "language": "Kotlin",
+          "ns": 70745.5625,
+          "impl": "JCE + BouncyCastle native; librbcrypto shim (FFM) for AES-GCM-SIV/BLAKE3/scrypt/HKDF/KMAC/ML-KEM/ML-DSA/SLH-DSA/Falcon"
+        },
+        {
+          "language": "Python (Cython)",
+          "ns": 71004.0,
+          "impl": "Cython in-process cdef extern \u2192 C shim over OpenSSL"
+        },
+        {
+          "language": "Haskell",
+          "ns": 71130.5,
+          "impl": "OpenSSL EVP + librbcrypto shim via FFI"
+        },
+        {
+          "language": "C++",
+          "ns": 71472.938,
+          "impl": "OpenSSL EVP + libblake3 + liboqs (Falcon)"
+        },
+        {
+          "language": "OCaml",
+          "ns": 71652.75,
+          "impl": "mirage-crypto / digestif / Argon2id native; librbcrypto shim (C stub) for AES-GCM-SIV/BLAKE3/scrypt/PBKDF2/HKDF/KMAC/ML-KEM/X25519/ML-DSA/Ed25519/SLH-DSA/Falcon"
+        },
+        {
+          "language": "Python",
+          "ns": 71946.354,
+          "impl": "pyca/cryptography + blake3 + argon2-cffi native (AEAD incl. GCM-SIV/SHA-2/SHA-3/BLAKE3/Argon2id/scrypt/PBKDF2/HKDF); librbcrypto shim (ctypes) for KMAC/ML-KEM/X25519/ML-DSA/Ed25519/SLH-DSA/Falcon"
+        },
+        {
+          "language": "Python (NumPy)",
+          "ns": 71946.354,
+          "impl": "crypto identical to Python (accelerator applies to the codec, not crypto)"
+        },
+        {
+          "language": "Go",
+          "ns": 74182.3545,
+          "impl": "stdlib"
+        },
+        {
+          "language": "Julia",
+          "ns": 74503.0,
+          "impl": "ccall libcrypto"
+        },
+        {
+          "language": "Fortran",
+          "ns": 85112.0,
+          "impl": "OpenSSL via iso_c_binding \u2192 C shim"
+        },
+        {
           "language": "Go crypto/mlkem",
-          "ns": 81747.6854,
+          "ns": 90257.1917,
           "impl": "native pure-Go"
+        },
+        {
+          "language": "LuaJIT",
+          "ns": 93423.0,
+          "impl": "OpenSSL EVP via ffi"
+        },
+        {
+          "language": "Crystal",
+          "ns": 140752.5415,
+          "impl": "stdlib OpenSSL native (AEAD/SHA-2/SHA-3/PBKDF2/Argon2id); librbcrypto shim (lib binding) for AES-GCM-SIV/BLAKE3/scrypt/HKDF/KMAC/ML-KEM/X25519/ML-DSA/Ed25519/SLH-DSA/Falcon"
         }
       ]
     },
     "ML-KEM-1024": {
       "kind": "kem",
-      "metric": "ns per keygen + encapsulate + decapsulate",
+      "metric": "ns per keygen + encapsulate + decapsulate (X25519: keygen\u00d72 + ECDH)",
       "rows": [
         {
-          "language": "liboqs",
-          "ns": 55268.19585,
-          "impl": "C (via python-oqs)"
-        },
-        {
           "language": "OpenSSL 3.6.3 EVP",
-          "ns": 60825.95,
+          "ns": 60250.95,
           "impl": "C (shared by every libcrypto-FFI language)"
         },
         {
+          "language": "liboqs",
+          "ns": 60590.95,
+          "impl": "C (via python-oqs)"
+        },
+        {
+          "language": "C#",
+          "ns": 85594.6,
+          "impl": "System.Security.Cryptography + Konscious native (AEAD/SHA-2/SHA-3/KMAC/PBKDF2/HKDF/Argon2id); librbcrypto shim (P/Invoke) for AES-GCM-SIV/BLAKE3/scrypt/ML-KEM/X25519/ML-DSA/Ed25519/SLH-DSA/Falcon"
+        },
+        {
+          "language": "Perl",
+          "ns": 85667.0,
+          "impl": "CryptX native (AEAD/SHA-2/SHA-3/PBKDF2/HKDF/Argon2id); librbcrypto shim (FFI::Platypus) for AES-GCM-SIV/BLAKE3/scrypt/KMAC/ML-KEM/X25519/ML-DSA/Ed25519/SLH-DSA/Falcon"
+        },
+        {
+          "language": "Perl (PDL)",
+          "ns": 85667.0,
+          "impl": "crypto identical to Perl (accelerator applies to the codec, not crypto)"
+        },
+        {
+          "language": "Swift",
+          "ns": 86014.5,
+          "impl": "CryptoKit + librbcrypto shim"
+        },
+        {
+          "language": "COBOL",
+          "ns": 86215.0,
+          "impl": "GnuCOBOL CALL \u2192 C shim over OpenSSL"
+        },
+        {
+          "language": "Ruby",
+          "ns": 86463.0,
+          "impl": "stdlib OpenSSL native (AEAD incl. GCM-SIV/SHA-2/SHA-3/scrypt/PBKDF2/HKDF/Argon2id); librbcrypto shim (Fiddle) for BLAKE3/KMAC/ML-KEM/X25519/ML-DSA/Ed25519/SLH-DSA/Falcon"
+        },
+        {
+          "language": "Ruby (batch)",
+          "ns": 86463.0,
+          "impl": "crypto identical to Ruby (accelerator applies to the codec, not crypto)"
+        },
+        {
+          "language": "Node.js",
+          "ns": 87861.625,
+          "impl": "node:crypto native (AEAD/SHA-2/SHA-3/scrypt/PBKDF2/HKDF/Argon2id); librbcrypto shim (N-API addon) for AES-GCM-SIV/BLAKE3/KMAC/ML-KEM/X25519/ML-DSA/Ed25519/SLH-DSA/Falcon"
+        },
+        {
+          "language": "Mojo",
+          "ns": 88187.0,
+          "impl": "Mojo OwnedDLHandle C-interop \u2192 C shim over OpenSSL"
+        },
+        {
+          "language": "Fortran",
+          "ns": 89115.0,
+          "impl": "OpenSSL via iso_c_binding \u2192 C shim"
+        },
+        {
+          "language": "Zig",
+          "ns": 90270.0,
+          "impl": "std.crypto + librbcrypto shim"
+        },
+        {
+          "language": "Octave",
+          "ns": 91414.0,
+          "impl": "compiled .oct \u2192 C shim over OpenSSL"
+        },
+        {
+          "language": "Nelua",
+          "ns": 91718.0,
+          "impl": "compiles to C, OpenSSL via cimport \u2192 C shim"
+        },
+        {
+          "language": "Lua",
+          "ns": 91758.0,
+          "impl": "plain Lua 5.5 (no FFI) C module \u2192 C shim over OpenSSL"
+        },
+        {
+          "language": "Lua (vectorize)",
+          "ns": 91758.0,
+          "impl": "crypto identical to Lua (accelerator applies to the codec, not crypto)"
+        },
+        {
+          "language": "Python (PyPy)",
+          "ns": 95261.5,
+          "impl": "PyPy cffi ABI dlopen \u2192 C shim over OpenSSL"
+        },
+        {
+          "language": "Python (PyPy+NumPy)",
+          "ns": 95261.5,
+          "impl": "crypto identical to Python (PyPy) (accelerator applies to the codec, not crypto)"
+        },
+        {
+          "language": "Pascal",
+          "ns": 95579.5,
+          "impl": "OpenSSL via FPC external \u2192 C shim"
+        },
+        {
+          "language": "Kotlin",
+          "ns": 95688.458,
+          "impl": "JCE + BouncyCastle native; librbcrypto shim (FFM) for AES-GCM-SIV/BLAKE3/scrypt/HKDF/KMAC/ML-KEM/ML-DSA/SLH-DSA/Falcon"
+        },
+        {
+          "language": "C",
+          "ns": 96162.5,
+          "impl": "OpenSSL EVP + libblake3 + liboqs (Falcon)"
+        },
+        {
+          "language": "Python",
+          "ns": 96689.125,
+          "impl": "pyca/cryptography + blake3 + argon2-cffi native (AEAD incl. GCM-SIV/SHA-2/SHA-3/BLAKE3/Argon2id/scrypt/PBKDF2/HKDF); librbcrypto shim (ctypes) for KMAC/ML-KEM/X25519/ML-DSA/Ed25519/SLH-DSA/Falcon"
+        },
+        {
+          "language": "Python (NumPy)",
+          "ns": 96689.125,
+          "impl": "crypto identical to Python (accelerator applies to the codec, not crypto)"
+        },
+        {
+          "language": "Julia",
+          "ns": 97180.375,
+          "impl": "ccall libcrypto"
+        },
+        {
+          "language": "Python (Cython)",
+          "ns": 97278.0,
+          "impl": "Cython in-process cdef extern \u2192 C shim over OpenSSL"
+        },
+        {
+          "language": "Rust",
+          "ns": 97947.2085,
+          "impl": "RustCrypto crates"
+        },
+        {
+          "language": "OCaml",
+          "ns": 98262.6665,
+          "impl": "mirage-crypto / digestif / Argon2id native; librbcrypto shim (C stub) for AES-GCM-SIV/BLAKE3/scrypt/PBKDF2/HKDF/KMAC/ML-KEM/X25519/ML-DSA/Ed25519/SLH-DSA/Falcon"
+        },
+        {
+          "language": "Go",
+          "ns": 99206.9585,
+          "impl": "stdlib"
+        },
+        {
+          "language": "Nim",
+          "ns": 99510.229,
+          "impl": "OpenSSL EVP via FFI"
+        },
+        {
+          "language": "Haskell",
+          "ns": 100929.0,
+          "impl": "OpenSSL EVP + librbcrypto shim via FFI"
+        },
+        {
+          "language": "Crystal",
+          "ns": 101657.375,
+          "impl": "stdlib OpenSSL native (AEAD/SHA-2/SHA-3/PBKDF2/Argon2id); librbcrypto shim (lib binding) for AES-GCM-SIV/BLAKE3/scrypt/HKDF/KMAC/ML-KEM/X25519/ML-DSA/Ed25519/SLH-DSA/Falcon"
+        },
+        {
+          "language": "C++",
+          "ns": 101716.188,
+          "impl": "OpenSSL EVP + libblake3 + liboqs (Falcon)"
+        },
+        {
+          "language": "Java",
+          "ns": 117813.875,
+          "impl": "JCE + BouncyCastle native; librbcrypto shim (FFM) for AES-GCM-SIV/BLAKE3/scrypt/HKDF/KMAC/ML-KEM/ML-DSA/SLH-DSA/Falcon"
+        },
+        {
           "language": "Go crypto/mlkem",
-          "ns": 115525.775,
+          "ns": 187066.39585,
           "impl": "native pure-Go"
+        },
+        {
+          "language": "LuaJIT",
+          "ns": 194469.5,
+          "impl": "OpenSSL EVP via ffi"
+        }
+      ]
+    },
+    "X25519": {
+      "kind": "kem",
+      "metric": "ns per keygen + encapsulate + decapsulate (X25519: keygen\u00d72 + ECDH)",
+      "rows": [
+        {
+          "language": "Swift",
+          "ns": 46000.0,
+          "impl": "CryptoKit + librbcrypto shim"
+        },
+        {
+          "language": "Node.js",
+          "ns": 48339.5415,
+          "impl": "node:crypto native (AEAD/SHA-2/SHA-3/scrypt/PBKDF2/HKDF/Argon2id); librbcrypto shim (N-API addon) for AES-GCM-SIV/BLAKE3/KMAC/ML-KEM/X25519/ML-DSA/Ed25519/SLH-DSA/Falcon"
+        },
+        {
+          "language": "COBOL",
+          "ns": 48952.0,
+          "impl": "GnuCOBOL CALL \u2192 C shim over OpenSSL"
+        },
+        {
+          "language": "Perl",
+          "ns": 50196.5,
+          "impl": "CryptX native (AEAD/SHA-2/SHA-3/PBKDF2/HKDF/Argon2id); librbcrypto shim (FFI::Platypus) for AES-GCM-SIV/BLAKE3/scrypt/KMAC/ML-KEM/X25519/ML-DSA/Ed25519/SLH-DSA/Falcon"
+        },
+        {
+          "language": "Perl (PDL)",
+          "ns": 50196.5,
+          "impl": "crypto identical to Perl (accelerator applies to the codec, not crypto)"
+        },
+        {
+          "language": "Ruby",
+          "ns": 50199.0,
+          "impl": "stdlib OpenSSL native (AEAD incl. GCM-SIV/SHA-2/SHA-3/scrypt/PBKDF2/HKDF/Argon2id); librbcrypto shim (Fiddle) for BLAKE3/KMAC/ML-KEM/X25519/ML-DSA/Ed25519/SLH-DSA/Falcon"
+        },
+        {
+          "language": "Ruby (batch)",
+          "ns": 50199.0,
+          "impl": "crypto identical to Ruby (accelerator applies to the codec, not crypto)"
+        },
+        {
+          "language": "Nelua",
+          "ns": 51316.5,
+          "impl": "compiles to C, OpenSSL via cimport \u2192 C shim"
+        },
+        {
+          "language": "Mojo",
+          "ns": 51517.5,
+          "impl": "Mojo OwnedDLHandle C-interop \u2192 C shim over OpenSSL"
+        },
+        {
+          "language": "Octave",
+          "ns": 52195.5,
+          "impl": "compiled .oct \u2192 C shim over OpenSSL"
+        },
+        {
+          "language": "Lua",
+          "ns": 52258.0,
+          "impl": "plain Lua 5.5 (no FFI) C module \u2192 C shim over OpenSSL"
+        },
+        {
+          "language": "Lua (vectorize)",
+          "ns": 52258.0,
+          "impl": "crypto identical to Lua (accelerator applies to the codec, not crypto)"
+        },
+        {
+          "language": "C#",
+          "ns": 52298.0,
+          "impl": "System.Security.Cryptography + Konscious native (AEAD/SHA-2/SHA-3/KMAC/PBKDF2/HKDF/Argon2id); librbcrypto shim (P/Invoke) for AES-GCM-SIV/BLAKE3/scrypt/ML-KEM/X25519/ML-DSA/Ed25519/SLH-DSA/Falcon"
+        },
+        {
+          "language": "C",
+          "ns": 52580.0,
+          "impl": "OpenSSL EVP + libblake3 + liboqs (Falcon)"
+        },
+        {
+          "language": "Python (PyPy)",
+          "ns": 53510.0,
+          "impl": "PyPy cffi ABI dlopen \u2192 C shim over OpenSSL"
+        },
+        {
+          "language": "Python (PyPy+NumPy)",
+          "ns": 53510.0,
+          "impl": "crypto identical to Python (PyPy) (accelerator applies to the codec, not crypto)"
+        },
+        {
+          "language": "Pascal",
+          "ns": 53615.0,
+          "impl": "OpenSSL via FPC external \u2192 C shim"
+        },
+        {
+          "language": "Rust",
+          "ns": 53888.0,
+          "impl": "RustCrypto crates"
+        },
+        {
+          "language": "OCaml",
+          "ns": 53955.375,
+          "impl": "mirage-crypto / digestif / Argon2id native; librbcrypto shim (C stub) for AES-GCM-SIV/BLAKE3/scrypt/PBKDF2/HKDF/KMAC/ML-KEM/X25519/ML-DSA/Ed25519/SLH-DSA/Falcon"
+        },
+        {
+          "language": "Python (Cython)",
+          "ns": 54418.0,
+          "impl": "Cython in-process cdef extern \u2192 C shim over OpenSSL"
+        },
+        {
+          "language": "Python",
+          "ns": 54512.0835,
+          "impl": "pyca/cryptography + blake3 + argon2-cffi native (AEAD incl. GCM-SIV/SHA-2/SHA-3/BLAKE3/Argon2id/scrypt/PBKDF2/HKDF); librbcrypto shim (ctypes) for KMAC/ML-KEM/X25519/ML-DSA/Ed25519/SLH-DSA/Falcon"
+        },
+        {
+          "language": "Python (NumPy)",
+          "ns": 54512.0835,
+          "impl": "crypto identical to Python (accelerator applies to the codec, not crypto)"
+        },
+        {
+          "language": "Nim",
+          "ns": 55503.8125,
+          "impl": "OpenSSL EVP via FFI"
+        },
+        {
+          "language": "Julia",
+          "ns": 56035.9165,
+          "impl": "ccall libcrypto"
+        },
+        {
+          "language": "Haskell",
+          "ns": 56041.0,
+          "impl": "OpenSSL EVP + librbcrypto shim via FFI"
+        },
+        {
+          "language": "Zig",
+          "ns": 56490.5,
+          "impl": "std.crypto + librbcrypto shim"
+        },
+        {
+          "language": "Fortran",
+          "ns": 56991.0,
+          "impl": "OpenSSL via iso_c_binding \u2192 C shim"
+        },
+        {
+          "language": "Crystal",
+          "ns": 57221.5625,
+          "impl": "stdlib OpenSSL native (AEAD/SHA-2/SHA-3/PBKDF2/Argon2id); librbcrypto shim (lib binding) for AES-GCM-SIV/BLAKE3/scrypt/HKDF/KMAC/ML-KEM/X25519/ML-DSA/Ed25519/SLH-DSA/Falcon"
+        },
+        {
+          "language": "C++",
+          "ns": 60725.729,
+          "impl": "OpenSSL EVP + libblake3 + liboqs (Falcon)"
+        },
+        {
+          "language": "LuaJIT",
+          "ns": 98138.5,
+          "impl": "OpenSSL EVP via ffi"
+        },
+        {
+          "language": "Go",
+          "ns": 109053.458,
+          "impl": "stdlib"
+        },
+        {
+          "language": "Kotlin",
+          "ns": 224769.75,
+          "impl": "JCE + BouncyCastle native; librbcrypto shim (FFM) for AES-GCM-SIV/BLAKE3/scrypt/HKDF/KMAC/ML-KEM/ML-DSA/SLH-DSA/Falcon"
+        },
+        {
+          "language": "Java",
+          "ns": 271809.458,
+          "impl": "JCE + BouncyCastle native; librbcrypto shim (FFM) for AES-GCM-SIV/BLAKE3/scrypt/HKDF/KMAC/ML-KEM/ML-DSA/SLH-DSA/Falcon"
         }
       ]
     },
     "ML-DSA-44": {
       "kind": "sig",
-      "metric": "ns per sign + verify of a 41-byte message",
+      "metric": "ns per sign + verify of a 41-byte message (keypair pre-generated)",
       "rows": [
         {
           "language": "liboqs",
-          "ns": 181682.0271,
+          "ns": 271808.86045,
           "impl": "C (via python-oqs)"
         },
         {
+          "language": "COBOL",
+          "ns": 279984.0,
+          "impl": "GnuCOBOL CALL \u2192 C shim over OpenSSL"
+        },
+        {
+          "language": "Ruby",
+          "ns": 287727.5,
+          "impl": "stdlib OpenSSL native (AEAD incl. GCM-SIV/SHA-2/SHA-3/scrypt/PBKDF2/HKDF/Argon2id); librbcrypto shim (Fiddle) for BLAKE3/KMAC/ML-KEM/X25519/ML-DSA/Ed25519/SLH-DSA/Falcon"
+        },
+        {
+          "language": "Ruby (batch)",
+          "ns": 287727.5,
+          "impl": "crypto identical to Ruby (accelerator applies to the codec, not crypto)"
+        },
+        {
+          "language": "Perl",
+          "ns": 288911.5,
+          "impl": "CryptX native (AEAD/SHA-2/SHA-3/PBKDF2/HKDF/Argon2id); librbcrypto shim (FFI::Platypus) for AES-GCM-SIV/BLAKE3/scrypt/KMAC/ML-KEM/X25519/ML-DSA/Ed25519/SLH-DSA/Falcon"
+        },
+        {
+          "language": "Perl (PDL)",
+          "ns": 288911.5,
+          "impl": "crypto identical to Perl (accelerator applies to the codec, not crypto)"
+        },
+        {
+          "language": "Octave",
+          "ns": 293573.5,
+          "impl": "compiled .oct \u2192 C shim over OpenSSL"
+        },
+        {
+          "language": "C#",
+          "ns": 294687.15,
+          "impl": "System.Security.Cryptography + Konscious native (AEAD/SHA-2/SHA-3/KMAC/PBKDF2/HKDF/Argon2id); librbcrypto shim (P/Invoke) for AES-GCM-SIV/BLAKE3/scrypt/ML-KEM/X25519/ML-DSA/Ed25519/SLH-DSA/Falcon"
+        },
+        {
+          "language": "Mojo",
+          "ns": 298311.0,
+          "impl": "Mojo OwnedDLHandle C-interop \u2192 C shim over OpenSSL"
+        },
+        {
+          "language": "Pascal",
+          "ns": 300357.0,
+          "impl": "OpenSSL via FPC external \u2192 C shim"
+        },
+        {
+          "language": "Nelua",
+          "ns": 305327.0,
+          "impl": "compiles to C, OpenSSL via cimport \u2192 C shim"
+        },
+        {
+          "language": "Zig",
+          "ns": 306628.0,
+          "impl": "std.crypto + librbcrypto shim"
+        },
+        {
+          "language": "Swift",
+          "ns": 306633.5,
+          "impl": "CryptoKit + librbcrypto shim"
+        },
+        {
+          "language": "Kotlin",
+          "ns": 306864.5415,
+          "impl": "JCE + BouncyCastle native; librbcrypto shim (FFM) for AES-GCM-SIV/BLAKE3/scrypt/HKDF/KMAC/ML-KEM/ML-DSA/SLH-DSA/Falcon"
+        },
+        {
+          "language": "Python (Cython)",
+          "ns": 313987.0,
+          "impl": "Cython in-process cdef extern \u2192 C shim over OpenSSL"
+        },
+        {
+          "language": "Lua",
+          "ns": 316455.5,
+          "impl": "plain Lua 5.5 (no FFI) C module \u2192 C shim over OpenSSL"
+        },
+        {
+          "language": "Lua (vectorize)",
+          "ns": 316455.5,
+          "impl": "crypto identical to Lua (accelerator applies to the codec, not crypto)"
+        },
+        {
+          "language": "C++",
+          "ns": 317823.916,
+          "impl": "OpenSSL EVP + libblake3 + liboqs (Falcon)"
+        },
+        {
+          "language": "Python (PyPy)",
+          "ns": 322287.0,
+          "impl": "PyPy cffi ABI dlopen \u2192 C shim over OpenSSL"
+        },
+        {
+          "language": "Python (PyPy+NumPy)",
+          "ns": 322287.0,
+          "impl": "crypto identical to Python (PyPy) (accelerator applies to the codec, not crypto)"
+        },
+        {
+          "language": "C",
+          "ns": 323067.0,
+          "impl": "OpenSSL EVP + libblake3 + liboqs (Falcon)"
+        },
+        {
+          "language": "Rust",
+          "ns": 324605.9795,
+          "impl": "RustCrypto crates"
+        },
+        {
+          "language": "Crystal",
+          "ns": 326826.229,
+          "impl": "stdlib OpenSSL native (AEAD/SHA-2/SHA-3/PBKDF2/Argon2id); librbcrypto shim (lib binding) for AES-GCM-SIV/BLAKE3/scrypt/HKDF/KMAC/ML-KEM/X25519/ML-DSA/Ed25519/SLH-DSA/Falcon"
+        },
+        {
+          "language": "Python",
+          "ns": 329382.8125,
+          "impl": "pyca/cryptography + blake3 + argon2-cffi native (AEAD incl. GCM-SIV/SHA-2/SHA-3/BLAKE3/Argon2id/scrypt/PBKDF2/HKDF); librbcrypto shim (ctypes) for KMAC/ML-KEM/X25519/ML-DSA/Ed25519/SLH-DSA/Falcon"
+        },
+        {
+          "language": "Python (NumPy)",
+          "ns": 329382.8125,
+          "impl": "crypto identical to Python (accelerator applies to the codec, not crypto)"
+        },
+        {
           "language": "OpenSSL 3.6.3 EVP",
-          "ns": 308880.4,
+          "ns": 329762.1,
           "impl": "C (shared by every libcrypto-FFI language)"
+        },
+        {
+          "language": "Node.js",
+          "ns": 336443.896,
+          "impl": "node:crypto native (AEAD/SHA-2/SHA-3/scrypt/PBKDF2/HKDF/Argon2id); librbcrypto shim (N-API addon) for AES-GCM-SIV/BLAKE3/KMAC/ML-KEM/X25519/ML-DSA/Ed25519/SLH-DSA/Falcon"
+        },
+        {
+          "language": "Fortran",
+          "ns": 337118.5,
+          "impl": "OpenSSL via iso_c_binding \u2192 C shim"
+        },
+        {
+          "language": "Julia",
+          "ns": 338570.6455,
+          "impl": "ccall libcrypto"
+        },
+        {
+          "language": "Haskell",
+          "ns": 342927.5,
+          "impl": "OpenSSL EVP + librbcrypto shim via FFI"
+        },
+        {
+          "language": "OCaml",
+          "ns": 348738.875,
+          "impl": "mirage-crypto / digestif / Argon2id native; librbcrypto shim (C stub) for AES-GCM-SIV/BLAKE3/scrypt/PBKDF2/HKDF/KMAC/ML-KEM/X25519/ML-DSA/Ed25519/SLH-DSA/Falcon"
+        },
+        {
+          "language": "Java",
+          "ns": 375325.083,
+          "impl": "JCE + BouncyCastle native; librbcrypto shim (FFM) for AES-GCM-SIV/BLAKE3/scrypt/HKDF/KMAC/ML-KEM/ML-DSA/SLH-DSA/Falcon"
+        },
+        {
+          "language": "Nim",
+          "ns": 421933.3335,
+          "impl": "OpenSSL EVP via FFI"
+        },
+        {
+          "language": "Go",
+          "ns": 435806.104,
+          "impl": "stdlib"
+        },
+        {
+          "language": "LuaJIT",
+          "ns": 499629.5,
+          "impl": "OpenSSL EVP via ffi"
         }
       ]
     },
     "ML-DSA-65": {
       "kind": "sig",
-      "metric": "ns per sign + verify of a 41-byte message",
+      "metric": "ns per sign + verify of a 41-byte message (keypair pre-generated)",
       "rows": [
         {
           "language": "liboqs",
-          "ns": 470768.1271,
+          "ns": 348688.5771,
           "impl": "C (via python-oqs)"
         },
         {
+          "language": "Ruby",
+          "ns": 460734.5,
+          "impl": "stdlib OpenSSL native (AEAD incl. GCM-SIV/SHA-2/SHA-3/scrypt/PBKDF2/HKDF/Argon2id); librbcrypto shim (Fiddle) for BLAKE3/KMAC/ML-KEM/X25519/ML-DSA/Ed25519/SLH-DSA/Falcon"
+        },
+        {
+          "language": "Ruby (batch)",
+          "ns": 460734.5,
+          "impl": "crypto identical to Ruby (accelerator applies to the codec, not crypto)"
+        },
+        {
+          "language": "C#",
+          "ns": 461263.8,
+          "impl": "System.Security.Cryptography + Konscious native (AEAD/SHA-2/SHA-3/KMAC/PBKDF2/HKDF/Argon2id); librbcrypto shim (P/Invoke) for AES-GCM-SIV/BLAKE3/scrypt/ML-KEM/X25519/ML-DSA/Ed25519/SLH-DSA/Falcon"
+        },
+        {
+          "language": "Octave",
+          "ns": 463934.5,
+          "impl": "compiled .oct \u2192 C shim over OpenSSL"
+        },
+        {
+          "language": "Perl",
+          "ns": 466487.5,
+          "impl": "CryptX native (AEAD/SHA-2/SHA-3/PBKDF2/HKDF/Argon2id); librbcrypto shim (FFI::Platypus) for AES-GCM-SIV/BLAKE3/scrypt/KMAC/ML-KEM/X25519/ML-DSA/Ed25519/SLH-DSA/Falcon"
+        },
+        {
+          "language": "Perl (PDL)",
+          "ns": 466487.5,
+          "impl": "crypto identical to Perl (accelerator applies to the codec, not crypto)"
+        },
+        {
+          "language": "Nelua",
+          "ns": 479371.5,
+          "impl": "compiles to C, OpenSSL via cimport \u2192 C shim"
+        },
+        {
+          "language": "Zig",
+          "ns": 482296.0,
+          "impl": "std.crypto + librbcrypto shim"
+        },
+        {
+          "language": "Kotlin",
+          "ns": 484265.6455,
+          "impl": "JCE + BouncyCastle native; librbcrypto shim (FFM) for AES-GCM-SIV/BLAKE3/scrypt/HKDF/KMAC/ML-KEM/ML-DSA/SLH-DSA/Falcon"
+        },
+        {
+          "language": "Swift",
+          "ns": 485023.0,
+          "impl": "CryptoKit + librbcrypto shim"
+        },
+        {
+          "language": "COBOL",
+          "ns": 488760.5,
+          "impl": "GnuCOBOL CALL \u2192 C shim over OpenSSL"
+        },
+        {
+          "language": "C++",
+          "ns": 493083.458,
+          "impl": "OpenSSL EVP + libblake3 + liboqs (Falcon)"
+        },
+        {
+          "language": "Mojo",
+          "ns": 499652.5,
+          "impl": "Mojo OwnedDLHandle C-interop \u2192 C shim over OpenSSL"
+        },
+        {
+          "language": "Pascal",
+          "ns": 510860.5,
+          "impl": "OpenSSL via FPC external \u2192 C shim"
+        },
+        {
+          "language": "Lua",
+          "ns": 511030.0,
+          "impl": "plain Lua 5.5 (no FFI) C module \u2192 C shim over OpenSSL"
+        },
+        {
+          "language": "Lua (vectorize)",
+          "ns": 511030.0,
+          "impl": "crypto identical to Lua (accelerator applies to the codec, not crypto)"
+        },
+        {
+          "language": "Python",
+          "ns": 516458.021,
+          "impl": "pyca/cryptography + blake3 + argon2-cffi native (AEAD incl. GCM-SIV/SHA-2/SHA-3/BLAKE3/Argon2id/scrypt/PBKDF2/HKDF); librbcrypto shim (ctypes) for KMAC/ML-KEM/X25519/ML-DSA/Ed25519/SLH-DSA/Falcon"
+        },
+        {
+          "language": "Python (NumPy)",
+          "ns": 516458.021,
+          "impl": "crypto identical to Python (accelerator applies to the codec, not crypto)"
+        },
+        {
+          "language": "C",
+          "ns": 517236.5,
+          "impl": "OpenSSL EVP + libblake3 + liboqs (Falcon)"
+        },
+        {
+          "language": "Julia",
+          "ns": 526269.375,
+          "impl": "ccall libcrypto"
+        },
+        {
+          "language": "Python (PyPy)",
+          "ns": 531387.5,
+          "impl": "PyPy cffi ABI dlopen \u2192 C shim over OpenSSL"
+        },
+        {
+          "language": "Python (PyPy+NumPy)",
+          "ns": 531387.5,
+          "impl": "crypto identical to Python (PyPy) (accelerator applies to the codec, not crypto)"
+        },
+        {
+          "language": "OCaml",
+          "ns": 534436.5415,
+          "impl": "mirage-crypto / digestif / Argon2id native; librbcrypto shim (C stub) for AES-GCM-SIV/BLAKE3/scrypt/PBKDF2/HKDF/KMAC/ML-KEM/X25519/ML-DSA/Ed25519/SLH-DSA/Falcon"
+        },
+        {
+          "language": "Fortran",
+          "ns": 538792.5,
+          "impl": "OpenSSL via iso_c_binding \u2192 C shim"
+        },
+        {
+          "language": "Node.js",
+          "ns": 542981.875,
+          "impl": "node:crypto native (AEAD/SHA-2/SHA-3/scrypt/PBKDF2/HKDF/Argon2id); librbcrypto shim (N-API addon) for AES-GCM-SIV/BLAKE3/KMAC/ML-KEM/X25519/ML-DSA/Ed25519/SLH-DSA/Falcon"
+        },
+        {
+          "language": "Haskell",
+          "ns": 544196.0,
+          "impl": "OpenSSL EVP + librbcrypto shim via FFI"
+        },
+        {
+          "language": "Python (Cython)",
+          "ns": 559262.5,
+          "impl": "Cython in-process cdef extern \u2192 C shim over OpenSSL"
+        },
+        {
+          "language": "Crystal",
+          "ns": 562743.8955,
+          "impl": "stdlib OpenSSL native (AEAD/SHA-2/SHA-3/PBKDF2/Argon2id); librbcrypto shim (lib binding) for AES-GCM-SIV/BLAKE3/scrypt/HKDF/KMAC/ML-KEM/X25519/ML-DSA/Ed25519/SLH-DSA/Falcon"
+        },
+        {
           "language": "OpenSSL 3.6.3 EVP",
-          "ns": 602820.65,
+          "ns": 575187.45,
           "impl": "C (shared by every libcrypto-FFI language)"
+        },
+        {
+          "language": "Go",
+          "ns": 594031.208,
+          "impl": "stdlib"
+        },
+        {
+          "language": "Nim",
+          "ns": 611818.0,
+          "impl": "OpenSSL EVP via FFI"
+        },
+        {
+          "language": "LuaJIT",
+          "ns": 622453.5,
+          "impl": "OpenSSL EVP via ffi"
+        },
+        {
+          "language": "Java",
+          "ns": 650679.5625,
+          "impl": "JCE + BouncyCastle native; librbcrypto shim (FFM) for AES-GCM-SIV/BLAKE3/scrypt/HKDF/KMAC/ML-KEM/ML-DSA/SLH-DSA/Falcon"
+        },
+        {
+          "language": "Rust",
+          "ns": 859543.1875,
+          "impl": "RustCrypto crates"
         }
       ]
     },
     "ML-DSA-87": {
       "kind": "sig",
-      "metric": "ns per sign + verify of a 41-byte message",
+      "metric": "ns per sign + verify of a 41-byte message (keypair pre-generated)",
       "rows": [
         {
-          "language": "liboqs",
-          "ns": 423709.20835,
-          "impl": "C (via python-oqs)"
+          "language": "Node.js",
+          "ns": 565495.583,
+          "impl": "node:crypto native (AEAD/SHA-2/SHA-3/scrypt/PBKDF2/HKDF/Argon2id); librbcrypto shim (N-API addon) for AES-GCM-SIV/BLAKE3/KMAC/ML-KEM/X25519/ML-DSA/Ed25519/SLH-DSA/Falcon"
+        },
+        {
+          "language": "COBOL",
+          "ns": 570869.0,
+          "impl": "GnuCOBOL CALL \u2192 C shim over OpenSSL"
+        },
+        {
+          "language": "Perl",
+          "ns": 572923.5,
+          "impl": "CryptX native (AEAD/SHA-2/SHA-3/PBKDF2/HKDF/Argon2id); librbcrypto shim (FFI::Platypus) for AES-GCM-SIV/BLAKE3/scrypt/KMAC/ML-KEM/X25519/ML-DSA/Ed25519/SLH-DSA/Falcon"
+        },
+        {
+          "language": "Perl (PDL)",
+          "ns": 572923.5,
+          "impl": "crypto identical to Perl (accelerator applies to the codec, not crypto)"
+        },
+        {
+          "language": "Octave",
+          "ns": 588480.0,
+          "impl": "compiled .oct \u2192 C shim over OpenSSL"
+        },
+        {
+          "language": "Pascal",
+          "ns": 594524.0,
+          "impl": "OpenSSL via FPC external \u2192 C shim"
+        },
+        {
+          "language": "Fortran",
+          "ns": 595329.5,
+          "impl": "OpenSSL via iso_c_binding \u2192 C shim"
+        },
+        {
+          "language": "Mojo",
+          "ns": 596144.0,
+          "impl": "Mojo OwnedDLHandle C-interop \u2192 C shim over OpenSSL"
+        },
+        {
+          "language": "Swift",
+          "ns": 596166.0,
+          "impl": "CryptoKit + librbcrypto shim"
+        },
+        {
+          "language": "C++",
+          "ns": 599620.854,
+          "impl": "OpenSSL EVP + libblake3 + liboqs (Falcon)"
+        },
+        {
+          "language": "C#",
+          "ns": 603256.95,
+          "impl": "System.Security.Cryptography + Konscious native (AEAD/SHA-2/SHA-3/KMAC/PBKDF2/HKDF/Argon2id); librbcrypto shim (P/Invoke) for AES-GCM-SIV/BLAKE3/scrypt/ML-KEM/X25519/ML-DSA/Ed25519/SLH-DSA/Falcon"
+        },
+        {
+          "language": "Zig",
+          "ns": 605802.0,
+          "impl": "std.crypto + librbcrypto shim"
+        },
+        {
+          "language": "Lua",
+          "ns": 606772.0,
+          "impl": "plain Lua 5.5 (no FFI) C module \u2192 C shim over OpenSSL"
+        },
+        {
+          "language": "Lua (vectorize)",
+          "ns": 606772.0,
+          "impl": "crypto identical to Lua (accelerator applies to the codec, not crypto)"
+        },
+        {
+          "language": "Kotlin",
+          "ns": 618220.9375,
+          "impl": "JCE + BouncyCastle native; librbcrypto shim (FFM) for AES-GCM-SIV/BLAKE3/scrypt/HKDF/KMAC/ML-KEM/ML-DSA/SLH-DSA/Falcon"
+        },
+        {
+          "language": "Nelua",
+          "ns": 625678.5,
+          "impl": "compiles to C, OpenSSL via cimport \u2192 C shim"
+        },
+        {
+          "language": "Python (PyPy)",
+          "ns": 634899.5,
+          "impl": "PyPy cffi ABI dlopen \u2192 C shim over OpenSSL"
+        },
+        {
+          "language": "Python (PyPy+NumPy)",
+          "ns": 634899.5,
+          "impl": "crypto identical to Python (PyPy) (accelerator applies to the codec, not crypto)"
+        },
+        {
+          "language": "C",
+          "ns": 639240.0,
+          "impl": "OpenSSL EVP + libblake3 + liboqs (Falcon)"
+        },
+        {
+          "language": "OCaml",
+          "ns": 645139.5,
+          "impl": "mirage-crypto / digestif / Argon2id native; librbcrypto shim (C stub) for AES-GCM-SIV/BLAKE3/scrypt/PBKDF2/HKDF/KMAC/ML-KEM/X25519/ML-DSA/Ed25519/SLH-DSA/Falcon"
+        },
+        {
+          "language": "Python",
+          "ns": 656785.9375,
+          "impl": "pyca/cryptography + blake3 + argon2-cffi native (AEAD incl. GCM-SIV/SHA-2/SHA-3/BLAKE3/Argon2id/scrypt/PBKDF2/HKDF); librbcrypto shim (ctypes) for KMAC/ML-KEM/X25519/ML-DSA/Ed25519/SLH-DSA/Falcon"
+        },
+        {
+          "language": "Python (NumPy)",
+          "ns": 656785.9375,
+          "impl": "crypto identical to Python (accelerator applies to the codec, not crypto)"
+        },
+        {
+          "language": "Python (Cython)",
+          "ns": 662878.0,
+          "impl": "Cython in-process cdef extern \u2192 C shim over OpenSSL"
+        },
+        {
+          "language": "Go",
+          "ns": 662892.9375,
+          "impl": "stdlib"
+        },
+        {
+          "language": "Julia",
+          "ns": 679416.25,
+          "impl": "ccall libcrypto"
+        },
+        {
+          "language": "Crystal",
+          "ns": 680802.0835,
+          "impl": "stdlib OpenSSL native (AEAD/SHA-2/SHA-3/PBKDF2/Argon2id); librbcrypto shim (lib binding) for AES-GCM-SIV/BLAKE3/scrypt/HKDF/KMAC/ML-KEM/X25519/ML-DSA/Ed25519/SLH-DSA/Falcon"
         },
         {
           "language": "OpenSSL 3.6.3 EVP",
-          "ns": 612606.65,
+          "ns": 700162.5,
           "impl": "C (shared by every libcrypto-FFI language)"
+        },
+        {
+          "language": "liboqs",
+          "ns": 702890.58335,
+          "impl": "C (via python-oqs)"
+        },
+        {
+          "language": "Rust",
+          "ns": 723274.479,
+          "impl": "RustCrypto crates"
+        },
+        {
+          "language": "Java",
+          "ns": 729937.479,
+          "impl": "JCE + BouncyCastle native; librbcrypto shim (FFM) for AES-GCM-SIV/BLAKE3/scrypt/HKDF/KMAC/ML-KEM/ML-DSA/SLH-DSA/Falcon"
+        },
+        {
+          "language": "Ruby",
+          "ns": 741089.5,
+          "impl": "stdlib OpenSSL native (AEAD incl. GCM-SIV/SHA-2/SHA-3/scrypt/PBKDF2/HKDF/Argon2id); librbcrypto shim (Fiddle) for BLAKE3/KMAC/ML-KEM/X25519/ML-DSA/Ed25519/SLH-DSA/Falcon"
+        },
+        {
+          "language": "Ruby (batch)",
+          "ns": 741089.5,
+          "impl": "crypto identical to Ruby (accelerator applies to the codec, not crypto)"
+        },
+        {
+          "language": "Haskell",
+          "ns": 767704.5,
+          "impl": "OpenSSL EVP + librbcrypto shim via FFI"
+        },
+        {
+          "language": "LuaJIT",
+          "ns": 860044.5,
+          "impl": "OpenSSL EVP via ffi"
+        },
+        {
+          "language": "Nim",
+          "ns": 1087211.167,
+          "impl": "OpenSSL EVP via FFI"
+        }
+      ]
+    },
+    "Ed25519": {
+      "kind": "sig",
+      "metric": "ns per sign + verify of a 41-byte message (keypair pre-generated)",
+      "rows": [
+        {
+          "language": "Go",
+          "ns": 43997.6665,
+          "impl": "stdlib"
+        },
+        {
+          "language": "Zig",
+          "ns": 50923.0,
+          "impl": "std.crypto + librbcrypto shim"
+        },
+        {
+          "language": "Perl",
+          "ns": 53802.5,
+          "impl": "CryptX native (AEAD/SHA-2/SHA-3/PBKDF2/HKDF/Argon2id); librbcrypto shim (FFI::Platypus) for AES-GCM-SIV/BLAKE3/scrypt/KMAC/ML-KEM/X25519/ML-DSA/Ed25519/SLH-DSA/Falcon"
+        },
+        {
+          "language": "Perl (PDL)",
+          "ns": 53802.5,
+          "impl": "crypto identical to Perl (accelerator applies to the codec, not crypto)"
+        },
+        {
+          "language": "C#",
+          "ns": 54151.3,
+          "impl": "System.Security.Cryptography + Konscious native (AEAD/SHA-2/SHA-3/KMAC/PBKDF2/HKDF/Argon2id); librbcrypto shim (P/Invoke) for AES-GCM-SIV/BLAKE3/scrypt/ML-KEM/X25519/ML-DSA/Ed25519/SLH-DSA/Falcon"
+        },
+        {
+          "language": "Octave",
+          "ns": 56393.5,
+          "impl": "compiled .oct \u2192 C shim over OpenSSL"
+        },
+        {
+          "language": "Mojo",
+          "ns": 57055.0,
+          "impl": "Mojo OwnedDLHandle C-interop \u2192 C shim over OpenSSL"
+        },
+        {
+          "language": "COBOL",
+          "ns": 57403.0,
+          "impl": "GnuCOBOL CALL \u2192 C shim over OpenSSL"
+        },
+        {
+          "language": "C++",
+          "ns": 57480.209,
+          "impl": "OpenSSL EVP + libblake3 + liboqs (Falcon)"
+        },
+        {
+          "language": "Node.js",
+          "ns": 57496.6045,
+          "impl": "node:crypto native (AEAD/SHA-2/SHA-3/scrypt/PBKDF2/HKDF/Argon2id); librbcrypto shim (N-API addon) for AES-GCM-SIV/BLAKE3/KMAC/ML-KEM/X25519/ML-DSA/Ed25519/SLH-DSA/Falcon"
+        },
+        {
+          "language": "C",
+          "ns": 57655.5,
+          "impl": "OpenSSL EVP + libblake3 + liboqs (Falcon)"
+        },
+        {
+          "language": "Pascal",
+          "ns": 58876.0,
+          "impl": "OpenSSL via FPC external \u2192 C shim"
+        },
+        {
+          "language": "Nelua",
+          "ns": 59622.0,
+          "impl": "compiles to C, OpenSSL via cimport \u2192 C shim"
+        },
+        {
+          "language": "Fortran",
+          "ns": 59856.5,
+          "impl": "OpenSSL via iso_c_binding \u2192 C shim"
+        },
+        {
+          "language": "Julia",
+          "ns": 60004.354,
+          "impl": "ccall libcrypto"
+        },
+        {
+          "language": "Python",
+          "ns": 60252.021,
+          "impl": "pyca/cryptography + blake3 + argon2-cffi native (AEAD incl. GCM-SIV/SHA-2/SHA-3/BLAKE3/Argon2id/scrypt/PBKDF2/HKDF); librbcrypto shim (ctypes) for KMAC/ML-KEM/X25519/ML-DSA/Ed25519/SLH-DSA/Falcon"
+        },
+        {
+          "language": "Python (NumPy)",
+          "ns": 60252.021,
+          "impl": "crypto identical to Python (accelerator applies to the codec, not crypto)"
+        },
+        {
+          "language": "OCaml",
+          "ns": 60300.104,
+          "impl": "mirage-crypto / digestif / Argon2id native; librbcrypto shim (C stub) for AES-GCM-SIV/BLAKE3/scrypt/PBKDF2/HKDF/KMAC/ML-KEM/X25519/ML-DSA/Ed25519/SLH-DSA/Falcon"
+        },
+        {
+          "language": "Haskell",
+          "ns": 60327.0,
+          "impl": "OpenSSL EVP + librbcrypto shim via FFI"
+        },
+        {
+          "language": "Lua",
+          "ns": 60490.5,
+          "impl": "plain Lua 5.5 (no FFI) C module \u2192 C shim over OpenSSL"
+        },
+        {
+          "language": "Lua (vectorize)",
+          "ns": 60490.5,
+          "impl": "crypto identical to Lua (accelerator applies to the codec, not crypto)"
+        },
+        {
+          "language": "Python (PyPy)",
+          "ns": 61978.5,
+          "impl": "PyPy cffi ABI dlopen \u2192 C shim over OpenSSL"
+        },
+        {
+          "language": "Python (PyPy+NumPy)",
+          "ns": 61978.5,
+          "impl": "crypto identical to Python (PyPy) (accelerator applies to the codec, not crypto)"
+        },
+        {
+          "language": "Crystal",
+          "ns": 62810.0625,
+          "impl": "stdlib OpenSSL native (AEAD/SHA-2/SHA-3/PBKDF2/Argon2id); librbcrypto shim (lib binding) for AES-GCM-SIV/BLAKE3/scrypt/HKDF/KMAC/ML-KEM/X25519/ML-DSA/Ed25519/SLH-DSA/Falcon"
+        },
+        {
+          "language": "Python (Cython)",
+          "ns": 64269.5,
+          "impl": "Cython in-process cdef extern \u2192 C shim over OpenSSL"
+        },
+        {
+          "language": "Rust",
+          "ns": 67090.4795,
+          "impl": "RustCrypto crates"
+        },
+        {
+          "language": "LuaJIT",
+          "ns": 78297.0,
+          "impl": "OpenSSL EVP via ffi"
+        },
+        {
+          "language": "Ruby",
+          "ns": 89201.5,
+          "impl": "stdlib OpenSSL native (AEAD incl. GCM-SIV/SHA-2/SHA-3/scrypt/PBKDF2/HKDF/Argon2id); librbcrypto shim (Fiddle) for BLAKE3/KMAC/ML-KEM/X25519/ML-DSA/Ed25519/SLH-DSA/Falcon"
+        },
+        {
+          "language": "Ruby (batch)",
+          "ns": 89201.5,
+          "impl": "crypto identical to Ruby (accelerator applies to the codec, not crypto)"
+        },
+        {
+          "language": "Swift",
+          "ns": 91668.0,
+          "impl": "CryptoKit + librbcrypto shim"
+        },
+        {
+          "language": "Nim",
+          "ns": 98976.0625,
+          "impl": "OpenSSL EVP via FFI"
+        },
+        {
+          "language": "Kotlin",
+          "ns": 541062.75,
+          "impl": "JCE + BouncyCastle native; librbcrypto shim (FFM) for AES-GCM-SIV/BLAKE3/scrypt/HKDF/KMAC/ML-KEM/ML-DSA/SLH-DSA/Falcon"
+        },
+        {
+          "language": "Java",
+          "ns": 583786.9375,
+          "impl": "JCE + BouncyCastle native; librbcrypto shim (FFM) for AES-GCM-SIV/BLAKE3/scrypt/HKDF/KMAC/ML-KEM/ML-DSA/SLH-DSA/Falcon"
+        }
+      ]
+    },
+    "SLH-DSA-SHAKE-256f": {
+      "kind": "sig",
+      "metric": "ns per sign + verify of a 41-byte message (keypair pre-generated)",
+      "rows": [
+        {
+          "language": "Ruby",
+          "ns": 55135705.0,
+          "impl": "stdlib OpenSSL native (AEAD incl. GCM-SIV/SHA-2/SHA-3/scrypt/PBKDF2/HKDF/Argon2id); librbcrypto shim (Fiddle) for BLAKE3/KMAC/ML-KEM/X25519/ML-DSA/Ed25519/SLH-DSA/Falcon"
+        },
+        {
+          "language": "Ruby (batch)",
+          "ns": 55135705.0,
+          "impl": "crypto identical to Ruby (accelerator applies to the codec, not crypto)"
+        },
+        {
+          "language": "Perl",
+          "ns": 55219040.0,
+          "impl": "CryptX native (AEAD/SHA-2/SHA-3/PBKDF2/HKDF/Argon2id); librbcrypto shim (FFI::Platypus) for AES-GCM-SIV/BLAKE3/scrypt/KMAC/ML-KEM/X25519/ML-DSA/Ed25519/SLH-DSA/Falcon"
+        },
+        {
+          "language": "Perl (PDL)",
+          "ns": 55219040.0,
+          "impl": "crypto identical to Perl (accelerator applies to the codec, not crypto)"
+        },
+        {
+          "language": "C#",
+          "ns": 55787984.0,
+          "impl": "System.Security.Cryptography + Konscious native (AEAD/SHA-2/SHA-3/KMAC/PBKDF2/HKDF/Argon2id); librbcrypto shim (P/Invoke) for AES-GCM-SIV/BLAKE3/scrypt/ML-KEM/X25519/ML-DSA/Ed25519/SLH-DSA/Falcon"
+        },
+        {
+          "language": "COBOL",
+          "ns": 57110415.0,
+          "impl": "GnuCOBOL CALL \u2192 C shim over OpenSSL"
+        },
+        {
+          "language": "Node.js",
+          "ns": 57605940.0,
+          "impl": "node:crypto native (AEAD/SHA-2/SHA-3/scrypt/PBKDF2/HKDF/Argon2id); librbcrypto shim (N-API addon) for AES-GCM-SIV/BLAKE3/KMAC/ML-KEM/X25519/ML-DSA/Ed25519/SLH-DSA/Falcon"
+        },
+        {
+          "language": "Pascal",
+          "ns": 57669615.0,
+          "impl": "OpenSSL via FPC external \u2192 C shim"
+        },
+        {
+          "language": "Zig",
+          "ns": 58109605.0,
+          "impl": "std.crypto + librbcrypto shim"
+        },
+        {
+          "language": "Octave",
+          "ns": 58323180.0,
+          "impl": "compiled .oct \u2192 C shim over OpenSSL"
+        },
+        {
+          "language": "Swift",
+          "ns": 58807710.0,
+          "impl": "CryptoKit + librbcrypto shim"
+        },
+        {
+          "language": "Nelua",
+          "ns": 59259905.0,
+          "impl": "compiles to C, OpenSSL via cimport \u2192 C shim"
+        },
+        {
+          "language": "Mojo",
+          "ns": 59373185.0,
+          "impl": "Mojo OwnedDLHandle C-interop \u2192 C shim over OpenSSL"
+        },
+        {
+          "language": "Haskell",
+          "ns": 61427700.0,
+          "impl": "OpenSSL EVP + librbcrypto shim via FFI"
+        },
+        {
+          "language": "Lua",
+          "ns": 61502995.0,
+          "impl": "plain Lua 5.5 (no FFI) C module \u2192 C shim over OpenSSL"
+        },
+        {
+          "language": "Lua (vectorize)",
+          "ns": 61502995.0,
+          "impl": "crypto identical to Lua (accelerator applies to the codec, not crypto)"
+        },
+        {
+          "language": "Kotlin",
+          "ns": 62327503.335,
+          "impl": "JCE + BouncyCastle native; librbcrypto shim (FFM) for AES-GCM-SIV/BLAKE3/scrypt/HKDF/KMAC/ML-KEM/ML-DSA/SLH-DSA/Falcon"
+        },
+        {
+          "language": "Rust",
+          "ns": 62408082.705,
+          "impl": "RustCrypto crates"
+        },
+        {
+          "language": "C",
+          "ns": 62924460.0,
+          "impl": "OpenSSL EVP + libblake3 + liboqs (Falcon)"
+        },
+        {
+          "language": "C++",
+          "ns": 63099843.335,
+          "impl": "OpenSSL EVP + libblake3 + liboqs (Falcon)"
+        },
+        {
+          "language": "Julia",
+          "ns": 64678353.75,
+          "impl": "ccall libcrypto"
+        },
+        {
+          "language": "Python",
+          "ns": 65444113.335,
+          "impl": "pyca/cryptography + blake3 + argon2-cffi native (AEAD incl. GCM-SIV/SHA-2/SHA-3/BLAKE3/Argon2id/scrypt/PBKDF2/HKDF); librbcrypto shim (ctypes) for KMAC/ML-KEM/X25519/ML-DSA/Ed25519/SLH-DSA/Falcon"
+        },
+        {
+          "language": "Python (NumPy)",
+          "ns": 65444113.335,
+          "impl": "crypto identical to Python (accelerator applies to the codec, not crypto)"
+        },
+        {
+          "language": "Python (Cython)",
+          "ns": 65720515.0,
+          "impl": "Cython in-process cdef extern \u2192 C shim over OpenSSL"
+        },
+        {
+          "language": "LuaJIT",
+          "ns": 67060505.0,
+          "impl": "OpenSSL EVP via ffi"
+        },
+        {
+          "language": "Python (PyPy)",
+          "ns": 67481940.0,
+          "impl": "PyPy cffi ABI dlopen \u2192 C shim over OpenSSL"
+        },
+        {
+          "language": "Python (PyPy+NumPy)",
+          "ns": 67481940.0,
+          "impl": "crypto identical to Python (PyPy) (accelerator applies to the codec, not crypto)"
+        },
+        {
+          "language": "Java",
+          "ns": 70071322.085,
+          "impl": "JCE + BouncyCastle native; librbcrypto shim (FFM) for AES-GCM-SIV/BLAKE3/scrypt/HKDF/KMAC/ML-KEM/ML-DSA/SLH-DSA/Falcon"
+        },
+        {
+          "language": "Crystal",
+          "ns": 70655098.96,
+          "impl": "stdlib OpenSSL native (AEAD/SHA-2/SHA-3/PBKDF2/Argon2id); librbcrypto shim (lib binding) for AES-GCM-SIV/BLAKE3/scrypt/HKDF/KMAC/ML-KEM/X25519/ML-DSA/Ed25519/SLH-DSA/Falcon"
+        },
+        {
+          "language": "Fortran",
+          "ns": 71111540.0,
+          "impl": "OpenSSL via iso_c_binding \u2192 C shim"
+        },
+        {
+          "language": "Go",
+          "ns": 78963490.21,
+          "impl": "stdlib"
+        },
+        {
+          "language": "OCaml",
+          "ns": 79536009.795,
+          "impl": "mirage-crypto / digestif / Argon2id native; librbcrypto shim (C stub) for AES-GCM-SIV/BLAKE3/scrypt/PBKDF2/HKDF/KMAC/ML-KEM/X25519/ML-DSA/Ed25519/SLH-DSA/Falcon"
+        },
+        {
+          "language": "Nim",
+          "ns": 81005185.415,
+          "impl": "OpenSSL EVP via FFI"
+        }
+      ]
+    },
+    "Falcon-512": {
+      "kind": "sig",
+      "metric": "ns per sign + verify of a 41-byte message (keypair pre-generated)",
+      "rows": [
+        {
+          "language": "Kotlin",
+          "ns": 112270.21,
+          "impl": "JCE + BouncyCastle native; librbcrypto shim (FFM) for AES-GCM-SIV/BLAKE3/scrypt/HKDF/KMAC/ML-KEM/ML-DSA/SLH-DSA/Falcon"
+        },
+        {
+          "language": "C#",
+          "ns": 113475.0,
+          "impl": "System.Security.Cryptography + Konscious native (AEAD/SHA-2/SHA-3/KMAC/PBKDF2/HKDF/Argon2id); librbcrypto shim (P/Invoke) for AES-GCM-SIV/BLAKE3/scrypt/ML-KEM/X25519/ML-DSA/Ed25519/SLH-DSA/Falcon"
+        },
+        {
+          "language": "Node.js",
+          "ns": 113574.375,
+          "impl": "node:crypto native (AEAD/SHA-2/SHA-3/scrypt/PBKDF2/HKDF/Argon2id); librbcrypto shim (N-API addon) for AES-GCM-SIV/BLAKE3/KMAC/ML-KEM/X25519/ML-DSA/Ed25519/SLH-DSA/Falcon"
+        },
+        {
+          "language": "Ruby",
+          "ns": 113835.0,
+          "impl": "stdlib OpenSSL native (AEAD incl. GCM-SIV/SHA-2/SHA-3/scrypt/PBKDF2/HKDF/Argon2id); librbcrypto shim (Fiddle) for BLAKE3/KMAC/ML-KEM/X25519/ML-DSA/Ed25519/SLH-DSA/Falcon"
+        },
+        {
+          "language": "Ruby (batch)",
+          "ns": 113835.0,
+          "impl": "crypto identical to Ruby (accelerator applies to the codec, not crypto)"
+        },
+        {
+          "language": "Perl",
+          "ns": 114045.0,
+          "impl": "CryptX native (AEAD/SHA-2/SHA-3/PBKDF2/HKDF/Argon2id); librbcrypto shim (FFI::Platypus) for AES-GCM-SIV/BLAKE3/scrypt/KMAC/ML-KEM/X25519/ML-DSA/Ed25519/SLH-DSA/Falcon"
+        },
+        {
+          "language": "Perl (PDL)",
+          "ns": 114045.0,
+          "impl": "crypto identical to Perl (accelerator applies to the codec, not crypto)"
+        },
+        {
+          "language": "COBOL",
+          "ns": 115425.0,
+          "impl": "GnuCOBOL CALL \u2192 C shim over OpenSSL"
+        },
+        {
+          "language": "Zig",
+          "ns": 115965.0,
+          "impl": "std.crypto + librbcrypto shim"
+        },
+        {
+          "language": "C",
+          "ns": 117045.0,
+          "impl": "OpenSSL EVP + libblake3 + liboqs (Falcon)"
+        },
+        {
+          "language": "Mojo",
+          "ns": 117720.0,
+          "impl": "Mojo OwnedDLHandle C-interop \u2192 C shim over OpenSSL"
+        },
+        {
+          "language": "Nelua",
+          "ns": 118325.0,
+          "impl": "compiles to C, OpenSSL via cimport \u2192 C shim"
+        },
+        {
+          "language": "Pascal",
+          "ns": 120890.0,
+          "impl": "OpenSSL via FPC external \u2192 C shim"
+        },
+        {
+          "language": "Swift",
+          "ns": 121660.0,
+          "impl": "CryptoKit + librbcrypto shim"
+        },
+        {
+          "language": "Octave",
+          "ns": 121705.0,
+          "impl": "compiled .oct \u2192 C shim over OpenSSL"
+        },
+        {
+          "language": "C++",
+          "ns": 121950.625,
+          "impl": "OpenSSL EVP + libblake3 + liboqs (Falcon)"
+        },
+        {
+          "language": "LuaJIT",
+          "ns": 125935.0,
+          "impl": "OpenSSL EVP via ffi"
+        },
+        {
+          "language": "Java",
+          "ns": 126509.585,
+          "impl": "JCE + BouncyCastle native; librbcrypto shim (FFM) for AES-GCM-SIV/BLAKE3/scrypt/HKDF/KMAC/ML-KEM/ML-DSA/SLH-DSA/Falcon"
+        },
+        {
+          "language": "Crystal",
+          "ns": 127025.0,
+          "impl": "stdlib OpenSSL native (AEAD/SHA-2/SHA-3/PBKDF2/Argon2id); librbcrypto shim (lib binding) for AES-GCM-SIV/BLAKE3/scrypt/HKDF/KMAC/ML-KEM/X25519/ML-DSA/Ed25519/SLH-DSA/Falcon"
+        },
+        {
+          "language": "Fortran",
+          "ns": 128385.0,
+          "impl": "OpenSSL via iso_c_binding \u2192 C shim"
+        },
+        {
+          "language": "Python",
+          "ns": 129196.665,
+          "impl": "pyca/cryptography + blake3 + argon2-cffi native (AEAD incl. GCM-SIV/SHA-2/SHA-3/BLAKE3/Argon2id/scrypt/PBKDF2/HKDF); librbcrypto shim (ctypes) for KMAC/ML-KEM/X25519/ML-DSA/Ed25519/SLH-DSA/Falcon"
+        },
+        {
+          "language": "Python (NumPy)",
+          "ns": 129196.665,
+          "impl": "crypto identical to Python (accelerator applies to the codec, not crypto)"
+        },
+        {
+          "language": "Lua",
+          "ns": 129700.0,
+          "impl": "plain Lua 5.5 (no FFI) C module \u2192 C shim over OpenSSL"
+        },
+        {
+          "language": "Lua (vectorize)",
+          "ns": 129700.0,
+          "impl": "crypto identical to Lua (accelerator applies to the codec, not crypto)"
+        },
+        {
+          "language": "Python (Cython)",
+          "ns": 130275.0,
+          "impl": "Cython in-process cdef extern \u2192 C shim over OpenSSL"
+        },
+        {
+          "language": "Nim",
+          "ns": 130844.585,
+          "impl": "OpenSSL EVP via FFI"
+        },
+        {
+          "language": "Go",
+          "ns": 131785.205,
+          "impl": "stdlib"
+        },
+        {
+          "language": "Julia",
+          "ns": 134479.165,
+          "impl": "ccall libcrypto"
+        },
+        {
+          "language": "Haskell",
+          "ns": 158670.0,
+          "impl": "OpenSSL EVP + librbcrypto shim via FFI"
+        },
+        {
+          "language": "Rust",
+          "ns": 160294.375,
+          "impl": "RustCrypto crates"
+        },
+        {
+          "language": "OCaml",
+          "ns": 245406.045,
+          "impl": "mirage-crypto / digestif / Argon2id native; librbcrypto shim (C stub) for AES-GCM-SIV/BLAKE3/scrypt/PBKDF2/HKDF/KMAC/ML-KEM/X25519/ML-DSA/Ed25519/SLH-DSA/Falcon"
+        },
+        {
+          "language": "Python (PyPy)",
+          "ns": 370650.0,
+          "impl": "PyPy cffi ABI dlopen \u2192 C shim over OpenSSL"
+        },
+        {
+          "language": "Python (PyPy+NumPy)",
+          "ns": 370650.0,
+          "impl": "crypto identical to Python (PyPy) (accelerator applies to the codec, not crypto)"
+        }
+      ]
+    },
+    "Falcon-1024": {
+      "kind": "sig",
+      "metric": "ns per sign + verify of a 41-byte message (keypair pre-generated)",
+      "rows": [
+        {
+          "language": "Node.js",
+          "ns": 225774.585,
+          "impl": "node:crypto native (AEAD/SHA-2/SHA-3/scrypt/PBKDF2/HKDF/Argon2id); librbcrypto shim (N-API addon) for AES-GCM-SIV/BLAKE3/KMAC/ML-KEM/X25519/ML-DSA/Ed25519/SLH-DSA/Falcon"
+        },
+        {
+          "language": "Perl",
+          "ns": 225880.0,
+          "impl": "CryptX native (AEAD/SHA-2/SHA-3/PBKDF2/HKDF/Argon2id); librbcrypto shim (FFI::Platypus) for AES-GCM-SIV/BLAKE3/scrypt/KMAC/ML-KEM/X25519/ML-DSA/Ed25519/SLH-DSA/Falcon"
+        },
+        {
+          "language": "Perl (PDL)",
+          "ns": 225880.0,
+          "impl": "crypto identical to Perl (accelerator applies to the codec, not crypto)"
+        },
+        {
+          "language": "C",
+          "ns": 225880.0,
+          "impl": "OpenSSL EVP + libblake3 + liboqs (Falcon)"
+        },
+        {
+          "language": "COBOL",
+          "ns": 226340.0,
+          "impl": "GnuCOBOL CALL \u2192 C shim over OpenSSL"
+        },
+        {
+          "language": "C#",
+          "ns": 226514.0,
+          "impl": "System.Security.Cryptography + Konscious native (AEAD/SHA-2/SHA-3/KMAC/PBKDF2/HKDF/Argon2id); librbcrypto shim (P/Invoke) for AES-GCM-SIV/BLAKE3/scrypt/ML-KEM/X25519/ML-DSA/Ed25519/SLH-DSA/Falcon"
+        },
+        {
+          "language": "Zig",
+          "ns": 226775.0,
+          "impl": "std.crypto + librbcrypto shim"
+        },
+        {
+          "language": "Ruby",
+          "ns": 228010.0,
+          "impl": "stdlib OpenSSL native (AEAD incl. GCM-SIV/SHA-2/SHA-3/scrypt/PBKDF2/HKDF/Argon2id); librbcrypto shim (Fiddle) for BLAKE3/KMAC/ML-KEM/X25519/ML-DSA/Ed25519/SLH-DSA/Falcon"
+        },
+        {
+          "language": "Ruby (batch)",
+          "ns": 228010.0,
+          "impl": "crypto identical to Ruby (accelerator applies to the codec, not crypto)"
+        },
+        {
+          "language": "Kotlin",
+          "ns": 229537.08,
+          "impl": "JCE + BouncyCastle native; librbcrypto shim (FFM) for AES-GCM-SIV/BLAKE3/scrypt/HKDF/KMAC/ML-KEM/ML-DSA/SLH-DSA/Falcon"
+        },
+        {
+          "language": "C++",
+          "ns": 233060.21,
+          "impl": "OpenSSL EVP + libblake3 + liboqs (Falcon)"
+        },
+        {
+          "language": "Mojo",
+          "ns": 240360.0,
+          "impl": "Mojo OwnedDLHandle C-interop \u2192 C shim over OpenSSL"
+        },
+        {
+          "language": "Pascal",
+          "ns": 240620.0,
+          "impl": "OpenSSL via FPC external \u2192 C shim"
+        },
+        {
+          "language": "Swift",
+          "ns": 241645.0,
+          "impl": "CryptoKit + librbcrypto shim"
+        },
+        {
+          "language": "Nelua",
+          "ns": 245465.0,
+          "impl": "compiles to C, OpenSSL via cimport \u2192 C shim"
+        },
+        {
+          "language": "Octave",
+          "ns": 246200.0,
+          "impl": "compiled .oct \u2192 C shim over OpenSSL"
+        },
+        {
+          "language": "Go",
+          "ns": 248168.33,
+          "impl": "stdlib"
+        },
+        {
+          "language": "Python",
+          "ns": 252123.125,
+          "impl": "pyca/cryptography + blake3 + argon2-cffi native (AEAD incl. GCM-SIV/SHA-2/SHA-3/BLAKE3/Argon2id/scrypt/PBKDF2/HKDF); librbcrypto shim (ctypes) for KMAC/ML-KEM/X25519/ML-DSA/Ed25519/SLH-DSA/Falcon"
+        },
+        {
+          "language": "Python (NumPy)",
+          "ns": 252123.125,
+          "impl": "crypto identical to Python (accelerator applies to the codec, not crypto)"
+        },
+        {
+          "language": "Fortran",
+          "ns": 252715.0,
+          "impl": "OpenSSL via iso_c_binding \u2192 C shim"
+        },
+        {
+          "language": "Rust",
+          "ns": 253559.79,
+          "impl": "RustCrypto crates"
+        },
+        {
+          "language": "Python (Cython)",
+          "ns": 254480.0,
+          "impl": "Cython in-process cdef extern \u2192 C shim over OpenSSL"
+        },
+        {
+          "language": "Java",
+          "ns": 256234.375,
+          "impl": "JCE + BouncyCastle native; librbcrypto shim (FFM) for AES-GCM-SIV/BLAKE3/scrypt/HKDF/KMAC/ML-KEM/ML-DSA/SLH-DSA/Falcon"
+        },
+        {
+          "language": "LuaJIT",
+          "ns": 260890.0,
+          "impl": "OpenSSL EVP via ffi"
+        },
+        {
+          "language": "Lua",
+          "ns": 266965.0,
+          "impl": "plain Lua 5.5 (no FFI) C module \u2192 C shim over OpenSSL"
+        },
+        {
+          "language": "Lua (vectorize)",
+          "ns": 266965.0,
+          "impl": "crypto identical to Lua (accelerator applies to the codec, not crypto)"
+        },
+        {
+          "language": "Crystal",
+          "ns": 267642.5,
+          "impl": "stdlib OpenSSL native (AEAD/SHA-2/SHA-3/PBKDF2/Argon2id); librbcrypto shim (lib binding) for AES-GCM-SIV/BLAKE3/scrypt/HKDF/KMAC/ML-KEM/X25519/ML-DSA/Ed25519/SLH-DSA/Falcon"
+        },
+        {
+          "language": "Julia",
+          "ns": 276364.585,
+          "impl": "ccall libcrypto"
+        },
+        {
+          "language": "Haskell",
+          "ns": 281040.0,
+          "impl": "OpenSSL EVP + librbcrypto shim via FFI"
+        },
+        {
+          "language": "Nim",
+          "ns": 285574.79,
+          "impl": "OpenSSL EVP via FFI"
+        },
+        {
+          "language": "OCaml",
+          "ns": 411901.04,
+          "impl": "mirage-crypto / digestif / Argon2id native; librbcrypto shim (C stub) for AES-GCM-SIV/BLAKE3/scrypt/PBKDF2/HKDF/KMAC/ML-KEM/X25519/ML-DSA/Ed25519/SLH-DSA/Falcon"
+        },
+        {
+          "language": "Python (PyPy)",
+          "ns": 529305.0,
+          "impl": "PyPy cffi ABI dlopen \u2192 C shim over OpenSSL"
+        },
+        {
+          "language": "Python (PyPy+NumPy)",
+          "ns": 529305.0,
+          "impl": "crypto identical to Python (PyPy) (accelerator applies to the codec, not crypto)"
         }
       ]
     }

@@ -1007,14 +1007,17 @@ def _crypto_matrix_section():
   <p class='sec-eyebrow'>crypto · every primitive · every language · grouped by technique</p>
   <h2 class='title'>The crypto matrix</h2>
   <p class='sec-lede'>robobus is a post-quantum bus, so its crypto is a whole suite, not one cipher.
-  Here is every primitive it uses, measured in every language that can do it natively — <b>grouped
-  per technique</b> so each bar chart is a coherent apples-to-apples comparison (identical workload,
-  languages ranked fastest first). The <b>AEAD</b> and <b>hash</b> groups are each language's
-  native-maximum stack (stdlib where it exists, else the platform OpenSSL through the language's FFI).
-  The <b>post-quantum</b> groups have essentially no native per-language implementations, so they show
-  the real distinct backends instead — <b>OpenSSL&nbsp;3.6.3 EVP</b>, <b>liboqs</b>, and Go's native
-  pure-Go <b>crypto/mlkem</b> — a genuine implementation comparison; every language reaches the
-  OpenSSL/liboqs numbers via FFI at ~the same cost (see the FFI-bindings section).</p>
+  This is the <b>complete</b> grid — every one of the <b>26 primitives</b>
+  robobus uses (AEAD ciphers, SHA-2/SHA-3/BLAKE3 hashes, Argon2id/scrypt/PBKDF2/HKDF/KMAC KDFs, ML-KEM +
+  X25519 KEMs, and ML-DSA/SLH-DSA/Falcon + Ed25519 signatures) measured in <b>every one of the 33
+  language configs</b>, <b>grouped per technique</b> so each bar chart is a coherent apples-to-apples
+  comparison (identical workload, ranked fastest first). Each language uses its <b>native-maximum
+  stack</b> where it has one (stdlib, CryptoKit/JCE, RustCrypto, OpenSSL via its own FFI…); where a
+  language has no native implementation — most of the SHA-3, BLAKE3, PQC and classical-curve cells —
+  it reaches the primitive through one labeled C shim over OpenSSL&nbsp;3.6.3&nbsp;+&nbsp;liboqs&nbsp;+
+  &nbsp;libblake3, so <b>no cell is empty</b>. The post-quantum groups also carry the distinct backends
+  (<b>OpenSSL&nbsp;EVP</b>, <b>liboqs</b>, Go's native <b>crypto/mlkem</b>) for an implementation-quality
+  comparison. Argon2id is known-answer-verified in every language.</p>
   {"".join(blocks)}
   <p class='sec-lede' style='margin-top:16px'>{html.escape(cm.get('note',''))}</p>
 </div></section>"""
