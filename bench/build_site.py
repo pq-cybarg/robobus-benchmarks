@@ -1062,29 +1062,68 @@ def speed():
   {_hbars(rows, lambda v: 'tier-n' if v > 2e6 else 'tier-j' if v > 3e5 else 'tier-i')}
 </div></section>"""
 
-    # 3) transport throughput
+    # 3) transport throughput — grouped by category, with the per-transport methodology note surfaced
     sec3 = ""
     if tm:
-        okr = [r for r in tm["results"] if r["status"] == "ok" and r["metrics"].get("ops_per_s")]
-        okr.sort(key=lambda r: -r["metrics"]["ops_per_s"])
-        trows = "".join(
-            f"<tr><td>{html.escape(r['name'])}</td><td class='reg'>{html.escape(r['dependency'])}</td>"
-            f"<td class='n'>{r['metrics']['ops_per_s']:,.0f}</td>"
-            f"<td class='n'>{r['metrics']['mb_per_s']:.1f}</td>"
-            f"<td class='n'>{(str(round(r['metrics']['p50_ns']/1000,1))+' µs') if r['metrics'].get('p50_ns') else '—'}</td></tr>"
-            for r in okr)
-        skr = "".join(
-            f"<tr class='speed-skip'><td>{html.escape(r['name'])}</td><td colspan='4'>{html.escape(r['note'])}</td></tr>"
-            for r in tm["results"] if r["status"] != "ok")
-        sec3 = f"""<section><div class='wrap'>
+        cat_of = {
+            "Shared-memory bus": "kernel", "UDP": "kernel", "TCP": "kernel", "Serial": "kernel", "CAN": "kernel",
+            "Zenoh": "broker", "MQTT": "broker", "AMQP": "broker", "Kafka": "broker", "ZeroCM": "broker", "LSL": "broker",
+            "DDS": "ros", "ROS 2": "ros", "ROS 2 (C++)": "ros", "ROS 1": "ros",
+        }
+        cats = [("kernel", "Kernel &amp; in-process",
+                 "The OS's own loopback ceiling — no broker, no discovery. This is the floor every "
+                 "higher-level transport builds on."),
+                ("broker", "Pub/sub brokers &amp; streaming",
+                 "A real broker/router relays each frame. Numbers include the broker round-trip on the "
+                 "same host; each row's note gives the broker, QoS, and delivery count."),
+                ("ros", "Robotics middleware · DDS &amp; ROS",
+                 "The DDS data bus and the ROS graphs on top of it. DDS throughput is the stock data "
+                 "plane; robobus's PQC-DDS patches secure the handshake (measured separately). ROS 2 "
+                 "shows both the flexible Python path and its true C++ ceiling.")]
+
+        def _cell(r):
+            m = r["metrics"]
+            lat = (str(round(m['p50_ns'] / 1000, 1)) + ' µs') if m.get('p50_ns') else '—'
+            if r["status"] == "ok" and m.get("ops_per_s"):
+                head = (f"<tr class='xr'><td class='xn'>{html.escape(r['name'])}</td>"
+                        f"<td class='reg'>{html.escape(r['dependency'])}</td>"
+                        f"<td class='n'>{m['ops_per_s']:,.0f}</td><td class='n'>{m['mb_per_s']:.1f}</td>"
+                        f"<td class='n'>{lat}</td></tr>")
+            else:
+                head = (f"<tr class='xr speed-skip'><td class='xn'>{html.escape(r['name'])}</td>"
+                        f"<td class='reg'>{html.escape(r.get('dependency',''))}</td>"
+                        f"<td class='n' colspan='3'>not provisioned</td></tr>")
+            note = html.escape(r.get("note", ""))
+            det = f"<tr class='xd'><td colspan='5'>{note}</td></tr>" if note else ""
+            return head + det
+        by = {c: [] for c, _, _ in cats}
+        for r in tm["results"]:
+            by.get(cat_of.get(r["name"], "broker"), by["broker"]).append(r)
+        blocks = ""
+        for cid, ctitle, cdesc in cats:
+            rows = sorted(by[cid], key=lambda r: -(r["metrics"].get("ops_per_s") or -1))
+            if not rows:
+                continue
+            blocks += (f"<div class='xcat'><h3 class='xcat-t'>{ctitle}</h3>"
+                       f"<p class='xcat-d'>{cdesc}</p><div style='overflow-x:auto'><table class='ltab xtab'>"
+                       f"<thead><tr><th>Transport</th><th>Backend</th><th>frames/s</th><th>MB/s</th>"
+                       f"<th>lat p50</th></tr></thead><tbody>{''.join(_cell(r) for r in rows)}</tbody>"
+                       f"</table></div></div>")
+        css = ("<style>.xcat{margin:24px 0}.xcat-t{font:600 15px/1.3 'Inter';color:var(--signal);margin:0 0 4px}"
+               ".xcat-d{font:400 13px/1.55 'Inter';color:var(--muted);margin:0 0 10px;max-width:70ch}"
+               ".xtab .xr td{border-bottom:none}.xtab .xn{font-weight:600}"
+               ".xtab .xd td{border-top:none;padding:2px 10px 12px;font:400 11.5px/1.5 'JetBrains Mono';"
+               "color:var(--muted);white-space:normal}</style>")
+        nmeas = sum(1 for r in tm["results"] if r["status"] == "ok")
+        sec3 = f"""<section><div class='wrap'>{css}
   <p class='sec-eyebrow'>transports · throughput</p>
   <h2 class='title'>Every transport, moving a sealed frame</h2>
   <p class='sec-lede'>Sustained one-way throughput of the {tm['frame_bytes']}-byte AES-256-GCM sealed
-  robobus frame over each transport, loopback on one host (the transport's software ceiling).
-  Rows still being provisioned on this host show why.</p>
-  <div style='overflow-x:auto'><table class='ltab'>
-  <thead><tr><th>Transport</th><th>Backend</th><th>frames/s</th><th>MB/s</th><th>lat p50</th></tr></thead>
-  <tbody>{trows}{skr}</tbody></table></div>
+  robobus frame over each transport, loopback on one host — the transport's software ceiling.
+  <b>All {nmeas} transports measured</b>, grouped by kind; every row carries the exact backend, QoS,
+  and delivery count it was measured with. (Throughput is jittery on a shared laptop; each figure is a
+  real single run, methodology in its note.)</p>
+  {blocks}
 </div></section>"""
 
     # 4) transport × language grid (heatmap)
