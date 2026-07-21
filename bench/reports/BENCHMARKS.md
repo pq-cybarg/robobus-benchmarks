@@ -4,7 +4,7 @@
 
 > ⚠️ **Platform caveat.** These figures were measured **on macOS only** so far. They are inherently CPU-, OS- and build-specific and are **not** portable claims. The value here is the *method*: the identical script is designed to run on macOS, Windows, every supported Linux, Android and iOS, skipping only what a given platform lacks. Re-run it on each target to populate that platform's column.
 
-_Generated 2026-07-21 19:46 UTC from `bench/results/latest-*.json`._
+_Generated 2026-07-21 21:56 UTC from `bench/results/latest-*.json`._
 
 ## Platforms measured
 
@@ -272,12 +272,12 @@ Optional backends unlock more rows: `cryptography` (AEAD, ECDH, classical signat
 
 | Algorithm | Config | Class | Throughput / rate | p50 | p99 | Status |
 |---|---|---|---|---|---|---|
-| `ring put+get, amortized 1-core` | realtime=off, clock_ns_per_tick=1.0 | — | 489,132,400 ops/s (2.0 ns/op) | — | — | ok · pure ring op cost; clock CLOCK_MONOTONIC_RAW res 1.0 ns |
-| `cross-thread one-way latency` | realtime=off, ipc=fork+mmap(MAP_SHARED), warmup_msgs=20000 | — | 85.0 ns | 85.0 ns | 105.0 ns | ok · 99.0% <100 ns; max at 52% of run (mid-run scheduler jitter); no RT |
-| `cross-process one-way latency` | realtime=off, ipc=fork+mmap(MAP_SHARED), warmup_msgs=20000 | — | 87.0 ns | 87.0 ns | 148.0 ns | ok · 98.8% <100 ns; max at 16% of run (mid-run scheduler jitter); no RT |
-| `ring put+get, amortized 1-core (RT)` | realtime=on, clock_ns_per_tick=1.0 | — | 478,392,900 ops/s (2.1 ns/op) | — | — | ok · pure ring op cost; clock CLOCK_MONOTONIC_RAW res 1.0 ns |
-| `cross-thread one-way latency (RT)` | realtime=on, ipc=fork+mmap(MAP_SHARED), warmup_msgs=20000 | — | 87.0 ns | 87.0 ns | 98.0 ns | ok · 99.2% <100 ns; max at 8% of run (mid-run scheduler jitter); RT hardened |
-| `cross-process one-way latency (RT)` | realtime=on, ipc=fork+mmap(MAP_SHARED), warmup_msgs=20000 | — | 105.0 ns | 105.0 ns | 115.0 ns | ok · 48.3% <100 ns; max at 0% of run (cold-start residue); RT hardened |
+| `ring put+get, amortized 1-core` | realtime=off, clock_ns_per_tick=1.0 | — | 488,038,200 ops/s (2.0 ns/op) | — | — | ok · pure ring op cost; clock CLOCK_MONOTONIC_RAW res 1.0 ns |
+| `cross-thread one-way latency` | realtime=off, ipc=fork+mmap(MAP_SHARED), warmup_msgs=20000 | — | 90.0 ns | 90.0 ns | 101.0 ns | ok · 82.9% <100 ns; max at 16% of run (mid-run scheduler jitter); no RT |
+| `cross-process one-way latency` | realtime=off, ipc=fork+mmap(MAP_SHARED), warmup_msgs=20000 | — | 86.0 ns | 86.0 ns | 97.0 ns | ok · 99.1% <100 ns; max at 99% of run (mid-run scheduler jitter); no RT |
+| `ring put+get, amortized 1-core (RT)` | realtime=on, clock_ns_per_tick=1.0 | — | 491,039,900 ops/s (2.0 ns/op) | — | — | ok · pure ring op cost; clock CLOCK_MONOTONIC_RAW res 1.0 ns |
+| `cross-thread one-way latency (RT)` | realtime=on, ipc=fork+mmap(MAP_SHARED), warmup_msgs=20000 | — | 63.0 ns | 63.0 ns | 73.0 ns | ok · 99.6% <100 ns; max at 91% of run (mid-run scheduler jitter); RT hardened |
+| `cross-process one-way latency (RT)` | realtime=on, ipc=fork+mmap(MAP_SHARED), warmup_msgs=20000 | — | 90.0 ns | 90.0 ns | 101.0 ns | ok · 82.7% <100 ns; max at 95% of run (mid-run scheduler jitter); RT hardened |
 
 **Windows · AMD64**
 
@@ -332,19 +332,19 @@ Optional backends unlock more rows: `cryptography` (AEAD, ECDH, classical signat
 
 | Algorithm | Config | Class | Throughput / rate | p50 | p99 | Status |
 |---|---|---|---|---|---|---|
-| `X25519` | op=keygen | classical | 27,615 ops/s | 35.38 µs | 46.79 µs | ok |
-| `X25519` | op=derive | classical | 27,804 ops/s | 35.31 µs | 43.87 µs | ok |
-| `ECDH-P256` | op=keygen | classical | 64,670 ops/s | 14.86 µs | 26.68 µs | ok |
-| `ECDH-P256` | op=derive | classical | 18,014 ops/s | 53.55 µs | 75.50 µs | ok |
-| `ML-KEM-512` | op=keygen | PQC | 45,396 ops/s | 21.07 µs | 36.01 µs | ok |
-| `ML-KEM-512` | op=encapsulate | PQC | 43,698 ops/s | 21.99 µs | 37.48 µs | ok |
-| `ML-KEM-512` | op=decapsulate | PQC | 64,812 ops/s | 14.94 µs | 25.14 µs | ok |
-| `ML-KEM-768` | op=keygen | PQC | 35,109 ops/s | 27.42 µs | 43.12 µs | ok |
-| `ML-KEM-768` | op=encapsulate | PQC | 33,717 ops/s | 28.52 µs | 44.98 µs | ok |
-| `ML-KEM-768` | op=decapsulate | PQC | 42,604 ops/s | 22.80 µs | 33.55 µs | ok |
-| `ML-KEM-1024` | op=keygen | PQC | 28,789 ops/s | 33.50 µs | 49.64 µs | ok |
-| `ML-KEM-1024` | op=encapsulate | PQC | 28,097 ops/s | 34.36 µs | 50.69 µs | ok |
-| `ML-KEM-1024` | op=decapsulate | PQC | 32,629 ops/s | 29.93 µs | 40.36 µs | ok |
+| `X25519` | op=keygen | classical | 27,572 ops/s | 35.40 µs | 47.46 µs | ok |
+| `X25519` | op=derive | classical | 28,045 ops/s | 34.85 µs | 44.14 µs | ok |
+| `ECDH-P256` | op=keygen | classical | 53,833 ops/s | 15.19 µs | 26.71 µs | ok |
+| `ECDH-P256` | op=derive | classical | 16,652 ops/s | 54.25 µs | 89.93 µs | ok |
+| `ML-KEM-512` | op=keygen | PQC | 46,039 ops/s | 20.85 µs | 35.69 µs | ok |
+| `ML-KEM-512` | op=encapsulate | PQC | 44,112 ops/s | 21.89 µs | 36.35 µs | ok |
+| `ML-KEM-512` | op=decapsulate | PQC | 65,033 ops/s | 14.87 µs | 25.14 µs | ok |
+| `ML-KEM-768` | op=keygen | PQC | 35,346 ops/s | 27.28 µs | 42.17 µs | ok |
+| `ML-KEM-768` | op=encapsulate | PQC | 34,618 ops/s | 27.89 µs | 43.07 µs | ok |
+| `ML-KEM-768` | op=decapsulate | PQC | 44,519 ops/s | 21.86 µs | 32.22 µs | ok |
+| `ML-KEM-1024` | op=keygen | PQC | 28,859 ops/s | 33.52 µs | 47.94 µs | ok |
+| `ML-KEM-1024` | op=encapsulate | PQC | 28,263 ops/s | 34.23 µs | 49.73 µs | ok |
+| `ML-KEM-1024` | op=decapsulate | PQC | 33,085 ops/s | 29.52 µs | 40.01 µs | ok |
 
 **Windows · AMD64**
 
@@ -384,8 +384,8 @@ Optional backends unlock more rows: `cryptography` (AEAD, ECDH, classical signat
 
 | Algorithm | Config | Class | Throughput / rate | p50 | p99 | Status |
 |---|---|---|---|---|---|---|
-| `ECDH-P256+ML-KEM-768` | op=full_two_party_handshake | HYBRID | 3,257 handshakes/s | 299.97 µs | 343.41 µs | ok · ECDH P-256 + ML-KEM encaps/decaps + HKDF-SHA384 combine, both parties |
-| `ECDH-P256+ML-KEM-1024` | op=full_two_party_handshake | HYBRID | 3,045 handshakes/s | 320.83 µs | 368.55 µs | ok · ECDH P-256 + ML-KEM encaps/decaps + HKDF-SHA384 combine, both parties |
+| `ECDH-P256+ML-KEM-768` | op=full_two_party_handshake | HYBRID | 3,244 handshakes/s | 300.94 µs | 337.14 µs | ok · ECDH P-256 + ML-KEM encaps/decaps + HKDF-SHA384 combine, both parties |
+| `ECDH-P256+ML-KEM-1024` | op=full_two_party_handshake | HYBRID | 3,038 handshakes/s | 321.33 µs | 381.78 µs | ok · ECDH P-256 + ML-KEM encaps/decaps + HKDF-SHA384 combine, both parties |
 
 **Windows · AMD64**
 
@@ -418,9 +418,9 @@ Optional backends unlock more rows: `cryptography` (AEAD, ECDH, classical signat
 
 | Algorithm | Config | Class | Throughput / rate | p50 | p99 | Status |
 |---|---|---|---|---|---|---|
-| `NIST-1 (ML-KEM-512 + ML-DSA-44)` | op=full_authenticated_handshake | PQC | 1,401 handshakes/s | 693.83 µs | 1.02 ms | ok · 3 sign + 3 verify + ML-KEM + 2 ECDH + 2 HKDF, both parties; identities provisioned out-of-band (not timed); isolated from DDS transport |
-| `NIST-3 (ML-KEM-768 + ML-DSA-65)` | op=full_authenticated_handshake | PQC | 1,049 handshakes/s | 918.84 µs | 1.42 ms | ok · 3 sign + 3 verify + ML-KEM + 2 ECDH + 2 HKDF, both parties; identities provisioned out-of-band (not timed); isolated from DDS transport |
-| `CNSA 2.0 / NIST-5 (ML-KEM-1024 + ML-DSA-87)` | op=full_authenticated_handshake | PQC | 848.8 handshakes/s | 1.17 ms | 1.45 ms | ok · 3 sign + 3 verify + ML-KEM + 2 ECDH + 2 HKDF, both parties; identities provisioned out-of-band (not timed); isolated from DDS transport |
+| `NIST-1 (ML-KEM-512 + ML-DSA-44)` | op=full_authenticated_handshake | PQC | 1,406 handshakes/s | 693.41 µs | 978.14 µs | ok · 3 sign + 3 verify + ML-KEM + 2 ECDH + 2 HKDF, both parties; identities provisioned out-of-band (not timed); isolated from DDS transport |
+| `NIST-3 (ML-KEM-768 + ML-DSA-65)` | op=full_authenticated_handshake | PQC | 1,029 handshakes/s | 949.58 µs | 1.32 ms | ok · 3 sign + 3 verify + ML-KEM + 2 ECDH + 2 HKDF, both parties; identities provisioned out-of-band (not timed); isolated from DDS transport |
+| `CNSA 2.0 / NIST-5 (ML-KEM-1024 + ML-DSA-87)` | op=full_authenticated_handshake | PQC | 830.9 handshakes/s | 1.19 ms | 1.57 ms | ok · 3 sign + 3 verify + ML-KEM + 2 ECDH + 2 HKDF, both parties; identities provisioned out-of-band (not timed); isolated from DDS transport |
 | `key agreement only — hybrid ECDH+ML-KEM rekey (no identity sig)` | note=see hybrid_kem | HYBRID | — | — | — | ok · the recurring/rekey cost is the hybrid_kem group: ~128 µs (ECDH+ML-KEM+HKDF, no signatures) |
 
 **Windows · AMD64**
@@ -480,22 +480,22 @@ Optional backends unlock more rows: `cryptography` (AEAD, ECDH, classical signat
 
 | Algorithm | Config | Class | Throughput / rate | p50 | p99 | Status |
 |---|---|---|---|---|---|---|
-| `Ed25519` | op=keygen | classical | 27,549 ops/s | 35.52 µs | 45.42 µs | ok |
-| `Ed25519` | op=sign | classical | 25,947 ops/s | 37.79 µs | 47.15 µs | ok |
-| `Ed25519` | op=verify | classical | 8,406 ops/s | 117.37 µs | 129.09 µs | ok |
-| `ECDSA-P256` | op=sign | classical | 34,395 ops/s | 27.98 µs | 42.67 µs | ok |
-| `ECDSA-P256` | op=verify | classical | 13,543 ops/s | 72.00 µs | 87.86 µs | ok |
-| `RSA-3072-PSS` | op=sign | classical | 492.3 ops/s | 2.01 ms | 2.63 ms | ok |
-| `RSA-3072-PSS` | op=verify | classical | 20,030 ops/s | 48.74 µs | 61.91 µs | ok |
-| `ML-DSA-44` | op=keygen | PQC | 22,859 ops/s | 42.49 µs | 58.00 µs | ok |
-| `ML-DSA-44` | op=sign | PQC | 11,630 ops/s | 71.39 µs | 232.47 µs | ok |
-| `ML-DSA-44` | op=verify | PQC | 22,428 ops/s | 43.48 µs | 57.01 µs | ok |
-| `ML-DSA-65` | op=keygen | PQC | 14,844 ops/s | 65.47 µs | 81.94 µs | ok |
-| `ML-DSA-65` | op=sign | PQC | 7,387 ops/s | 112.33 µs | 406.46 µs | ok |
-| `ML-DSA-65` | op=verify | PQC | 15,114 ops/s | 64.68 µs | 78.76 µs | ok |
-| `ML-DSA-87` | op=keygen | PQC | 9,894 ops/s | 98.75 µs | 116.63 µs | ok |
-| `ML-DSA-87` | op=sign | PQC | 6,057 ops/s | 144.29 µs | 403.92 µs | ok |
-| `ML-DSA-87` | op=verify | PQC | 10,067 ops/s | 96.70 µs | 127.26 µs | ok |
+| `Ed25519` | op=keygen | classical | 27,612 ops/s | 35.50 µs | 45.17 µs | ok |
+| `Ed25519` | op=sign | classical | 25,945 ops/s | 37.74 µs | 47.45 µs | ok |
+| `Ed25519` | op=verify | classical | 8,445 ops/s | 116.69 µs | 131.80 µs | ok |
+| `ECDSA-P256` | op=sign | classical | 33,508 ops/s | 28.81 µs | 43.04 µs | ok |
+| `ECDSA-P256` | op=verify | classical | 13,472 ops/s | 72.60 µs | 86.60 µs | ok |
+| `RSA-3072-PSS` | op=sign | classical | 492.7 ops/s | 2.01 ms | 2.61 ms | ok |
+| `RSA-3072-PSS` | op=verify | classical | 19,966 ops/s | 48.87 µs | 61.69 µs | ok |
+| `ML-DSA-44` | op=keygen | PQC | 22,862 ops/s | 42.54 µs | 57.26 µs | ok |
+| `ML-DSA-44` | op=sign | PQC | 11,644 ops/s | 70.70 µs | 243.65 µs | ok |
+| `ML-DSA-44` | op=verify | PQC | 22,393 ops/s | 42.85 µs | 74.31 µs | ok |
+| `ML-DSA-65` | op=keygen | PQC | 14,871 ops/s | 65.52 µs | 81.08 µs | ok |
+| `ML-DSA-65` | op=sign | PQC | 7,438 ops/s | 113.27 µs | 388.34 µs | ok |
+| `ML-DSA-65` | op=verify | PQC | 15,269 ops/s | 64.02 µs | 77.78 µs | ok |
+| `ML-DSA-87` | op=keygen | PQC | 9,913 ops/s | 98.42 µs | 120.49 µs | ok |
+| `ML-DSA-87` | op=sign | PQC | 5,898 ops/s | 146.53 µs | 434.14 µs | ok |
+| `ML-DSA-87` | op=verify | PQC | 10,215 ops/s | 95.82 µs | 111.33 µs | ok |
 
 **Windows · AMD64**
 
@@ -582,23 +582,23 @@ Optional backends unlock more rows: `cryptography` (AEAD, ECDH, classical signat
 
 | Algorithm | Config | Class | Throughput / rate | Status |
 |---|---|---|---|---|
-| `AES-256-GCM` | op=encrypt, input_bytes=64 | QR | 74 MB/s | ok · AES-256 → NIST Level 5, CNSA 2.0 (Grover leaves 128-bit) |
+| `AES-256-GCM` | op=encrypt, input_bytes=64 | QR | 73 MB/s | ok · AES-256 → NIST Level 5, CNSA 2.0 (Grover leaves 128-bit) |
 | `AES-256-GCM` | op=decrypt, input_bytes=64 | QR | 75 MB/s | ok · AES-256 → NIST Level 5, CNSA 2.0 (Grover leaves 128-bit) |
-| `AES-256-GCM` | op=encrypt, input_bytes=1024 | QR | 842 MB/s | ok · AES-256 → NIST Level 5, CNSA 2.0 (Grover leaves 128-bit) |
+| `AES-256-GCM` | op=encrypt, input_bytes=1024 | QR | 844 MB/s | ok · AES-256 → NIST Level 5, CNSA 2.0 (Grover leaves 128-bit) |
 | `AES-256-GCM` | op=decrypt, input_bytes=1024 | QR | 857 MB/s | ok · AES-256 → NIST Level 5, CNSA 2.0 (Grover leaves 128-bit) |
-| `AES-256-GCM` | op=encrypt, input_bytes=65536 | QR | 3,591 MB/s | ok · AES-256 → NIST Level 5, CNSA 2.0 (Grover leaves 128-bit) |
-| `AES-256-GCM` | op=decrypt, input_bytes=65536 | QR | 3,611 MB/s | ok · AES-256 → NIST Level 5, CNSA 2.0 (Grover leaves 128-bit) |
+| `AES-256-GCM` | op=encrypt, input_bytes=65536 | QR | 3,604 MB/s | ok · AES-256 → NIST Level 5, CNSA 2.0 (Grover leaves 128-bit) |
+| `AES-256-GCM` | op=decrypt, input_bytes=65536 | QR | 3,615 MB/s | ok · AES-256 → NIST Level 5, CNSA 2.0 (Grover leaves 128-bit) |
 | `AES-128-GCM` | op=encrypt, input_bytes=64 | QR | 73 MB/s | ok · AES-128 → NIST Level 1 — the QR floor (128-bit; Grover→64-bit); below CNSA 2.0 |
-| `AES-128-GCM` | op=decrypt, input_bytes=64 | QR | 75 MB/s | ok · AES-128 → NIST Level 1 — the QR floor (128-bit; Grover→64-bit); below CNSA 2.0 |
-| `AES-128-GCM` | op=encrypt, input_bytes=1024 | QR | 865 MB/s | ok · AES-128 → NIST Level 1 — the QR floor (128-bit; Grover→64-bit); below CNSA 2.0 |
-| `AES-128-GCM` | op=decrypt, input_bytes=1024 | QR | 877 MB/s | ok · AES-128 → NIST Level 1 — the QR floor (128-bit; Grover→64-bit); below CNSA 2.0 |
-| `AES-128-GCM` | op=encrypt, input_bytes=65536 | QR | 3,842 MB/s | ok · AES-128 → NIST Level 1 — the QR floor (128-bit; Grover→64-bit); below CNSA 2.0 |
-| `AES-128-GCM` | op=decrypt, input_bytes=65536 | QR | 3,865 MB/s | ok · AES-128 → NIST Level 1 — the QR floor (128-bit; Grover→64-bit); below CNSA 2.0 |
-| `ChaCha20-Poly1305` | op=encrypt, input_bytes=64 | QR | 61 MB/s | ok · one-time Wegman-Carter MAC (with ChaCha20) |
-| `ChaCha20-Poly1305` | op=decrypt, input_bytes=64 | QR | 62 MB/s | ok · one-time Wegman-Carter MAC (with ChaCha20) |
-| `ChaCha20-Poly1305` | op=encrypt, input_bytes=1024 | QR | 673 MB/s | ok · one-time Wegman-Carter MAC (with ChaCha20) |
-| `ChaCha20-Poly1305` | op=decrypt, input_bytes=1024 | QR | 672 MB/s | ok · one-time Wegman-Carter MAC (with ChaCha20) |
-| `ChaCha20-Poly1305` | op=encrypt, input_bytes=65536 | QR | 2,059 MB/s | ok · one-time Wegman-Carter MAC (with ChaCha20) |
+| `AES-128-GCM` | op=decrypt, input_bytes=64 | QR | 74 MB/s | ok · AES-128 → NIST Level 1 — the QR floor (128-bit; Grover→64-bit); below CNSA 2.0 |
+| `AES-128-GCM` | op=encrypt, input_bytes=1024 | QR | 864 MB/s | ok · AES-128 → NIST Level 1 — the QR floor (128-bit; Grover→64-bit); below CNSA 2.0 |
+| `AES-128-GCM` | op=decrypt, input_bytes=1024 | QR | 872 MB/s | ok · AES-128 → NIST Level 1 — the QR floor (128-bit; Grover→64-bit); below CNSA 2.0 |
+| `AES-128-GCM` | op=encrypt, input_bytes=65536 | QR | 3,855 MB/s | ok · AES-128 → NIST Level 1 — the QR floor (128-bit; Grover→64-bit); below CNSA 2.0 |
+| `AES-128-GCM` | op=decrypt, input_bytes=65536 | QR | 3,866 MB/s | ok · AES-128 → NIST Level 1 — the QR floor (128-bit; Grover→64-bit); below CNSA 2.0 |
+| `ChaCha20-Poly1305` | op=encrypt, input_bytes=64 | QR | 60 MB/s | ok · one-time Wegman-Carter MAC (with ChaCha20) |
+| `ChaCha20-Poly1305` | op=decrypt, input_bytes=64 | QR | 61 MB/s | ok · one-time Wegman-Carter MAC (with ChaCha20) |
+| `ChaCha20-Poly1305` | op=encrypt, input_bytes=1024 | QR | 672 MB/s | ok · one-time Wegman-Carter MAC (with ChaCha20) |
+| `ChaCha20-Poly1305` | op=decrypt, input_bytes=1024 | QR | 668 MB/s | ok · one-time Wegman-Carter MAC (with ChaCha20) |
+| `ChaCha20-Poly1305` | op=encrypt, input_bytes=65536 | QR | 2,007 MB/s | ok · one-time Wegman-Carter MAC (with ChaCha20) |
 | `ChaCha20-Poly1305` | op=decrypt, input_bytes=65536 | QR | 2,079 MB/s | ok · one-time Wegman-Carter MAC (with ChaCha20) |
 
 **Windows · AMD64**
@@ -701,29 +701,29 @@ Optional backends unlock more rows: `cryptography` (AEAD, ECDH, classical signat
 
 | Algorithm | Config | Class | Throughput / rate | Status |
 |---|---|---|---|---|
-| `sha256` | input_bytes=64 | QR | 67 MB/s | ok · Merkle-Damgard — length-extendable (key via HMAC) · SHA-256 → NIST Level 2 collision; below CNSA 2.0's SHA-384 |
-| `sha256` | input_bytes=1024 | QR | 652 MB/s | ok · Merkle-Damgard — length-extendable (key via HMAC) · SHA-256 → NIST Level 2 collision; below CNSA 2.0's SHA-384 |
+| `sha256` | input_bytes=64 | QR | 66 MB/s | ok · Merkle-Damgard — length-extendable (key via HMAC) · SHA-256 → NIST Level 2 collision; below CNSA 2.0's SHA-384 |
+| `sha256` | input_bytes=1024 | QR | 656 MB/s | ok · Merkle-Damgard — length-extendable (key via HMAC) · SHA-256 → NIST Level 2 collision; below CNSA 2.0's SHA-384 |
 | `sha256` | input_bytes=65536 | QR | 1,551 MB/s | ok · Merkle-Damgard — length-extendable (key via HMAC) · SHA-256 → NIST Level 2 collision; below CNSA 2.0's SHA-384 |
 | `sha384` | input_bytes=64 | QR | 56 MB/s | ok · Merkle-Damgard — length-extendable (key via HMAC) · SHA-384 → NIST Level 4 collision, CNSA 2.0 |
-| `sha384` | input_bytes=1024 | QR | 405 MB/s | ok · Merkle-Damgard — length-extendable (key via HMAC) · SHA-384 → NIST Level 4 collision, CNSA 2.0 |
-| `sha384` | input_bytes=65536 | QR | 748 MB/s | ok · Merkle-Damgard — length-extendable (key via HMAC) · SHA-384 → NIST Level 4 collision, CNSA 2.0 |
+| `sha384` | input_bytes=1024 | QR | 396 MB/s | ok · Merkle-Damgard — length-extendable (key via HMAC) · SHA-384 → NIST Level 4 collision, CNSA 2.0 |
+| `sha384` | input_bytes=65536 | QR | 747 MB/s | ok · Merkle-Damgard — length-extendable (key via HMAC) · SHA-384 → NIST Level 4 collision, CNSA 2.0 |
 | `sha512` | input_bytes=64 | QR | 56 MB/s | ok · Merkle-Damgard — length-extendable (key via HMAC) · 512-bit — CNSA 2.0-grade |
-| `sha512` | input_bytes=1024 | QR | 401 MB/s | ok · Merkle-Damgard — length-extendable (key via HMAC) · 512-bit — CNSA 2.0-grade |
-| `sha512` | input_bytes=65536 | QR | 746 MB/s | ok · Merkle-Damgard — length-extendable (key via HMAC) · 512-bit — CNSA 2.0-grade |
-| `sha3_256` | input_bytes=64 | QR | 49 MB/s | ok · Keccak sponge — length-extension-immune, design-diverse from SHA-2 · SHA-256 → NIST Level 2 collision; below CNSA 2.0's SHA-384 |
-| `sha3_256` | input_bytes=1024 | QR | 296 MB/s | ok · Keccak sponge — length-extension-immune, design-diverse from SHA-2 · SHA-256 → NIST Level 2 collision; below CNSA 2.0's SHA-384 |
-| `sha3_256` | input_bytes=65536 | QR | 426 MB/s | ok · Keccak sponge — length-extension-immune, design-diverse from SHA-2 · SHA-256 → NIST Level 2 collision; below CNSA 2.0's SHA-384 |
-| `sha3_512` | input_bytes=64 | QR | 48 MB/s | ok · Keccak sponge — length-extension-immune, design-diverse from SHA-2 · 512-bit — CNSA 2.0-grade |
-| `sha3_512` | input_bytes=1024 | QR | 185 MB/s | ok · Keccak sponge — length-extension-immune, design-diverse from SHA-2 · 512-bit — CNSA 2.0-grade |
+| `sha512` | input_bytes=1024 | QR | 405 MB/s | ok · Merkle-Damgard — length-extendable (key via HMAC) · 512-bit — CNSA 2.0-grade |
+| `sha512` | input_bytes=65536 | QR | 747 MB/s | ok · Merkle-Damgard — length-extendable (key via HMAC) · 512-bit — CNSA 2.0-grade |
+| `sha3_256` | input_bytes=64 | QR | 50 MB/s | ok · Keccak sponge — length-extension-immune, design-diverse from SHA-2 · SHA-256 → NIST Level 2 collision; below CNSA 2.0's SHA-384 |
+| `sha3_256` | input_bytes=1024 | QR | 299 MB/s | ok · Keccak sponge — length-extension-immune, design-diverse from SHA-2 · SHA-256 → NIST Level 2 collision; below CNSA 2.0's SHA-384 |
+| `sha3_256` | input_bytes=65536 | QR | 425 MB/s | ok · Keccak sponge — length-extension-immune, design-diverse from SHA-2 · SHA-256 → NIST Level 2 collision; below CNSA 2.0's SHA-384 |
+| `sha3_512` | input_bytes=64 | QR | 50 MB/s | ok · Keccak sponge — length-extension-immune, design-diverse from SHA-2 · 512-bit — CNSA 2.0-grade |
+| `sha3_512` | input_bytes=1024 | QR | 187 MB/s | ok · Keccak sponge — length-extension-immune, design-diverse from SHA-2 · 512-bit — CNSA 2.0-grade |
 | `sha3_512` | input_bytes=65536 | QR | 240 MB/s | ok · Keccak sponge — length-extension-immune, design-diverse from SHA-2 · 512-bit — CNSA 2.0-grade |
-| `blake2b` | input_bytes=64 | QR | 83 MB/s | ok |
-| `blake2b` | input_bytes=1024 | QR | 524 MB/s | ok |
-| `blake2b` | input_bytes=65536 | QR | 741 MB/s | ok |
-| `blake2s` | input_bytes=64 | QR | 89 MB/s | ok |
+| `blake2b` | input_bytes=64 | QR | 84 MB/s | ok |
+| `blake2b` | input_bytes=1024 | QR | 525 MB/s | ok |
+| `blake2b` | input_bytes=65536 | QR | 739 MB/s | ok |
+| `blake2s` | input_bytes=64 | QR | 86 MB/s | ok |
 | `blake2s` | input_bytes=1024 | QR | 373 MB/s | ok |
 | `blake2s` | input_bytes=65536 | QR | 468 MB/s | ok |
-| `blake3` | input_bytes=64 | QR | 87 MB/s | ok · BLAKE3 — Merkle-tree hash, parallel + SIMD, XOF; 256-bit (NIST Level-1 QR floor) |
-| `blake3` | input_bytes=1024 | QR | 565 MB/s | ok · BLAKE3 — Merkle-tree hash, parallel + SIMD, XOF; 256-bit (NIST Level-1 QR floor) |
+| `blake3` | input_bytes=64 | QR | 84 MB/s | ok · BLAKE3 — Merkle-tree hash, parallel + SIMD, XOF; 256-bit (NIST Level-1 QR floor) |
+| `blake3` | input_bytes=1024 | QR | 560 MB/s | ok · BLAKE3 — Merkle-tree hash, parallel + SIMD, XOF; 256-bit (NIST Level-1 QR floor) |
 | `blake3` | input_bytes=65536 | QR | 4,006 MB/s | ok · BLAKE3 — Merkle-tree hash, parallel + SIMD, XOF; 256-bit (NIST Level-1 QR floor) |
 
 **Windows · AMD64**
@@ -804,17 +804,17 @@ Optional backends unlock more rows: `cryptography` (AEAD, ECDH, classical signat
 | Algorithm | Config | Class | Throughput / rate | Status |
 |---|---|---|---|---|
 | `HMAC-SHA256` | input_bytes=64 | QR | 31 MB/s | ok · nested MAC — keys a Merkle-Damgard hash safely · 128-bit quantum PRF security — quantum-safe (Grover-halved, not collision-bound) |
-| `HMAC-SHA256` | input_bytes=1024 | QR | 383 MB/s | ok · nested MAC — keys a Merkle-Damgard hash safely · 128-bit quantum PRF security — quantum-safe (Grover-halved, not collision-bound) |
-| `HMAC-SHA256` | input_bytes=65536 | QR | 1,495 MB/s | ok · nested MAC — keys a Merkle-Damgard hash safely · 128-bit quantum PRF security — quantum-safe (Grover-halved, not collision-bound) |
+| `HMAC-SHA256` | input_bytes=1024 | QR | 382 MB/s | ok · nested MAC — keys a Merkle-Damgard hash safely · 128-bit quantum PRF security — quantum-safe (Grover-halved, not collision-bound) |
+| `HMAC-SHA256` | input_bytes=65536 | QR | 1,504 MB/s | ok · nested MAC — keys a Merkle-Damgard hash safely · 128-bit quantum PRF security — quantum-safe (Grover-halved, not collision-bound) |
 | `HMAC-SHA384` | input_bytes=64 | QR | 23 MB/s | ok · nested MAC — keys a Merkle-Damgard hash safely · SHA-384 → NIST Level 4 collision, CNSA 2.0 |
-| `HMAC-SHA384` | input_bytes=1024 | QR | 243 MB/s | ok · nested MAC — keys a Merkle-Damgard hash safely · SHA-384 → NIST Level 4 collision, CNSA 2.0 |
-| `HMAC-SHA384` | input_bytes=65536 | QR | 723 MB/s | ok · nested MAC — keys a Merkle-Damgard hash safely · SHA-384 → NIST Level 4 collision, CNSA 2.0 |
+| `HMAC-SHA384` | input_bytes=1024 | QR | 246 MB/s | ok · nested MAC — keys a Merkle-Damgard hash safely · SHA-384 → NIST Level 4 collision, CNSA 2.0 |
+| `HMAC-SHA384` | input_bytes=65536 | QR | 732 MB/s | ok · nested MAC — keys a Merkle-Damgard hash safely · SHA-384 → NIST Level 4 collision, CNSA 2.0 |
 | `HMAC-SHA512` | input_bytes=64 | QR | 23 MB/s | ok · nested MAC — keys a Merkle-Damgard hash safely · 512-bit — CNSA 2.0-grade |
-| `HMAC-SHA512` | input_bytes=1024 | QR | 245 MB/s | ok · nested MAC — keys a Merkle-Damgard hash safely · 512-bit — CNSA 2.0-grade |
-| `HMAC-SHA512` | input_bytes=65536 | QR | 724 MB/s | ok · nested MAC — keys a Merkle-Damgard hash safely · 512-bit — CNSA 2.0-grade |
-| `Poly1305` | input_bytes=64 | QR | 19 MB/s | ok · one-time Wegman-Carter MAC (with ChaCha20) |
-| `Poly1305` | input_bytes=1024 | QR | 295 MB/s | ok · one-time Wegman-Carter MAC (with ChaCha20) |
-| `Poly1305` | input_bytes=65536 | QR | 4,953 MB/s | ok · one-time Wegman-Carter MAC (with ChaCha20) |
+| `HMAC-SHA512` | input_bytes=1024 | QR | 246 MB/s | ok · nested MAC — keys a Merkle-Damgard hash safely · 512-bit — CNSA 2.0-grade |
+| `HMAC-SHA512` | input_bytes=65536 | QR | 731 MB/s | ok · nested MAC — keys a Merkle-Damgard hash safely · 512-bit — CNSA 2.0-grade |
+| `Poly1305` | input_bytes=64 | QR | 20 MB/s | ok · one-time Wegman-Carter MAC (with ChaCha20) |
+| `Poly1305` | input_bytes=1024 | QR | 296 MB/s | ok · one-time Wegman-Carter MAC (with ChaCha20) |
+| `Poly1305` | input_bytes=65536 | QR | 4,931 MB/s | ok · one-time Wegman-Carter MAC (with ChaCha20) |
 
 **Windows · AMD64**
 
@@ -863,13 +863,13 @@ Optional backends unlock more rows: `cryptography` (AEAD, ECDH, classical signat
 
 | Algorithm | Config | Class | Throughput / rate | p50 | p99 | Status |
 |---|---|---|---|---|---|---|
-| `PBKDF2-HMAC-SHA256` | iterations=10000 | QR | 342.0 ops/s | 2.92 ms | 3.00 ms | ok · nested MAC — keys a Merkle-Damgard hash safely · iteration-only passphrase KDF — NO memory-hardness (weakest) · 128-bit quantum PRF security — quantum-safe (Grover-halved, not collision-bound) |
-| `PBKDF2-HMAC-SHA256` | iterations=100000 | QR | 34.2 ops/s | 29.19 ms | 29.38 ms | ok · nested MAC — keys a Merkle-Damgard hash safely · iteration-only passphrase KDF — NO memory-hardness (weakest) · 128-bit quantum PRF security — quantum-safe (Grover-halved, not collision-bound) |
-| `PBKDF2-HMAC-SHA256` | iterations=600000 | QR | 5.71 ops/s | 174.95 ms | 175.41 ms | ok · nested MAC — keys a Merkle-Damgard hash safely · iteration-only passphrase KDF — NO memory-hardness (weakest) · 128-bit quantum PRF security — quantum-safe (Grover-halved, not collision-bound) |
-| `HKDF-SHA256` | ikm_bytes=64, out_bytes=32 | QR | 226,459 ops/s | 4.12 µs | 4.90 µs | ok · extract-then-expand KDF — HIGH-entropy inputs (RFC 5869) · 128-bit quantum PRF security — quantum-safe (Grover-halved, not collision-bound) |
-| `HKDF-SHA384` | ikm_bytes=64, out_bytes=32 | QR | 174,313 ops/s | 5.32 µs | 12.57 µs | ok · extract-then-expand KDF — HIGH-entropy inputs (RFC 5869) · SHA-384 → NIST Level 4 collision, CNSA 2.0 |
-| `Argon2id` | profile=interactive, time_cost=2, memory_cost=65536, parallelism=1 | QR | 13.5 ops/s | 73.79 ms | 74.79 ms | ok · memory-hard passphrase KDF — LOW-entropy inputs, GPU/ASIC-resistant |
-| `Argon2id` | profile=moderate, time_cost=3, memory_cost=262144, parallelism=4 | QR | 5.95 ops/s | 167.89 ms | 168.74 ms | ok · memory-hard passphrase KDF — LOW-entropy inputs, GPU/ASIC-resistant |
+| `PBKDF2-HMAC-SHA256` | iterations=10000 | QR | 338.5 ops/s | 2.95 ms | 3.01 ms | ok · nested MAC — keys a Merkle-Damgard hash safely · iteration-only passphrase KDF — NO memory-hardness (weakest) · 128-bit quantum PRF security — quantum-safe (Grover-halved, not collision-bound) |
+| `PBKDF2-HMAC-SHA256` | iterations=100000 | QR | 33.8 ops/s | 29.48 ms | 31.17 ms | ok · nested MAC — keys a Merkle-Damgard hash safely · iteration-only passphrase KDF — NO memory-hardness (weakest) · 128-bit quantum PRF security — quantum-safe (Grover-halved, not collision-bound) |
+| `PBKDF2-HMAC-SHA256` | iterations=600000 | QR | 5.68 ops/s | 176.26 ms | 176.74 ms | ok · nested MAC — keys a Merkle-Damgard hash safely · iteration-only passphrase KDF — NO memory-hardness (weakest) · 128-bit quantum PRF security — quantum-safe (Grover-halved, not collision-bound) |
+| `HKDF-SHA256` | ikm_bytes=64, out_bytes=32 | QR | 228,731 ops/s | 4.06 µs | 4.28 µs | ok · extract-then-expand KDF — HIGH-entropy inputs (RFC 5869) · 128-bit quantum PRF security — quantum-safe (Grover-halved, not collision-bound) |
+| `HKDF-SHA384` | ikm_bytes=64, out_bytes=32 | QR | 174,169 ops/s | 5.41 µs | 5.65 µs | ok · extract-then-expand KDF — HIGH-entropy inputs (RFC 5869) · SHA-384 → NIST Level 4 collision, CNSA 2.0 |
+| `Argon2id` | profile=interactive, time_cost=2, memory_cost=65536, parallelism=1 | QR | 13.6 ops/s | 73.85 ms | 73.91 ms | ok · memory-hard passphrase KDF — LOW-entropy inputs, GPU/ASIC-resistant |
+| `Argon2id` | profile=moderate, time_cost=3, memory_cost=262144, parallelism=4 | QR | 5.86 ops/s | 170.92 ms | 171.94 ms | ok · memory-hard passphrase KDF — LOW-entropy inputs, GPU/ASIC-resistant |
 
 **Windows · AMD64**
 
