@@ -1,6 +1,6 @@
 {
   "schema": "robobus-xport-lang/1",
-  "generated_unix": 1784673686,
+  "generated_unix": 1784673870,
   "frame_bytes": 75,
   "batch": 32,
   "host": {
@@ -11,143 +11,487 @@
   "cells": [
     {
       "transport": "udp",
+      "language": "c",
+      "status": "ok",
+      "frames_per_s": 169048.8,
+      "mb_per_s": 12.67866,
+      "note": "raw AF_INET/SOCK_DGRAM, -O3"
+    },
+    {
+      "transport": "udp",
+      "language": "cpp",
+      "status": "ok",
+      "frames_per_s": 164762.6,
+      "mb_per_s": 12.357195,
+      "note": "raw sockets (C++), -O3"
+    },
+    {
+      "transport": "udp",
+      "language": "rust",
+      "status": "ok",
+      "frames_per_s": 164213.2,
+      "mb_per_s": 12.31599,
+      "note": "std::net::UdpSocket"
+    },
+    {
+      "transport": "udp",
+      "language": "go",
+      "status": "ok",
+      "frames_per_s": 199243.1,
+      "mb_per_s": 14.9432325,
+      "note": "net.UDPConn"
+    },
+    {
+      "transport": "udp",
+      "language": "java",
+      "status": "ok",
+      "frames_per_s": 109926.2,
+      "mb_per_s": 8.244465,
+      "note": "java.net.DatagramSocket"
+    },
+    {
+      "transport": "udp",
+      "language": "csharp",
+      "status": "ok",
+      "frames_per_s": 121327.8,
+      "mb_per_s": 9.099585,
+      "note": "System.Net.Sockets.Socket"
+    },
+    {
+      "transport": "udp",
+      "language": "typescript",
+      "status": "ok",
+      "frames_per_s": 76904.8,
+      "mb_per_s": 5.76786,
+      "note": "dgram (async)"
+    },
+    {
+      "transport": "udp",
+      "language": "python",
+      "status": "ok",
+      "frames_per_s": 130425.68110772023,
+      "mb_per_s": 9.781926083079018,
+      "note": "socket (stdlib)"
+    },
+    {
+      "transport": "udp",
+      "language": "ruby",
+      "status": "ok",
+      "frames_per_s": 84608.4,
+      "mb_per_s": 6.34563,
+      "note": "UDPSocket (stdlib)"
+    },
+    {
+      "transport": "udp",
+      "language": "julia",
+      "status": "ok",
+      "frames_per_s": 144035.9,
+      "mb_per_s": 10.8026925,
+      "note": "raw POSIX ccall (idiomatic UDPSocket \u224810\u00d7 slower \u2014 libuv)"
+    },
+    {
+      "transport": "udp",
+      "language": "swift",
+      "status": "ok",
+      "frames_per_s": 187579.9,
+      "mb_per_s": 14.0684925,
+      "note": "POSIX sockets (Darwin)"
+    },
+    {
+      "transport": "udp",
+      "language": "kotlin",
+      "status": "ok",
+      "frames_per_s": 119931.8,
+      "mb_per_s": 8.994885,
+      "note": "java.net.DatagramSocket (JVM)"
+    },
+    {
+      "transport": "udp",
+      "language": "pascal",
+      "status": "ok",
+      "frames_per_s": 164445.8,
+      "mb_per_s": 12.333435,
+      "note": "Sockets unit AF_INET/SOCK_DGRAM (fpSocket, -O3)"
+    },
+    {
+      "transport": "udp",
+      "language": "fortran",
+      "status": "ok",
+      "frames_per_s": 159468.3,
+      "mb_per_s": 11.9601225,
+      "note": "iso_c_binding libc AF_INET/SOCK_DGRAM, -O2"
+    },
+    {
+      "transport": "udp",
+      "language": "nelua",
+      "status": "ok",
+      "frames_per_s": 245983.7,
+      "mb_per_s": 18.4487775,
+      "note": "cimport libc AF_INET/SOCK_DGRAM (compiles to C)"
+    },
+    {
+      "transport": "udp",
+      "language": "cobol",
+      "status": "ok",
+      "frames_per_s": 278023.3650836016,
+      "mb_per_s": 20.85175238127012,
+      "note": "GnuCOBOL CALL libc AF_INET/SOCK_DGRAM, -O2"
+    },
+    {
+      "transport": "udp",
       "language": "nim",
       "status": "ok",
-      "frames_per_s": 319508.5,
-      "mb_per_s": 23.9631375,
+      "frames_per_s": 302302.9,
+      "mb_per_s": 22.6727175,
       "note": "std/posix raw AF_INET/SOCK_DGRAM (-d:release)"
     },
     {
       "transport": "udp",
       "language": "zig",
       "status": "ok",
-      "frames_per_s": 333672.6,
-      "mb_per_s": 25.025445,
+      "frames_per_s": 296102.4,
+      "mb_per_s": 22.20768,
       "note": "std.c raw AF_INET/SOCK_DGRAM (ReleaseFast)"
     },
     {
       "transport": "udp",
       "language": "crystal",
-      "status": "skipped",
-      "note": "crystal compile failed"
+      "status": "ok",
+      "frames_per_s": 376675.2,
+      "mb_per_s": 28.25064,
+      "note": "UDPSocket (stdlib, --release)"
     },
     {
       "transport": "udp",
       "language": "perl",
       "status": "ok",
-      "frames_per_s": 324489.4,
-      "mb_per_s": 24.336705,
+      "frames_per_s": 260835.1,
+      "mb_per_s": 19.5626325,
       "note": "Socket AF_INET/SOCK_DGRAM (stdlib)"
     },
     {
       "transport": "udp",
       "language": "haskell",
       "status": "ok",
-      "frames_per_s": 327190.3347975101,
-      "mb_per_s": 24.539275109813257,
+      "frames_per_s": 212397.19975531843,
+      "mb_per_s": 15.929789981648883,
       "note": "FFI libc AF_INET/SOCK_DGRAM (-O2)"
     },
     {
       "transport": "udp",
       "language": "ocaml",
       "status": "ok",
-      "frames_per_s": 321095.8,
-      "mb_per_s": 24.082185,
+      "frames_per_s": 116779.9,
+      "mb_per_s": 8.7584925,
       "note": "Unix AF_INET/SOCK_DGRAM (ocamlopt)"
+    },
+    {
+      "transport": "udp",
+      "language": "lua",
+      "status": "skipped",
+      "note": "no stdlib sockets (needs luasocket)"
+    },
+    {
+      "transport": "udp",
+      "language": "octave",
+      "status": "skipped",
+      "note": "no stdlib sockets (needs instrument-control)"
+    },
+    {
+      "transport": "tcp",
+      "language": "c",
+      "status": "ok",
+      "frames_per_s": 323722.0,
+      "mb_per_s": 24.27915,
+      "note": "raw sockets, TCP_NODELAY, -O3"
+    },
+    {
+      "transport": "tcp",
+      "language": "rust",
+      "status": "ok",
+      "frames_per_s": 299953.3,
+      "mb_per_s": 22.4964975,
+      "note": "std::net::TcpStream"
+    },
+    {
+      "transport": "tcp",
+      "language": "go",
+      "status": "ok",
+      "frames_per_s": 374851.4,
+      "mb_per_s": 28.113855,
+      "note": "net.TCPConn"
+    },
+    {
+      "transport": "tcp",
+      "language": "python",
+      "status": "ok",
+      "frames_per_s": 321837.5202506605,
+      "mb_per_s": 24.137814018799535,
+      "note": "socket (stdlib, blocking)"
+    },
+    {
+      "transport": "tcp",
+      "language": "pascal",
+      "status": "ok",
+      "frames_per_s": 453101.8,
+      "mb_per_s": 33.982635,
+      "note": "Sockets unit AF_INET/SOCK_STREAM, TCP_NODELAY, -O3"
+    },
+    {
+      "transport": "tcp",
+      "language": "fortran",
+      "status": "ok",
+      "frames_per_s": 313024.3,
+      "mb_per_s": 23.4768225,
+      "note": "iso_c_binding libc AF_INET/SOCK_STREAM, TCP_NODELAY, -O2"
+    },
+    {
+      "transport": "tcp",
+      "language": "nelua",
+      "status": "ok",
+      "frames_per_s": 408842.4,
+      "mb_per_s": 30.66318,
+      "note": "cimport libc AF_INET/SOCK_STREAM, TCP_NODELAY (compiles to C)"
+    },
+    {
+      "transport": "tcp",
+      "language": "cobol",
+      "status": "ok",
+      "frames_per_s": 380972.6994963541,
+      "mb_per_s": 28.57295246222656,
+      "note": "GnuCOBOL CALL libc AF_INET/SOCK_STREAM, TCP_NODELAY, -O2 (77B frame sends atomically on loopback)"
     },
     {
       "transport": "tcp",
       "language": "nim",
       "status": "ok",
-      "frames_per_s": 539869.5,
-      "mb_per_s": 40.4902125,
+      "frames_per_s": 463436.5,
+      "mb_per_s": 34.7577375,
       "note": "std/posix raw sockets, TCP_NODELAY"
     },
     {
       "transport": "tcp",
       "language": "zig",
       "status": "ok",
-      "frames_per_s": 527994.3,
-      "mb_per_s": 39.5995725,
+      "frames_per_s": 457586.3,
+      "mb_per_s": 34.3189725,
       "note": "std.c raw sockets, TCP_NODELAY (ReleaseFast)"
     },
     {
       "transport": "tcp",
       "language": "crystal",
-      "status": "skipped",
-      "note": "crystal compile failed"
+      "status": "ok",
+      "frames_per_s": 476991.2,
+      "mb_per_s": 35.77434,
+      "note": "TCPSocket (stdlib), TCP_NODELAY"
     },
     {
       "transport": "tcp",
       "language": "perl",
       "status": "ok",
-      "frames_per_s": 539500.9,
-      "mb_per_s": 40.4625675,
+      "frames_per_s": 399235.1,
+      "mb_per_s": 29.9426325,
       "note": "Socket AF_INET/SOCK_STREAM (stdlib), TCP_NODELAY"
     },
     {
       "transport": "tcp",
       "language": "haskell",
       "status": "ok",
-      "frames_per_s": 521214.7430802228,
-      "mb_per_s": 39.09110573101671,
+      "frames_per_s": 501170.2324928709,
+      "mb_per_s": 37.587767436965315,
       "note": "FFI libc AF_INET/SOCK_STREAM, TCP_NODELAY"
     },
     {
       "transport": "tcp",
       "language": "ocaml",
       "status": "ok",
-      "frames_per_s": 548772.2,
-      "mb_per_s": 41.157915,
+      "frames_per_s": 497033.2,
+      "mb_per_s": 37.27749,
       "note": "Unix AF_INET/SOCK_STREAM, TCP_NODELAY"
+    },
+    {
+      "transport": "uds",
+      "language": "c",
+      "status": "ok",
+      "frames_per_s": 434620.1,
+      "mb_per_s": 32.5965075,
+      "note": "AF_UNIX/SOCK_DGRAM, pthread drain, -O3"
+    },
+    {
+      "transport": "uds",
+      "language": "cpp",
+      "status": "ok",
+      "frames_per_s": 504339.8,
+      "mb_per_s": 37.825485,
+      "note": "AF_UNIX/SOCK_DGRAM (C++), pthread drain, -O3"
+    },
+    {
+      "transport": "uds",
+      "language": "rust",
+      "status": "ok",
+      "frames_per_s": 503237.5,
+      "mb_per_s": 37.7428125,
+      "note": "std::os::unix::net::UnixDatagram"
+    },
+    {
+      "transport": "uds",
+      "language": "go",
+      "status": "ok",
+      "frames_per_s": 1140636.7,
+      "mb_per_s": 85.5477525,
+      "note": "net.UnixConn (unixgram)"
+    },
+    {
+      "transport": "uds",
+      "language": "java",
+      "status": "ok",
+      "frames_per_s": 330951.5,
+      "mb_per_s": 24.8213625,
+      "note": "FFM downcall AF_UNIX/SOCK_DGRAM (java.lang.foreign, JDK21 preview)"
+    },
+    {
+      "transport": "uds",
+      "language": "csharp",
+      "status": "ok",
+      "frames_per_s": 408448.5,
+      "mb_per_s": 30.6336375,
+      "note": "Socket AF_UNIX/Dgram + UnixDomainSocketEndPoint"
+    },
+    {
+      "transport": "uds",
+      "language": "swift",
+      "status": "ok",
+      "frames_per_s": 472313.4,
+      "mb_per_s": 35.423505,
+      "note": "POSIX AF_UNIX/SOCK_DGRAM (Darwin)"
+    },
+    {
+      "transport": "uds",
+      "language": "python",
+      "status": "ok",
+      "frames_per_s": 335150.0802562112,
+      "mb_per_s": 25.13625601921584,
+      "note": "AF_UNIX SOCK_DGRAM (stdlib, drain thread)"
+    },
+    {
+      "transport": "uds",
+      "language": "ruby",
+      "status": "ok",
+      "frames_per_s": 156051.3,
+      "mb_per_s": 11.7038475,
+      "note": "Socket AF_UNIX/SOCK_DGRAM (stdlib)"
+    },
+    {
+      "transport": "uds",
+      "language": "julia",
+      "status": "ok",
+      "frames_per_s": 485458.4,
+      "mb_per_s": 36.40938,
+      "note": "raw POSIX ccall AF_UNIX (-t2 @spawn drain)"
+    },
+    {
+      "transport": "uds",
+      "language": "pascal",
+      "status": "ok",
+      "frames_per_s": 467978.6,
+      "mb_per_s": 35.098395,
+      "note": "Sockets unit AF_UNIX/SOCK_DGRAM, BeginThread drain, -O3"
+    },
+    {
+      "transport": "uds",
+      "language": "fortran",
+      "status": "ok",
+      "frames_per_s": 502328.3,
+      "mb_per_s": 37.6746225,
+      "note": "iso_c_binding libc AF_UNIX/SOCK_DGRAM, pthread drain, -O2"
+    },
+    {
+      "transport": "uds",
+      "language": "nelua",
+      "status": "ok",
+      "frames_per_s": 496894.4,
+      "mb_per_s": 37.26708,
+      "note": "cimport libc AF_UNIX/SOCK_DGRAM, pthread drain (compiles to C)"
+    },
+    {
+      "transport": "uds",
+      "language": "cobol",
+      "status": "ok",
+      "frames_per_s": 602376.979561349,
+      "mb_per_s": 45.17827346710118,
+      "note": "GnuCOBOL CALL libc AF_UNIX/SOCK_DGRAM, single-thread interleaved send/drain, -O2"
     },
     {
       "transport": "uds",
       "language": "nim",
       "status": "ok",
-      "frames_per_s": 544541.6,
-      "mb_per_s": 40.84062,
+      "frames_per_s": 480101.5,
+      "mb_per_s": 36.0076125,
       "note": "std/posix AF_UNIX/SOCK_DGRAM (Thread drain, --threads:on)"
     },
     {
       "transport": "uds",
       "language": "zig",
       "status": "ok",
-      "frames_per_s": 543255.3,
-      "mb_per_s": 40.7441475,
+      "frames_per_s": 502252.6,
+      "mb_per_s": 37.668945,
       "note": "std.c AF_UNIX/SOCK_DGRAM (std.Thread drain, ENOBUFS retry)"
     },
     {
       "transport": "uds",
       "language": "crystal",
       "status": "ok",
-      "frames_per_s": 517515.5,
-      "mb_per_s": 38.8136625,
+      "frames_per_s": 486520.2,
+      "mb_per_s": 36.489015,
       "note": "Socket AF_UNIX/SOCK_DGRAM (fiber drain, ENOBUFS->Fiber.yield)"
     },
     {
       "transport": "uds",
       "language": "perl",
       "status": "ok",
-      "frames_per_s": 525287.4,
-      "mb_per_s": 39.396555,
+      "frames_per_s": 531005.2,
+      "mb_per_s": 39.82539,
       "note": "Socket AF_UNIX/SOCK_DGRAM (ithreads drain, ENOBUFS retry)"
     },
     {
       "transport": "uds",
       "language": "haskell",
       "status": "ok",
-      "frames_per_s": 454249.1602068651,
-      "mb_per_s": 34.06868701551488,
+      "frames_per_s": 417155.0857462279,
+      "mb_per_s": 31.28663143096709,
       "note": "FFI libc AF_UNIX/SOCK_DGRAM (-threaded forkIO drain, ENOBUFS retry)"
     },
     {
       "transport": "uds",
       "language": "ocaml",
       "status": "ok",
-      "frames_per_s": 412054.2,
-      "mb_per_s": 30.904065,
+      "frames_per_s": 379614.9,
+      "mb_per_s": 28.4711175,
       "note": "Unix AF_UNIX/SOCK_DGRAM (threads.posix drain, ENOBUFS retry)"
+    },
+    {
+      "transport": "uds",
+      "language": "typescript",
+      "status": "skipped",
+      "note": "Node stdlib has no AF_UNIX SOCK_DGRAM (dgram is UDP-only; net unix sockets are stream-only)"
+    },
+    {
+      "transport": "uds",
+      "language": "kotlin",
+      "status": "skipped",
+      "note": "JVM exposes AF_UNIX as stream only (JEP 380 SocketChannel); no datagram unix socket"
+    },
+    {
+      "transport": "uds",
+      "language": "lua",
+      "status": "skipped",
+      "note": "no stdlib sockets (needs luasocket; no AF_UNIX SOCK_DGRAM)"
+    },
+    {
+      "transport": "uds",
+      "language": "octave",
+      "status": "skipped",
+      "note": "no stdlib sockets (needs instrument-control)"
     }
   ]
 }
