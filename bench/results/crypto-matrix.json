@@ -1,6 +1,6 @@
 {
   "schema": "robobus-cryptomatrix/2",
-  "generated_unix": 1784582877,
+  "generated_unix": 1784654859,
   "host": {
     "system": "Darwin",
     "machine": "arm64"
@@ -56,123 +56,143 @@
       "metric": "ns per seal+open of a 41-byte payload",
       "rows": [
         {
-          "language": "Go",
-          "ns": 328.866875,
-          "impl": "stdlib"
-        },
-        {
           "language": "Zig",
-          "ns": 356.105,
+          "ns": 321.03,
           "impl": "std.crypto"
         },
         {
+          "language": "Go",
+          "ns": 519.60021,
+          "impl": "stdlib"
+        },
+        {
           "language": "Nim",
-          "ns": 645.425,
+          "ns": 640.51292,
           "impl": "OpenSSL EVP via FFI"
         },
         {
           "language": "OCaml",
-          "ns": 712.478125,
+          "ns": 688.83292,
           "impl": "mirage-crypto / digestif / OpenSSL Argon2id"
         },
         {
-          "language": "LuaJIT",
-          "ns": 748.76,
-          "impl": "OpenSSL EVP via ffi"
-        },
-        {
-          "language": "C++",
-          "ns": 751.838,
-          "impl": "OpenSSL EVP + libblake3"
-        },
-        {
-          "language": "Fortran",
-          "ns": 767.13,
-          "impl": "OpenSSL via iso_c_binding \u2192 C shim"
-        },
-        {
-          "language": "Haskell",
-          "ns": 789.31,
-          "impl": "OpenSSL EVP via FFI"
-        },
-        {
-          "language": "C",
-          "ns": 797.53,
-          "impl": "OpenSSL EVP + libblake3"
-        },
-        {
-          "language": "COBOL",
-          "ns": 801.364,
-          "impl": "GnuCOBOL CALL \u2192 C shim over OpenSSL"
-        },
-        {
-          "language": "Pascal",
-          "ns": 810.57,
-          "impl": "OpenSSL via FPC external \u2192 C shim"
-        },
-        {
-          "language": "Nelua",
-          "ns": 812.085,
-          "impl": "compiles to C, OpenSSL via cimport \u2192 C shim"
-        },
-        {
           "language": "Octave",
-          "ns": 815.975,
+          "ns": 745.615,
           "impl": "compiled .oct \u2192 C shim over OpenSSL"
         },
         {
+          "language": "Lua",
+          "ns": 746.805,
+          "impl": "plain Lua 5.5 (no FFI) C module \u2192 C shim over OpenSSL"
+        },
+        {
+          "language": "LuaJIT",
+          "ns": 748.24,
+          "impl": "OpenSSL EVP via ffi"
+        },
+        {
+          "language": "Python (PyPy)",
+          "ns": 784.46,
+          "impl": "PyPy cffi ABI dlopen \u2192 C shim over OpenSSL"
+        },
+        {
+          "language": "C++",
+          "ns": 789.772,
+          "impl": "OpenSSL EVP + libblake3"
+        },
+        {
+          "language": "Pascal",
+          "ns": 798.035,
+          "impl": "OpenSSL via FPC external \u2192 C shim"
+        },
+        {
+          "language": "C",
+          "ns": 813.895,
+          "impl": "OpenSSL EVP + libblake3"
+        },
+        {
+          "language": "Nelua",
+          "ns": 842.405,
+          "impl": "compiles to C, OpenSSL via cimport \u2192 C shim"
+        },
+        {
+          "language": "Fortran",
+          "ns": 864.315,
+          "impl": "OpenSSL via iso_c_binding \u2192 C shim"
+        },
+        {
+          "language": "Python (Cython)",
+          "ns": 869.74,
+          "impl": "Cython in-process cdef extern \u2192 C shim over OpenSSL"
+        },
+        {
+          "language": "Haskell",
+          "ns": 918.88,
+          "impl": "OpenSSL EVP via FFI"
+        },
+        {
+          "language": "Mojo",
+          "ns": 1014.34,
+          "impl": "Mojo OwnedDLHandle C-interop \u2192 C shim over OpenSSL"
+        },
+        {
           "language": "Julia",
-          "ns": 1047.902915,
+          "ns": 1160.91479,
           "impl": "ccall libcrypto"
         },
         {
-          "language": "Python",
-          "ns": 1530.13396,
-          "impl": "pyca/cryptography"
+          "language": "COBOL",
+          "ns": 1310.554,
+          "impl": "GnuCOBOL CALL \u2192 C shim over OpenSSL"
         },
         {
           "language": "Crystal",
-          "ns": 1588.852085,
+          "ns": 1427.144795,
           "impl": "stdlib OpenSSL"
-        },
-        {
-          "language": "Ruby",
-          "ns": 1793.555,
-          "impl": "stdlib OpenSSL"
-        },
-        {
-          "language": "Java",
-          "ns": 1974.1725,
-          "impl": "JCE + BouncyCastle (Argon2id)"
-        },
-        {
-          "language": "Rust",
-          "ns": 2078.826665,
-          "impl": "RustCrypto crates"
         },
         {
           "language": "Swift",
-          "ns": 2136.055,
+          "ns": 1612.395,
           "impl": "CryptoKit"
         },
         {
-          "language": "Kotlin",
-          "ns": 2201.081875,
+          "language": "Python",
+          "ns": 1630.197085,
+          "impl": "pyca/cryptography"
+        },
+        {
+          "language": "Java",
+          "ns": 1980.00042,
           "impl": "JCE + BouncyCastle (Argon2id)"
         },
         {
-          "language": "C#",
-          "ns": 3881.256,
-          "impl": "System.Security.Cryptography"
+          "language": "Ruby",
+          "ns": 2010.15,
+          "impl": "stdlib OpenSSL"
+        },
+        {
+          "language": "Rust",
+          "ns": 2137.2375,
+          "impl": "RustCrypto crates"
+        },
+        {
+          "language": "Kotlin",
+          "ns": 2243.20458,
+          "impl": "JCE + BouncyCastle (Argon2id)"
         },
         {
           "language": "Perl",
-          "ns": 4036.235,
+          "ns": 4570.405,
           "impl": "CryptX"
         },
         {
+          "language": "C#",
+          "ns": 5620.951,
+          "impl": "System.Security.Cryptography"
+        },
+        {
           "language": "Node.js",
-          "ns": 17262.07021,
+          "ns": 19388.67458,
           "impl": "node:crypto"
         }
       ]
@@ -182,98 +202,98 @@
       "metric": "ns per seal+open of a 41-byte payload",
       "rows": [
         {
-          "language": "Go",
-          "ns": 311.88229,
-          "impl": "stdlib"
-        },
-        {
           "language": "Zig",
-          "ns": 361.285,
+          "ns": 319.895,
           "impl": "std.crypto"
         },
         {
+          "language": "Go",
+          "ns": 467.429165,
+          "impl": "stdlib"
+        },
+        {
           "language": "OCaml",
-          "ns": 606.81625,
+          "ns": 621.244375,
           "impl": "mirage-crypto / digestif / OpenSSL Argon2id"
         },
         {
+          "language": "Nim",
+          "ns": 631.502915,
+          "impl": "OpenSSL EVP via FFI"
+        },
+        {
           "language": "Julia",
-          "ns": 725.6,
+          "ns": 722.2875,
           "impl": "ccall libcrypto"
         },
         {
+          "language": "LuaJIT",
+          "ns": 773.205,
+          "impl": "OpenSSL EVP via ffi"
+        },
+        {
           "language": "C++",
-          "ns": 749.342,
+          "ns": 774.283,
           "impl": "OpenSSL EVP + libblake3"
         },
         {
           "language": "C",
-          "ns": 762.76,
+          "ns": 778.41,
           "impl": "OpenSSL EVP + libblake3"
         },
         {
-          "language": "LuaJIT",
-          "ns": 765.655,
-          "impl": "OpenSSL EVP via ffi"
+          "language": "Haskell",
+          "ns": 902.965,
+          "impl": "OpenSSL EVP via FFI"
         },
         {
           "language": "Kotlin",
-          "ns": 845.25375,
+          "ns": 1024.6925,
           "impl": "JCE + BouncyCastle (Argon2id)"
         },
         {
           "language": "Java",
-          "ns": 932.02875,
+          "ns": 1079.84521,
           "impl": "JCE + BouncyCastle (Argon2id)"
         },
         {
-          "language": "Haskell",
-          "ns": 1118.0,
-          "impl": "OpenSSL EVP via FFI"
-        },
-        {
-          "language": "Nim",
-          "ns": 1284.05229,
-          "impl": "OpenSSL EVP via FFI"
-        },
-        {
           "language": "Crystal",
-          "ns": 1349.97604,
+          "ns": 1390.23583,
           "impl": "stdlib OpenSSL"
-        },
-        {
-          "language": "Rust",
-          "ns": 1533.57354,
-          "impl": "RustCrypto crates"
-        },
-        {
-          "language": "Python",
-          "ns": 1597.49854,
-          "impl": "pyca/cryptography"
         },
         {
           "language": "Swift",
-          "ns": 1726.05,
+          "ns": 1605.99,
           "impl": "CryptoKit"
         },
         {
+          "language": "Python",
+          "ns": 1669.89083,
+          "impl": "pyca/cryptography"
+        },
+        {
+          "language": "Rust",
+          "ns": 1684.269375,
+          "impl": "RustCrypto crates"
+        },
+        {
           "language": "Ruby",
-          "ns": 1728.725,
+          "ns": 1852.125,
           "impl": "stdlib OpenSSL"
         },
         {
-          "language": "C#",
-          "ns": 3715.2765,
-          "impl": "System.Security.Cryptography"
-        },
-        {
           "language": "Perl",
-          "ns": 4178.095,
+          "ns": 4404.13,
           "impl": "CryptX"
         },
         {
+          "language": "C#",
+          "ns": 4586.691,
+          "impl": "System.Security.Cryptography"
+        },
+        {
           "language": "Node.js",
-          "ns": 17279.95458,
+          "ns": 17148.355415,
           "impl": "node:crypto"
         }
       ]
@@ -284,97 +304,97 @@
       "rows": [
         {
           "language": "Rust",
-          "ns": 419.64792,
+          "ns": 444.01354,
           "impl": "RustCrypto crates"
         },
         {
           "language": "Go",
-          "ns": 631.61646,
+          "ns": 658.30896,
           "impl": "stdlib"
         },
         {
           "language": "OCaml",
-          "ns": 645.75354,
+          "ns": 671.00104,
           "impl": "mirage-crypto / digestif / OpenSSL Argon2id"
         },
         {
           "language": "Nim",
-          "ns": 893.419165,
-          "impl": "OpenSSL EVP via FFI"
-        },
-        {
-          "language": "Julia",
-          "ns": 940.694375,
-          "impl": "ccall libcrypto"
-        },
-        {
-          "language": "C++",
-          "ns": 976.998,
-          "impl": "OpenSSL EVP + libblake3"
-        },
-        {
-          "language": "C",
-          "ns": 991.22,
-          "impl": "OpenSSL EVP + libblake3"
-        },
-        {
-          "language": "Haskell",
-          "ns": 994.005,
+          "ns": 850.230415,
           "impl": "OpenSSL EVP via FFI"
         },
         {
           "language": "Zig",
-          "ns": 1000.725,
+          "ns": 897.99,
           "impl": "std.crypto"
         },
         {
+          "language": "Julia",
+          "ns": 936.23125,
+          "impl": "ccall libcrypto"
+        },
+        {
+          "language": "Haskell",
+          "ns": 983.29,
+          "impl": "OpenSSL EVP via FFI"
+        },
+        {
+          "language": "C++",
+          "ns": 1009.76,
+          "impl": "OpenSSL EVP + libblake3"
+        },
+        {
+          "language": "C",
+          "ns": 1032.095,
+          "impl": "OpenSSL EVP + libblake3"
+        },
+        {
           "language": "LuaJIT",
-          "ns": 1100.63,
+          "ns": 1191.9,
           "impl": "OpenSSL EVP via ffi"
         },
         {
           "language": "Crystal",
-          "ns": 1582.98375,
+          "ns": 1562.637915,
           "impl": "stdlib OpenSSL"
         },
         {
           "language": "Perl",
-          "ns": 1847.255,
+          "ns": 1866.225,
           "impl": "CryptX"
         },
         {
-          "language": "Ruby",
-          "ns": 1970.93,
-          "impl": "stdlib OpenSSL"
-        },
-        {
           "language": "Python",
-          "ns": 2007.49083,
+          "ns": 2050.465625,
           "impl": "pyca/cryptography"
         },
         {
+          "language": "Ruby",
+          "ns": 2094.66,
+          "impl": "stdlib OpenSSL"
+        },
+        {
+          "language": "Swift",
+          "ns": 2117.385,
+          "impl": "CryptoKit"
+        },
+        {
           "language": "Kotlin",
-          "ns": 2094.069375,
+          "ns": 2208.146665,
           "impl": "JCE + BouncyCastle (Argon2id)"
         },
         {
           "language": "Java",
-          "ns": 2174.691875,
+          "ns": 2641.08,
           "impl": "JCE + BouncyCastle (Argon2id)"
         },
         {
-          "language": "Swift",
-          "ns": 2209.17,
-          "impl": "CryptoKit"
-        },
-        {
           "language": "C#",
-          "ns": 4193.741,
+          "ns": 4887.8085,
           "impl": "System.Security.Cryptography"
         },
         {
           "language": "Node.js",
-          "ns": 19336.844585,
+          "ns": 19563.52854,
           "impl": "node:crypto"
         }
       ]
@@ -385,122 +405,142 @@
       "rows": [
         {
           "language": "Zig",
-          "ns": 19.164,
+          "ns": 15.102,
           "impl": "std.crypto"
         },
         {
           "language": "Go",
-          "ns": 40.032084,
+          "ns": 40.707334,
           "impl": "stdlib"
         },
         {
           "language": "C#",
-          "ns": 80.0712,
+          "ns": 75.2758,
           "impl": "System.Security.Cryptography"
         },
         {
           "language": "Rust",
-          "ns": 112.258668,
+          "ns": 118.649,
           "impl": "RustCrypto crates"
         },
         {
-          "language": "C",
-          "ns": 142.244,
-          "impl": "OpenSSL EVP + libblake3"
-        },
-        {
-          "language": "C++",
-          "ns": 143.953,
-          "impl": "OpenSSL EVP + libblake3"
-        },
-        {
-          "language": "Fortran",
-          "ns": 146.218,
-          "impl": "OpenSSL via iso_c_binding \u2192 C shim"
-        },
-        {
           "language": "Octave",
-          "ns": 147.632,
+          "ns": 139.534,
           "impl": "compiled .oct \u2192 C shim over OpenSSL"
         },
         {
-          "language": "COBOL",
-          "ns": 149.311,
-          "impl": "GnuCOBOL CALL \u2192 C shim over OpenSSL"
-        },
-        {
-          "language": "Haskell",
-          "ns": 153.368,
-          "impl": "OpenSSL EVP via FFI"
-        },
-        {
           "language": "Pascal",
-          "ns": 155.864,
+          "ns": 145.76,
           "impl": "OpenSSL via FPC external \u2192 C shim"
         },
         {
-          "language": "Nelua",
-          "ns": 158.832,
-          "impl": "compiles to C, OpenSSL via cimport \u2192 C shim"
-        },
-        {
-          "language": "LuaJIT",
-          "ns": 168.968,
-          "impl": "OpenSSL EVP via ffi"
+          "language": "C",
+          "ns": 145.824,
+          "impl": "OpenSSL EVP + libblake3"
         },
         {
           "language": "Julia",
-          "ns": 172.359584,
+          "ns": 149.042,
           "impl": "ccall libcrypto"
         },
         {
-          "language": "OCaml",
-          "ns": 179.426,
-          "impl": "mirage-crypto / digestif / OpenSSL Argon2id"
+          "language": "Python (PyPy)",
+          "ns": 151.634,
+          "impl": "PyPy cffi ABI dlopen \u2192 C shim over OpenSSL"
         },
         {
           "language": "Nim",
-          "ns": 216.465916,
+          "ns": 155.3915,
           "impl": "OpenSSL EVP via FFI"
         },
         {
+          "language": "Python (Cython)",
+          "ns": 155.736,
+          "impl": "Cython in-process cdef extern \u2192 C shim over OpenSSL"
+        },
+        {
+          "language": "C++",
+          "ns": 156.356,
+          "impl": "OpenSSL EVP + libblake3"
+        },
+        {
+          "language": "Haskell",
+          "ns": 158.252,
+          "impl": "OpenSSL EVP via FFI"
+        },
+        {
+          "language": "Lua",
+          "ns": 159.816,
+          "impl": "plain Lua 5.5 (no FFI) C module \u2192 C shim over OpenSSL"
+        },
+        {
+          "language": "LuaJIT",
+          "ns": 171.022,
+          "impl": "OpenSSL EVP via ffi"
+        },
+        {
+          "language": "Nelua",
+          "ns": 173.476,
+          "impl": "compiles to C, OpenSSL via cimport \u2192 C shim"
+        },
+        {
+          "language": "Fortran",
+          "ns": 180.574,
+          "impl": "OpenSSL via iso_c_binding \u2192 C shim"
+        },
+        {
+          "language": "OCaml",
+          "ns": 181.041916,
+          "impl": "mirage-crypto / digestif / OpenSSL Argon2id"
+        },
+        {
+          "language": "COBOL",
+          "ns": 214.645,
+          "impl": "GnuCOBOL CALL \u2192 C shim over OpenSSL"
+        },
+        {
           "language": "Swift",
-          "ns": 220.61,
+          "ns": 218.574,
           "impl": "CryptoKit"
         },
         {
           "language": "Perl",
-          "ns": 235.88,
+          "ns": 240.848,
           "impl": "CryptX"
         },
         {
+          "language": "Mojo",
+          "ns": 242.846,
+          "impl": "Mojo OwnedDLHandle C-interop \u2192 C shim over OpenSSL"
+        },
+        {
           "language": "Crystal",
-          "ns": 275.13525,
+          "ns": 271.535084,
           "impl": "stdlib OpenSSL"
         },
         {
           "language": "Java",
-          "ns": 313.55475,
+          "ns": 315.896832,
           "impl": "JCE + BouncyCastle (Argon2id)"
         },
         {
           "language": "Kotlin",
-          "ns": 342.180666,
+          "ns": 394.854082,
           "impl": "JCE + BouncyCastle (Argon2id)"
         },
         {
-          "language": "Node.js",
-          "ns": 425.259668,
-          "impl": "node:crypto"
-        },
-        {
           "language": "Ruby",
-          "ns": 571.784,
+          "ns": 589.462,
           "impl": "stdlib OpenSSL"
         },
         {
+          "language": "Node.js",
+          "ns": 647.310416,
+          "impl": "node:crypto"
+        },
+        {
           "language": "Python",
-          "ns": 726.908416,
+          "ns": 673.020582,
           "impl": "pyca/cryptography"
         }
       ]
@@ -511,98 +551,98 @@
       "rows": [
         {
           "language": "Go",
-          "ns": 109.934916,
+          "ns": 103.584,
           "impl": "stdlib"
         },
         {
-          "language": "Rust",
-          "ns": 142.49075,
-          "impl": "RustCrypto crates"
-        },
-        {
           "language": "C#",
-          "ns": 146.4458,
+          "ns": 133.1088,
           "impl": "System.Security.Cryptography"
         },
         {
-          "language": "C",
-          "ns": 191.358,
-          "impl": "OpenSSL EVP + libblake3"
-        },
-        {
-          "language": "C++",
-          "ns": 208.308,
-          "impl": "OpenSSL EVP + libblake3"
+          "language": "Rust",
+          "ns": 158.667584,
+          "impl": "RustCrypto crates"
         },
         {
           "language": "Zig",
-          "ns": 208.946,
+          "ns": 183.868,
           "impl": "std.crypto"
         },
         {
-          "language": "LuaJIT",
-          "ns": 211.398,
-          "impl": "OpenSSL EVP via ffi"
+          "language": "C++",
+          "ns": 196.819,
+          "impl": "OpenSSL EVP + libblake3"
+        },
+        {
+          "language": "C",
+          "ns": 197.426,
+          "impl": "OpenSSL EVP + libblake3"
         },
         {
           "language": "Julia",
-          "ns": 219.566666,
+          "ns": 200.65125,
           "impl": "ccall libcrypto"
         },
         {
-          "language": "Haskell",
-          "ns": 220.958,
-          "impl": "OpenSSL EVP via FFI"
-        },
-        {
-          "language": "Nim",
-          "ns": 225.895166,
-          "impl": "OpenSSL EVP via FFI"
-        },
-        {
           "language": "OCaml",
-          "ns": 229.422916,
+          "ns": 222.796418,
           "impl": "mirage-crypto / digestif / OpenSSL Argon2id"
         },
         {
+          "language": "Nim",
+          "ns": 241.0375,
+          "impl": "OpenSSL EVP via FFI"
+        },
+        {
+          "language": "LuaJIT",
+          "ns": 271.492,
+          "impl": "OpenSSL EVP via ffi"
+        },
+        {
+          "language": "Haskell",
+          "ns": 272.002,
+          "impl": "OpenSSL EVP via FFI"
+        },
+        {
           "language": "Crystal",
-          "ns": 329.341084,
+          "ns": 325.3305,
           "impl": "stdlib OpenSSL"
         },
         {
+          "language": "Swift",
+          "ns": 356.824,
+          "impl": "CryptoKit"
+        },
+        {
           "language": "Perl",
-          "ns": 353.064,
+          "ns": 358.13,
           "impl": "CryptX"
         },
         {
           "language": "Java",
-          "ns": 375.892584,
+          "ns": 372.529,
           "impl": "JCE + BouncyCastle (Argon2id)"
-        },
-        {
-          "language": "Swift",
-          "ns": 378.09,
-          "impl": "CryptoKit"
         },
         {
           "language": "Kotlin",
-          "ns": 428.66025,
+          "ns": 379.69275,
           "impl": "JCE + BouncyCastle (Argon2id)"
         },
         {
-          "language": "Node.js",
-          "ns": 455.635166,
-          "impl": "node:crypto"
-        },
-        {
           "language": "Ruby",
-          "ns": 629.532,
+          "ns": 615.43,
           "impl": "stdlib OpenSSL"
         },
         {
           "language": "Python",
-          "ns": 776.67825,
+          "ns": 701.976084,
           "impl": "pyca/cryptography"
+        },
+        {
+          "language": "Node.js",
+          "ns": 774.266166,
+          "impl": "node:crypto"
         }
       ]
     },
@@ -612,27 +652,27 @@
       "rows": [
         {
           "language": "Rust",
-          "ns": 51.278834,
+          "ns": 52.344666,
           "impl": "RustCrypto crates"
         },
         {
           "language": "C",
-          "ns": 67.134,
-          "impl": "OpenSSL EVP + libblake3"
-        },
-        {
-          "language": "C++",
-          "ns": 69.671,
+          "ns": 63.66,
           "impl": "OpenSSL EVP + libblake3"
         },
         {
           "language": "Zig",
-          "ns": 89.358,
+          "ns": 81.026,
           "impl": "std.crypto"
         },
         {
+          "language": "C++",
+          "ns": 98.038,
+          "impl": "OpenSSL EVP + libblake3"
+        },
+        {
           "language": "Python",
-          "ns": 302.286834,
+          "ns": 317.286834,
           "impl": "pyca/cryptography"
         }
       ]
@@ -642,118 +682,138 @@
       "metric": "ns per key derivation \u2014 Argon2id t=3, 64 MiB, 4 lanes (robobus keystore params)",
       "rows": [
         {
-          "language": "Perl",
-          "ns": 23371650.0,
-          "impl": "CryptX"
+          "language": "Zig",
+          "ns": 31412400.0,
+          "impl": "std.crypto"
         },
         {
-          "language": "OCaml",
-          "ns": 24580245.85,
-          "impl": "mirage-crypto / digestif / OpenSSL Argon2id"
+          "language": "Python (Cython)",
+          "ns": 32115800.0,
+          "impl": "Cython in-process cdef extern \u2192 C shim over OpenSSL"
         },
         {
-          "language": "Python",
-          "ns": 24585020.85,
-          "impl": "pyca/cryptography"
-        },
-        {
-          "language": "LuaJIT",
-          "ns": 25773100.0,
-          "impl": "OpenSSL EVP via ffi"
-        },
-        {
-          "language": "Haskell",
-          "ns": 26024100.0,
-          "impl": "OpenSSL EVP via FFI"
-        },
-        {
-          "language": "Crystal",
-          "ns": 27982022.9,
-          "impl": "stdlib OpenSSL"
-        },
-        {
-          "language": "Go",
-          "ns": 27993947.95,
-          "impl": "stdlib"
-        },
-        {
-          "language": "Nelua",
-          "ns": 28289850.0,
-          "impl": "compiles to C, OpenSSL via cimport \u2192 C shim"
-        },
-        {
-          "language": "Node.js",
-          "ns": 28471554.2,
-          "impl": "node:crypto"
-        },
-        {
-          "language": "Julia",
-          "ns": 28768331.25,
-          "impl": "ccall libcrypto"
-        },
-        {
-          "language": "Ruby",
-          "ns": 29466800.0,
-          "impl": "stdlib OpenSSL"
-        },
-        {
-          "language": "Fortran",
-          "ns": 29808950.0,
-          "impl": "OpenSSL via iso_c_binding \u2192 C shim"
-        },
-        {
-          "language": "C++",
-          "ns": 30704827.1,
+          "language": "C",
+          "ns": 32403150.0,
           "impl": "OpenSSL EVP + libblake3"
         },
         {
-          "language": "COBOL",
-          "ns": 31145950.0,
-          "impl": "GnuCOBOL CALL \u2192 C shim over OpenSSL"
+          "language": "Perl",
+          "ns": 32995700.0,
+          "impl": "CryptX"
         },
         {
-          "language": "Nim",
-          "ns": 32055956.25,
+          "language": "Julia",
+          "ns": 33033193.75,
+          "impl": "ccall libcrypto"
+        },
+        {
+          "language": "Haskell",
+          "ns": 33253100.0,
           "impl": "OpenSSL EVP via FFI"
         },
         {
           "language": "Octave",
-          "ns": 32540050.0,
+          "ns": 33747000.0,
           "impl": "compiled .oct \u2192 C shim over OpenSSL"
         },
         {
-          "language": "Zig",
-          "ns": 32696000.0,
-          "impl": "std.crypto"
+          "language": "Crystal",
+          "ns": 33840758.35,
+          "impl": "stdlib OpenSSL"
         },
         {
-          "language": "C",
-          "ns": 33860950.0,
+          "language": "Nim",
+          "ns": 34540431.25,
+          "impl": "OpenSSL EVP via FFI"
+        },
+        {
+          "language": "Mojo",
+          "ns": 35228800.0,
+          "impl": "Mojo OwnedDLHandle C-interop \u2192 C shim over OpenSSL"
+        },
+        {
+          "language": "Ruby",
+          "ns": 35746350.0,
+          "impl": "stdlib OpenSSL"
+        },
+        {
+          "language": "Python",
+          "ns": 36164533.35,
+          "impl": "pyca/cryptography"
+        },
+        {
+          "language": "Lua",
+          "ns": 37419300.0,
+          "impl": "plain Lua 5.5 (no FFI) C module \u2192 C shim over OpenSSL"
+        },
+        {
+          "language": "COBOL",
+          "ns": 37716850.0,
+          "impl": "GnuCOBOL CALL \u2192 C shim over OpenSSL"
+        },
+        {
+          "language": "LuaJIT",
+          "ns": 37958250.0,
+          "impl": "OpenSSL EVP via ffi"
+        },
+        {
+          "language": "Fortran",
+          "ns": 37986950.0,
+          "impl": "OpenSSL via iso_c_binding \u2192 C shim"
+        },
+        {
+          "language": "Python (PyPy)",
+          "ns": 39998850.0,
+          "impl": "PyPy cffi ABI dlopen \u2192 C shim over OpenSSL"
+        },
+        {
+          "language": "OCaml",
+          "ns": 40393316.65,
+          "impl": "mirage-crypto / digestif / OpenSSL Argon2id"
+        },
+        {
+          "language": "Node.js",
+          "ns": 41353962.5,
+          "impl": "node:crypto"
+        },
+        {
+          "language": "C++",
+          "ns": 41630529.2,
           "impl": "OpenSSL EVP + libblake3"
         },
         {
           "language": "Pascal",
-          "ns": 38118050.0,
+          "ns": 41856200.0,
           "impl": "OpenSSL via FPC external \u2192 C shim"
         },
         {
-          "language": "C#",
-          "ns": 58255305.0,
-          "impl": "System.Security.Cryptography"
+          "language": "Go",
+          "ns": 44527218.75,
+          "impl": "stdlib"
+        },
+        {
+          "language": "Nelua",
+          "ns": 49531250.0,
+          "impl": "compiles to C, OpenSSL via cimport \u2192 C shim"
         },
         {
           "language": "Rust",
-          "ns": 68734668.75,
+          "ns": 74357191.7,
           "impl": "RustCrypto crates"
         },
         {
+          "language": "C#",
+          "ns": 113102990.0,
+          "impl": "System.Security.Cryptography"
+        },
+        {
           "language": "Kotlin",
-          "ns": 134623825.0,
+          "ns": 137554477.1,
           "impl": "JCE + BouncyCastle (Argon2id)"
         },
         {
           "language": "Java",
-          "ns": 136578252.1,
+          "ns": 138613089.6,
           "impl": "JCE + BouncyCastle (Argon2id)"
         }
       ]
@@ -764,12 +824,12 @@
       "rows": [
         {
           "language": "liboqs",
-          "ns": 24082.50625,
+          "ns": 24136.0521,
           "impl": "C (via python-oqs)"
         },
         {
           "language": "OpenSSL 3.6.3 EVP",
-          "ns": 28128.45,
+          "ns": 28098.75,
           "impl": "C (shared by every libcrypto-FFI language)"
         }
       ]
@@ -780,17 +840,17 @@
       "rows": [
         {
           "language": "liboqs",
-          "ns": 36002.025,
+          "ns": 33292.525,
           "impl": "C (via python-oqs)"
         },
         {
           "language": "OpenSSL 3.6.3 EVP",
-          "ns": 40927.45,
+          "ns": 40519.95,
           "impl": "C (shared by every libcrypto-FFI language)"
         },
         {
           "language": "Go crypto/mlkem",
-          "ns": 74513.85625,
+          "ns": 81747.6854,
           "impl": "native pure-Go"
         }
       ]
@@ -801,17 +861,17 @@
       "rows": [
         {
           "language": "liboqs",
-          "ns": 48944.4104,
+          "ns": 55268.19585,
           "impl": "C (via python-oqs)"
         },
         {
           "language": "OpenSSL 3.6.3 EVP",
-          "ns": 63955.25,
+          "ns": 60825.95,
           "impl": "C (shared by every libcrypto-FFI language)"
         },
         {
           "language": "Go crypto/mlkem",
-          "ns": 116159.0125,
+          "ns": 115525.775,
           "impl": "native pure-Go"
         }
       ]
@@ -822,12 +882,12 @@
       "rows": [
         {
           "language": "liboqs",
-          "ns": 173170.5333,
+          "ns": 181682.0271,
           "impl": "C (via python-oqs)"
         },
         {
           "language": "OpenSSL 3.6.3 EVP",
-          "ns": 305555.9,
+          "ns": 308880.4,
           "impl": "C (shared by every libcrypto-FFI language)"
         }
       ]
@@ -838,12 +898,12 @@
       "rows": [
         {
           "language": "liboqs",
-          "ns": 289633.37085,
+          "ns": 470768.1271,
           "impl": "C (via python-oqs)"
         },
         {
           "language": "OpenSSL 3.6.3 EVP",
-          "ns": 505414.3,
+          "ns": 602820.65,
           "impl": "C (shared by every libcrypto-FFI language)"
         }
       ]
@@ -854,12 +914,12 @@
       "rows": [
         {
           "language": "liboqs",
-          "ns": 370879.1021,
+          "ns": 423709.20835,
           "impl": "C (via python-oqs)"
         },
         {
           "language": "OpenSSL 3.6.3 EVP",
-          "ns": 588924.4,
+          "ns": 612606.65,
           "impl": "C (shared by every libcrypto-FFI language)"
         }
       ]

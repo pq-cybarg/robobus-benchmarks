@@ -1,6 +1,6 @@
 {
   "schema": "robobus-transport/1",
-  "generated_unix": 1784585255,
+  "generated_unix": 1784656152,
   "frame_bytes": 75,
   "host": {
     "system": "Darwin",
@@ -20,8 +20,8 @@
       "status": "ok",
       "note": "seqlock ring, put+get on 150,000 frames",
       "metrics": {
-        "ops_per_s": 757145.083509948,
-        "mb_per_s": 56.7858812632461
+        "ops_per_s": 435006.3633600845,
+        "mb_per_s": 32.625477252006334
       }
     },
     {
@@ -35,10 +35,10 @@
       "status": "ok",
       "note": "loopback; 150,000/150,000 rx (loss 0.00%)",
       "metrics": {
-        "ops_per_s": 155357.58396171159,
-        "mb_per_s": 11.651818797128367,
-        "p50_ns": 12354.0,
-        "p99_ns": 55000.0
+        "ops_per_s": 66854.57630995831,
+        "mb_per_s": 5.014093223246873,
+        "p50_ns": 20000.0,
+        "p99_ns": 113729.0
       }
     },
     {
@@ -52,10 +52,10 @@
       "status": "ok",
       "note": "loopback, length-prefixed, TCP_NODELAY; 150,000 frames",
       "metrics": {
-        "ops_per_s": 254574.0771266687,
-        "mb_per_s": 19.09305578450015,
-        "p50_ns": 7729.0,
-        "p99_ns": 36792.0
+        "ops_per_s": 156781.5261192143,
+        "mb_per_s": 11.758614458941071,
+        "p50_ns": 16083.5,
+        "p99_ns": 40479.5
       }
     },
     {
@@ -69,8 +69,8 @@
       "status": "ok",
       "note": "in-memory loopback, framed; 150,000 frames",
       "metrics": {
-        "ops_per_s": 15932.005245263497,
-        "mb_per_s": 1.1949003933947622
+        "ops_per_s": 7801.191877796877,
+        "mb_per_s": 0.5850893908347657
       }
     },
     {
@@ -84,10 +84,10 @@
       "unit": "frames/s + MB/s + one-way ns",
       "dependency": "python-can",
       "status": "ok",
-      "note": "virtual bus; 316,605 CAN frames/s \u00f7 10 frags/robobus-frame",
+      "note": "virtual bus; 177,390 CAN frames/s \u00f7 10 frags/robobus-frame",
       "metrics": {
-        "ops_per_s": 31660.53573584032,
-        "mb_per_s": 2.374540180188024
+        "ops_per_s": 17739.006616516424,
+        "mb_per_s": 1.3304254962387319
       }
     },
     {
@@ -101,8 +101,8 @@
       "status": "ok",
       "note": "peer-to-peer, 100,000/100,000 delivered",
       "metrics": {
-        "ops_per_s": 1039952.8135970171,
-        "mb_per_s": 77.99646101977629
+        "ops_per_s": 412576.9256898045,
+        "mb_per_s": 30.943269426735338
       }
     },
     {
@@ -116,8 +116,8 @@
       "status": "ok",
       "note": "QoS 0, local broker; 100,000/100,000 delivered",
       "metrics": {
-        "ops_per_s": 34340.79790672233,
-        "mb_per_s": 2.5755598430041746
+        "ops_per_s": 18909.76997612145,
+        "mb_per_s": 1.4182327482091088
       }
     },
     {
@@ -129,10 +129,10 @@
       "unit": "frames/s + MB/s + one-way ns",
       "dependency": "pylsl + liblsl",
       "status": "ok",
-      "note": "outlet\u2192inlet, string channel; 40,719/60,000 delivered",
+      "note": "outlet\u2192inlet, string channel; 42,653/60,000 delivered",
       "metrics": {
-        "ops_per_s": 14793.934138218321,
-        "mb_per_s": 1.109545060366374
+        "ops_per_s": 10864.244061331221,
+        "mb_per_s": 0.8148183045998416
       }
     },
     {
@@ -146,8 +146,8 @@
       "status": "ok",
       "note": "transient delivery, local broker; 100,000/100,000 delivered",
       "metrics": {
-        "ops_per_s": 19398.74934323109,
-        "mb_per_s": 1.454906200742332
+        "ops_per_s": 7620.3570379157645,
+        "mb_per_s": 0.5715267778436823
       }
     },
     {
@@ -161,8 +161,8 @@
       "status": "ok",
       "note": "acks=1, local broker; 100,000/100,000 delivered",
       "metrics": {
-        "ops_per_s": 556219.6725742813,
-        "mb_per_s": 41.7164754430711
+        "ops_per_s": 64110.49744785149,
+        "mb_per_s": 4.808287308588861
       }
     },
     {
@@ -187,12 +187,27 @@
         "frame_bytes": 75
       },
       "unit": "frames/s + MB/s + one-way ns",
-      "dependency": "rclpy (rmw_cyclonedds_cpp)",
+      "dependency": "rclpy take-loop (rmw_cyclonedds_cpp)",
       "status": "ok",
-      "note": "RoboStack ros2_kilted; loopback pub->sub, RELIABLE keep_all, rmw_cyclonedds_cpp; 50,000/50,000 delivered (lossless). This is the rclpy (Python) receive-path ceiling \u2014 the identical rclcpp C++ node reaches ~437k fps (DDS sends at 400k+); ROS 2's middleware isn't the limit.",
+      "note": "RoboStack ros2_kilted; loopback pub->sub, RELIABLE keep_all, rmw_cyclonedds_cpp; 50,000/50,000 delivered (lossless). Fastest lossless rclpy path: raw sub.handle.take_message() loop (executor bypass), median 202,350 fps. The classic executor-callback path caps at ~20k (raw=True callbacks only ~+5%) \u2014 the cap is Python executor dispatch, not just rosidl. The rclcpp C++ node (see 'ROS 2 (C++)') reaches ~437k fps.",
       "metrics": {
-        "ops_per_s": 15501.4,
-        "mb_per_s": 1.162605
+        "ops_per_s": 351205.4,
+        "mb_per_s": 26.340405
+      }
+    },
+    {
+      "group": "transport",
+      "name": "ROS 2 (C++)",
+      "config": {
+        "frame_bytes": 75
+      },
+      "unit": "frames/s + MB/s + one-way ns",
+      "dependency": "rclcpp",
+      "status": "ok",
+      "note": "RoboStack ros2_kilted; rclcpp loopback pub->sub, SingleThreadedExecutor, RELIABLE keep_all, rmw_cyclonedds_cpp; 50,000/50,000 delivered (lossless). ROS 2's true ceiling for the 75-byte frame \u2014 ~30x the rclpy executor-callback path, no Python in the receive path (DDS sends at 400k+/s).",
+      "metrics": {
+        "ops_per_s": 268140.9,
+        "mb_per_s": 20.1105675
       }
     },
     {
@@ -206,8 +221,8 @@
       "status": "ok",
       "note": "RoboStack ros1_noetic; private rosmaster, TCPROS pub->sub; 50,000/50,000 delivered",
       "metrics": {
-        "ops_per_s": 86191.8,
-        "mb_per_s": 6.464385
+        "ops_per_s": 55812.9,
+        "mb_per_s": 4.1859675
       }
     },
     {
@@ -221,8 +236,8 @@
       "status": "ok",
       "note": "block-inproc lock-free deque, raw channel; 150,000/150,000 delivered (inproc:// is ZeroMQ PUB/SUB and silently drops under flood)",
       "metrics": {
-        "ops_per_s": 374494.12023509224,
-        "mb_per_s": 28.08705901763192
+        "ops_per_s": 167095.7081049634,
+        "mb_per_s": 12.532178107872255
       }
     }
   ]

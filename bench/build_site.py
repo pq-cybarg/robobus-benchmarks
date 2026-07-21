@@ -848,7 +848,8 @@ def _config_chooser_section():
                   "Nim": "nim", "Haskell": "haskell", "OCaml": "ocaml", "LuaJIT": "lua-luajit",
                   "Crystal": "crystal", "Julia": "julia", "Python": "python", "Java": "java",
                   "Kotlin": "kotlin", "C#": "csharp", "Ruby": "ruby", "Perl": "perl", "Node.js": "typescript",
-                  "Fortran": "fortran", "Pascal": "pascal", "Nelua": "nelua", "COBOL": "cobol", "Octave": "octave"}
+                  "Fortran": "fortran", "Pascal": "pascal", "Nelua": "nelua", "COBOL": "cobol", "Octave": "octave",
+                  "Mojo": "mojo", "Lua": "lua", "Python (PyPy)": "python-pypy", "Python (Cython)": "python-cython"}
     codec = {x["language"]: x.get("ns_per_op") for x in lm["languages"] if x.get("status") == "ok"}
     ciphers = ["AES-256-GCM", "AES-128-GCM", "ChaCha20-Poly1305"]
     tech = cm.get("techniques", {})
