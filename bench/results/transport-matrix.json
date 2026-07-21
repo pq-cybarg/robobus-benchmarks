@@ -189,7 +189,7 @@
       "unit": "frames/s + MB/s + one-way ns",
       "dependency": "rclpy take-loop (rmw_cyclonedds_cpp)",
       "status": "ok",
-      "note": "RoboStack ros2_kilted; loopback pub->sub, RELIABLE keep_all, rmw_cyclonedds_cpp; 50,000/50,000 delivered (lossless). Fastest lossless rclpy path: raw sub.handle.take_message() loop (executor bypass), median 202,350 fps. The classic executor-callback path caps at ~20k (raw=True callbacks only ~+5%) \u2014 the cap is Python executor dispatch, not just rosidl. The rclcpp C++ node (see 'ROS 2 (C++)') reaches ~437k fps.",
+      "note": "RoboStack ros2_kilted; loopback pub->sub, RELIABLE keep_all, rmw_cyclonedds_cpp; 50,000/50,000 delivered (lossless). Fastest lossless rclpy path: raw sub.handle.take_message() loop (executor bypass), median 202,350 fps. The classic executor-callback path caps at ~20k (raw=True callbacks only ~+5%) \u2014 the cap is Python executor dispatch, not just rosidl. The rclcpp C++ node (see 'ROS 2 (C++)') reaches ~370k fps; a pybind11 C++ receiver handing Python batches also hits ~370k (Python still counts every frame), and talking Zenoh directly from Python reaches ~677k.",
       "metrics": {
         "ops_per_s": 351205.4,
         "mb_per_s": 26.340405
@@ -204,7 +204,7 @@
       "unit": "frames/s + MB/s + one-way ns",
       "dependency": "rclcpp",
       "status": "ok",
-      "note": "RoboStack ros2_kilted; rclcpp loopback pub->sub, SingleThreadedExecutor, RELIABLE keep_all, rmw_cyclonedds_cpp; 50,000/50,000 delivered (lossless). ROS 2's true ceiling for the 75-byte frame \u2014 ~30x the rclpy executor-callback path, no Python in the receive path (DDS sends at 400k+/s).",
+      "note": "RoboStack ros2_kilted; rclcpp loopback pub->sub, SingleThreadedExecutor, RELIABLE keep_all, rmw_cyclonedds_cpp; 50,000/50,000 delivered (lossless). ROS 2's true ceiling for the 75-byte frame \u2014 ~15-18x the rclpy executor-callback baseline, no Python in the receive path.",
       "metrics": {
         "ops_per_s": 268140.9,
         "mb_per_s": 20.1105675
