@@ -1,26 +1,34 @@
 {
   "schema": "robobus-ruby-runtimes/1",
-  "generated_unix": 1784460880,
+  "generated_unix": 1784660994,
   "host": {
     "system": "Darwin",
     "machine": "arm64"
   },
   "workload": "sum of i*i, i in 0..20000000",
-  "note": "crystalruby compiles Crystal hot paths and calls them from MRI Ruby via FFI \u2014 the Ruby analog of CPython+Cython. Crystal standalone (Ruby-syntax, native) is in the language codec matrix.",
+  "note": "Same CPU kernel across the Ruby runtime ladder: the MRI interpreter, MRI + the in-box YJIT JIT (--yjit, zero deps \u2014 the Ruby analog of PyPy), and crystalruby (inline-compiled Crystal hot paths called from MRI via FFI \u2014 the Ruby analog of CPython+Cython). Crystal standalone (Ruby-syntax, LLVM-native) is in the codec matrix.",
   "runtimes": [
     {
       "config": "Ruby (MRI)",
       "status": "ok",
-      "seconds": 0.7609660000016447,
-      "ops_per_s": 26282383.181320548,
+      "seconds": 0.7227040000143461,
+      "ops_per_s": 27673847.10698016,
       "note": "interpreter baseline"
+    },
+    {
+      "config": "Ruby + YJIT",
+      "status": "ok",
+      "seconds": 0.18648199999006465,
+      "ops_per_s": 107248957.00960712,
+      "note": "in-box YJIT JIT (--yjit), zero deps \u2014 the Ruby analog of PyPy",
+      "speedup_vs_mri": 3.8754625114104857
     },
     {
       "config": "Ruby + crystalruby",
       "status": "ok",
-      "seconds": 0.018249999993713573,
-      "ops_per_s": 1095890411.3363965,
-      "speedup_vs_mri": 41.696767137740736,
+      "seconds": 0.014153999974951148,
+      "ops_per_s": 1413028121.7602608,
+      "speedup_vs_mri": 51.060053786444946,
       "note": "inline-compiled Crystal hot path (Ruby analog of CPython+Cython)"
     }
   ]

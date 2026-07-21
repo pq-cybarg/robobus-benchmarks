@@ -1,6 +1,6 @@
 {
   "schema": "robobus-xport-lang/1",
-  "generated_unix": 1784447733,
+  "generated_unix": 1784662695,
   "frame_bytes": 75,
   "batch": 32,
   "host": {
@@ -13,96 +13,96 @@
       "transport": "udp",
       "language": "c",
       "status": "ok",
-      "frames_per_s": 327558.5,
-      "mb_per_s": 24.5668875,
+      "frames_per_s": 249991.3,
+      "mb_per_s": 18.7493475,
       "note": "raw AF_INET/SOCK_DGRAM, -O3"
     },
     {
       "transport": "udp",
       "language": "cpp",
       "status": "ok",
-      "frames_per_s": 311049.7,
-      "mb_per_s": 23.3287275,
+      "frames_per_s": 219930.5,
+      "mb_per_s": 16.4947875,
       "note": "raw sockets (C++), -O3"
     },
     {
       "transport": "udp",
       "language": "rust",
       "status": "ok",
-      "frames_per_s": 329172.4,
-      "mb_per_s": 24.68793,
+      "frames_per_s": 219409.7,
+      "mb_per_s": 16.4557275,
       "note": "std::net::UdpSocket"
     },
     {
       "transport": "udp",
       "language": "go",
       "status": "ok",
-      "frames_per_s": 300711.1,
-      "mb_per_s": 22.5533325,
+      "frames_per_s": 208540.3,
+      "mb_per_s": 15.6405225,
       "note": "net.UDPConn"
     },
     {
       "transport": "udp",
       "language": "java",
       "status": "ok",
-      "frames_per_s": 225548.9,
-      "mb_per_s": 16.9161675,
+      "frames_per_s": 138065.1,
+      "mb_per_s": 10.3548825,
       "note": "java.net.DatagramSocket"
     },
     {
       "transport": "udp",
       "language": "csharp",
       "status": "ok",
-      "frames_per_s": 228488.2,
-      "mb_per_s": 17.136615,
+      "frames_per_s": 148893.4,
+      "mb_per_s": 11.167005,
       "note": "System.Net.Sockets.Socket"
     },
     {
       "transport": "udp",
       "language": "typescript",
       "status": "ok",
-      "frames_per_s": 188019.7,
-      "mb_per_s": 14.1014775,
+      "frames_per_s": 103200.4,
+      "mb_per_s": 7.74003,
       "note": "dgram (async)"
     },
     {
       "transport": "udp",
       "language": "python",
       "status": "ok",
-      "frames_per_s": 307232.1486147282,
-      "mb_per_s": 23.042411146104616,
+      "frames_per_s": 197125.0136794903,
+      "mb_per_s": 14.784376025961773,
       "note": "socket (stdlib)"
     },
     {
       "transport": "udp",
       "language": "ruby",
       "status": "ok",
-      "frames_per_s": 147947.5,
-      "mb_per_s": 11.0960625,
+      "frames_per_s": 141280.9,
+      "mb_per_s": 10.5960675,
       "note": "UDPSocket (stdlib)"
     },
     {
       "transport": "udp",
       "language": "julia",
       "status": "ok",
-      "frames_per_s": 272926.6,
-      "mb_per_s": 20.469495,
+      "frames_per_s": 241966.3,
+      "mb_per_s": 18.1474725,
       "note": "raw POSIX ccall (idiomatic UDPSocket \u224810\u00d7 slower \u2014 libuv)"
     },
     {
       "transport": "udp",
       "language": "swift",
       "status": "ok",
-      "frames_per_s": 302987.8,
-      "mb_per_s": 22.724085,
+      "frames_per_s": 205770.2,
+      "mb_per_s": 15.432765,
       "note": "POSIX sockets (Darwin)"
     },
     {
       "transport": "udp",
       "language": "kotlin",
       "status": "ok",
-      "frames_per_s": 186438.5,
-      "mb_per_s": 13.9828875,
+      "frames_per_s": 131995.7,
+      "mb_per_s": 9.8996775,
       "note": "java.net.DatagramSocket (JVM)"
     },
     {
@@ -121,33 +121,131 @@
       "transport": "tcp",
       "language": "c",
       "status": "ok",
-      "frames_per_s": 330889.2,
-      "mb_per_s": 24.81669,
+      "frames_per_s": 418630.7,
+      "mb_per_s": 31.3973025,
       "note": "raw sockets, TCP_NODELAY, -O3"
     },
     {
       "transport": "tcp",
       "language": "rust",
       "status": "ok",
-      "frames_per_s": 418214.9,
-      "mb_per_s": 31.3661175,
+      "frames_per_s": 375078.9,
+      "mb_per_s": 28.1309175,
       "note": "std::net::TcpStream"
     },
     {
       "transport": "tcp",
       "language": "go",
       "status": "ok",
-      "frames_per_s": 258427.0,
-      "mb_per_s": 19.382025,
+      "frames_per_s": 449735.1,
+      "mb_per_s": 33.7301325,
       "note": "net.TCPConn"
     },
     {
       "transport": "tcp",
       "language": "python",
       "status": "ok",
-      "frames_per_s": 311906.2815195918,
-      "mb_per_s": 23.392971113969384,
+      "frames_per_s": 425595.7542567555,
+      "mb_per_s": 31.919681569256664,
       "note": "socket (stdlib, blocking)"
+    },
+    {
+      "transport": "uds",
+      "language": "c",
+      "status": "ok",
+      "frames_per_s": 413354.7,
+      "mb_per_s": 31.0016025,
+      "note": "AF_UNIX/SOCK_DGRAM, pthread drain, -O3"
+    },
+    {
+      "transport": "uds",
+      "language": "cpp",
+      "status": "ok",
+      "frames_per_s": 406990.5,
+      "mb_per_s": 30.5242875,
+      "note": "AF_UNIX/SOCK_DGRAM (C++), pthread drain, -O3"
+    },
+    {
+      "transport": "uds",
+      "language": "rust",
+      "status": "ok",
+      "frames_per_s": 184158.2,
+      "mb_per_s": 13.811865,
+      "note": "std::os::unix::net::UnixDatagram"
+    },
+    {
+      "transport": "uds",
+      "language": "go",
+      "status": "ok",
+      "frames_per_s": 883835.6,
+      "mb_per_s": 66.28767,
+      "note": "net.UnixConn (unixgram)"
+    },
+    {
+      "transport": "uds",
+      "language": "java",
+      "status": "skipped",
+      "note": "error: Command '['/Applications/Android Studio.app/Contents/jbr/Contents/Home/bin/java', '"
+    },
+    {
+      "transport": "uds",
+      "language": "csharp",
+      "status": "skipped",
+      "note": "Socket AF_UNIX/Dgram + UnixDomainSocketEndPoint"
+    },
+    {
+      "transport": "uds",
+      "language": "swift",
+      "status": "skipped",
+      "note": "error: Command '['"
+    },
+    {
+      "transport": "uds",
+      "language": "python",
+      "status": "ok",
+      "frames_per_s": 385247.7094615875,
+      "mb_per_s": 28.89357820961906,
+      "note": "AF_UNIX SOCK_DGRAM (stdlib, drain thread)"
+    },
+    {
+      "transport": "uds",
+      "language": "ruby",
+      "status": "ok",
+      "frames_per_s": 150304.7,
+      "mb_per_s": 11.2728525,
+      "note": "Socket AF_UNIX/SOCK_DGRAM (stdlib)"
+    },
+    {
+      "transport": "uds",
+      "language": "julia",
+      "status": "ok",
+      "frames_per_s": 520595.6,
+      "mb_per_s": 39.04467,
+      "note": "raw POSIX ccall AF_UNIX (-t2 @spawn drain)"
+    },
+    {
+      "transport": "uds",
+      "language": "typescript",
+      "status": "skipped",
+      "note": "Node stdlib has no AF_UNIX SOCK_DGRAM (dgram is UDP-only; net unix sockets are stream-only)"
+    },
+    {
+      "transport": "uds",
+      "language": "kotlin",
+      "status": "skipped",
+      "note": "JVM exposes AF_UNIX as stream only (JEP 380 SocketChannel); no datagram unix socket"
+    },
+    {
+      "transport": "uds",
+      "language": "lua",
+      "status": "skipped",
+      "note": "no stdlib sockets (needs luasocket; no AF_UNIX SOCK_DGRAM)"
+    },
+    {
+      "transport": "uds",
+      "language": "octave",
+      "status": "skipped",
+      "note": "no stdlib sockets (needs instrument-control)"
     }
   ]
 }

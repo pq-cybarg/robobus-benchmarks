@@ -753,11 +753,13 @@ def _ruby_runtimes_section():
     return f"""<section><div class='wrap'>
   <p class='sec-eyebrow'>ruby runtimes · the ruby family</p>
   <h2 class='title'>Ruby, accelerated the Ruby way</h2>
-  <p class='sec-lede'>The same story holds beyond Python. <b>crystalruby</b> compiles Crystal hot
-  paths and calls them from MRI Ruby via FFI — the Ruby analog of CPython+Cython. And <b>Crystal</b>
-  itself (Ruby-like syntax, LLVM-compiled) sits in the codec matrix above at C-class 0.79 ns/op.
-  Same CPU kernel, MRI vs crystalruby:</p>
-  {_hbars(rows, lambda v: 'tier-n' if v > 1e8 else 'tier-i')}
+  <p class='sec-lede'>The same story holds beyond Python — a three-rung runtime ladder on one CPU
+  kernel. The <b>MRI</b> interpreter is the baseline; <b>YJIT</b>, Ruby's in-box JIT (just
+  <code>--yjit</code>, zero dependencies — the Ruby analog of PyPy), compiles the hot method for a
+  few-fold lift once it's warmed past the call threshold; and <b>crystalruby</b> compiles Crystal hot
+  paths and calls them from MRI via FFI (the Ruby analog of CPython+Cython) for a ~50× jump. <b>Crystal</b>
+  standalone (Ruby-like syntax, LLVM-compiled) sits in the codec matrix above at C-class 0.79&nbsp;ns/op:</p>
+  {_hbars(rows, lambda v: 'tier-n' if v > 1e9 else 'tier-j' if v > 5e7 else 'tier-i')}
   <p class='sec-lede' style='margin-top:16px'>{html.escape(rr.get('note',''))}</p>
 </div></section>"""
 
@@ -1156,11 +1158,14 @@ def speed():
   <p class='sec-eyebrow'>transport × language</p>
   <h2 class='title'>The full product</h2>
   <p class='sec-lede'>Each cell: that language's native client pushing the sealed frame over that
-  transport (frames/s, loopback, pipelined). These cells are <b>I/O-syscall-bound</b> — every
-  language issues the same <code>send</code>/<code>recv</code> into the same kernel, so throughput
-  converges to the loopback ceiling and small differences (even Python edging C) are run-to-run
-  noise, not language speed. That's the point: <b>the transport sets the ceiling, not the caller</b>
-  — the opposite of the codec table above, where language speed spans ~1,700×.</p>
+  transport (frames/s, loopback, pipelined), across the three universal socket transports every
+  language ships natively — <b>UDP</b>, <b>TCP</b>, and <b>Unix-domain sockets</b> (the fastest local
+  socket, no IP stack). These cells are <b>I/O-syscall-bound</b>: every language issues the same
+  <code>send</code>/<code>recv</code> into the same kernel, so within a row throughput converges to
+  that transport's loopback ceiling and small per-language differences (even Python edging C) are
+  run-to-run noise, not language speed. Read it by <i>row</i>, not by cell: the ranking is
+  UDS&nbsp;&gt;&nbsp;TCP&nbsp;&gt;&nbsp;UDP (their kernel paths), and <b>the transport sets the
+  ceiling, not the caller</b> — the opposite of the codec table, where language spans ~1,700×.</p>
   <div class='heatwrap'><table class='heat'><thead><tr><th>transport</th>{head}</tr></thead>
   <tbody>{body}</tbody></table></div>
 </div></section>"""
