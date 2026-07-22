@@ -966,20 +966,20 @@ function preset(mode){
   } else if(mode==='secure'){
     var L5=function(x){return D.lvl[x]===5;};
     setSel('cf-kem',pick(lang,'kem',L5)); setSel('cf-sig',pick(lang,'sig',L5));
-    setSel('cf-aead',pick(lang,'aead',L5)); setSel('cf-hash',pick(lang,'hash',L5));
+    setSel('cf-aead',pick(lang,'aead',L5)); setSel('cf-hash','SHA3-512');  // Cat-5, length-extension-immune
     setSel('cf-kdf','Argon2id'); setSel('cf-xport',D.fastestXport);
   } else if(mode==='cnsa'){
     setSel('cf-kem','ML-KEM-1024'); setSel('cf-sig','ML-DSA-87'); setSel('cf-aead','AES-256-GCM');
-    setSel('cf-hash','SHA-384'); setSel('cf-kdf','Argon2id'); setSel('cf-xport',D.fastestXport);
+    setSel('cf-hash','SHA-384'); setSel('cf-kdf','Argon2id'); setSel('cf-xport',D.fastestXport);  // CNSA mandates SHA-384
   } else if(mode==='nist1'){
     setSel('cf-kem','ML-KEM-512'); setSel('cf-sig','ML-DSA-44'); setSel('cf-aead','AES-256-GCM');
-    setSel('cf-hash','SHA-256'); setSel('cf-kdf','Argon2id'); setSel('cf-xport',D.fastestXport);
+    setSel('cf-hash','SHA3-256'); setSel('cf-kdf','Argon2id'); setSel('cf-xport',D.fastestXport);
   } else if(mode==='nist3'){
     setSel('cf-kem','ML-KEM-768'); setSel('cf-sig','ML-DSA-65'); setSel('cf-aead','AES-256-GCM');
-    setSel('cf-hash','SHA-384'); setSel('cf-kdf','Argon2id'); setSel('cf-xport',D.fastestXport);
+    setSel('cf-hash','SHA3-512'); setSel('cf-kdf','Argon2id'); setSel('cf-xport',D.fastestXport);
   } else if(mode==='nist5'){
     setSel('cf-kem','ML-KEM-1024'); setSel('cf-sig','ML-DSA-87'); setSel('cf-aead','AES-256-GCM');
-    setSel('cf-hash','SHA-512'); setSel('cf-kdf','Argon2id'); setSel('cf-xport',D.fastestXport);
+    setSel('cf-hash','SHA3-512'); setSel('cf-kdf','Argon2id'); setSel('cf-xport',D.fastestXport);
   } else if(mode==='classical'){
     setSel('cf-kem','X25519'); setSel('cf-sig','Ed25519'); setSel('cf-aead','ChaCha20-Poly1305');
     setSel('cf-hash','SHA-256'); setSel('cf-kdf','HKDF-SHA384'); setSel('cf-xport',D.fastestXport);
@@ -1091,6 +1091,10 @@ preset('secure');
         <div class='cfg-head'><div class='k'>Sustained message rate</div><div class='v' id='h-rate'>—</div><div class='s' id='h-rate-s'></div></div>
         <div class='cfg-head'><div class='k'>Time per message block</div><div class='v' id='h-time'>—</div><div class='s' id='h-time-s'></div></div>
       </div>
+      <div class='cfg-cap' style='color:var(--muted)'>The steady-state rate is set by <b>language + AEAD +
+      transport</b> only. <b>KEM, signature, hash and KDF do not appear in the per-message hot path</b> —
+      they're one-time (handshake + keystore), so changing them updates those numbers below, not the
+      rate. (And over a slow transport the AEAD choice is swamped — the transport is the ceiling.)</div>
       <div class='cfg-once'>
         <div class='cfg-once-t'>One-time / amortized costs — <b>not</b> counted in the per-message rate above</div>
         <div class='cfg-once-g'>
@@ -1131,11 +1135,38 @@ def _crypto_matrix_section():
         "kem":  lambda v: "tier-n" if v > 3e4 else "tier-j" if v > 2e4 else "tier-i",
         "sig":  lambda v: "tier-n" if v > 4e3 else "tier-j" if v > 2e3 else "tier-i",
     }
+    import math
+
+    def _ops(v):
+        return f"{v/1e9:.1f}G" if v >= 1e9 else f"{v/1e6:.1f}M" if v >= 1e6 else f"{v/1e3:.0f}k" if v >= 1e3 else f"{v:.0f}"
+
     blocks = []
-    for gi, grp in enumerate(cm.get("groups", [])):
+    overview_groups = []
+    for grp in cm.get("groups", []):
         techs = [t for t in grp["techniques"] if tech.get(t, {}).get("rows")]
         if not techs:
             continue
+        # --- compact overview: one range strip per technique on the group's shared log axis ---
+        allops = [1e9 / r["ns"] for t in techs for r in tech[t]["rows"]]
+        lo, hi = math.log10(min(allops)), math.log10(max(allops))
+        span = (hi - lo) or 1
+        strips = []
+        for t in techs:
+            rows = tech[t]["rows"]
+            ops = sorted(1e9 / r["ns"] for r in rows)
+            mn, mx, med = ops[0], ops[-1], ops[len(ops) // 2]
+            fastr = min(rows, key=lambda r: r["ns"])   # fastest = lowest ns
+            x1 = (math.log10(mn) - lo) / span * 100
+            x2 = (math.log10(mx) - lo) / span * 100
+            xm = (math.log10(med) - lo) / span * 100
+            strips.append(
+                f"<div class='ostrip'><div class='ol'>{html.escape(t)}</div>"
+                f"<div class='otrack'><i style='left:{x1:.1f}%;width:{max(1.5, x2 - x1):.1f}%'></i>"
+                f"<u style='left:{xm:.1f}%'></u></div>"
+                f"<div class='ov'>{html.escape(fastr['language'])} · {_ops(mx)}</div></div>")
+        overview_groups.append(
+            f"<div class='ogrp'><div class='ogrp-t'>{html.escape(grp['title'])}</div>{''.join(strips)}</div>")
+        # --- full detail: ranked bars per technique, folded by default ---
         inner = []
         for t in techs:
             info = tech[t]
@@ -1144,13 +1175,13 @@ def _crypto_matrix_section():
                 f"<div class='tech'><div class='tech-h'><span class='tech-n'>{html.escape(t)}</span>"
                 f"<span class='tech-m'>{html.escape(info.get('metric',''))}</span></div>"
                 f"{_hbars(rows, kind_tier.get(info['kind'], kind_tier['aead']))}</div>")
-        # collapsible: first group open, rest folded (each summary shows the primitive list)
         chips = " · ".join(techs)
         blocks.append(
-            f"<details class='cgroup'{' open' if gi == 0 else ''}>"
+            f"<details class='cgroup'>"
             f"<summary class='cgroup-t'><span>{html.escape(grp['title'])}</span>"
-            f"<span class='cgroup-c'>{html.escape(chips)}</span></summary>"
+            f"<span class='cgroup-c'>{html.escape(chips)} — expand for the full ranked bars</span></summary>"
             + "".join(inner) + "</details>")
+    overview = "<div class='ovw'>" + "".join(overview_groups) + "</div>"
     css = ("<style>.cgroup{margin:14px 0;border:1px solid var(--line);border-radius:12px;"
            "background:var(--panel);overflow:hidden}"
            ".cgroup>*:not(summary){margin-left:16px;margin-right:16px}"
@@ -1164,7 +1195,18 @@ def _crypto_matrix_section():
            ".cgroup-c{font:400 11.5px/1.4 'JetBrains Mono';color:var(--dim);font-weight:400;order:3;flex-basis:100%}"
            ".tech{margin:16px 0}.tech-h{display:flex;justify-content:space-between;align-items:baseline;"
            "gap:12px;margin-bottom:6px;flex-wrap:wrap}.tech-n{font:600 13.5px/1 'JetBrains Mono';color:var(--fg)}"
-           ".tech-m{font:400 11px/1.3 'JetBrains Mono';color:var(--dim)}</style>")
+           ".tech-m{font:400 11px/1.3 'JetBrains Mono';color:var(--dim)}"
+           ".ovw{display:grid;grid-template-columns:1fr 1fr;gap:16px 28px;margin:10px 0 20px}"
+           "@media(max-width:760px){.ovw{grid-template-columns:1fr}}"
+           ".ogrp-t{font:600 11.5px/1.3 'JetBrains Mono';color:var(--signal);margin:0 0 9px;"
+           "text-transform:uppercase;letter-spacing:.04em}"
+           ".ostrip{display:grid;grid-template-columns:112px 1fr 96px;align-items:center;gap:10px;margin:6px 0}"
+           ".ol{font:500 11.5px/1.2 'JetBrains Mono';color:var(--fg);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}"
+           ".otrack{position:relative;height:8px;background:var(--line);border-radius:4px}"
+           ".otrack i{position:absolute;height:100%;border-radius:4px;"
+           "background:linear-gradient(90deg,color-mix(in srgb,var(--signal) 35%,transparent),var(--signal))}"
+           ".otrack u{position:absolute;top:-2px;width:2px;height:12px;background:var(--fg);opacity:.55}"
+           ".ov{font:500 11px/1.2 'JetBrains Mono';color:var(--muted);text-align:right;white-space:nowrap}</style>")
     return f"""<section><div class='wrap'>{css}
   <p class='sec-eyebrow'>crypto · every primitive · every language · grouped by technique</p>
   <h2 class='title'>The crypto matrix</h2>
@@ -1180,6 +1222,10 @@ def _crypto_matrix_section():
   &nbsp;libblake3, so <b>no cell is empty</b>. The post-quantum groups also carry the distinct backends
   (<b>OpenSSL&nbsp;EVP</b>, <b>liboqs</b>, Go's native <b>crypto/mlkem</b>) for an implementation-quality
   comparison. Argon2id is known-answer-verified in every language.</p>
+  <p class='sec-lede' style='margin-top:-8px'><b>Overview:</b> each strip is one primitive's language
+  spread — slowest&nbsp;→&nbsp;fastest on a per-group log scale, the tick is the median, the label is
+  the fastest language. Expand any group for the full ranked bars.</p>
+  {overview}
   {"".join(blocks)}
   <p class='sec-lede' style='margin-top:16px'>{html.escape(cm.get('note',''))}</p>
 </div></section>"""
@@ -1198,6 +1244,7 @@ def speed():
         return "tier-n" if v > 3e8 else "tier-j" if v > 5e7 else "tier-i"
     sec1 = ""
     if lm:
+        import math as _m
         oks = [x for x in lm["languages"] if x.get("status") == "ok"]
         oks.sort(key=lambda x: -x["ops_per_s"])
         rows = [(x["language"], x.get("method", ""), x["ops_per_s"], "dec/s") for x in oks]
@@ -1205,6 +1252,20 @@ def speed():
         sk = ("".join(f"<tr class='speed-skip'><td>{html.escape(x['language'])}</td>"
                       f"<td>{html.escape(x.get('note',''))}</td></tr>" for x in skips))
         rec = lm.get("record", {})
+        # compact overview: a range strip (log) + fastest-few, with the full bars folded
+        vals = [x["ops_per_s"] for x in oks]
+        _lo, _hi = _m.log10(min(vals)), _m.log10(max(vals))
+        _sp = (_hi - _lo) or 1
+        _med = sorted(vals)[len(vals) // 2]
+
+        def _o(v):
+            return f"{v/1e9:.1f}G" if v >= 1e9 else f"{v/1e6:.0f}M" if v >= 1e6 else f"{v/1e3:.0f}k"
+        _xm = (_m.log10(_med) - _lo) / _sp * 100
+        strip = (f"<div class='ovw' style='grid-template-columns:1fr'><div class='ostrip' "
+                 f"style='grid-template-columns:130px 1fr 150px'><div class='ol'>all {len(oks)} languages</div>"
+                 f"<div class='otrack'><i style='left:0;width:100%'></i><u style='left:{_xm:.1f}%'></u></div>"
+                 f"<div class='ov'>{html.escape(oks[0]['language'])} · {_o(vals[0])} dec/s</div></div></div>")
+        top = " · ".join(f"<b>{html.escape(x['language'])}</b>&nbsp;{_o(x['ops_per_s'])}" for x in oks[:6])
         sec1 = f"""<section><div class='wrap'>
   <p class='sec-eyebrow'>languages · wire codec</p>
   <h2 class='title'>Decode speed, every target language</h2>
@@ -1212,8 +1273,13 @@ def speed():
   ({html.escape(rec.get('fields',''))}, {rec.get('bytes','?')} B) parsed at native maximum in each
   language robobus code-generates for — measured on this host ({html.escape(hoststr)}), decode in a
   tight loop with a field checksum (no dead-code elision). Log scale; the span is ~1,700×.</p>
+  {strip}
+  <p class='cfg-cap' style='color:var(--muted);margin:-6px 0 4px'>Fastest: {top} … median {_o(_med)} dec/s,
+  slowest {html.escape(oks[-1]['language'])} {_o(vals[-1])}. Expand for the full ranked bars.</p>
+  <details class='cgroup'><summary class='cgroup-t'><span>All {len(oks)} languages · full ranked bars</span></summary>
   {_hbars(rows, codec_tier)}
   {'<table class="ltab" style="margin-top:14px"><tbody>'+sk+'</tbody></table>' if sk else ''}
+  </details>
 </div></section>"""
 
     # 2) native seal+open crypto per language
