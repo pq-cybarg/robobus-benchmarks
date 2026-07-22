@@ -1195,9 +1195,42 @@ def speed():
 </div></header>"""
     # the per-technique crypto matrix supersedes the old 6-language sec2 (kept as fallback only)
     crypto = _crypto_matrix_section() or sec2
-    body = (hero + _config_chooser_section() + _profiles_section() + sec1 + crypto
-            + _runtimes_section() + _ruby_runtimes_section() + _ffi_bindings_section() + sec3 + sec4)
-    return page("Speed matrix · robobus", "speed", body, canon="speed.html",
+
+    def tag(hp, sid):   # give a section an id anchor for the jump-nav (first <section> only)
+        return hp.replace("<section>", f"<section id='{sid}'>", 1) if hp else hp
+
+    # reordered so the transport charts sit high (transport×language was dead-last); deep-dive
+    # runtime/FFI sections and the big crypto reference move toward the end.
+    ordered = [("configure", "Configure", tag(_config_chooser_section(), "configure")),
+               ("codec", "Codec", tag(sec1, "codec")),
+               ("transports", "Transports", tag(sec3, "transports")),
+               ("grid", "Transport × Language", tag(sec4, "grid")),
+               ("crypto", "Crypto", tag(crypto, "crypto")),
+               ("runtimes", "Runtimes & FFI",
+                tag(_runtimes_section(), "runtimes") + _ruby_runtimes_section() + _ffi_bindings_section()),
+               ("profiles", "Requirements", tag(_profiles_section(), "profiles"))]
+    pills = "".join(f"<a href='#{sid}'>{html.escape(label)}</a>"
+                    for sid, label, hp in ordered if hp)
+    secnav = f"<nav class='secnav'><div class='wrap'><div class='secnav-row'>{pills}</div></div></nav>"
+    spy = ("<script>(function(){var L=[].slice.call(document.querySelectorAll('.secnav a')),M={};"
+           "L.forEach(function(a){M[a.getAttribute('href').slice(1)]=a});"
+           "var o=new IntersectionObserver(function(es){es.forEach(function(e){if(e.isIntersecting){"
+           "L.forEach(function(a){a.classList.remove('active')});var a=M[e.target.id];if(a){a.classList.add('active');"
+           "a.scrollIntoView({inline:'nearest',block:'nearest'})}}});},{rootMargin:'-45% 0px -50% 0px'});"
+           "Object.keys(M).forEach(function(id){var el=document.getElementById(id);if(el)o.observe(el)});})();</script>")
+    head = ("<style>html{scroll-behavior:smooth}"
+            ".secnav{position:sticky;top:49px;z-index:40;backdrop-filter:blur(10px);"
+            "background:color-mix(in srgb,var(--bg) 88%,transparent);border-bottom:1px solid var(--line)}"
+            ".secnav-row{display:flex;gap:4px;overflow-x:auto;padding:9px 0;scrollbar-width:none}"
+            ".secnav-row::-webkit-scrollbar{display:none}"
+            ".secnav a{white-space:nowrap;color:var(--muted);font:600 13px/1 'Inter';padding:7px 12px;"
+            "border-radius:8px;flex:0 0 auto}"
+            ".secnav a:hover{color:var(--fg);background:var(--panel);text-decoration:none}"
+            ".secnav a.active{color:var(--signal);background:color-mix(in srgb,var(--signal) 13%,transparent)}"
+            "section[id]{scroll-margin-top:108px}"
+            "@media(max-width:640px){.secnav{top:0}}</style>")
+    body = hero + secnav + "".join(hp for _, _, hp in ordered if hp) + spy
+    return page("Speed matrix · robobus", "speed", body, canon="speed.html", extra_head=head,
                 desc="Native maximum speed across every robobus language and transport — codec, "
                      "crypto, transport throughput, and the full transport × language product.")
 
