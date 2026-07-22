@@ -1230,8 +1230,8 @@
     {
       "transport": "kafka",
       "language": "pascal",
-      "frames_per_s": null,
-      "note": "NA: Pascal caller hangs on librdkafka consumer poll (blocking-read quirk); Kafka works from all 25 other languages via the same shim"
+      "frames_per_s": 14903.165,
+      "note": "via librbxport C shim (FFI); FPC FP-exception mask required for librdkafka"
     },
     {
       "transport": "dds",

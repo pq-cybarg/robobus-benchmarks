@@ -1,6 +1,6 @@
 {
   "schema": "robobus-xport-lang/1",
-  "generated_unix": 1784685866,
+  "generated_unix": 1784688423,
   "frame_bytes": 75,
   "batch": 32,
   "host": {
@@ -184,18 +184,6 @@
       "frames_per_s": 116779.9,
       "mb_per_s": 8.7584925,
       "note": "Unix AF_INET/SOCK_DGRAM (ocamlopt)"
-    },
-    {
-      "transport": "udp",
-      "language": "lua",
-      "status": "skipped",
-      "note": "no stdlib sockets (needs luasocket)"
-    },
-    {
-      "transport": "udp",
-      "language": "octave",
-      "status": "skipped",
-      "note": "no stdlib sockets (needs instrument-control)"
     },
     {
       "transport": "tcp",
@@ -468,30 +456,6 @@
       "frames_per_s": 379614.9,
       "mb_per_s": 28.4711175,
       "note": "Unix AF_UNIX/SOCK_DGRAM (threads.posix drain, ENOBUFS retry)"
-    },
-    {
-      "transport": "uds",
-      "language": "typescript",
-      "status": "skipped",
-      "note": "Node stdlib has no AF_UNIX SOCK_DGRAM (dgram is UDP-only; net unix sockets are stream-only)"
-    },
-    {
-      "transport": "uds",
-      "language": "kotlin",
-      "status": "skipped",
-      "note": "JVM exposes AF_UNIX as stream only (JEP 380 SocketChannel); no datagram unix socket"
-    },
-    {
-      "transport": "uds",
-      "language": "lua",
-      "status": "skipped",
-      "note": "no stdlib sockets (needs luasocket; no AF_UNIX SOCK_DGRAM)"
-    },
-    {
-      "transport": "uds",
-      "language": "octave",
-      "status": "skipped",
-      "note": "no stdlib sockets (needs instrument-control)"
     },
     {
       "transport": "shm",
@@ -1708,8 +1672,8 @@
     {
       "transport": "kafka",
       "language": "pascal",
-      "frames_per_s": null,
-      "note": "NA: Pascal caller hangs on librdkafka consumer poll (blocking-read quirk); Kafka works from all 25 other languages via the same shim"
+      "frames_per_s": 14903.165,
+      "note": "via librbxport C shim (FFI); FPC FP-exception mask required for librdkafka"
     },
     {
       "transport": "dds",
@@ -1896,6 +1860,138 @@
       "language": "octave",
       "frames_per_s": 1147420.599,
       "note": "via librbxport C shim (FFI)"
+    },
+    {
+      "transport": "udp",
+      "language": "lua",
+      "frames_per_s": 199789.82111262687,
+      "note": "via librbxport C shim (no native UDP client in this language)"
+    },
+    {
+      "transport": "udp",
+      "language": "lua-luajit",
+      "frames_per_s": 204626.189,
+      "note": "via librbxport C shim (no native UDP client in this language)"
+    },
+    {
+      "transport": "udp",
+      "language": "mojo",
+      "frames_per_s": 229851.24029782802,
+      "note": "via librbxport C shim (no native UDP client in this language)"
+    },
+    {
+      "transport": "udp",
+      "language": "octave",
+      "frames_per_s": 228391.847,
+      "note": "via librbxport C shim (no native UDP client in this language)"
+    },
+    {
+      "transport": "tcp",
+      "language": "cpp",
+      "frames_per_s": 352480.049628,
+      "note": "via librbxport C shim (no native TCP client in this language)"
+    },
+    {
+      "transport": "tcp",
+      "language": "csharp",
+      "frames_per_s": 338235.49307890056,
+      "note": "via librbxport C shim (no native TCP client in this language)"
+    },
+    {
+      "transport": "tcp",
+      "language": "java",
+      "frames_per_s": 334959.0009965995,
+      "note": "via librbxport C shim (no native TCP client in this language)"
+    },
+    {
+      "transport": "tcp",
+      "language": "julia",
+      "frames_per_s": 341532.388,
+      "note": "via librbxport C shim (no native TCP client in this language)"
+    },
+    {
+      "transport": "tcp",
+      "language": "kotlin",
+      "frames_per_s": 330528.2502586083,
+      "note": "via librbxport C shim (no native TCP client in this language)"
+    },
+    {
+      "transport": "tcp",
+      "language": "lua",
+      "frames_per_s": 307548.4696341886,
+      "note": "via librbxport C shim (no native TCP client in this language)"
+    },
+    {
+      "transport": "tcp",
+      "language": "lua-luajit",
+      "frames_per_s": 333493.41,
+      "note": "via librbxport C shim (no native TCP client in this language)"
+    },
+    {
+      "transport": "tcp",
+      "language": "mojo",
+      "frames_per_s": 319748.2941916059,
+      "note": "via librbxport C shim (no native TCP client in this language)"
+    },
+    {
+      "transport": "tcp",
+      "language": "octave",
+      "frames_per_s": 323145.629,
+      "note": "via librbxport C shim (no native TCP client in this language)"
+    },
+    {
+      "transport": "tcp",
+      "language": "ruby",
+      "frames_per_s": 335732.7030294551,
+      "note": "via librbxport C shim (no native TCP client in this language)"
+    },
+    {
+      "transport": "tcp",
+      "language": "swift",
+      "frames_per_s": 343328.778488,
+      "note": "via librbxport C shim (no native TCP client in this language)"
+    },
+    {
+      "transport": "tcp",
+      "language": "typescript",
+      "frames_per_s": 333580.1826841277,
+      "note": "via librbxport C shim (no native TCP client in this language)"
+    },
+    {
+      "transport": "uds",
+      "language": "kotlin",
+      "frames_per_s": 974981.9626821587,
+      "note": "via librbxport C shim (no native UDS client in this language)"
+    },
+    {
+      "transport": "uds",
+      "language": "lua",
+      "frames_per_s": 1050707.1257145237,
+      "note": "via librbxport C shim (no native UDS client in this language)"
+    },
+    {
+      "transport": "uds",
+      "language": "lua-luajit",
+      "frames_per_s": 1120850.053,
+      "note": "via librbxport C shim (no native UDS client in this language)"
+    },
+    {
+      "transport": "uds",
+      "language": "mojo",
+      "frames_per_s": 955968.1088302147,
+      "note": "via librbxport C shim (no native UDS client in this language)"
+    },
+    {
+      "transport": "uds",
+      "language": "octave",
+      "frames_per_s": 1057887.61,
+      "note": "via librbxport C shim (no native UDS client in this language)"
+    },
+    {
+      "transport": "uds",
+      "language": "typescript",
+      "frames_per_s": 1205429.2531594352,
+      "note": "via librbxport C shim (no native UDS client in this language)"
     }
   ],
   "shim_transports": [

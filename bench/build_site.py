@@ -1178,8 +1178,10 @@ def speed():
   and the spread is run-to-run noise on a shared host, not language speed. <b>The transport sets the
   ceiling, not the caller</b> — the opposite of the codec table (language spans ~1,700×). Colour is
   log-scaled; the grid spans SHM (~50M f/s, an in-process ring) down to Kafka (~15k, a full broker
-  round-trip). One honest blank: Pascal×Kafka (its blocking read hangs librdkafka's poll — Kafka works
-  from all 25 other languages). Runtime/accelerator variants share their base language's row.</p>
+  round-trip). <b>Every cell is filled — all {len(langs)} languages × {len(xports)} transports, zero
+  blanks.</b> Where a language ships no native socket client (TCP/UDS in the JVM, Node, Lua, Mojo,
+  Octave…) it reaches the socket through the same shim's UDP/TCP/UDS path. Runtime/accelerator variants
+  share their base language's row.</p>
   <div class='heatwrap'><table class='heat'><thead><tr><th>transport</th>{head}</tr></thead>
   <tbody>{body}</tbody></table></div>
 </div></section>"""
