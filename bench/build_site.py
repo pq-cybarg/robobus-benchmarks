@@ -843,6 +843,7 @@ def _ffi_bindings_section():
 def _config_chooser_section():
     lm, cm = _load("lang-matrix.json"), _load("crypto-matrix.json")
     tm = _load("transport-matrix.json")
+    stats = _load("crypto-stats.json") or {}
     if not (lm and cm and tm):
         return ""
     disp2codec = {"C": "c", "C++": "cpp", "Rust": "rust", "Go": "go", "Zig": "zig", "Swift": "swift",
@@ -882,7 +883,8 @@ def _config_chooser_section():
     fastest_lang = min(langs, key=lambda k: langs[k]["codec"] or 9e18) if langs else "C"
     fastest_xport = max(transports, key=lambda k: transports[k]["fps"]) if transports else ""
     blob = json.dumps({"langs": langs, "groups": groups, "transports": transports, "lvl": LVL,
-                       "fastestLang": fastest_lang, "fastestXport": fastest_xport})
+                       "fastestLang": fastest_lang, "fastestXport": fastest_xport,
+                       "stats": stats.get("ciphers", {}), "frame_bytes": stats.get("frame_bytes", 75)})
 
     def opts(items, first=None):
         items = ([first] + [i for i in items if i != first]) if first else list(items)
@@ -925,6 +927,13 @@ def _config_chooser_section():
 .cfg-head .k{font:600 10.5px/1.2 'JetBrains Mono';letter-spacing:.05em;text-transform:uppercase;color:var(--dim)}
 .cfg-head .v{font:800 34px/1 'Space Grotesk';color:var(--fg);margin-top:8px;font-variant-numeric:tabular-nums}
 .cfg-head .s{font:400 11.5px/1.4 'JetBrains Mono';color:var(--muted);margin-top:7px}
+.cfg-stats{background:color-mix(in srgb,var(--qr,#b57edc) 6%,var(--panel));border:1px solid color-mix(in srgb,var(--qr,#b57edc) 26%,var(--line));border-radius:10px;padding:13px 15px}
+.cfg-stats-g{display:grid;grid-template-columns:1fr 1fr;gap:10px 18px;margin:8px 0}
+@media(max-width:560px){.cfg-stats-g{grid-template-columns:1fr}}
+.cfg-stats-g>div{display:flex;flex-direction:column;gap:4px}
+.cfg-stats-g .k{font:600 10px/1.2 'JetBrains Mono';text-transform:uppercase;letter-spacing:.03em;color:var(--dim)}
+.cfg-stats-g .s{font:600 13px/1.5 'JetBrains Mono';color:var(--fg);font-variant-numeric:tabular-nums}
+.cfg-stats-n{font:400 10.5px/1.5 'JetBrains Mono';color:var(--muted)}
 .cfg-once{background:var(--panel2,var(--panel));border:1px dashed var(--line);border-radius:10px;padding:13px 15px}
 .cfg-once-t{font:500 11.5px/1.4 'JetBrains Mono';color:var(--muted);margin-bottom:10px}
 .cfg-once-g{display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:12px}
@@ -953,6 +962,8 @@ var $=function(id){return document.getElementById(id)};
 function ns(v){ if(v==null)return '—'; if(v<1000)return (v<100?v.toFixed(1):v.toFixed(0))+' ns';
   if(v<1e6)return (v/1e3).toFixed(2)+' µs'; return (v/1e6).toFixed(2)+' ms'; }
 function fmt(v){ return v==null?'—':Math.round(v).toLocaleString(); }
+function bps(b){ if(b==null)return '—'; if(b>=1e9)return (b/1e9).toFixed(2)+' GB/s';
+  if(b>=1e6)return (b/1e6).toFixed(1)+' MB/s'; if(b>=1e3)return (b/1e3).toFixed(0)+' kB/s'; return b.toFixed(0)+' B/s'; }
 function T(lang){ return (D.langs[lang]||{}).tech||{}; }
 function pick(lang,g,filt){ var b=null,bv=Infinity,t=T(lang); (D.groups[g]||[]).forEach(function(x){
   if(filt&&!filt(x))return; var v=t[x]; if(v!=null&&v<bv){bv=v;b=x;} }); return b; }
@@ -1021,10 +1032,20 @@ function upd(){
   $('cf-std').innerHTML = std.map(function(s){return '<span>'+s+'</span>';}).join('');
   // performance composition (all measured, warm steady-state)
   var hs=(t[kem]||0)+(t[sig]||0), seal=t[aead], ks=t[kdf], xns=X&&X.fps?1e9/X.fps:null;
-  var pipe=(codec||0)+(seal||0)+(xns||0), rate=pipe>0?1e9/pipe:0, thru=rate*75/1e6;
-  // TWO HEADLINE NUMBERS (combine the steps)
-  $('h-rate').innerHTML=fmt(rate); $('h-rate-s').textContent=thru.toFixed(1)+' MB/s sealed'+(X?' · '+fmt(X.fps)+' f/s transport ceiling':'');
+  var FB=D.frame_bytes||75;
+  var pipe=(codec||0)+(seal||0)+(xns||0), rate=pipe>0?1e9/pipe:0, thru=rate*FB/1e6;
+  // TWO HEADLINE NUMBERS (combine the steps) — with byte-rate (data rate) alongside message rate
+  $('h-rate').innerHTML=fmt(rate)+' <span style="font-size:.5em;font-weight:600;color:var(--muted)">msg/s</span>';
+  $('h-rate-s').textContent='data rate '+bps(rate*FB)+' sealed'+(X?' · '+fmt(X.fps)+' f/s ('+bps(X.fps*FB)+') transport ceiling':'');
   $('h-time').innerHTML=ns(pipe); $('h-time-s').textContent='decode '+ns(codec)+' + seal/open '+ns(seal)+' + transport '+ns(xns);
+  // measured per-message-envelope distribution (from crypto-stats, per AEAD)
+  var S=D.stats?D.stats[aead]:null; var sp=$('cf-stats');
+  if(S){ sp.style.display='';
+    $('st-alg').textContent=aead;
+    var T2=S.time_ns, R2=S.rate_msg_s;
+    $('st-t').innerHTML='p50 '+ns(T2.p50)+' · p90 '+ns(T2.p90)+' · <b>p99 '+ns(T2.p99)+'</b> · mean '+ns(T2.mean)+' · σ '+ns(T2.std);
+    $('st-r').innerHTML='p50 '+fmt(R2.p50)+' · p90 '+fmt(R2.p90)+' · p99 '+fmt(R2.p99)+' msg/s · '+bps(R2.p50*FB)+'–'+bps(R2.p99*FB);
+  } else { sp.style.display='none'; }
   // one-time / amortized (prefix) costs
   $('o-hs').innerHTML=ns(hs); $('o-hs-s').textContent=ns(t[kem])+' KEM + '+ns(t[sig])+' sign/verify';
   $('o-ks').innerHTML=ns(ks); $('o-ks-s').textContent=kdf;
@@ -1095,6 +1116,16 @@ preset('secure');
       transport</b> only. <b>KEM, signature, hash and KDF do not appear in the per-message hot path</b> —
       they're one-time (handshake + keystore), so changing them updates those numbers below, not the
       rate. (And over a slow transport the AEAD choice is swamped — the transport is the ceiling.)</div>
+      <div class='cfg-stats' id='cf-stats'>
+        <div class='cfg-once-t'>Per-message envelope (seal + open) — <b>measured distribution</b>, <span id='st-alg'></span></div>
+        <div class='cfg-stats-g'>
+          <div><span class='k'>Latency / message</span><span class='s' id='st-t'></span></div>
+          <div><span class='k'>Sustained rate</span><span class='s' id='st-r'></span></div>
+        </div>
+        <div class='cfg-stats-n'>200k per-op timings (high-res clock) + 1000×1&nbsp;ms throughput windows, C/OpenSSL reference —
+          <b>p99 is the tail latency</b>; σ is inflated by rare µs-scale outliers (scheduler/cache hiccups). Native-crypto
+          languages differ in the median; the jitter shape is representative.</div>
+      </div>
       <div class='cfg-once'>
         <div class='cfg-once-t'>One-time / amortized costs — <b>not</b> counted in the per-message rate above</div>
         <div class='cfg-once-g'>
