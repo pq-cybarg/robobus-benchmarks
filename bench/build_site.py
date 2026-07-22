@@ -866,10 +866,13 @@ def _config_chooser_section():
             continue
         langs[disp] = {"codec": codec.get(ckey), "tech": row}
     transports = {r["name"]: {"fps": r["metrics"].get("ops_per_s"), "mbps": r["metrics"].get("mb_per_s"),
-                              "p50": r["metrics"].get("p50_ns")}
+                              "p50": r["metrics"].get("p50_ns"), "p99": r["metrics"].get("p99_ns")}
                   for r in tm["results"] if r["status"] == "ok" and r["metrics"].get("ops_per_s")}
     # NIST security category per primitive (0 = classical, not quantum-safe). Equivalent NIST classes
     # are treated as equally secure — no bonus for hash-based vs lattice sigs, per the design intent.
+    # Hash category is by COLLISION resistance (output/2): SHA-256/SHA3-256/BLAKE3 = Cat 2 (128-bit),
+    # SHA-384 = Cat 4 (192-bit), SHA-512/SHA3-512 = Cat 5 (256-bit). NIST Category 5 therefore needs
+    # SHA-512 / SHA3-512 / SHAKE-256. CNSA 2.0 is a SEPARATE NSA profile that specifies SHA-384.
     LVL = {"AES-128-GCM": 1, "AES-256-GCM": 5, "AES-256-GCM-SIV": 5, "ChaCha20-Poly1305": 5,
            "SHA-256": 2, "SHA-384": 4, "SHA-512": 5, "SHA3-256": 2, "SHA3-512": 5, "BLAKE3": 2,
            "ML-KEM-512": 1, "ML-KEM-768": 3, "ML-KEM-1024": 5, "X25519": 0,
@@ -910,9 +913,25 @@ def _config_chooser_section():
 .cfg-qs{font:600 12px/1 'JetBrains Mono';padding:6px 10px;border-radius:7px}
 .cfg-qs.yes{color:#5fd39a;background:color-mix(in srgb,#5fd39a 13%,transparent)}
 .cfg-qs.no{color:var(--hybrid,#e0a458);background:color-mix(in srgb,var(--hybrid,#e0a458) 13%,transparent)}
+.cfg-cap{margin-top:10px;font:500 11.5px/1.5 'JetBrains Mono';color:var(--hybrid,#e0a458)}
+.cfg-cap div{margin-top:2px}
 .cfg-std{display:flex;flex-wrap:wrap;gap:6px;margin-top:12px}
 .cfg-std span{font:500 11px/1 'JetBrains Mono';color:var(--muted);border:1px solid var(--line);
   background:var(--panel2,var(--panel));border-radius:6px;padding:5px 8px}
+.cfg-heads{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+@media(max-width:520px){.cfg-heads{grid-template-columns:1fr}}
+.cfg-head{background:color-mix(in srgb,var(--signal) 8%,var(--panel));border:1px solid color-mix(in srgb,var(--signal) 30%,var(--line));
+  border-radius:12px;padding:16px 18px}
+.cfg-head .k{font:600 10.5px/1.2 'JetBrains Mono';letter-spacing:.05em;text-transform:uppercase;color:var(--dim)}
+.cfg-head .v{font:800 34px/1 'Space Grotesk';color:var(--fg);margin-top:8px;font-variant-numeric:tabular-nums}
+.cfg-head .s{font:400 11.5px/1.4 'JetBrains Mono';color:var(--muted);margin-top:7px}
+.cfg-once{background:var(--panel2,var(--panel));border:1px dashed var(--line);border-radius:10px;padding:13px 15px}
+.cfg-once-t{font:500 11.5px/1.4 'JetBrains Mono';color:var(--muted);margin-bottom:10px}
+.cfg-once-g{display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:12px}
+.cfg-once-g>div{display:flex;flex-direction:column;gap:3px}
+.cfg-once-g .k{font:600 10px/1.2 'JetBrains Mono';text-transform:uppercase;letter-spacing:.03em;color:var(--dim)}
+.cfg-once-g .v{font:700 18px/1 'Inter';color:var(--fg);font-variant-numeric:tabular-nums}
+.cfg-once-g .s{font:400 10.5px/1.35 'JetBrains Mono';color:var(--muted)}
 .cfg-cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(158px,1fr));gap:12px}
 .cfg-card{background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:13px 15px}
 .cfg-card .k{font:600 10px/1.2 'JetBrains Mono';letter-spacing:.04em;text-transform:uppercase;color:var(--dim)}
@@ -952,9 +971,15 @@ function preset(mode){
   } else if(mode==='cnsa'){
     setSel('cf-kem','ML-KEM-1024'); setSel('cf-sig','ML-DSA-87'); setSel('cf-aead','AES-256-GCM');
     setSel('cf-hash','SHA-384'); setSel('cf-kdf','Argon2id'); setSel('cf-xport',D.fastestXport);
+  } else if(mode==='nist1'){
+    setSel('cf-kem','ML-KEM-512'); setSel('cf-sig','ML-DSA-44'); setSel('cf-aead','AES-256-GCM');
+    setSel('cf-hash','SHA-256'); setSel('cf-kdf','Argon2id'); setSel('cf-xport',D.fastestXport);
   } else if(mode==='nist3'){
     setSel('cf-kem','ML-KEM-768'); setSel('cf-sig','ML-DSA-65'); setSel('cf-aead','AES-256-GCM');
     setSel('cf-hash','SHA-384'); setSel('cf-kdf','Argon2id'); setSel('cf-xport',D.fastestXport);
+  } else if(mode==='nist5'){
+    setSel('cf-kem','ML-KEM-1024'); setSel('cf-sig','ML-DSA-87'); setSel('cf-aead','AES-256-GCM');
+    setSel('cf-hash','SHA-512'); setSel('cf-kdf','Argon2id'); setSel('cf-xport',D.fastestXport);
   } else if(mode==='classical'){
     setSel('cf-kem','X25519'); setSel('cf-sig','Ed25519'); setSel('cf-aead','ChaCha20-Poly1305');
     setSel('cf-hash','SHA-256'); setSel('cf-kdf','HKDF-SHA384'); setSel('cf-xport',D.fastestXport);
@@ -966,13 +991,22 @@ function upd(){
   var lang=$('cf-lang').value, t=T(lang), codec=(D.langs[lang]||{}).codec;
   var kem=$('cf-kem').value, sig=$('cf-sig').value, aead=$('cf-aead').value,
       hash=$('cf-hash').value, kdf=$('cf-kdf').value, X=D.transports[$('cf-xport').value];
-  // security: overall = weakest of kem/sig/aead/hash; quantum-safe needs PQC kem AND sig
+  // security: overall = weakest link of kem/sig/aead/hash; quantum-safe needs PQC kem AND sig
   var qs = D.lvl[kem]>0 && D.lvl[sig]>0;
-  var overall = Math.min(D.lvl[kem],D.lvl[sig],D.lvl[aead],D.lvl[hash]);
+  var parts=[['KEM',kem],['signature',sig],['AEAD',aead],['hash',hash]];
+  var overall = qs ? Math.min(D.lvl[kem],D.lvl[sig],D.lvl[aead],D.lvl[hash]) : 0;
+  var weak=null,mn=99; if(qs) parts.forEach(function(p){ if(D.lvl[p[1]]<mn){mn=D.lvl[p[1]];weak=p;} });
   var el=$('cf-lvl'); el.className='cfg-lvl '+lvlClass(overall);
-  el.textContent = overall===0? 'Classical (not quantum-safe)' : ('NIST Level '+overall);
+  el.textContent = overall===0? 'Classical' : ('NIST Level '+overall);
   var q=$('cf-qs'); q.className='cfg-qs '+(qs?'yes':'no'); q.textContent = qs?'✓ quantum-safe':'⚠ classical KEM/sig';
-  // standards satisfied
+  var notes=[];
+  if(qs && weak && D.lvl[weak[1]]<5) notes.push('level capped by the '+weak[0]+' ('+weak[1]+' = NIST Cat '+D.lvl[weak[1]]+')');
+  if(!qs) notes.push(kem==='X25519'||sig==='Ed25519'?'classical KEM/signature — NOT post-quantum':'');
+  // NIST-5 hash requirement + SHA-2 length-extension caveat
+  if(hash==='SHA-256'||hash==='SHA-512') notes.push('⚠ '+hash+' (SHA-2) is length-extension-vulnerable; SHA-3 / BLAKE3 / truncated SHA-384 are immune');
+  if(hash==='BLAKE3'||hash==='SHA-256'||hash==='SHA3-256') notes.push(hash+' has 128-bit collision resistance (NIST Cat 2) — NIST-5 needs SHA-512 / SHA3-512 / SHAKE-256');
+  $('cf-cap').innerHTML = notes.filter(Boolean).map(function(n){return '<div>'+n+'</div>';}).join('');
+  // standards
   var std=[];
   if(kem.indexOf('ML-KEM')===0) std.push('FIPS 203 (ML-KEM)');
   if(sig.indexOf('ML-DSA')===0) std.push('FIPS 204 (ML-DSA)');
@@ -981,35 +1015,32 @@ function upd(){
   if(sig==='Ed25519'||kem==='X25519') std.push('FIPS 186-5 / RFC 7748');
   if(aead.indexOf('AES')===0) std.push('FIPS 197 (AES)');
   if(hash.indexOf('SHA3')===0) std.push('FIPS 202 (SHA-3)'); else if(hash.indexOf('SHA')===0) std.push('FIPS 180-4 (SHA-2)');
-  if(kem==='ML-KEM-1024'&&sig==='ML-DSA-87'&&aead==='AES-256-GCM'&&(hash==='SHA-384'||hash==='SHA-512'))
-    std.unshift('CNSA 2.0');
-  if(qs) std.push('NSA CNSF-ready');
+  // CNSA 2.0 = the exact NSA suite: ML-KEM-1024 + ML-DSA-87 + AES-256-GCM + SHA-384
+  if(kem==='ML-KEM-1024'&&sig==='ML-DSA-87'&&aead==='AES-256-GCM'&&hash==='SHA-384') std.unshift('CNSA 2.0');
+  if(qs&&overall>=5) std.push('NSA CNSF-ready');
   $('cf-std').innerHTML = std.map(function(s){return '<span>'+s+'</span>';}).join('');
-  // performance composition (all from measured data)
-  var hs = (t[kem]||0)+(t[sig]||0);                 // handshake: KEM exchange + sig sign+verify
-  var seal = t[aead];                               // per-message seal+open
-  var ks = t[kdf];                                  // keystore unlock (once)
-  var xns = X&&X.fps? 1e9/X.fps : null;
-  var pipe = (codec||0)+(seal||0)+(xns||0);
-  $('r-hs').innerHTML = ns(hs); $('r-hs-s').textContent = ns(t[kem])+' KEM + '+ns(t[sig])+' sig';
-  $('r-seal').innerHTML = ns(seal); $('r-seal-s').textContent = aead;
-  $('r-hash').innerHTML = ns(t[hash]); $('r-hash-s').textContent = hash;
-  $('r-ks').innerHTML = ns(ks); $('r-ks-s').textContent = kdf+' · once at unlock';
-  $('r-dec').innerHTML = ns(codec); $('r-dec-s').textContent = lang;
-  $('r-xt').innerHTML = X? fmt(X.fps)+' f/s':'—';
-  $('r-xt-s').textContent = X? X.mbps.toFixed(0)+' MB/s'+(X.p50?' · p50 '+(X.p50/1000).toFixed(1)+' µs':''):'';
-  var rate=pipe>0?1e9/pipe:0, thru=rate*75/1e6;
-  $('r-e2e').innerHTML = ns(pipe); $('r-e2e-s').textContent='≈ '+fmt(rate)+' msg/s · '+thru.toFixed(1)+' MB/s single-thread';
-  if(pipe>0){
-    var d=codec||0,s=seal||0,x=xns||0;
-    $('seg1').style.width=(100*d/pipe)+'%'; $('seg2').style.width=(100*s/pipe)+'%'; $('seg3').style.width=(100*x/pipe)+'%';
-  }
+  // performance composition (all measured, warm steady-state)
+  var hs=(t[kem]||0)+(t[sig]||0), seal=t[aead], ks=t[kdf], xns=X&&X.fps?1e9/X.fps:null;
+  var pipe=(codec||0)+(seal||0)+(xns||0), rate=pipe>0?1e9/pipe:0, thru=rate*75/1e6;
+  // TWO HEADLINE NUMBERS (combine the steps)
+  $('h-rate').innerHTML=fmt(rate); $('h-rate-s').textContent=thru.toFixed(1)+' MB/s sealed'+(X?' · '+fmt(X.fps)+' f/s transport ceiling':'');
+  $('h-time').innerHTML=ns(pipe); $('h-time-s').textContent='decode '+ns(codec)+' + seal/open '+ns(seal)+' + transport '+ns(xns);
+  // one-time / amortized (prefix) costs
+  $('o-hs').innerHTML=ns(hs); $('o-hs-s').textContent=ns(t[kem])+' KEM + '+ns(t[sig])+' sign/verify';
+  $('o-ks').innerHTML=ns(ks); $('o-ks-s').textContent=kdf;
+  // per-step detail
+  $('r-seal').innerHTML=ns(seal); $('r-seal-s').textContent=aead;
+  $('r-hash').innerHTML=ns(t[hash]); $('r-hash-s').textContent=hash+' · Cat '+D.lvl[hash];
+  $('r-dec').innerHTML=ns(codec); $('r-dec-s').textContent=lang;
+  $('r-xt').innerHTML=X?fmt(X.fps)+' f/s':'—';
+  $('r-xt-s').textContent=X?(X.mbps.toFixed(0)+' MB/s'+(X.p50?' · p50 '+(X.p50/1000).toFixed(1)+' µs':'')+(X.p99?' · p99 '+(X.p99/1000).toFixed(1)+' µs':'')):'';
+  if(pipe>0){ var d=codec||0,s=seal||0,x=xns||0;
+    $('seg1').style.width=(100*d/pipe)+'%'; $('seg2').style.width=(100*s/pipe)+'%'; $('seg3').style.width=(100*x/pipe)+'%'; }
   // one-line spec sheet for competitor comparison
-  var lvlTxt = overall===0?'classical':'NIST-'+overall;
-  $('cf-spec').innerHTML = '<b>'+lang+'</b> · '+kem+' + '+sig+' + '+aead+' + '+hash+
-    ' · <b>'+lvlTxt+(qs?', quantum-safe':'')+'</b> · handshake <b>'+ns(hs)+'</b>/peer · '+
-    '<b>'+fmt(seal?1e9/seal:0)+'</b> sealed msg/s (envelope) · pipeline <b>'+fmt(rate)+'</b> msg/s over '+
-    $('cf-xport').value+' ('+ (X?fmt(X.fps):'—') +' f/s ceiling)';
+  var lvlTxt=overall===0?'classical':'NIST-'+overall;
+  $('cf-spec').innerHTML='<b>'+lang+'</b> · '+kem+' + '+sig+' + '+aead+' + '+hash+
+    ' · <b>'+lvlTxt+(qs?', quantum-safe':'')+'</b> · <b>'+fmt(rate)+' msg/s</b> @ '+ns(pipe)+'/msg over '+
+    $('cf-xport').value+' · one-time: handshake <b>'+ns(hs)+'</b>/peer, keystore <b>'+ns(ks)+'</b>';
 }
 ['cf-lang','cf-kem','cf-sig','cf-aead','cf-hash','cf-kdf','cf-xport'].forEach(function(id){
   $(id).addEventListener('change',upd); });
@@ -1026,13 +1057,17 @@ preset('secure');
   end-to-end pipeline, alongside the <b>NIST level and standards</b> your combo satisfies. It's the
   spec sheet you'd hand to a competitor for a head-to-head. Two smart presets: <b>Fastest possible</b>
   (lowest latency, any security) and <b>Most secure + fast</b> (NIST-5 everywhere, then the fastest
-  option within that level — equivalent NIST classes count as equally secure).</p>
+  option within that level — equivalent NIST classes count as equally secure). The NIST-level buttons
+  set the standard ML-KEM + ML-DSA suite at that category (only 1/3/5 have ML-KEM parameter sets);
+  <b>CNSA 2.0</b> is a separate NSA profile (same PQC primitives but SHA-384, not the Cat-5 SHA-512).</p>
   <script type='application/json' id='cfg-data'>{blob}</script>
   <div class='cfg-presets'>
     <button class='hot' data-p='fast'>⚡ Fastest possible</button>
     <button class='sec' data-p='secure'>🛡 Most secure + fast</button>
-    <button data-p='cnsa'>CNSA 2.0</button>
+    <button data-p='nist1'>NIST-1</button>
     <button data-p='nist3'>NIST-3</button>
+    <button data-p='nist5'>NIST-5</button>
+    <button data-p='cnsa'>CNSA 2.0</button>
     <button data-p='classical'>Classical</button>
   </div>
   <div class='cfg'>
@@ -1049,16 +1084,26 @@ preset('secure');
       <div class='cfg-sec'>
         <div class='cfg-sec-top'><span class='cfg-lvl l5' id='cf-lvl'>—</span>
           <span class='cfg-qs yes' id='cf-qs'>—</span></div>
+        <div class='cfg-cap' id='cf-cap'></div>
         <div class='cfg-std' id='cf-std'></div>
       </div>
+      <div class='cfg-heads'>
+        <div class='cfg-head'><div class='k'>Sustained message rate</div><div class='v' id='h-rate'>—</div><div class='s' id='h-rate-s'></div></div>
+        <div class='cfg-head'><div class='k'>Time per message block</div><div class='v' id='h-time'>—</div><div class='s' id='h-time-s'></div></div>
+      </div>
+      <div class='cfg-once'>
+        <div class='cfg-once-t'>One-time / amortized costs — <b>not</b> counted in the per-message rate above</div>
+        <div class='cfg-once-g'>
+          <div><span class='k'>Session handshake · once per peer</span><b class='v' id='o-hs'>—</b><span class='s' id='o-hs-s'></span></div>
+          <div><span class='k'>Keystore unlock · once at startup</span><b class='v' id='o-ks'>—</b><span class='s' id='o-ks-s'></span></div>
+          <div><span class='k'>Warm-up · cold start</span><b class='v'>amortized</b><span class='s'>steady-state numbers are measured after a 5,000-iteration warm-up; JIT/interpreted runtimes (PyPy, JVM, Node, .NET) need a cold-start ramp before reaching it</span></div>
+        </div>
+      </div>
       <div class='cfg-cards'>
-        <div class='cfg-card'><div class='k'>Session handshake</div><div class='v' id='r-hs'>—</div><div class='s' id='r-hs-s'></div></div>
         <div class='cfg-card'><div class='k'>Seal + open</div><div class='v' id='r-seal'>—</div><div class='s' id='r-seal-s'></div></div>
         <div class='cfg-card'><div class='k'>Hash</div><div class='v' id='r-hash'>—</div><div class='s' id='r-hash-s'></div></div>
-        <div class='cfg-card'><div class='k'>Keystore unlock</div><div class='v' id='r-ks'>—</div><div class='s' id='r-ks-s'></div></div>
         <div class='cfg-card'><div class='k'>Codec decode</div><div class='v' id='r-dec'>—</div><div class='s' id='r-dec-s'></div></div>
-        <div class='cfg-card'><div class='k'>Transport rate</div><div class='v' id='r-xt'>—</div><div class='s' id='r-xt-s'></div></div>
-        <div class='cfg-card'><div class='k'>End-to-end / message</div><div class='v' id='r-e2e'>—</div><div class='s' id='r-e2e-s'></div></div>
+        <div class='cfg-card'><div class='k'>Transport</div><div class='v' id='r-xt'>—</div><div class='s' id='r-xt-s'></div></div>
       </div>
       <div class='cfg-bar'>
         <div class='bt'>Per-message pipeline (decode → seal+open → transport)</div>
@@ -1329,22 +1374,30 @@ def speed():
     pills = "".join(f"<a href='#{sid}'>{html.escape(label)}</a>"
                     for sid, label, hp in ordered if hp)
     secnav = f"<nav class='secnav'><div class='wrap'><div class='secnav-row'>{pills}</div></div></nav>"
-    spy = ("<script>(function(){var L=[].slice.call(document.querySelectorAll('.secnav a')),M={};"
-           "L.forEach(function(a){M[a.getAttribute('href').slice(1)]=a});"
+    # jump-nav: explicit click handler scrolls to the section with a fixed header offset (reliable,
+    # no page-bounce). The observer ONLY highlights the active pill and scrolls the pill row
+    # HORIZONTALLY (never the page — that was the old scrollIntoView bounce bug).
+    spy = ("<script>(function(){var L=[].slice.call(document.querySelectorAll('.secnav a')),M={},"
+           "nav=document.querySelector('.secnav-row');"
+           "L.forEach(function(a){var id=a.getAttribute('href').slice(1);M[id]=a;"
+           "a.addEventListener('click',function(ev){ev.preventDefault();var el=document.getElementById(id);"
+           "if(el){window.scrollTo({top:el.getBoundingClientRect().top+window.pageYOffset-96,behavior:'smooth'});"
+           "history.replaceState(null,'','#'+id);}});});"
            "var o=new IntersectionObserver(function(es){es.forEach(function(e){if(e.isIntersecting){"
-           "L.forEach(function(a){a.classList.remove('active')});var a=M[e.target.id];if(a){a.classList.add('active');"
-           "a.scrollIntoView({inline:'nearest',block:'nearest'})}}});},{rootMargin:'-45% 0px -50% 0px'});"
+           "L.forEach(function(a){a.classList.remove('active')});var a=M[e.target.id];"
+           "if(a){a.classList.add('active');if(nav)nav.scrollTo({left:a.offsetLeft-16,behavior:'smooth'});}}});},"
+           "{rootMargin:'-40% 0px -55% 0px'});"
            "Object.keys(M).forEach(function(id){var el=document.getElementById(id);if(el)o.observe(el)});})();</script>")
-    head = ("<style>html{scroll-behavior:smooth}"
+    head = ("<style>html{scroll-behavior:smooth;scroll-padding-top:96px}"
             ".secnav{position:sticky;top:49px;z-index:40;backdrop-filter:blur(10px);"
             "background:color-mix(in srgb,var(--bg) 88%,transparent);border-bottom:1px solid var(--line)}"
-            ".secnav-row{display:flex;gap:4px;overflow-x:auto;padding:9px 0;scrollbar-width:none}"
+            ".secnav-row{position:relative;display:flex;gap:4px;overflow-x:auto;padding:9px 0;scrollbar-width:none}"
             ".secnav-row::-webkit-scrollbar{display:none}"
             ".secnav a{white-space:nowrap;color:var(--muted);font:600 13px/1 'Inter';padding:7px 12px;"
-            "border-radius:8px;flex:0 0 auto}"
+            "border-radius:8px;flex:0 0 auto;cursor:pointer}"
             ".secnav a:hover{color:var(--fg);background:var(--panel);text-decoration:none}"
             ".secnav a.active{color:var(--signal);background:color-mix(in srgb,var(--signal) 13%,transparent)}"
-            "section[id]{scroll-margin-top:108px}"
+            "section[id]{scroll-margin-top:96px}"
             "@media(max-width:640px){.secnav{top:0}}</style>")
     body = hero + secnav + "".join(hp for _, _, hp in ordered if hp) + spy
     return page("Speed matrix · robobus", "speed", body, canon="speed.html", extra_head=head,
