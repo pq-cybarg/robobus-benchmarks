@@ -842,10 +842,9 @@ def _ffi_bindings_section():
 
 def _config_chooser_section():
     lm, cm = _load("lang-matrix.json"), _load("crypto-matrix.json")
-    tm, pr = _load("transport-matrix.json"), _load("profiles.json")
-    if not (lm and cm and tm and pr):
+    tm = _load("transport-matrix.json")
+    if not (lm and cm and tm):
         return ""
-    # reconcile language naming: crypto-matrix uses display names, lang-matrix uses lowercase keys
     disp2codec = {"C": "c", "C++": "cpp", "Rust": "rust", "Go": "go", "Zig": "zig", "Swift": "swift",
                   "Nim": "nim", "Haskell": "haskell", "OCaml": "ocaml", "LuaJIT": "lua-luajit",
                   "Crystal": "crystal", "Julia": "julia", "Python": "python", "Java": "java",
@@ -853,118 +852,222 @@ def _config_chooser_section():
                   "Fortran": "fortran", "Pascal": "pascal", "Nelua": "nelua", "COBOL": "cobol", "Octave": "octave",
                   "Mojo": "mojo", "Lua": "lua", "Python (PyPy)": "python-pypy", "Python (Cython)": "python-cython"}
     codec = {x["language"]: x.get("ns_per_op") for x in lm["languages"] if x.get("status") == "ok"}
-    ciphers = ["AES-256-GCM", "AES-128-GCM", "ChaCha20-Poly1305"]
     tech = cm.get("techniques", {})
+    groups = {g["kind"]: list(g["techniques"]) for g in cm.get("groups", [])}
+    # per-language: codec + every measured technique ns
     langs = {}
     for disp, ckey in disp2codec.items():
-        aead = {c: next((r["ns"] for r in tech.get(c, {}).get("rows", []) if r["language"] == disp), None)
-                for c in ciphers}
-        impl = next((r.get("impl", "") for r in tech.get("AES-256-GCM", {}).get("rows", [])
-                     if r["language"] == disp), "")
-        if codec.get(ckey) is None and all(v is None for v in aead.values()):
+        row = {}
+        for tname, info in tech.items():
+            r = next((rr["ns"] for rr in info.get("rows", []) if rr["language"] == disp), None)
+            if r is not None:
+                row[tname] = r
+        if not row and codec.get(ckey) is None:
             continue
-        langs[disp] = {"codec": codec.get(ckey), "aead": aead, "impl": impl}
+        langs[disp] = {"codec": codec.get(ckey), "tech": row}
     transports = {r["name"]: {"fps": r["metrics"].get("ops_per_s"), "mbps": r["metrics"].get("mb_per_s"),
                               "p50": r["metrics"].get("p50_ns")}
                   for r in tm["results"] if r["status"] == "ok" and r["metrics"].get("ops_per_s")}
-    profiles = [{"name": p["name"], "level": p["level"], "setup": p.get("session_setup_ns"),
-                 "permsg": p.get("per_message_ns"), "mps": p.get("msg_per_s")} for p in pr["profiles"]]
-    blob = json.dumps({"langs": langs, "ciphers": ciphers, "transports": transports, "profiles": profiles})
+    # NIST security category per primitive (0 = classical, not quantum-safe). Equivalent NIST classes
+    # are treated as equally secure — no bonus for hash-based vs lattice sigs, per the design intent.
+    LVL = {"AES-128-GCM": 1, "AES-256-GCM": 5, "AES-256-GCM-SIV": 5, "ChaCha20-Poly1305": 5,
+           "SHA-256": 2, "SHA-384": 4, "SHA-512": 5, "SHA3-256": 2, "SHA3-512": 5, "BLAKE3": 2,
+           "ML-KEM-512": 1, "ML-KEM-768": 3, "ML-KEM-1024": 5, "X25519": 0,
+           "ML-DSA-44": 2, "ML-DSA-65": 3, "ML-DSA-87": 5, "Falcon-512": 1, "Falcon-1024": 5,
+           "SLH-DSA-SHAKE-256f": 5, "Ed25519": 0,
+           "Argon2id": 0, "scrypt": 0, "PBKDF2": 0, "HKDF-SHA384": 0, "KMAC256": 0}
+    fastest_lang = min(langs, key=lambda k: langs[k]["codec"] or 9e18) if langs else "C"
+    fastest_xport = max(transports, key=lambda k: transports[k]["fps"]) if transports else ""
+    blob = json.dumps({"langs": langs, "groups": groups, "transports": transports, "lvl": LVL,
+                       "fastestLang": fastest_lang, "fastestXport": fastest_xport})
+
+    def opts(items, first=None):
+        items = ([first] + [i for i in items if i != first]) if first else list(items)
+        return "".join(f"<option value='{html.escape(str(i))}'>{html.escape(str(i))}</option>" for i in items)
+
     css = """<style>
-.cfg{display:grid;grid-template-columns:320px 1fr;gap:26px;margin-top:20px}
-@media(max-width:820px){.cfg{grid-template-columns:1fr}}
-.cfg-controls{display:flex;flex-direction:column;gap:14px}
-.cfg-f label{display:block;font:600 11px/1 'JetBrains Mono';letter-spacing:.06em;text-transform:uppercase;color:var(--dim);margin-bottom:6px}
-.cfg-f select{width:100%;padding:10px 12px;background:var(--panel2,var(--panel));color:var(--fg);
-  border:1px solid var(--line);border-radius:8px;font:500 14px/1.2 'Inter';cursor:pointer}
+.cfg{display:grid;grid-template-columns:340px 1fr;gap:26px;margin-top:8px}
+@media(max-width:860px){.cfg{grid-template-columns:1fr}}
+.cfg-presets{display:flex;flex-wrap:wrap;gap:8px;margin:14px 0 4px}
+.cfg-presets button{font:600 12.5px/1 'Inter';padding:9px 13px;border-radius:9px;border:1px solid var(--line);
+  background:var(--panel);color:var(--fg);cursor:pointer}
+.cfg-presets button:hover{border-color:var(--signal);background:color-mix(in srgb,var(--signal) 8%,transparent)}
+.cfg-presets button.hot{background:var(--signal);color:var(--signal-ink);border-color:var(--signal)}
+.cfg-presets button.sec{background:var(--qr,#b57edc);color:#160d1e;border-color:var(--qr,#b57edc)}
+.cfg-controls{display:flex;flex-direction:column;gap:11px}
+.cfg-f label{display:block;font:600 10.5px/1 'JetBrains Mono';letter-spacing:.05em;text-transform:uppercase;color:var(--dim);margin-bottom:5px}
+.cfg-f select{width:100%;padding:9px 11px;background:var(--panel);color:var(--fg);
+  border:1px solid var(--line);border-radius:8px;font:500 13.5px/1.2 'Inter';cursor:pointer}
 .cfg-f select:focus{outline:2px solid var(--signal);outline-offset:1px}
 .cfg-out{display:flex;flex-direction:column;gap:14px}
-.cfg-cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:12px}
-.cfg-card{background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:14px 16px}
-.cfg-card .k{font:600 10.5px/1.2 'JetBrains Mono';letter-spacing:.05em;text-transform:uppercase;color:var(--dim)}
-.cfg-card .v{font:700 22px/1.1 'Inter';color:var(--fg);margin-top:6px;font-variant-numeric:tabular-nums}
-.cfg-card .u{font:400 12px 'JetBrains Mono';color:var(--muted)}
-.cfg-card .s{font:400 11px/1.3 'JetBrains Mono';color:var(--muted);margin-top:5px}
-.cfg-bar{background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:16px}
-.cfg-bar .bt{font:600 12px/1 'JetBrains Mono';color:var(--dim);margin-bottom:10px;text-transform:uppercase;letter-spacing:.05em}
-.cfg-seg{display:flex;height:26px;border-radius:6px;overflow:hidden;background:var(--line)}
-.cfg-seg i{display:block;height:100%}
-.cfg-seg i.c1{background:var(--signal)}.cfg-seg i.c2{background:var(--hybrid,#e0a458)}.cfg-seg i.c3{background:var(--qr,#b57edc)}
+.cfg-sec{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:16px 18px}
+.cfg-sec-top{display:flex;align-items:center;gap:12px;flex-wrap:wrap}
+.cfg-lvl{font:800 15px/1 'Space Grotesk';padding:7px 12px;border-radius:8px;white-space:nowrap}
+.cfg-lvl.l5{color:var(--qr,#b57edc);background:color-mix(in srgb,var(--qr,#b57edc) 15%,transparent)}
+.cfg-lvl.l34{color:var(--signal);background:color-mix(in srgb,var(--signal) 14%,transparent)}
+.cfg-lvl.l12{color:var(--hybrid,#e0a458);background:color-mix(in srgb,var(--hybrid,#e0a458) 15%,transparent)}
+.cfg-lvl.l0{color:var(--dim);border:1px solid var(--line)}
+.cfg-qs{font:600 12px/1 'JetBrains Mono';padding:6px 10px;border-radius:7px}
+.cfg-qs.yes{color:#5fd39a;background:color-mix(in srgb,#5fd39a 13%,transparent)}
+.cfg-qs.no{color:var(--hybrid,#e0a458);background:color-mix(in srgb,var(--hybrid,#e0a458) 13%,transparent)}
+.cfg-std{display:flex;flex-wrap:wrap;gap:6px;margin-top:12px}
+.cfg-std span{font:500 11px/1 'JetBrains Mono';color:var(--muted);border:1px solid var(--line);
+  background:var(--panel2,var(--panel));border-radius:6px;padding:5px 8px}
+.cfg-cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(158px,1fr));gap:12px}
+.cfg-card{background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:13px 15px}
+.cfg-card .k{font:600 10px/1.2 'JetBrains Mono';letter-spacing:.04em;text-transform:uppercase;color:var(--dim)}
+.cfg-card .v{font:700 21px/1.05 'Inter';color:var(--fg);margin-top:6px;font-variant-numeric:tabular-nums}
+.cfg-card .s{font:400 11px/1.35 'JetBrains Mono';color:var(--muted);margin-top:5px}
+.cfg-bar{background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:15px}
+.cfg-bar .bt{font:600 11px/1 'JetBrains Mono';color:var(--dim);margin-bottom:10px;text-transform:uppercase;letter-spacing:.04em}
+.cfg-seg{display:flex;height:24px;border-radius:6px;overflow:hidden;background:var(--line)}
+.cfg-seg i{display:block;height:100%;transition:width .25s}
 .cfg-leg{display:flex;gap:16px;flex-wrap:wrap;margin-top:10px;font:400 11.5px 'JetBrains Mono';color:var(--muted)}
-.cfg-leg span{display:inline-flex;align-items:center;gap:6px}
-.cfg-leg b{width:10px;height:10px;border-radius:2px;display:inline-block}
-.cfg-note{font:400 12px/1.5 'JetBrains Mono';color:var(--muted)}
+.cfg-leg span{display:inline-flex;align-items:center;gap:6px}.cfg-leg b{width:10px;height:10px;border-radius:2px}
+.cfg-spec{font:500 13px/1.6 'JetBrains Mono';color:var(--fg);background:var(--panel2,var(--panel));
+  border:1px dashed var(--line);border-radius:10px;padding:13px 15px;margin-top:2px}
+.cfg-spec b{color:var(--signal)}
 </style>"""
-    opts_lang = "".join(f"<option value='{html.escape(k)}'>{html.escape(k)}</option>" for k in langs)
-    opts_ciph = "".join(f"<option value='{html.escape(c)}'>{html.escape(c)}</option>" for c in ciphers)
-    opts_xport = "".join(f"<option value='{html.escape(k)}'>{html.escape(k)}</option>" for k in transports)
-    opts_prof = "".join(f"<option value='{html.escape(p['name'])}'>{html.escape(p['name'])}"
-                        f"{' · classical' if p['level']==0 else ' · NIST '+str(p['level'])}</option>"
-                        for p in profiles)
     js = """<script>(function(){
 var D=JSON.parse(document.getElementById('cfg-data').textContent);
 var $=function(id){return document.getElementById(id)};
-function ns(v){ if(v==null) return '—';
-  if(v<1000) return v.toFixed(v<100?1:0)+' ns';
-  if(v<1e6) return (v/1e3).toFixed(2)+' µs';
-  return (v/1e6).toFixed(2)+' ms'; }
-function fmt(v){ return v==null?'—':v.toLocaleString(undefined,{maximumFractionDigits:0}); }
-function upd(){
-  var L=D.langs[$('cf-lang').value], c=$('cf-ciph').value,
-      X=D.transports[$('cf-xport').value],
-      P=D.profiles.find(function(p){return p.name==$('cf-prof').value});
-  var dec=L?L.codec:null, seal=L&&L.aead?L.aead[c]:null;
-  var sealNote = seal==null && L ? 'no native '+c+' — via librobobus FFI (~0.75 µs)' : (L?L.impl:'');
-  var xns = X&&X.fps? 1e9/X.fps : null;
-  $('r-dec').innerHTML = ns(dec);
-  $('r-seal').innerHTML = ns(seal); $('r-seal-s').textContent = sealNote||'';
-  $('r-hs').innerHTML = P&&P.setup? ns(P.setup):'—';
-  $('r-pm').innerHTML = P&&P.permsg? ns(P.permsg):'—';
-  $('r-xt').innerHTML = X? fmt(X.fps):'—'; $('r-xt-s').textContent = X? X.mbps.toFixed(0)+' MB/s'+(X.p50?' · p50 '+ (X.p50/1000).toFixed(1)+' µs':''):'';
-  var d=dec||0, s=(seal!=null?seal:750), t=xns||0, tot=d+s+t;
-  if(tot>0){
-    $('seg1').style.width=(100*d/tot)+'%'; $('seg2').style.width=(100*s/tot)+'%'; $('seg3').style.width=(100*t/tot)+'%';
-    var rate = 1e9/tot;
-    $('r-e2e').innerHTML = ns(tot); $('r-e2e-s').textContent = '≈ '+fmt(rate)+' msg/s single-thread pipeline';
-    var bott = t>=s&&t>=d?'transport':(s>=d?'crypto seal/open':'codec decode');
-    $('cfg-bott').textContent = 'Bottleneck: '+bott+(seal==null?' (crypto via FFI estimate)':'');
+function ns(v){ if(v==null)return '—'; if(v<1000)return (v<100?v.toFixed(1):v.toFixed(0))+' ns';
+  if(v<1e6)return (v/1e3).toFixed(2)+' µs'; return (v/1e6).toFixed(2)+' ms'; }
+function fmt(v){ return v==null?'—':Math.round(v).toLocaleString(); }
+function T(lang){ return (D.langs[lang]||{}).tech||{}; }
+function pick(lang,g,filt){ var b=null,bv=Infinity,t=T(lang); (D.groups[g]||[]).forEach(function(x){
+  if(filt&&!filt(x))return; var v=t[x]; if(v!=null&&v<bv){bv=v;b=x;} }); return b; }
+function setSel(id,v){ if(v)$(id).value=v; }
+function preset(mode){
+  var lang=D.fastestLang; setSel('cf-lang',lang);
+  if(mode==='fast'){
+    setSel('cf-kem',pick(lang,'kem')); setSel('cf-sig',pick(lang,'sig'));
+    setSel('cf-aead',pick(lang,'aead')); setSel('cf-hash',pick(lang,'hash'));
+    setSel('cf-kdf',pick(lang,'kdf')); setSel('cf-xport',D.fastestXport);
+  } else if(mode==='secure'){
+    var L5=function(x){return D.lvl[x]===5;};
+    setSel('cf-kem',pick(lang,'kem',L5)); setSel('cf-sig',pick(lang,'sig',L5));
+    setSel('cf-aead',pick(lang,'aead',L5)); setSel('cf-hash',pick(lang,'hash',L5));
+    setSel('cf-kdf','Argon2id'); setSel('cf-xport',D.fastestXport);
+  } else if(mode==='cnsa'){
+    setSel('cf-kem','ML-KEM-1024'); setSel('cf-sig','ML-DSA-87'); setSel('cf-aead','AES-256-GCM');
+    setSel('cf-hash','SHA-384'); setSel('cf-kdf','Argon2id'); setSel('cf-xport',D.fastestXport);
+  } else if(mode==='nist3'){
+    setSel('cf-kem','ML-KEM-768'); setSel('cf-sig','ML-DSA-65'); setSel('cf-aead','AES-256-GCM');
+    setSel('cf-hash','SHA-384'); setSel('cf-kdf','Argon2id'); setSel('cf-xport',D.fastestXport);
+  } else if(mode==='classical'){
+    setSel('cf-kem','X25519'); setSel('cf-sig','Ed25519'); setSel('cf-aead','ChaCha20-Poly1305');
+    setSel('cf-hash','SHA-256'); setSel('cf-kdf','HKDF-SHA384'); setSel('cf-xport',D.fastestXport);
   }
+  upd();
 }
-['cf-lang','cf-ciph','cf-xport','cf-prof'].forEach(function(id){$(id).addEventListener('change',upd)});
-upd();
+function lvlClass(n){ return n>=5?'l5':n>=3?'l34':n>=1?'l12':'l0'; }
+function upd(){
+  var lang=$('cf-lang').value, t=T(lang), codec=(D.langs[lang]||{}).codec;
+  var kem=$('cf-kem').value, sig=$('cf-sig').value, aead=$('cf-aead').value,
+      hash=$('cf-hash').value, kdf=$('cf-kdf').value, X=D.transports[$('cf-xport').value];
+  // security: overall = weakest of kem/sig/aead/hash; quantum-safe needs PQC kem AND sig
+  var qs = D.lvl[kem]>0 && D.lvl[sig]>0;
+  var overall = Math.min(D.lvl[kem],D.lvl[sig],D.lvl[aead],D.lvl[hash]);
+  var el=$('cf-lvl'); el.className='cfg-lvl '+lvlClass(overall);
+  el.textContent = overall===0? 'Classical (not quantum-safe)' : ('NIST Level '+overall);
+  var q=$('cf-qs'); q.className='cfg-qs '+(qs?'yes':'no'); q.textContent = qs?'✓ quantum-safe':'⚠ classical KEM/sig';
+  // standards satisfied
+  var std=[];
+  if(kem.indexOf('ML-KEM')===0) std.push('FIPS 203 (ML-KEM)');
+  if(sig.indexOf('ML-DSA')===0) std.push('FIPS 204 (ML-DSA)');
+  if(sig.indexOf('SLH-DSA')===0) std.push('FIPS 205 (SLH-DSA)');
+  if(sig.indexOf('Falcon')===0) std.push('FIPS 206 draft (FN-DSA)');
+  if(sig==='Ed25519'||kem==='X25519') std.push('FIPS 186-5 / RFC 7748');
+  if(aead.indexOf('AES')===0) std.push('FIPS 197 (AES)');
+  if(hash.indexOf('SHA3')===0) std.push('FIPS 202 (SHA-3)'); else if(hash.indexOf('SHA')===0) std.push('FIPS 180-4 (SHA-2)');
+  if(kem==='ML-KEM-1024'&&sig==='ML-DSA-87'&&aead==='AES-256-GCM'&&(hash==='SHA-384'||hash==='SHA-512'))
+    std.unshift('CNSA 2.0');
+  if(qs) std.push('NSA CNSF-ready');
+  $('cf-std').innerHTML = std.map(function(s){return '<span>'+s+'</span>';}).join('');
+  // performance composition (all from measured data)
+  var hs = (t[kem]||0)+(t[sig]||0);                 // handshake: KEM exchange + sig sign+verify
+  var seal = t[aead];                               // per-message seal+open
+  var ks = t[kdf];                                  // keystore unlock (once)
+  var xns = X&&X.fps? 1e9/X.fps : null;
+  var pipe = (codec||0)+(seal||0)+(xns||0);
+  $('r-hs').innerHTML = ns(hs); $('r-hs-s').textContent = ns(t[kem])+' KEM + '+ns(t[sig])+' sig';
+  $('r-seal').innerHTML = ns(seal); $('r-seal-s').textContent = aead;
+  $('r-hash').innerHTML = ns(t[hash]); $('r-hash-s').textContent = hash;
+  $('r-ks').innerHTML = ns(ks); $('r-ks-s').textContent = kdf+' · once at unlock';
+  $('r-dec').innerHTML = ns(codec); $('r-dec-s').textContent = lang;
+  $('r-xt').innerHTML = X? fmt(X.fps)+' f/s':'—';
+  $('r-xt-s').textContent = X? X.mbps.toFixed(0)+' MB/s'+(X.p50?' · p50 '+(X.p50/1000).toFixed(1)+' µs':''):'';
+  var rate=pipe>0?1e9/pipe:0, thru=rate*75/1e6;
+  $('r-e2e').innerHTML = ns(pipe); $('r-e2e-s').textContent='≈ '+fmt(rate)+' msg/s · '+thru.toFixed(1)+' MB/s single-thread';
+  if(pipe>0){
+    var d=codec||0,s=seal||0,x=xns||0;
+    $('seg1').style.width=(100*d/pipe)+'%'; $('seg2').style.width=(100*s/pipe)+'%'; $('seg3').style.width=(100*x/pipe)+'%';
+  }
+  // one-line spec sheet for competitor comparison
+  var lvlTxt = overall===0?'classical':'NIST-'+overall;
+  $('cf-spec').innerHTML = '<b>'+lang+'</b> · '+kem+' + '+sig+' + '+aead+' + '+hash+
+    ' · <b>'+lvlTxt+(qs?', quantum-safe':'')+'</b> · handshake <b>'+ns(hs)+'</b>/peer · '+
+    '<b>'+fmt(seal?1e9/seal:0)+'</b> sealed msg/s (envelope) · pipeline <b>'+fmt(rate)+'</b> msg/s over '+
+    $('cf-xport').value+' ('+ (X?fmt(X.fps):'—') +' f/s ceiling)';
+}
+['cf-lang','cf-kem','cf-sig','cf-aead','cf-hash','cf-kdf','cf-xport'].forEach(function(id){
+  $(id).addEventListener('change',upd); });
+document.querySelectorAll('.cfg-presets button').forEach(function(b){
+  b.addEventListener('click',function(){preset(b.getAttribute('data-p'));}); });
+preset('secure');
 })();</script>"""
     return f"""<section><div class='wrap'>{css}
-  <p class='sec-eyebrow'>interactive · build your config</p>
-  <h2 class='title'>Configure your bus, see the numbers</h2>
-  <p class='sec-lede'>Pick a language, an AEAD cipher, a transport, and a security profile — every number
-  below is a real measurement from the matrices on this page, composed into one per-message pipeline.
-  The crypto figure is that language's native stack (or a librobobus-FFI estimate where it has no
-  native AEAD); the handshake and per-message envelope come from the chosen security profile.</p>
+  <p class='sec-eyebrow'>interactive · build your config · read the spec</p>
+  <h2 class='title'>Configure your bus — get the performance spec</h2>
+  <p class='sec-lede'>Choose every axis — language, KEM, signature, AEAD cipher, hash, keystore KDF,
+  transport — and this composes a full <b>performance specification</b> from the real measurements on
+  this page: session handshake, per-message envelope, transport rate, keystore-unlock cost, and the
+  end-to-end pipeline, alongside the <b>NIST level and standards</b> your combo satisfies. It's the
+  spec sheet you'd hand to a competitor for a head-to-head. Two smart presets: <b>Fastest possible</b>
+  (lowest latency, any security) and <b>Most secure + fast</b> (NIST-5 everywhere, then the fastest
+  option within that level — equivalent NIST classes count as equally secure).</p>
   <script type='application/json' id='cfg-data'>{blob}</script>
+  <div class='cfg-presets'>
+    <button class='hot' data-p='fast'>⚡ Fastest possible</button>
+    <button class='sec' data-p='secure'>🛡 Most secure + fast</button>
+    <button data-p='cnsa'>CNSA 2.0</button>
+    <button data-p='nist3'>NIST-3</button>
+    <button data-p='classical'>Classical</button>
+  </div>
   <div class='cfg'>
     <div class='cfg-controls'>
-      <div class='cfg-f'><label>Language</label><select id='cf-lang'>{opts_lang}</select></div>
-      <div class='cfg-f'><label>AEAD cipher</label><select id='cf-ciph'>{opts_ciph}</select></div>
-      <div class='cfg-f'><label>Transport</label><select id='cf-xport'>{opts_xport}</select></div>
-      <div class='cfg-f'><label>Security profile</label><select id='cf-prof'>{opts_prof}</select></div>
+      <div class='cfg-f'><label>Language / runtime</label><select id='cf-lang'>{opts(langs)}</select></div>
+      <div class='cfg-f'><label>KEM · key establishment</label><select id='cf-kem'>{opts(groups.get("kem", []))}</select></div>
+      <div class='cfg-f'><label>Signature · authentication</label><select id='cf-sig'>{opts(groups.get("sig", []))}</select></div>
+      <div class='cfg-f'><label>AEAD cipher · per-message</label><select id='cf-aead'>{opts(groups.get("aead", []))}</select></div>
+      <div class='cfg-f'><label>Hash</label><select id='cf-hash'>{opts(groups.get("hash", []))}</select></div>
+      <div class='cfg-f'><label>Keystore KDF · passphrase→key</label><select id='cf-kdf'>{opts(groups.get("kdf", []))}</select></div>
+      <div class='cfg-f'><label>Transport</label><select id='cf-xport'>{opts(transports)}</select></div>
     </div>
     <div class='cfg-out'>
+      <div class='cfg-sec'>
+        <div class='cfg-sec-top'><span class='cfg-lvl l5' id='cf-lvl'>—</span>
+          <span class='cfg-qs yes' id='cf-qs'>—</span></div>
+        <div class='cfg-std' id='cf-std'></div>
+      </div>
       <div class='cfg-cards'>
-        <div class='cfg-card'><div class='k'>Codec decode</div><div class='v' id='r-dec'>—</div><div class='u'>per frame</div></div>
+        <div class='cfg-card'><div class='k'>Session handshake</div><div class='v' id='r-hs'>—</div><div class='s' id='r-hs-s'></div></div>
         <div class='cfg-card'><div class='k'>Seal + open</div><div class='v' id='r-seal'>—</div><div class='s' id='r-seal-s'></div></div>
+        <div class='cfg-card'><div class='k'>Hash</div><div class='v' id='r-hash'>—</div><div class='s' id='r-hash-s'></div></div>
+        <div class='cfg-card'><div class='k'>Keystore unlock</div><div class='v' id='r-ks'>—</div><div class='s' id='r-ks-s'></div></div>
+        <div class='cfg-card'><div class='k'>Codec decode</div><div class='v' id='r-dec'>—</div><div class='s' id='r-dec-s'></div></div>
         <div class='cfg-card'><div class='k'>Transport rate</div><div class='v' id='r-xt'>—</div><div class='s' id='r-xt-s'></div></div>
-        <div class='cfg-card'><div class='k'>Session handshake</div><div class='v' id='r-hs'>—</div><div class='u'>once per peer</div></div>
-        <div class='cfg-card'><div class='k'>Per-message envelope</div><div class='v' id='r-pm'>—</div><div class='u'>profile hot path</div></div>
-        <div class='cfg-card'><div class='k'>Pipeline / message</div><div class='v' id='r-e2e'>—</div><div class='s' id='r-e2e-s'></div></div>
+        <div class='cfg-card'><div class='k'>End-to-end / message</div><div class='v' id='r-e2e'>—</div><div class='s' id='r-e2e-s'></div></div>
       </div>
       <div class='cfg-bar'>
-        <div class='bt'>Per-message pipeline breakdown</div>
-        <div class='cfg-seg'><i class='c1' id='seg1'></i><i class='c2' id='seg2'></i><i class='c3' id='seg3'></i></div>
+        <div class='bt'>Per-message pipeline (decode → seal+open → transport)</div>
+        <div class='cfg-seg'><i class='c1' id='seg1' style='background:var(--signal)'></i><i class='c2' id='seg2' style='background:var(--hybrid,#e0a458)'></i><i class='c3' id='seg3' style='background:var(--qr,#b57edc)'></i></div>
         <div class='cfg-leg'><span><b style='background:var(--signal)'></b>codec decode</span>
           <span><b style='background:var(--hybrid,#e0a458)'></b>seal + open</span>
           <span><b style='background:var(--qr,#b57edc)'></b>transport send</span></div>
-        <div class='cfg-note' id='cfg-bott' style='margin-top:10px'></div>
       </div>
+      <div class='cfg-spec' id='cf-spec'></div>
     </div>
   </div>
   {js}
@@ -984,7 +1087,7 @@ def _crypto_matrix_section():
         "sig":  lambda v: "tier-n" if v > 4e3 else "tier-j" if v > 2e3 else "tier-i",
     }
     blocks = []
-    for grp in cm.get("groups", []):
+    for gi, grp in enumerate(cm.get("groups", [])):
         techs = [t for t in grp["techniques"] if tech.get(t, {}).get("rows")]
         if not techs:
             continue
@@ -996,10 +1099,24 @@ def _crypto_matrix_section():
                 f"<div class='tech'><div class='tech-h'><span class='tech-n'>{html.escape(t)}</span>"
                 f"<span class='tech-m'>{html.escape(info.get('metric',''))}</span></div>"
                 f"{_hbars(rows, kind_tier.get(info['kind'], kind_tier['aead']))}</div>")
-        blocks.append(f"<div class='cgroup'><h3 class='cgroup-t'>{html.escape(grp['title'])}</h3>"
-                      + "".join(inner) + "</div>")
-    css = ("<style>.cgroup{margin:26px 0}.cgroup-t{font:600 15px/1.3 'Inter';color:var(--signal);"
-           "margin:0 0 6px;padding-bottom:8px;border-bottom:1px solid var(--line)}"
+        # collapsible: first group open, rest folded (each summary shows the primitive list)
+        chips = " · ".join(techs)
+        blocks.append(
+            f"<details class='cgroup'{' open' if gi == 0 else ''}>"
+            f"<summary class='cgroup-t'><span>{html.escape(grp['title'])}</span>"
+            f"<span class='cgroup-c'>{html.escape(chips)}</span></summary>"
+            + "".join(inner) + "</details>")
+    css = ("<style>.cgroup{margin:14px 0;border:1px solid var(--line);border-radius:12px;"
+           "background:var(--panel);overflow:hidden}"
+           ".cgroup>*:not(summary){margin-left:16px;margin-right:16px}"
+           ".cgroup[open]{padding-bottom:14px}"
+           ".cgroup-t{list-style:none;cursor:pointer;display:flex;justify-content:space-between;align-items:center;"
+           "gap:14px;flex-wrap:wrap;padding:15px 16px;font:600 15px/1.3 'Inter';color:var(--signal);user-select:none}"
+           ".cgroup-t::-webkit-details-marker{display:none}"
+           ".cgroup-t::after{content:'▸';color:var(--muted);font-size:13px;transition:transform .2s;margin-left:auto}"
+           ".cgroup[open] .cgroup-t::after{transform:rotate(90deg)}"
+           ".cgroup-t:hover{background:color-mix(in srgb,var(--signal) 6%,transparent)}"
+           ".cgroup-c{font:400 11.5px/1.4 'JetBrains Mono';color:var(--dim);font-weight:400;order:3;flex-basis:100%}"
            ".tech{margin:16px 0}.tech-h{display:flex;justify-content:space-between;align-items:baseline;"
            "gap:12px;margin-bottom:6px;flex-wrap:wrap}.tech-n{font:600 13.5px/1 'JetBrains Mono';color:var(--fg)}"
            ".tech-m{font:400 11px/1.3 'JetBrains Mono';color:var(--dim)}</style>")
