@@ -1134,16 +1134,18 @@ def speed():
     # 4) transport × language grid (heatmap)
     sec4 = ""
     if xl and xl.get("cells"):
+        import math
         cells = xl["cells"]
-        langs, xports = [], []
-        for c in cells:
-            if c["language"] not in langs:
-                langs.append(c["language"])
-            if c["transport"] not in xports:
-                xports.append(c["transport"])
+        shim_x = {s.lower() for s in xl.get("shim_transports", [])}
+        # transport display order: native sockets, then in-process, then brokers/middleware
+        order = ["udp", "tcp", "uds", "shm", "serial", "can", "mqtt", "amqp", "kafka", "dds", "zerocm", "lsl"]
+        langs = [l for l in dict.fromkeys(c["language"] for c in cells)]
+        xports = [x for x in order if any(c["transport"] == x for c in cells)]
+        xports += [x for x in dict.fromkeys(c["transport"] for c in cells) if x not in xports]
         grid = {(c["transport"], c["language"]): c for c in cells}
         vals = [c["frames_per_s"] for c in cells if c.get("frames_per_s")]
-        mx = max(vals) if vals else 1
+        lo, hi = (math.log10(min(vals)), math.log10(max(vals))) if vals else (0, 1)
+        span = (hi - lo) or 1
         head = "".join(f"<th>{html.escape(l)}</th>" for l in langs)
         body = ""
         for xp in xports:
@@ -1151,29 +1153,33 @@ def speed():
             for l in langs:
                 c = grid.get((xp, l))
                 if c and c.get("frames_per_s"):
-                    t = c["frames_per_s"] / mx
-                    bg = f"color-mix(in srgb, var(--signal) {int(14+t*70)}%, transparent)"
-                    tds += f"<td style='background:{bg}'>{c['frames_per_s']/1000:,.0f}k</td>"
+                    t = (math.log10(c["frames_per_s"]) - lo) / span      # log scale — values span 4,000×
+                    bg = f"color-mix(in srgb, var(--signal) {int(12+t*72)}%, transparent)"
+                    v = c["frames_per_s"]
+                    disp = f"{v/1e6:,.1f}M" if v >= 1e6 else f"{v/1e3:,.0f}k"
+                    tds += f"<td style='background:{bg}'>{disp}</td>"
                 else:
                     tds += "<td class='na'>—</td>"
-            body += f"<tr><td class='rl'>{html.escape(xp.upper())}</td>{tds}</tr>"
+            tag = " <small>·shim</small>" if xp in shim_x else ""
+            body += f"<tr><td class='rl'>{html.escape(xp.upper())}{tag}</td>{tds}</tr>"
         sec4 = f"""<section><div class='wrap'>
-  <p class='sec-eyebrow'>transport × language</p>
-  <h2 class='title'>The full product</h2>
-  <p class='sec-lede'>Each cell: that language's native client pushing the sealed frame over that
-  transport (frames/s, loopback, pipelined), across the three universal socket transports — <b>UDP</b>,
-  <b>TCP</b>, and <b>Unix-domain sockets</b> (the fastest local socket, no IP stack) — in every
-  language that ships them (native stdlib, or libc BSD sockets via each language's C interop for
-  Fortran/Nelua/Pascal). These cells are <b>I/O-syscall-bound</b>: every language issues the same
-  <code>send</code>/<code>recv</code> into the same kernel, so within a row throughput converges to
-  that transport's loopback ceiling and small per-language differences (even Python edging C) are
-  run-to-run noise, not language speed. Read it by <i>row</i>, not by cell: the ranking is
-  UDS&nbsp;&gt;&nbsp;TCP&nbsp;&gt;&nbsp;UDP (their kernel paths), and <b>the transport sets the
-  ceiling, not the caller</b> — the opposite of the codec table, where language spans ~1,700×. A
-  blank cell is honest: that language has no client for that transport (e.g. no datagram Unix socket
-  in the JVM/Node stdlib). Runtime/accelerator variants (PyPy, Cython, NumPy…) share their base
-  language's socket path. The broker &amp; middleware transports (MQTT, Kafka, Zenoh, DDS, ROS, ZeroCM…)
-  are client-library-gated — measured in the transport table above.</p>
+  <p class='sec-eyebrow'>transport × language · the full product</p>
+  <h2 class='title'>Every language, every transport</h2>
+  <p class='sec-lede'>The complete grid: each of <b>{len(langs)} languages</b> driving each of
+  <b>{len(xports)} transports</b> with the real 75-byte sealed frame (frames/s, loopback). The three
+  <b>socket</b> transports (UDP/TCP/UDS) each language drives with its own native BSD sockets — or libc
+  sockets via C interop for Fortran/Nelua/Pascal/COBOL/Mojo. The <b>broker &amp; middleware</b> rows
+  (SHM, Serial, CAN, MQTT, AMQP, Kafka, DDS, ZeroCM, LSL — marked <small>·shim</small>) have no native
+  per-language client, so every language reaches them the same way the crypto matrix reaches a missing
+  primitive: through one labeled C shim (<code>librbxport</code>) wrapping each transport's real C
+  library (libmosquitto, rabbitmq-c, librdkafka, CycloneDDS, libzcm, liblsl, plus an in-C virtual CAN
+  bus and POSIX shm/pty) — called through the language's own FFI. Read it by <i>row</i>: the transport
+  work happens in shared C, so within a row languages <b>converge</b> (the FFI overhead is nearly free)
+  and the spread is run-to-run noise on a shared host, not language speed. <b>The transport sets the
+  ceiling, not the caller</b> — the opposite of the codec table (language spans ~1,700×). Colour is
+  log-scaled; the grid spans SHM (~50M f/s, an in-process ring) down to Kafka (~15k, a full broker
+  round-trip). One honest blank: Pascal×Kafka (its blocking read hangs librdkafka's poll — Kafka works
+  from all 25 other languages). Runtime/accelerator variants share their base language's row.</p>
   <div class='heatwrap'><table class='heat'><thead><tr><th>transport</th>{head}</tr></thead>
   <tbody>{body}</tbody></table></div>
 </div></section>"""
