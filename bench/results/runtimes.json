@@ -1,6 +1,6 @@
 {
   "schema": "robobus-runtimes/1",
-  "generated_unix": 1784563275,
+  "generated_unix": 1784837589,
   "host": {
     "system": "Darwin",
     "machine": "arm64"
@@ -11,55 +11,63 @@
     {
       "config": "CPython (pure)",
       "status": "ok",
-      "ns_per_op": 1989.7395863650177,
-      "ops_per_s": 502578.33077888517,
+      "ns_per_op": 2376.761111109873,
+      "ops_per_s": 420740.64378015307,
       "note": "pyca/cryptography (C backend), CPython dispatch"
     },
     {
       "config": "CPython + Cython",
       "status": "ok",
-      "ns_per_op": 800.8655442329025,
-      "ops_per_s": 1248649.0487711462,
+      "ns_per_op": 1132.5122789410095,
+      "ops_per_s": 882992.6338062142,
       "note": "cyaead: Cython\u2192OpenSSL EVP, in-process"
     },
     {
       "config": "CPython + cffi\u2192librobobus",
       "status": "ok",
-      "ns_per_op": 1082.642871053969,
-      "ops_per_s": 923665.6211724603,
+      "ns_per_op": 1800.3767375072734,
+      "ops_per_s": 555439.3028786621,
       "note": "cffi ABI-mode \u2192 librobobus (native), CPython"
     },
     {
       "config": "PyPy + cffi\u2192librobobus",
       "status": "ok",
-      "ns_per_op": 760.267205556307,
-      "ops_per_s": 1315327.022777833,
+      "ns_per_op": 1297.7570312500575,
+      "ops_per_s": 770560.263531576,
       "note": "PyPy JIT + cffi \u2192 librobobus (native)"
     },
     {
       "config": "Mojo (native)",
-      "status": "skipped",
-      "note": "Mojo installed; measured native in the codec matrix (0.63 ns/op) \u2014 seal+open FFI row pending Mojo 1.0's shifting DLHandle/UnsafePointer API"
+      "status": "ok",
+      "ns_per_op": 1177.388,
+      "ops_per_s": 849337.6864720891,
+      "note": "Mojo (native) + OwnedDLHandle C interop \u2192 librobobus (native seal+open)"
     },
     {
       "config": "GraalPy",
-      "status": "skipped",
-      "note": "GraalPy not installed"
+      "status": "ok",
+      "ns_per_op": 6125.2359375,
+      "ops_per_s": 163259.01731846554,
+      "note": "GraalPy (Truffle/Graal JIT) + cffi \u2192 librobobus (native)"
     },
     {
       "config": "CPython + Nuitka",
-      "status": "skipped",
-      "note": "Nuitka not installed"
+      "status": "ok",
+      "ns_per_op": 1369.457499992374,
+      "ops_per_s": 730216.1622434931,
+      "note": "Nuitka AOT-compiled CPython module + cffi \u2192 librobobus (native dispatch; OpenSSL AES-GCM cost unchanged, Nuitka removes only interpreter overhead)"
     },
     {
       "config": "Codon",
-      "status": "skipped",
-      "note": "Codon not installed"
+      "status": "ok",
+      "ns_per_op": 845.119,
+      "ops_per_s": 1183265.3152987922,
+      "note": "Codon AOT compiler (LLVM, no CPython) + C interop \u2192 librobobus (native)"
     },
     {
       "config": "PyPy + Cython",
       "status": "skipped",
-      "note": "anti-pattern: CPython C-API ext runs on PyPy only via slow cpyext \u2014 use cffi instead"
+      "note": "intentional non-config: a CPython C-API extension loads on PyPy only through the slow cpyext emulation layer, so it is never the right PyPy stack. Use cffi (the row above) instead, which PyPy's JIT optimizes through"
     }
   ]
 }

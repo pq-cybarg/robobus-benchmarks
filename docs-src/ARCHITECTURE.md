@@ -10,7 +10,7 @@ Everything lives in an isolated Miniforge (conda) prefix.
   *current shell only* and `conda activate` the target env. Close the shell, it's gone.
 * **Three environments**, all Python 3.12.13 (same ABI, so the pure-stdlib bus imports
   identically): `ros2_kilted`, `ros1_noetic`, `lsl`.
-* **RoboStack** provides ROS as conda packages — the only open-source path to ROS on
+* **RoboStack** provides ROS as conda packages, the only open-source path to ROS on
   Apple Silicon. ROS 2 from `robostack-kilted`, ROS 1 from `robostack-staging`.
 
 ## 2. The bus (`robobus.shm_ring`)
@@ -24,8 +24,8 @@ A single-producer / multi-consumer ring buffer over an mmap'd file.
   `struct` do not.
 * **Seqlock overwrite semantics (LMAX-Disruptor style):** a monotonically increasing
   `cursor`; each slot stamped with its sequence. A reader copies a slot then re-checks
-  the stamp — if the writer lapped it mid-copy, it retries or skips ahead (counting
-  drops). Wait-free for the producer; "latest-wins" — the right default for sensors and
+  the stamp, if the writer lapped it mid-copy, it retries or skips ahead (counting
+  drops). Wait-free for the producer; "latest-wins", the right default for sensors and
   control loops. Correctness is covered by `tests/test_shm_ring.py` (wraparound,
   drop-detection, multi-reader, torn-read).
 
@@ -37,24 +37,24 @@ There is **no prebuilt `ros1_bridge` for Noetic↔Kilted** (it's rarely built fo
 ROS 2 distros, and never for this pairing on RoboStack). Rather than fight that, each
 runtime gets a thin adapter that maps its topics/streams onto bus channels:
 
-* `robobus.ros2_adapter` (rclpy) — `--to-bus` subscriptions + `--from-bus` busy-poll
+* `robobus.ros2_adapter` (rclpy), `--to-bus` subscriptions + `--from-bus` busy-poll
   publisher threads.
-* `robobus.ros1_adapter` (rospy) — the same, in ROS 1. ROS1→bus→ROS2 *is* the
+* `robobus.ros1_adapter` (rospy), the same, in ROS 1. ROS1→bus→ROS2 *is* the
   `ros1_bridge` replacement, and it's faster (shared memory, not DDS+TCPROS).
-* `robobus.lsl_adapter` (pylsl) — LSL inlets/outlets ↔ bus, including an opaque
+* `robobus.lsl_adapter` (pylsl), LSL inlets/outlets ↔ bus, including an opaque
   encrypted-string transport mode.
 
 Proven end-to-end by `scripts/e2e_demo.sh`: ROS1→bus→ROS2 topic and ROS2→bus→live LSL
 stream, all delivering at ~27 µs (dominated by ROS serialization + thread poll, not the
 bus).
 
-Beyond ROS/LSL, `robobus.transports.*` bridges the bus to the wider streaming world —
+Beyond ROS/LSL, `robobus.transports.*` bridges the bus to the wider streaming world, 
 **MQTT, Apache Kafka, AMQP/RabbitMQ, Eclipse Zenoh, DDS, CAN/CAN-FD, ZeroCM, raw TCP,
 UDP (unicast/multicast) and serial/radio**. Each maps a protocol's topics onto bus channels,
 and *any* bridge accepts `--security <suite> --keyfile`, so CNSA 2.0 post-quantum crypto
 (ML-KEM key agreement, AES-256-GCM, ML-DSA identity) wraps that link even when the wire
 protocol has no security of its own. The same PQC-hardened frames carry across five native
-language implementations (Python, C, Rust, JS/Node, Java — bidirectionally conformance-tested)
+language implementations (Python, C, Rust, JS/Node, Java, bidirectionally conformance-tested)
 plus schema codegen for fourteen more.
 
 ## 4. Latency engineering
@@ -63,7 +63,7 @@ Three transports, each tuned for localhost:
 
 * **Bus:** the floor. Raw in-thread hop ~0.52 µs; Python cross-process round-trip
   p50 3.2 µs. The compiled `native/shm_bench.c` (C11 atomics, busy-spin) puts 97% of
-  cross-process messages under the 1 µs clock tick — **sub-microsecond is real with a
+  cross-process messages under the 1 µs clock tick, **sub-microsecond is real with a
   compiled poller**; the residual tail is the macOS scheduler descheduling busy-spin
   threads (fixable with RT thread QoS / core isolation).
 * **ROS 2 DDS:** `config/fastdds_shm.xml` forces the Fast DDS shared-memory transport +
@@ -77,7 +77,7 @@ and busy-spin readers (`spin_us=0`).
 
 ## 5. Codec
 
-`robobus.codec` — a compact self-describing frame `[type][stamp_ns][payload]` carrying
+`robobus.codec`, a compact self-describing frame `[type][stamp_ns][payload]` carrying
 float64/int32 arrays, strings, JSON, or raw bytes, with a `monotonic_ns` send timestamp
 (one host-wide clock, so any reader computes true one-way latency). JSON is the generic
 path for arbitrary ROS messages; bytes is the opaque path for already-serialized data.
@@ -87,7 +87,7 @@ path for arbitrary ROS messages; bytes is the opaque path for already-serialized
 `robobus.crypto` adds authenticated encryption **without touching the hot path's
 design**: PQC math runs once per session; every message is just AEAD.
 
-* **Per message:** AES-256-GCM (default) or ChaCha20-Poly1305 — a self-describing
+* **Per message:** AES-256-GCM (default) or ChaCha20-Poly1305, a self-describing
   `magic|alg|nonce|ciphertext+tag` frame. Hardware-accelerated; GB/s.
 * **Per session:** a KEM handshake (ML-KEM, optionally hybrid with X25519/X448),
   authenticated by a PQ signature (ML-DSA / Falcon / SLH-DSA) over the transcript to
@@ -101,4 +101,4 @@ design**: PQC math runs once per session; every message is just AEAD.
   [COMPLIANCE.md](COMPLIANCE.md) and [CMVP-READINESS.md](CMVP-READINESS.md).
 
 The same encrypted bytes ride the bus, ROS topics, and LSL string streams unchanged, so
-encryption is uniform across all three runtimes — and entirely opt-in.
+encryption is uniform across all three runtimes, and entirely opt-in.

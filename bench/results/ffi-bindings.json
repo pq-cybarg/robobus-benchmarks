@@ -1,92 +1,92 @@
 {
-  "schema": "robobus-ffi-bindings/1",
-  "generated_unix": 1784661320,
-  "host": {
-    "system": "Darwin",
-    "machine": "arm64"
+ "schema": "robobus-ffi-bindings/1",
+ "generated_unix": 1784661320,
+ "host": {
+  "system": "Darwin",
+  "machine": "arm64"
+ },
+ "workload": "RBX1 seal(41B)+open round-trip, AES-256-GCM, via librobobus C-ABI",
+ "note": "One C-ABI shared library (librobobus) exposes robobus's full seal/open surface to any language through its own FFI. The round-trip is dominated by AES-256-GCM in the shared C, so every binding lands near the C ceiling, the FFI overhead is nearly free. Each binding is verified to round-trip (open(seal(pt))==pt) before timing.",
+ "bindings": [
+  {
+   "language": "LuaJIT",
+   "mechanism": "native FFI (JIT)",
+   "status": "ok",
+   "ns_per_op": 804.75,
+   "ops_per_s": 1242621.9322771046,
+   "note": "LuaJIT ffi.cdef + ffi.load, JIT-compiled"
   },
-  "workload": "RBX1 seal(41B)+open round-trip, AES-256-GCM, via librobobus C-ABI",
-  "note": "One C-ABI shared library (librobobus) exposes robobus's full seal/open surface to any language through its own FFI. The round-trip is dominated by AES-256-GCM in the shared C, so every binding lands near the C ceiling \u2014 the FFI overhead is nearly free. Each binding is verified to round-trip (open(seal(pt))==pt) before timing.",
-  "bindings": [
-    {
-      "language": "LuaJIT",
-      "mechanism": "native FFI (JIT)",
-      "status": "ok",
-      "ns_per_op": 804.75,
-      "ops_per_s": 1242621.9322771046,
-      "note": "LuaJIT ffi.cdef + ffi.load, JIT-compiled"
-    },
-    {
-      "language": "Perl",
-      "mechanism": "FFI::Platypus (libffi)",
-      "status": "ok",
-      "ns_per_op": 1114.0583,
-      "ops_per_s": 897619.0922862835,
-      "note": "FFI::Platypus (libffi), opaque buffers, verified round-trip"
-    },
-    {
-      "language": "Octave",
-      "mechanism": "compiled .oct (mkoctfile)",
-      "status": "ok",
-      "ns_per_op": 855.06,
-      "ops_per_s": 1169508.5724978365,
-      "note": "compiled .oct wrapper (mkoctfile), links librobobus directly"
-    },
-    {
-      "language": "CPython",
-      "mechanism": "cffi ABI-mode",
-      "status": "ok",
-      "ns_per_op": 1192.979288230965,
-      "ops_per_s": 838237.5200183664,
-      "note": "cffi ABI-mode dlopen (reference; also in Python runtime matrix)"
-    },
-    {
-      "language": "Nim",
-      "mechanism": "{.dynlib.} importc",
-      "status": "ok",
-      "ns_per_op": 786.755635188176,
-      "ops_per_s": 1271042.6913698816,
-      "note": "{.dynlib.} importc, dlopen by path"
-    },
-    {
-      "language": "Julia",
-      "mechanism": "ccall",
-      "status": "ok",
-      "ns_per_op": 825.43125,
-      "ops_per_s": 1211487.934337354,
-      "note": "ccall into dlopen'd dylib by path"
-    },
-    {
-      "language": "Haskell",
-      "mechanism": "foreign import ccall",
-      "status": "ok",
-      "ns_per_op": 808.464,
-      "ops_per_s": 1236913.4556393358,
-      "note": "foreign import ccall, linked -lrobobus"
-    },
-    {
-      "language": "Go",
-      "mechanism": "cgo",
-      "status": "ok",
-      "ns_per_op": 899.888,
-      "ops_per_s": 1111249.399925324,
-      "note": "cgo, linked -lrobobus"
-    },
-    {
-      "language": "Ruby",
-      "mechanism": "Fiddle (libffi)",
-      "status": "ok",
-      "ns_per_op": 3104.1643,
-      "ops_per_s": 322147.89661745675,
-      "note": "Fiddle (libffi), stdlib, dlopen by path"
-    },
-    {
-      "language": "Rust",
-      "mechanism": "raw extern block",
-      "status": "ok",
-      "ns_per_op": 1034.3753,
-      "ops_per_s": 966767.0912095446,
-      "note": "raw extern \"C\" block, linked -lrobobus"
-    }
-  ]
+  {
+   "language": "Perl",
+   "mechanism": "FFI::Platypus (libffi)",
+   "status": "ok",
+   "ns_per_op": 1114.0583,
+   "ops_per_s": 897619.0922862835,
+   "note": "FFI::Platypus (libffi), opaque buffers, verified round-trip"
+  },
+  {
+   "language": "Octave",
+   "mechanism": "compiled .oct (mkoctfile)",
+   "status": "ok",
+   "ns_per_op": 855.06,
+   "ops_per_s": 1169508.5724978365,
+   "note": "compiled .oct wrapper (mkoctfile), links librobobus directly"
+  },
+  {
+   "language": "CPython",
+   "mechanism": "cffi ABI-mode",
+   "status": "ok",
+   "ns_per_op": 1192.979288230965,
+   "ops_per_s": 838237.5200183664,
+   "note": "cffi ABI-mode dlopen (reference; also in Python runtime matrix)"
+  },
+  {
+   "language": "Nim",
+   "mechanism": "{.dynlib.} importc",
+   "status": "ok",
+   "ns_per_op": 786.755635188176,
+   "ops_per_s": 1271042.6913698816,
+   "note": "{.dynlib.} importc, dlopen by path"
+  },
+  {
+   "language": "Julia",
+   "mechanism": "ccall",
+   "status": "ok",
+   "ns_per_op": 825.43125,
+   "ops_per_s": 1211487.934337354,
+   "note": "ccall into dlopen'd dylib by path"
+  },
+  {
+   "language": "Haskell",
+   "mechanism": "foreign import ccall",
+   "status": "ok",
+   "ns_per_op": 808.464,
+   "ops_per_s": 1236913.4556393358,
+   "note": "foreign import ccall, linked -lrobobus"
+  },
+  {
+   "language": "Go",
+   "mechanism": "cgo",
+   "status": "ok",
+   "ns_per_op": 899.888,
+   "ops_per_s": 1111249.399925324,
+   "note": "cgo, linked -lrobobus"
+  },
+  {
+   "language": "Ruby",
+   "mechanism": "Fiddle (libffi)",
+   "status": "ok",
+   "ns_per_op": 3104.1643,
+   "ops_per_s": 322147.89661745675,
+   "note": "Fiddle (libffi), stdlib, dlopen by path"
+  },
+  {
+   "language": "Rust",
+   "mechanism": "raw extern block",
+   "status": "ok",
+   "ns_per_op": 1034.3753,
+   "ops_per_s": 966767.0912095446,
+   "note": "raw extern \"C\" block, linked -lrobobus"
+  }
+ ]
 }

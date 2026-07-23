@@ -24,7 +24,7 @@ REPORTS_DIR = os.path.join(HERE, "reports")
 SITE_DIR = os.path.join(HERE, "site")
 
 GROUP_TITLES = {
-    "bus": "Shared-memory bus — nanosecond latency (native SPSC ring)",
+    "bus": "Shared-memory bus, nanosecond latency (native SPSC ring)",
     "hash": "Hashing (SHA-2 / SHA-3 / BLAKE2)",
     "aead": "Authenticated encryption (AES-GCM / ChaCha20-Poly1305)",
     "mac": "Message authentication (HMAC / Poly1305)",
@@ -34,10 +34,10 @@ GROUP_TITLES = {
     "handshake": "Full authenticated handshake crypto (isolated from DDS transport)",
     "sig": "Digital signatures (ML-DSA vs classical)",
     "dds_handshake": "DDS-Security live handshakes (Fast DDS + CycloneDDS)",
-    "correctness": "Portability / correctness — emulated ISAs (QEMU; timing NOT measured, by design)",
-    "formal": "Formal verification — machine-checked proofs of the C bus ring (cbmc) & RTL (SymbiYosys)",
-    "hdl_sim": "RTL / FPGA (cycle-exact simulation + formal proof — no hardware)",
-    "gpu": "GPU offload — swapover cost & throughput crossover (scalability, not latency)",
+    "correctness": "Portability / correctness, emulated ISAs (QEMU; timing NOT measured, by design)",
+    "formal": "Formal verification, machine-checked proofs of the C bus ring (cbmc) & RTL (SymbiYosys)",
+    "hdl_sim": "RTL / FPGA (cycle-exact simulation + formal proof, no hardware)",
+    "gpu": "GPU offload, swapover cost & throughput crossover (scalability, not latency)",
     "robobus": "robobus bus / determinism / real-time",
 }
 
@@ -60,8 +60,8 @@ def load_all() -> list[dict]:
 
 def fmt(v, unit) -> str:
     if v is None:
-        return "—"
-    if unit in ("MB/s",):
+        return ", "
+    if unit in ("MB/s"):
         return f"{v:,.0f}"
     if v >= 1000:
         return f"{v:,.0f}"
@@ -71,7 +71,7 @@ def fmt(v, unit) -> str:
 
 
 def props(name: str) -> str:
-    """Structural / functional property — the axis ORTHOGONAL to the quantum-security class.
+    """Structural / functional property, the axis ORTHOGONAL to the quantum-security class.
 
     e.g. SHA3 vs SHA2 is not a quantum difference (both QR at >=384-bit) but a construction
     difference (sponge vs Merkle-Damgard -> length-extension immunity -> native KMAC). Argon2id
@@ -81,38 +81,38 @@ def props(name: str) -> str:
     n = name.lower().replace("_", "-")   # sha3_512 -> sha3-512 (so "sha3-" won't match "sha384")
     out = []
     if any(k in n for k in ("sha3-", "shake", "kmac")):
-        out.append("Keccak sponge — length-extension-immune, design-diverse from SHA-2")
+        out.append("Keccak sponge, length-extension-immune, design-diverse from SHA-2")
     if "kmac" in n:
-        out.append("keyed hash directly (SP 800-185) — no HMAC nesting needed")
+        out.append("keyed hash directly (SP 800-185), no HMAC nesting needed")
     if any(k in n for k in ("sha-256", "sha256", "sha-384", "sha384", "sha-512", "sha512")) \
             and "hmac" not in n and "hkdf" not in n:
-        out.append("Merkle-Damgard — length-extendable (key via HMAC)")
+        out.append("Merkle-Damgard, length-extendable (key via HMAC)")
     if "hmac" in n:
-        out.append("nested MAC — keys a Merkle-Damgard hash safely")
+        out.append("nested MAC, keys a Merkle-Damgard hash safely")
     if "argon2" in n:
-        out.append("memory-hard passphrase KDF — LOW-entropy inputs, GPU/ASIC-resistant")
+        out.append("memory-hard passphrase KDF, LOW-entropy inputs, GPU/ASIC-resistant")
     if "pbkdf2" in n:
-        out.append("iteration-only passphrase KDF — NO memory-hardness (weakest)")
+        out.append("iteration-only passphrase KDF, NO memory-hardness (weakest)")
     if "hkdf" in n:
-        out.append("extract-then-expand KDF — HIGH-entropy inputs (RFC 5869)")
+        out.append("extract-then-expand KDF, HIGH-entropy inputs (RFC 5869)")
     if "poly1305" in n:
         out.append("one-time Wegman-Carter MAC (with ChaCha20)")
     if "blake3" in n:
-        out.append("BLAKE3 — Merkle-tree hash, parallel + SIMD, XOF; 256-bit (NIST Level-1 QR floor)")
-    # NIST PQC strength category — the AES/SHA yardsticks NIST defines its levels by — + CNSA 2.0 fit
+        out.append("BLAKE3, Merkle-tree hash, parallel + SIMD, XOF; 256-bit (NIST Level-1 QR floor)")
+    # NIST PQC strength category, the AES/SHA yardsticks NIST defines its levels by, + CNSA 2.0 fit
     keyed = any(k in n for k in ("hmac", "hkdf", "pbkdf2"))
     if "aes-256" in n:
         out.append("AES-256 → NIST Level 5, CNSA 2.0 (Grover leaves 128-bit)")
     elif "aes-192" in n:
         out.append("AES-192 → NIST Level 3 (Grover leaves 96-bit)")
     elif "aes-128" in n:
-        out.append("AES-128 → NIST Level 1 — the QR floor (128-bit; Grover→64-bit); below CNSA 2.0")
+        out.append("AES-128 → NIST Level 1, the QR floor (128-bit; Grover→64-bit); below CNSA 2.0")
     if any(k in n for k in ("sha-384", "sha384", "sha3-384")):
         out.append("SHA-384 → NIST Level 4 collision, CNSA 2.0")
     elif any(k in n for k in ("sha-512", "sha512", "sha3-512")):
-        out.append("512-bit — CNSA 2.0-grade")
+        out.append("512-bit, CNSA 2.0-grade")
     elif any(k in n for k in ("sha-256", "sha256", "sha3-256")):
-        out.append("128-bit quantum PRF security — quantum-safe (Grover-halved, not collision-bound)"
+        out.append("128-bit quantum PRF security, quantum-safe (Grover-halved, not collision-bound)"
                    if keyed else "SHA-256 → NIST Level 2 collision; below CNSA 2.0's SHA-384")
     return " · ".join(out)
 
@@ -120,7 +120,7 @@ def props(name: str) -> str:
 def fmt_lat(ns) -> str:
     """Auto-scale a nanosecond latency to ns / µs / ms so sub-µs values read as nanoseconds."""
     if ns is None:
-        return "—"
+        return ", "
     if ns < 1000:
         return f"{ns:,.1f} ns"
     if ns < 1_000_000:
@@ -144,10 +144,10 @@ def primary_str(r: dict) -> str:
     v = primary_metric(r)
     u = r["unit"]
     if v is None:
-        return "—"
+        return ", "
     if u == "pass":
         pv = r["metrics"].get("passed")
-        return "✓ pass" if pv else ("—" if pv is None else "✗ FAIL")
+        return "✓ pass" if pv else (", " if pv is None else "✗ FAIL")
     if u == "ns":                 # p50 latency, ns-scaled
         return fmt_lat(v)
     if u == "ns/op":              # rate + amortized ns/op
@@ -167,14 +167,14 @@ def lat_pair(r: dict):
 def tag(name: str) -> str:
     """Classify a row into four quantum-security classes by pattern.
 
-    PQC       = post-quantum *asymmetric* (ML-KEM, ML-DSA, SLH-DSA, Falcon, HQC) — the new NIST
+    PQC       = post-quantum *asymmetric* (ML-KEM, ML-DSA, SLH-DSA, Falcon, HQC), the new NIST
                 hard-problem algorithms that replace quantum-broken RSA/ECC.
     HYBRID    = a classical asymmetric primitive combined with a PQC one (CNSA 2.0 transition
                 pattern), e.g. ECDH ‖ ML-KEM. NOTE: a PQC KEM together with a PQC signature
-                (ML-KEM + ML-DSA) is all-PQC, NOT hybrid — hybrid requires a *classical* term.
+                (ML-KEM + ML-DSA) is all-PQC, NOT hybrid, hybrid requires a *classical* term.
     QR        = quantum-RESISTANT symmetric/hash/KDF: secure against a quantum adversary at its
                 size (Grover only square-roots symmetric search). AES-256, ChaCha20-Poly1305,
-                SHA-384/512, SHA3-*, KMAC, HMAC-SHA-384/512, HKDF-SHA-384, BLAKE2b, Argon2id —
+                SHA-384/512, SHA3-*, KMAC, HMAC-SHA-384/512, HKDF-SHA-384, BLAKE2b, Argon2id, 
                 these ARE part of CNSA 2.0 (not "PQC", but not "classical" either).
     classical = quantum-BROKEN asymmetric (RSA, ECDH/ECDSA, X25519/Ed25519) OR symmetric/hash
                 below the post-quantum bar (AES-128 ~64-bit under Grover; SHA-256 collision).
@@ -193,7 +193,7 @@ def tag(name: str) -> str:
     if has_pqc:
         return "PQC"
     if has_classical_asym:
-        return "classical"   # Shor-broken: RSA/DH/ECDH/ECDSA/EdDSA — NIST IR 8547 "quantum-vulnerable"
+        return "classical"   # Shor-broken: RSA/DH/ECDH/ECDSA/EdDSA, NIST IR 8547 "quantum-vulnerable"
     # Pre-quantum-broken symmetric/hash (already dead classically):
     if any(k in n for k in ("md5", " sha1", "sha-1", "sha1-", "rc4", "3des", "des-cbc")):
         return "classical"
@@ -211,7 +211,7 @@ _CLASS_GROUPS = {"kem", "hybrid_kem", "sig", "aead", "hash", "mac", "kdf",
                  "handshake", "dds_handshake"}
 # A row carries a quantum class only if its name references a crypto primitive/suite. This lets the
 # handshake / DDS-suite rows be classified (a fully-PQC handshake reads PQC) while a bare product
-# placeholder (e.g. a skipped "CycloneDDS") shows '—' instead of a guessed class.
+# placeholder (e.g. a skipped "CycloneDDS") shows ', ' instead of a guessed class.
 _CRYPTO_TOKENS = ("ml-kem", "kyber", "ml-dsa", "dilithium", "falcon", "sphincs", "slh-dsa", "hqc",
                   "frodo", "mceliece", "ecdh", "x25519", "x448", "p-256", "p256", "prime256", "rsa",
                   "ecdsa", "ed25519", "ed448", "pki-dh", "dh+modp", "aes", "sha", "shake", "chacha",
@@ -219,13 +219,13 @@ _CRYPTO_TOKENS = ("ml-kem", "kyber", "ml-dsa", "dilithium", "falcon", "sphincs",
                   "hybrid", "classical", "cnsa", "nist-")
 
 def class_cell(group: str, name: str) -> str:
-    """Quantum class for crypto-primitive AND handshake/DDS-suite groups; '—' for a row that names no
+    """Quantum class for crypto-primitive AND handshake/DDS-suite groups; ', ' for a row that names no
     primitive (a bare/skipped product row) or a non-crypto group."""
     if group not in _CLASS_GROUPS:
-        return "—"
+        return ", "
     n = name.lower().replace("_", "-")
     if not any(tok in n for tok in _CRYPTO_TOKENS):
-        return "—"
+        return ", "
     return tag(name)
 
 
@@ -238,7 +238,7 @@ def md_platform_block(doc: dict) -> str:
     lines = [
         f"- **OS:** {p['system']} {p['release']} ({p['platform']})",
         f"- **CPU:** {p.get('cpu_brand', p.get('processor') or p['machine'])}"
-        f" — {p.get('cpu_count_physical', p['cpu_count_logical'])} cores"
+        f", {p.get('cpu_count_physical', p['cpu_count_logical'])} cores"
         + (f", {p['mem_total_bytes'] // (1024**3)} GB RAM" if p.get("mem_total_bytes") else ""),
         f"- **Python:** {p['python_version']} ({p['python_impl']})",
         f"- **Crypto backends:** " + (", ".join(f"{k} {v}" for k, v in deps["available"].items()) or "stdlib only"),
@@ -248,7 +248,7 @@ def md_platform_block(doc: dict) -> str:
     envp = p.get("environment", {})
     if envp.get("emulated"):
         lines.insert(0, f"- **EMULATED ISA ({envp['emulated']}, QEMU):** correctness/portability only "
-                        f"— timing is NOT cycle-accurate under emulation and is not measured.")
+                        f", timing is NOT cycle-accurate under emulation and is not measured.")
     m = p.get("measurement", {})
     if m.get("fidelity_tier"):
         lines.append(f"- **Fidelity tier:** {m['fidelity_tier']}")
@@ -281,18 +281,18 @@ def md_table(doc: dict, group: str) -> str:
     hdr += ["Status"]
     out = ["| " + " | ".join(hdr) + " |", "|" + "|".join(["---"] * len(hdr)) + "|"]
     for r in rows:
-        cfg = ", ".join(f"{k}={v}" for k, v in r["config"].items()) or "—"
+        cfg = ", ".join(f"{k}={v}" for k, v in r["config"].items()) or ", "
         if r["status"] != "ok":
-            cells = [f"`{r['name']}`", cfg, class_cell(group, r["name"]), "—"]
+            cells = [f"`{r['name']}`", cfg, class_cell(group, r["name"]), ", "]
             if has_lat:
-                cells += ["—", "—"]
-            cells += [f"○ _{r['status']}_ — {r['note']}"]
+                cells += [", ", ", "]
+            cells += [f"○ _{r['status']}_, {r['note']}"]
             out.append("| " + " | ".join(cells) + " |")
             continue
         cells = [f"`{r['name']}`", cfg, class_cell(group, r["name"]), primary_str(r)]
         if has_lat:
             p50, p99 = lat_pair(r)
-            cells += [p50 or "—", p99 or "—"]
+            cells += [p50 or ", ", p99 or ", "]
         extra = " · ".join(x for x in [props(r["name"]), r.get("note", "")] if x)
         cells += ["ok" + (f" · {extra}" if extra else "")]
         out.append("| " + " | ".join(cells) + " |")
@@ -302,11 +302,11 @@ def md_table(doc: dict, group: str) -> str:
 def render_markdown(docs: list[dict]) -> str:
     now = time.strftime("%Y-%m-%d %H:%M UTC", time.gmtime())
     S = []
-    S.append("# robobus / PQC-DDS — full-system benchmarks\n")
-    S.append("> **Scope.** Every capability of the stack — post-quantum and classical key "
+    S.append("# robobus / PQC-DDS, full-system benchmarks\n")
+    S.append("> **Scope.** Every capability of the stack, post-quantum and classical key "
              "encapsulation, hybrid key agreement, digital signatures, authenticated "
              "encryption, hashing, MACs, key-derivation, live DDS-Security handshakes, and "
-             "the robobus bus — measured across all available modes, sizes and techniques by "
+             "the robobus bus, measured across all available modes, sizes and techniques by "
              "**one script** (`bench/run_benchmarks.py`).\n")
     S.append("> ⚠️ **Platform caveat.** These figures were measured **on macOS only** so far. "
              "They are inherently CPU-, OS- and build-specific and are **not** portable claims. "
@@ -323,14 +323,14 @@ def render_markdown(docs: list[dict]) -> str:
 
     S.append("## How to reproduce\n")
     S.append("```bash\n"
-             "# one script, every platform — measures what it can, skips the rest with a reason\n"
+             "# one script, every platform, measures what it can, skips the rest with a reason\n"
              "python bench/run_benchmarks.py            # full run\n"
              "python bench/run_benchmarks.py --quick    # fast pass\n"
              "python bench/render_report.py             # regenerate this report + the HTML site\n"
              "```\n")
     S.append("Optional backends unlock more rows: `cryptography` (AEAD, ECDH, classical "
              "signatures), `oqs`/liboqs (ML-KEM, ML-DSA), `argon2-cffi` (Argon2id). Absent "
-             "backends produce **SKIPPED** rows — never a crash — which is exactly how the same "
+             "backends produce **SKIPPED** rows, never a crash, which is exactly how the same "
              "script stays valid on constrained platforms (e.g. stock Android/iOS Python).\n")
 
     for group in GROUP_ORDER:
@@ -346,17 +346,17 @@ def render_markdown(docs: list[dict]) -> str:
             S.append(f"**{p['system']} · {p.get('cpu_brand', p['machine'])}**\n")
             S.append(md_table(doc, group))
     S.append("\n---\n")
-    S.append("**Classes (grounded in NIST).** `classical` = quantum-**broken** asymmetric — RSA, "
-             "DH, ECDH, ECDSA, Ed25519 — which Shor breaks and NIST IR 8547 lists as quantum-"
+    S.append("**Classes (grounded in NIST).** `classical` = quantum-**broken** asymmetric, RSA, "
+             "DH, ECDH, ECDSA, Ed25519, which Shor breaks and NIST IR 8547 lists as quantum-"
              "vulnerable (deprecate 2030 / disallow 2035). `PQC` = the NIST post-quantum *asymmetric* "
              "standards (FIPS 203 ML-KEM, FIPS 204 ML-DSA) that replace them. `HYBRID` = classical ⊕ "
              "PQC (the CNSA 2.0 transition, e.g. ECDH ‖ ML-KEM → HKDF-SHA384). `QR` = symmetric / "
              "hash / MAC / KDF: quantum does **not** break these (only Grover's square-root applies), "
              "and NIST *defines* its strength Categories 1–5 BY them (Cat 1 = AES-128, 2 = SHA-256, "
              "3 = AES-192, 4 = SHA-384, 5 = AES-256). So AES-128 and SHA-256 are quantum-security "
-             "*levels*, not \"classical\" — the NIST Category and CNSA-2.0 fitness are in each row's "
-             "role note. **AES-128 (Level 1) is the QR floor**; anything weaker — 3DES "
-             "(112-bit), DES, RC4, MD5, SHA-1 — is sub-threshold and stays `classical`. "
+             "*levels*, not \"classical\", the NIST Category and CNSA-2.0 fitness are in each row's "
+             "role note. **AES-128 (Level 1) is the QR floor**; anything weaker, 3DES "
+             "(112-bit), DES, RC4, MD5, SHA-1, is sub-threshold and stays `classical`. "
              "Latency percentiles are per-operation; throughput is aggregate._\n")
     return "\n".join(S)
 
@@ -424,20 +424,20 @@ def html_table(doc, group):
     cols += ["Status"]
     out = ["<table><thead><tr>" + "".join(f"<th>{c}</th>" for c in cols) + "</tr></thead><tbody>"]
     for r in rows:
-        cfg = ", ".join(f"{k}={v}" for k, v in r["config"].items()) or "—"
+        cfg = ", ".join(f"{k}={v}" for k, v in r["config"].items()) or ", "
         klass = class_cell(group, r["name"])
-        badge = "—" if klass == "—" else f"<span class='badge {klass.lower()}'>{klass}</span>"
+        badge = ", " if klass == ", " else f"<span class='badge {klass.lower()}'>{klass}</span>"
         if r["status"] != "ok":
-            cells = [f"<code>{html.escape(r['name'])}</code>", html.escape(cfg), badge, "—"]
+            cells = [f"<code>{html.escape(r['name'])}</code>", html.escape(cfg), badge, ", "]
             if has_lat:
-                cells += ["—", "—"]
+                cells += [", ", ", "]
             cells += [f"<span class='skip'>{html.escape(r['status'])}: {html.escape(r['note'])[:90]}</span>"]
         else:
             cells = [f"<code>{html.escape(r['name'])}</code>", html.escape(cfg), badge,
                      html.escape(primary_str(r))]
             if has_lat:
                 p50, p99 = lat_pair(r)
-                cells += [p50 or "—", p99 or "—"]
+                cells += [p50 or ", ", p99 or ", "]
             pr = props(r["name"])
             bits = []
             if pr:
@@ -494,48 +494,48 @@ def render_html(docs: list[dict]) -> str:
          '<meta name="viewport" content="width=device-width,initial-scale=1">',
          '<title>robobus / PQC-DDS benchmarks</title>',
          f"<style>{CSS}</style></head><body><div class='wrap'>"]
-    P.append("<h1>robobus / PQC-DDS — full-system benchmarks</h1>")
+    P.append("<h1>robobus / PQC-DDS, full-system benchmarks</h1>")
     P.append("<p class='sub'>Post-quantum &amp; classical key encapsulation, hybrid key "
              "agreement, signatures, AEAD, hashing, MACs, KDFs, live DDS-Security handshakes "
-             "and the robobus bus — measured end to end by one portable script.</p>")
+             "and the robobus bus, measured end to end by one portable script.</p>")
     P.append("<div class='callout'>ℹ️ <b>Coverage &amp; fidelity.</b> These numbers are "
-             "CPU/OS/build-specific — the deliverable is the <i>method</i>: the identical "
+             "CPU/OS/build-specific, the deliverable is the <i>method</i>: the identical "
              "<code>run_benchmarks.py</code> runs on macOS, Windows, all supported Linux (and "
-             "five emulated ISAs), Android and iOS — each host measures what it has and records "
+             "five emulated ISAs), Android and iOS, each host measures what it has and records "
              "the rest as <b>SKIPPED</b>. Public-CI columns come from <b>virtualized</b> runners "
              "(shared vCPUs, no real-time scheduling): coverage and relative comparison, not "
              "bare-metal nanosecond claims. Each run self-labels its measurement fidelity.</div>")
     P.append(f"<p class='muted'>Generated {now}. "
              "<a href='https://github.com/pq-cybarg'>pq-cybarg</a>.</p>")
     P.append("<div class='legend'>"
-             "<span><i class='dot' style='background:var(--pqc)'></i>PQC — post-quantum asymmetric (ML-KEM/ML-DSA)</span>"
-             "<span><i class='dot' style='background:var(--hybrid)'></i>Hybrid — classical ⊕ PQC</span>"
-             "<span><i class='dot' style='background:var(--qr)'></i>QR — symmetric/hash, Grover-only (NIST Category 1–5)</span>"
-             "<span><i class='dot' style='background:var(--classical)'></i>classical — quantum-broken by Shor (RSA/ECC)</span></div>")
+             "<span><i class='dot' style='background:var(--pqc)'></i>PQC, post-quantum asymmetric (ML-KEM/ML-DSA)</span>"
+             "<span><i class='dot' style='background:var(--hybrid)'></i>Hybrid, classical ⊕ PQC</span>"
+             "<span><i class='dot' style='background:var(--qr)'></i>QR, symmetric/hash, Grover-only (NIST Category 1–5)</span>"
+             "<span><i class='dot' style='background:var(--classical)'></i>classical, quantum-broken by Shor (RSA/ECC)</span></div>")
     P.append("<div class='card' style='font-size:13px'><b>The four classes, grounded in NIST.</b> "
              "<span class='badge classical'>classical</span> is reserved for the <i>quantum-broken</i> "
-             "asymmetric algorithms — RSA, DH, ECDH, ECDSA, Ed25519 — which Shor breaks outright and "
+             "asymmetric algorithms, RSA, DH, ECDH, ECDSA, Ed25519, which Shor breaks outright and "
              "<a href='https://csrc.nist.gov/pubs/ir/8547/ipd'>NIST IR 8547</a> lists as quantum-"
              "vulnerable (deprecate 2030, disallow 2035). <span class='badge pqc'>PQC</span> is the "
              "NIST post-quantum <i>asymmetric</i> replacement (FIPS 203 ML-KEM, FIPS 204 ML-DSA). "
              "<span class='badge hybrid'>HYBRID</span> runs a classical and a PQC primitive together "
              "(CNSA 2.0 transition). <span class='badge qr'>QR</span> covers <i>symmetric / hash / "
-             "MAC / KDF</i>: a quantum computer does <b>not</b> break these — only Grover's quadratic "
-             "speedup applies — and NIST <i>defines</i> its five PQ strength Categories BY them: "
+             "MAC / KDF</i>: a quantum computer does <b>not</b> break these, only Grover's quadratic "
+             "speedup applies, and NIST <i>defines</i> its five PQ strength Categories BY them: "
              "<b>Cat 1 = AES-128, 2 = SHA-256, 3 = AES-192, 4 = SHA-384, 5 = AES-256</b>. So AES-128 "
-             "and SHA-256 are quantum-security <i>levels</i>, not \"classical\" — even <code>HMAC</code>/"
+             "and SHA-256 are quantum-security <i>levels</i>, not \"classical\", even <code>HMAC</code>/"
              "<code>HKDF</code>/<code>PBKDF2</code> over SHA-256 stay 128-bit quantum-safe (PRFs, not "
              "collision-bound). Each row's green note carries the NIST Category and CNSA-2.0 fitness; "
              "CNSA 2.0 mandates the Level-5 tier (AES-256, SHA-384, ML-KEM-1024, ML-DSA-87). "
-             "<b>AES-128 (Level 1) is the QR floor</b> — anything weaker (3DES 112-bit, DES, "
+             "<b>AES-128 (Level 1) is the QR floor</b>, anything weaker (3DES 112-bit, DES, "
              "RC4, MD5, SHA-1) is sub-threshold and stays <span class='badge classical'>classical</span>.</div>")
-    P.append("<div class='card' style='font-size:13px'><b>A second, orthogonal axis — construction "
+    P.append("<div class='card' style='font-size:13px'><b>A second, orthogonal axis, construction "
              "&amp; role (the green notes in each row).</b> Two primitives can share a quantum class "
              "yet differ structurally: <code>SHA3</code>/<code>SHAKE</code>/<code>KMAC</code> use the "
-             "<i>Keccak sponge</i>, which is <i>length-extension-immune</i> — so KMAC (SP 800-185) "
+             "<i>Keccak sponge</i>, which is <i>length-extension-immune</i>, so KMAC (SP 800-185) "
              "keys a hash <i>directly</i> with no HMAC nesting, and it's design-diverse from SHA-2's "
              "Merkle–Damgård (which <i>is</i> length-extendable, hence HMAC). That is not a "
-             "quantum-status difference — SHA-384/512 and SHA3-384/512 are equally QR. Likewise "
+             "quantum-status difference, SHA-384/512 and SHA3-384/512 are equally QR. Likewise "
              "<code>Argon2id</code> is not \"just a KDF\": it is a <i>memory-hard passphrase</i> KDF "
              "for <i>low-entropy</i> inputs (GPU/ASIC-resistant), a different role from "
              "<code>HKDF</code>/<code>KMAC</code>-KDF, which are fast extractors for "
@@ -548,10 +548,10 @@ def render_html(docs: list[dict]) -> str:
         p = doc["platform"]
         deps = p["dependencies"]
         emu = p.get("environment", {}).get("emulated")
-        title = f"Emulated ISA — {emu} (QEMU)" if emu else "Host measured"
+        title = f"Emulated ISA, {emu} (QEMU)" if emu else "Host measured"
         P.append(f"<div class='card'><h3 style='margin-top:0'>{html.escape(title)}</h3>")
         if emu:
-            P.append("<div class='callout' style='margin:0 0 10px'>EMULATED — correctness/portability "
+            P.append("<div class='callout' style='margin:0 0 10px'>EMULATED, correctness/portability "
                      "only. QEMU is not cycle-accurate; timing is <b>not measured</b> here.</div>")
         P.append("<div class='meta'>")
         P.append(f"<div><b>OS</b> {html.escape(p['system'])} {html.escape(p['release'])}</div>")
@@ -577,14 +577,14 @@ def render_html(docs: list[dict]) -> str:
         kem = collect_chart(d0, "kem", None, "encapsulate") + \
             collect_chart(d0, "kem", None, "derive")
         P.append("<div class='card'>" + svg_bar_chart(
-            "Key exchange / encapsulation — ops/s (higher is better)", kem, "operations / second", log=True) + "</div>")
+            "Key exchange / encapsulation, ops/s (higher is better)", kem, "operations / second", log=True) + "</div>")
         sig = collect_chart(d0, "sig", None, "sign")
         P.append("<div class='card'>" + svg_bar_chart(
-            "Signing — ops/s (higher is better)", sig, "operations / second", log=True) + "</div>")
+            "Signing, ops/s (higher is better)", sig, "operations / second", log=True) + "</div>")
         P.append("</div><div class='grid2'>")
         sigv = collect_chart(d0, "sig", None, "verify")
         P.append("<div class='card'>" + svg_bar_chart(
-            "Verification — ops/s (higher is better)", sigv, "operations / second", log=True) + "</div>")
+            "Verification, ops/s (higher is better)", sigv, "operations / second", log=True) + "</div>")
         hyb = collect_chart(d0, "hybrid_kem", None, "full_two_party_handshake")
         aead = [(r["name"] + " enc", r["metrics"].get("mb_per_s"), tag(r["name"]))
                 for r in d0["results"] if r["group"] == "aead" and r["status"] == "ok"
@@ -593,8 +593,8 @@ def render_html(docs: list[dict]) -> str:
                     (rr["config"].get("input_bytes", 0) for rr in d0["results"]
                      if rr["group"] == "aead"), default=0)]
         P.append("<div class='card'>" + svg_bar_chart(
-            "Hybrid handshake (ECDH‖ML-KEM→HKDF) — handshakes/s", hyb, "handshakes / second") +
-            svg_bar_chart("AEAD throughput @ largest block — MB/s", aead, "MB / second") + "</div>")
+            "Hybrid handshake (ECDH‖ML-KEM→HKDF), handshakes/s", hyb, "handshakes / second") +
+            svg_bar_chart("AEAD throughput @ largest block, MB/s", aead, "MB / second") + "</div>")
         P.append("</div>")
 
     # full tables per group
@@ -611,7 +611,7 @@ def render_html(docs: list[dict]) -> str:
 
     P.append("<footer>PQC = FIPS 203 (ML-KEM) / FIPS 204 (ML-DSA). Hybrid = classical ‖ PQC "
              "combined via HKDF-SHA384 (CNSA 2.0). Latency percentiles are per-operation; "
-             "throughput is aggregate. One script, every platform — "
+             "throughput is aggregate. One script, every platform, "
              "<code>bench/run_benchmarks.py</code>.</footer>")
     P.append("</div></body></html>")
     return "".join(P)
@@ -620,7 +620,7 @@ def render_html(docs: list[dict]) -> str:
 def main() -> int:
     docs = load_all()
     if not docs:
-        print("no bench/results/latest-*.json found — run run_benchmarks.py first")
+        print("no bench/results/latest-*.json found, run run_benchmarks.py first")
         return 1
     os.makedirs(REPORTS_DIR, exist_ok=True)
     os.makedirs(SITE_DIR, exist_ok=True)

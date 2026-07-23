@@ -1,14 +1,14 @@
 #!/usr/bin/env python3
-"""build_site.py — assemble the robobus PROJECT WEBSITE (not just the benchmark report).
+"""build_site.py, assemble the robobus PROJECT WEBSITE (not just the benchmark report).
 
 Produces a small multi-page static site into bench/site/ (then the CI copies it to docs/ for
 GitHub Pages), with a shared nav:  Home · Benchmarks · Docs · GitHub.
 
-  index.html        the landing page — the "latency spectrum" thesis + measured headline numbers
+  index.html        the landing page, the "latency spectrum" thesis + measured headline numbers
   benchmarks.html   the full live report (bench/render_report.py's output, wrapped in the shell)
   docs/<slug>.html  the design docs (docs-src/*.md rendered), with a docs sidebar
 
-Design: a measurement-instrument identity — the numbers are the hero (JetBrains Mono), Space
+Design: a measurement-instrument identity, the numbers are the hero (JetBrains Mono), Space
 Grotesk for display, a deep instrument-black base with a teal "signal" accent. The signature is
 the ns→ms latency spectrum (the project's own thesis: "latency is not one number").
 
@@ -31,7 +31,7 @@ DOCS_SRC = os.path.join(ROOT, "docs-src")
 GH = "https://github.com/pq-cybarg/robobus-benchmarks"
 
 # ---------------------------------------------------------------------------------------------
-# design tokens — measurement instrument. Numbers are the hero.
+# design tokens, measurement instrument. Numbers are the hero.
 # ---------------------------------------------------------------------------------------------
 CSS = """
 :root{
@@ -110,7 +110,7 @@ h2.title{font-size:clamp(24px,3.5vw,34px);margin:0 0 8px}
 .fcard p{color:var(--muted);font-size:14.5px;margin:0}
 .fcard .pqc{color:var(--pqc)}.fcard .hybrid{color:var(--hybrid)}.fcard .qr{color:var(--qr)}
 
-/* plain-language explainer — the layperson on-ramp */
+/* plain-language explainer, the layperson on-ramp */
 .plain{display:grid;gap:16px}
 @media(min-width:760px){.plain{grid-template-columns:repeat(3,1fr)}}
 .pcard{background:linear-gradient(180deg,var(--panel),var(--panel2));border:1px solid var(--line);border-radius:16px;padding:24px 22px}
@@ -138,13 +138,13 @@ h2.title{font-size:clamp(24px,3.5vw,34px);margin:0 0 8px}
 
 /* layer table */
 .ltab{width:100%;border-collapse:collapse;font-size:14.5px}
-.ltab th,.ltab td{text-align:left;padding:11px 14px;border-bottom:1px solid var(--line)}
+.ltab th.ltab td{text-align:left;padding:11px 14px;border-bottom:1px solid var(--line)}
 .ltab th{font-size:11.5px;text-transform:uppercase;letter-spacing:.06em;color:var(--dim);font-weight:600}
 .ltab td.reg{font-family:'JetBrains Mono';color:var(--signal);font-size:13px}
 .ltab td.n{font-family:'JetBrains Mono';color:var(--fg)}
 .ltab tr:hover td{background:var(--panel2)}
 
-/* speed matrices — horizontal bars + transport×language heatmap */
+/* speed matrices, horizontal bars + transport×language heatmap */
 .hbars{display:flex;flex-direction:column;gap:7px;margin:6px 0 4px}
 .hrow{display:grid;grid-template-columns:118px 1fr 132px;align-items:center;gap:12px}
 .hrow .lname{font-weight:600;font-size:13.5px}
@@ -158,7 +158,7 @@ h2.title{font-size:clamp(24px,3.5vw,34px);margin:0 0 8px}
 .tier-i>i{background:linear-gradient(90deg,var(--violet),var(--hybrid))}
 .heatwrap{overflow-x:auto}
 .heat{border-collapse:collapse;font-size:12.5px;min-width:520px}
-.heat th,.heat td{padding:9px 12px;text-align:center;border:1px solid var(--line);font-variant-numeric:tabular-nums}
+.heat th.heat td{padding:9px 12px;text-align:center;border:1px solid var(--line);font-variant-numeric:tabular-nums}
 .heat th{font:600 11px/1 'JetBrains Mono';text-transform:uppercase;letter-spacing:.05em;color:var(--dim)}
 .heat td.rl{text-align:left;font-weight:600;color:var(--fg);font-family:'Inter'}
 .heat td.na{color:var(--dim)}
@@ -192,7 +192,7 @@ footer.site a{color:var(--muted)}
 
 @media (max-width:640px){.hero{padding:48px 0 20px}.nav a.tab{padding:6px 9px}}
 @media (prefers-reduced-motion:no-preference){
-  .reveal{animation:rise .7s cubic-bezier(.2,.7,.2,1) both}
+  .reveal{animation:rise .7s cubic-bezier(.2.7.2,1) both}
   @keyframes rise{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:none}}
   .spec-mark{animation:pop .5s ease both}@keyframes pop{from{opacity:0}to{opacity:1}}
 }
@@ -223,11 +223,12 @@ def nav(active, prefix=""):
 
 
 BASE_URL = "https://pq-cybarg.github.io/robobus-benchmarks/"
-OG_IMAGE = BASE_URL + "og-image.png"       # absolute — X/Slack/Discord require an absolute image URL
+OG_IMAGE = BASE_URL + "og-image.png"       # absolute, X/Slack/Discord require an absolute image URL
 
 
 def page(title, active, body, prefix="", extra_head="", desc="", canon=""):
-    d = html.escape(desc or "Post-quantum, real-time robotics middleware — measured, not claimed.")
+    d = html.escape(desc or "A post-quantum, real-time robotics message bus, benchmarked in 33 "
+                            "languages across 26 crypto primitives and 15 transports, every cell run on real hardware.")
     t = html.escape(title)
     url = BASE_URL + canon
     og = (
@@ -240,7 +241,7 @@ def page(title, active, body, prefix="", extra_head="", desc="", canon=""):
         f"<meta property='og:image' content='{OG_IMAGE}'>"
         f"<meta property='og:image:width' content='1200'>"
         f"<meta property='og:image:height' content='630'>"
-        f"<meta property='og:image:alt' content='robobus — post-quantum, real-time robotics middleware'>"
+        f"<meta property='og:image:alt' content='robobus, one message bus benchmarked in 33 languages across 26 crypto primitives and 15 transports'>"
         f"<meta name='twitter:card' content='summary_large_image'>"
         f"<meta name='twitter:title' content='{t}'>"
         f"<meta name='twitter:description' content='{d}'>"
@@ -252,15 +253,15 @@ def page(title, active, body, prefix="", extra_head="", desc="", canon=""):
             f"{FONTS}<style>{CSS}</style>{extra_head}</head><body>"
             f"{nav(active,prefix)}{body}"
             f"<footer class='site'><div class='wrap'><div class='row'>"
-            f"<div>robobus — post-quantum, real-time robotics middleware. "
-            f"CNSA 2.0 (FIPS 203 ML-KEM · FIPS 204 ML-DSA).</div>"
+            f"<div>robobus, a post-quantum, real-time robotics message bus. "
+            f"Benchmarked in 33 languages across 26 crypto primitives and 15 transports.</div>"
             f"<div><a href='{prefix}index.html'>Home</a> · <a href='{prefix}benchmarks.html'>Benchmarks</a> "
             f"· <a href='{prefix}docs/index.html'>Docs</a> · <a href='{GH}'>GitHub</a></div>"
             f"</div></div></footer></body></html>")
 
 
 # ---------------------------------------------------------------------------------------------
-# the latency spectrum — the signature. log axis 1ns .. 10ms with the measured layers plotted.
+# the latency spectrum, the signature. log axis 1ns .. 10ms with the measured layers plotted.
 # ---------------------------------------------------------------------------------------------
 def latency_spectrum():
     import math
@@ -273,16 +274,16 @@ def latency_spectrum():
     def x(sec):
         return padL + span * (math.log10(sec) - llo) / (lhi - llo)
 
-    # regime bands — the "orders of magnitude" made visible
-    bands = [(1e-9, 1e-6, "nanoseconds", "#0f2a2b"),   # ns
-             (1e-6, 1e-3, "microseconds", "#181633"),  # µs
+    # regime bands, the "orders of magnitude" made visible
+    bands = [(1e-9, 1e-6, "nanoseconds", "#0f2a2b"),  # ns
+             (1e-6, 1e-3, "microseconds", "#181633"), # µs
              (1e-3, 1e-2, "milliseconds", "#2a1e17")]  # ms
     marks = [  # seconds, label, value, cssvar, label-y, anchor  (explicit so nothing collides)
-        (3.9e-9,  "Bus op",           "3.9 ns",     "--signal", 130, "middle"),
-        (83e-9,   "Bus one-way IPC",  "83 ns",      "--signal", 88,  "middle"),
-        (135e-6,  "PQC key agreement","≈135 µs",    "--hybrid", 130, "middle"),
-        (1.15e-3, "Auth handshake",   "0.6–1.2 ms", "--pqc",    70,  "end"),
-        (2.0e-3,  "DDS-Sec window",   "≈2 ms",      "--amber",  112, "start"),
+        (3.9e-9, "Bus op",          "3.9 ns",    "--signal", 130, "middle"),
+        (83e-9,  "Bus one-way IPC", "83 ns",     "--signal", 88, "middle"),
+        (135e-6, "PQC key agreement","≈135 µs",   "--hybrid", 130, "middle"),
+        (1.15e-3, "Auth handshake",  "0.6–1.2 ms", "--pqc",   70, "end"),
+        (2.0e-3, "DDS-Sec window",  "≈2 ms",     "--amber", 112, "start"),
     ]
     S = [f"<svg class='spec-svg' viewBox='0 0 {W} {H}' role='img' "
          f"aria-label='Latency spectrum from nanoseconds to milliseconds, log scale'>",
@@ -292,7 +293,7 @@ def latency_spectrum():
          "<filter id='glow' x='-60%' y='-60%' width='220%' height='220%'>"
          "<feGaussianBlur stdDeviation='3.2' result='b'/><feMerge>"
          "<feMergeNode in='b'/><feMergeNode in='SourceGraphic'/></feMerge></filter></defs>"]
-    # bands + zone labels (labels near the top edge, dim — clearly background)
+    # bands + zone labels (labels near the top edge, dim, clearly background)
     for a, b, lab, fill in bands:
         xa, xb = x(a), x(b)
         S.append(f"<rect x='{xa:.1f}' y='16' width='{xb-xa:.1f}' height='{base-16}' fill='{fill}' opacity='.5'/>")
@@ -331,10 +332,10 @@ def home():
     stats = [
         ("3.9<small>ns</small>", "Shared-memory bus op (amortized), Apple M5"),
         ("83<small>ns</small>", "Bus one-way IPC · p50 · 98%+ &lt; 100 ns (RT)"),
-        ("≈135<small>µs</small>", "PQC key agreement — ECDH ‖ ML-KEM → HKDF-384"),
+        ("≈135<small>µs</small>", "PQC key agreement, ECDH ‖ ML-KEM → HKDF-384"),
         ("6<small>ISAs</small>", "Bindings + C-ABI lib byte-identical: x86-64, aarch64, armv7, ppc64le, riscv64, s390x (BE)"),
         ("4<small>OS</small>", "Handshake measured on Linux, macOS, Windows (MSVC + WSL2)"),
-        ("9<small>orders</small>", "Latency regimes spanned — ns to ms — each measured on its own terms"),
+        ("9<small>orders</small>", "Latency regimes spanned, ns to ms, each measured on its own terms"),
     ]
     stat_html = "".join(f"<div class='stat'><div class='n mono'>{n}</div><div class='l'>{l}</div></div>"
                         for n, l in stats)
@@ -352,15 +353,15 @@ def home():
     feats = [
         ("crypto", "pqc", "CNSA 2.0 post-quantum",
          "FIPS 203 ML-KEM and FIPS 204 ML-DSA, hybridised with classical ECDH/ECDSA through "
-         "HKDF-SHA384 — the NSA CNSA 2.0 transition profile, not a toy."),
+         "HKDF-SHA384, the NSA CNSA 2.0 transition profile, not a toy."),
         ("transport", "", "Sub-microsecond bus",
          "A lock-free shared-memory SPSC ring in C: single-digit-nanosecond ops, p50 one-way IPC "
          "under 100 ns, formally proven (CBMC) and RT-hardened."),
         ("dds", "hybrid", "PQC-hardened DDS-Security",
          "Patched CycloneDDS & Fast DDS authentication: hybrid ECDH+ML-KEM key agreement and "
          "ML-DSA-87 identity signatures, measured live on Linux, macOS and Windows."),
-        ("proof", "qr", "Measured, not claimed",
-         "Every language toolchain installed and run green together — 6 native seal/open bindings "
+        ("proof", "qr", "Every number is measured live",
+         "Every language toolchain installed and run green together, 6 native seal/open bindings "
          "plus 14 schema-codegen targets, no silent skips; the C-ABI shared library proven "
          "byte-identical on six ISAs incl. big-endian s390x; CBMC + SymbiYosys proofs of the ring."),
     ]
@@ -368,7 +369,7 @@ def home():
         f"<div class='fcard'><div class='k'>{html.escape(k)}</div>"
         f"<h3 class='{cls}'>{html.escape(t)}</h3><p>{p}</p></div>"
         for k, cls, t, p in feats)
-    # transports — the universal-bridge story (any link takes --security cnsa20)
+    # transports, the universal-bridge story (any link takes --security cnsa20)
     xports = [
         ("Robotics &amp; real-time",
          [("ROS 2", "rclpy"), ("ROS 1", "rospy"), ("DDS", "topic"),
@@ -401,9 +402,9 @@ def home():
     body = f"""
 <header class='hero'><div class='wrap reveal'>
   <p class='eyebrow'>secure real-time messaging for robots &amp; devices</p>
-  <h1>The nervous system for machines — instant, universal, and <em>quantum-safe</em>.</h1>
+  <h1>The nervous system for machines, instant, universal, and <em>quantum-safe</em>.</h1>
   <p class='lede'>robobus lets robots, sensors and devices react to one another the moment something
-  happens — and locks every message with encryption built to outlast tomorrow's quantum computers.
+  happens, and locks every message with encryption built to outlast tomorrow's quantum computers.
   It can even add that protection to older systems that never had any.</p>
   <div class='cta'>
     <a class='btn primary' href='benchmarks.html'>See the benchmarks →</a>
@@ -418,35 +419,35 @@ def home():
 <section><div class='wrap'>
   <p class='sec-eyebrow'>what it is, in plain terms</p>
   <h2 class='title'>A fast, universal, quantum-safe way for machines to talk</h2>
-  <p class='sec-lede'>Not an engineer? Here's the whole idea in three parts — everything further down
+  <p class='sec-lede'>Not an engineer? Here's the whole idea in three parts, everything further down
   the page is the measured proof behind them.</p>
   <div class='plain'>
     <div class='pcard'><div class='ic spd'>{ic_spd}</div>
       <h3>Reacts before you can blink</h3>
       <p class='an'>A message crosses the system in billionths of a second.</p>
-      <p>That's millions of times quicker than an eye-blink — fast enough for a robot to catch
+      <p>That's millions of times quicker than an eye-blink, fast enough for a robot to catch
       itself mid-stumble, or a prosthetic hand to move the instant a nerve signal arrives.</p></div>
     <div class='pcard'><div class='ic rch'>{ic_rch}</div>
       <h3>One hub for everything</h3>
       <p class='an'>Robots, drones, medical sensors, even brain-signal headsets.</p>
       <p>These devices normally speak incompatible languages. robobus is the common connector that
-      lets them work together — bridging the standards each field already uses.</p></div>
+      lets them work together, bridging the standards each field already uses.</p></div>
     <div class='pcard'><div class='ic sec'>{ic_sec}</div>
       <h3>Safe against tomorrow's computers</h3>
       <p class='an'>Every message is sealed with post-quantum encryption.</p>
       <p>Future quantum computers could break today's encryption. robobus uses the U.S. government's
-      post-quantum standard, so messages stay private for decades — even on devices that shipped
+      post-quantum standard, so messages stay private for decades, even on devices that shipped
       with no security at all.</p></div>
   </div>
   <p class='oneline'><b>In one line:</b> robobus is a super-fast, universal, quantum-safe messaging
-  layer for machines — and everything below is the measurement that backs each claim up.</p>
+  layer for machines, and everything below is the measurement that backs each claim up.</p>
 </div></section>
 
 <section><div class='wrap'>
   <p class='sec-eyebrow'>the proof · headline numbers</p>
-  <h2 class='title'>Measured, not marketed</h2>
+  <h2 class='title'>Measured live, in the open</h2>
   <p class='sec-lede'>From here down the page is for engineers. Every figure is produced by
-  <code>run_benchmarks.py</code> and refreshed on CI; numbers are CPU/OS/build-specific — the
+  <code>run_benchmarks.py</code> and refreshed on CI; numbers are CPU/OS/build-specific, the
   deliverable is the method.</p>
   <div class='stats'>{stat_html}</div>
 </div></section>
@@ -454,7 +455,7 @@ def home():
 <section><div class='wrap'>
   <p class='sec-eyebrow'>the whole point</p>
   <h2 class='title'>Read the layers</h2>
-  <p class='sec-lede'>The stack spans nine orders of magnitude and each layer has its own regime —
+  <p class='sec-lede'>The stack spans nine orders of magnitude and each layer has its own regime, 
   conflating them is how benchmarks lie. The runtime hot path is ns/GB·s; handshakes are a
   one-time per-peer cost amortised to zero over a session.</p>
   <div style='overflow-x:auto'><table class='ltab'><thead><tr><th>Layer</th><th>Regime</th><th>Apple M5</th></tr></thead>
@@ -463,25 +464,25 @@ def home():
 
 <section><div class='wrap'>
   <p class='sec-eyebrow'>one bus · every transport</p>
-  <h2 class='title'>Bridges everything — and secures the links that can't secure themselves</h2>
+  <h2 class='title'>Bridges everything, and secures the links that can't secure themselves</h2>
   <p class='sec-lede'>robobus sits at the centre as a post-quantum-secured hub; a thin bridge maps
   each protocol's topics or streams onto bus channels. And <b>any</b> bridge takes
-  <code>--security cnsa20 --keyfile</code> — so CNSA&nbsp;2.0 crypto wraps MQTT, Kafka, serial or
+  <code>--security cnsa20 --keyfile</code>, so CNSA&nbsp;2.0 crypto wraps MQTT, Kafka, serial or
   CAN exactly as it wraps DDS, even where the wire protocol has no security of its own.</p>
   <div class='xgrid'>{xhtml}</div>
   <div class='lock'>🔒&nbsp;<span><b>Post-quantum on any link.</b> One <code>--security</code> flag seals the
-  payload the same way regardless of transport — ML-KEM key agreement, AES-256-GCM, ML-DSA identity.</span></div>
+  payload the same way regardless of transport, ML-KEM key agreement, AES-256-GCM, ML-DSA identity.</span></div>
 </div></section>
 
 <section><div class='wrap'>
   <p class='sec-eyebrow'>reach it from any language</p>
   <h2 class='title'>Six native implementations, fourteen generated</h2>
-  <p class='sec-lede'>The wire format is small — an mmap seqlock ring, a codec frame, an
+  <p class='sec-lede'>The wire format is small, an mmap seqlock ring, a codec frame, an
   AES-256-GCM frame, fixed-layout schema structs. Six languages implement it natively and are
   <b>bidirectionally conformance-tested against Python</b> (Python seals → the other opens, and
   back); the schema layout is code-generated for fourteen more, each compile/run-verified
   against Python's packed little-endian bytes. Every one of these toolchains is installed and
-  run green together — no language is ever silently skipped.</p>
+  run green together, no language is ever silently skipped.</p>
   <div class='xrow' style='margin:0 0 16px'>
     <div class='chip'>Python<small>reference</small></div>
     <div class='chip'>C<small>native ring + C ABI</small></div>
@@ -493,11 +494,11 @@ def home():
   <p style='color:var(--muted);font-size:13.5px;margin:0 0 14px'><span style='font-family:"JetBrains Mono";
   font-size:11.5px;letter-spacing:.06em;color:var(--dim)'>SCHEMA CODEGEN · 14 &nbsp;</span>
   C · C++ · Rust · Go · Java · C# · TypeScript · Python · Julia · MATLAB/Octave · Swift · Kotlin · Ruby · Lua</p>
-  <div class='note'><b>Embed it anywhere — <code>librobobus</code>.</b> A dependency-light C-ABI
+  <div class='note'><b>Embed it anywhere, <code>librobobus</code>.</b> A dependency-light C-ABI
   shared library (<code>robobus.dll</code> · <code>librobobus.dylib</code> · <code>librobobus.so</code>,
   built by CMake on every OS) exposes AES-256-GCM RBX1 seal/open + the codec, so software in any
   language links robobus over its FFI. Proven byte-identical to the Python reference on Linux,
-  macOS, Windows and five emulated ISAs — including big-endian s390x.</div>
+  macOS, Windows and five emulated ISAs, including big-endian s390x.</div>
 </div></section>
 
 <section><div class='wrap'>
@@ -515,20 +516,20 @@ def home():
   (begin → OK), not the ~100&nbsp;ms process wall-clock (startup + SPDP discovery + teardown).</p>
   <div class='note'><b>Coverage, honestly.</b> The public site's CI runners are
   <b>virtualized</b> (shared vCPUs, no real-time scheduling), so their columns are for
-  cross-platform coverage and relative comparison — not bare-metal nanosecond claims. Each run
+  cross-platform coverage and relative comparison, not bare-metal nanosecond claims. Each run
   self-labels its measurement fidelity.</div>
   <p style='margin-top:22px'><a class='btn ghost' href='benchmarks.html'>Open the full report →</a></p>
 </div></section>
 """
-    return page("robobus — a fast, universal, quantum-safe way for machines to talk", "home", body,
+    return page("robobus, a fast, universal, quantum-safe way for machines to talk", "home", body,
                 desc="robobus is a super-fast, universal messaging system for robots, sensors and "
-                     "devices — locked with CNSA 2.0 post-quantum encryption (FIPS 203 ML-KEM · "
+                     "devices, locked with CNSA 2.0 post-quantum encryption (FIPS 203 ML-KEM · "
                      "FIPS 204 ML-DSA) and PQC-hardened DDS-Security, measured across nine orders "
                      "of magnitude.")
 
 
 # ---------------------------------------------------------------------------------------------
-# benchmarks page — wrap render_report's body in the shell, re-themed to the site palette
+# benchmarks page, wrap render_report's body in the shell, re-themed to the site palette
 # ---------------------------------------------------------------------------------------------
 def benchmarks():
     import render_report as R
@@ -539,7 +540,7 @@ def benchmarks():
     rep_css = m_style.group(1) if m_style else ""
     m_body = re.search(r"<body>(.*?)</body>", inner, re.S)
     rep_body = m_body.group(1) if m_body else inner
-    # drop the report's own H1 + sub — our intro section is the page header (avoids duplication)
+    # drop the report's own H1 + sub, our intro section is the page header (avoids duplication)
     rep_body = re.sub(r"<h1>robobus / PQC-DDS[^<]*</h1>", "", rep_body)
     rep_body = re.sub(r"<p class='sub'>.*?</p>", "", rep_body, count=1, flags=re.S)
     # re-theme: our tokens override render_report's :root; keep the site fonts (its body{font:...}
@@ -554,14 +555,27 @@ def benchmarks():
     header = ("<p style=\"font-family:'JetBrains Mono';font-size:12px;letter-spacing:.14em;"
               "text-transform:uppercase;color:#8a9bab;margin:0 0 10px\">Live · refreshed on CI</p>"
               "<div style=\"font-family:'Space Grotesk';font-weight:600;font-size:clamp(26px,4vw,36px);"
-              "letter-spacing:-.02em;margin:0 0 22px;color:#e9eef4\">Full-system benchmarks</div>")
+              "letter-spacing:-.02em;margin:0 0 14px;color:#e9eef4\">Full-system benchmarks</div>"
+              # cross-link to the Speed matrix, this page is the end-to-end system report
+              # (handshake, real-time, determinism); the per-primitive / per-language grid lives there.
+              "<a href='speed.html' style=\"display:block;text-decoration:none;margin:0 0 24px;"
+              "padding:16px 18px;border:1px solid #1e2a37;border-left:3px solid #4fd1c5;border-radius:0 12px 12px 0;"
+              "background:color-mix(in srgb,#4fd1c5 7%,#111a24)\">"
+              "<span style=\"font-family:'JetBrains Mono';font-size:11px;letter-spacing:.12em;"
+              "text-transform:uppercase;color:#4fd1c5\">Also measured → Speed matrix</span>"
+              "<div style=\"color:#e9eef4;font-weight:600;font-size:16px;margin:6px 0 4px;"
+              "font-family:'Space Grotesk'\">33 languages × 26 crypto primitives × 15 transports, every cell run, none faked</div>"
+              "<div style=\"color:#8a9bab;font-size:14px\">Per-primitive seal+open latency &amp; rate distributions "
+              "(p50/p90/p99), a dense transport×language grid, FFI bindings, and an interactive configurator that "
+              "prices any (language × KEM × signature × AEAD × hash × KDF × transport) suite into a live spec.</div>"
+              "</a>")
     rep_body = rep_body.replace("<div class='wrap'>", "<div class='wrap'>" + header, 1)
     return page("Benchmarks · robobus", "benchmarks", rep_body, extra_head=override, canon="benchmarks.html",
                 desc="Full-system post-quantum & real-time benchmarks for robobus, refreshed on CI.")
 
 
 # ---------------------------------------------------------------------------------------------
-# docs — render docs-src/*.md with a sidebar
+# docs, render docs-src/*.md with a sidebar
 # ---------------------------------------------------------------------------------------------
 DOC_ORDER = ["ARCHITECTURE", "PROTOCOL", "SECURITY", "COMPLIANCE", "CMVP-READINESS",
              "CRYPTO-PROVENANCE", "PORTABILITY", "DETERMINISM", "REALTIME", "SUPPLY-CHAIN",
@@ -589,7 +603,7 @@ def _slug(name):
 def _rewrite_doc_links(html_body, slugs):
     """Rewrite intra-docs links that still point at the source *.md files to the rendered pages.
     The docs are published as lowercase <slug>.html (Pages serves .html, not .md), so a bare
-    cross-reference like [CMVP-READINESS.md](CMVP-READINESS.md) must become cmvp-readiness.html —
+    cross-reference like [CMVP-READINESS.md](CMVP-READINESS.md) must become cmvp-readiness.html, 
     otherwise every cross-doc link 404s on the public site. Only rewrites bare same-dir links
     whose target is a known doc; external/anchored/pathed links are left untouched."""
     def repl(m):
@@ -619,18 +633,18 @@ DOCS_CSS = """
 .dbody h1{font-size:clamp(26px,4vw,38px);margin:0 0 8px;letter-spacing:-.02em}
 .dbody h2{font-size:23px;margin:36px 0 10px;padding-top:14px;border-top:1px solid var(--line)}
 .dbody h3{font-size:18px;margin:26px 0 8px;color:var(--fg)}
-.dbody p,.dbody li{color:#cdd6e0}
+.dbody p.dbody li{color:#cdd6e0}
 .dbody a{color:var(--signal)}
 .dbody code{font-family:'JetBrains Mono';background:#060a10;border:1px solid var(--line);padding:1px 6px;border-radius:5px;font-size:.85em}
 .dbody pre{background:#060a10;border:1px solid var(--line);border-radius:10px;padding:15px 17px;overflow:auto;font-size:13px}
 .dbody pre code{background:none;border:none;padding:0}
 .dbody table{border-collapse:collapse;width:100%;margin:16px 0;font-size:14px;display:block;overflow-x:auto}
-.dbody th,.dbody td{border:1px solid var(--line);padding:9px 12px;text-align:left}
+.dbody th.dbody td{border:1px solid var(--line);padding:9px 12px;text-align:left}
 .dbody th{background:var(--panel);color:var(--fg);font-family:'Space Grotesk'}
 .dbody tr:hover td{background:var(--panel2)}
 .dbody blockquote{border-left:3px solid var(--signal);margin:14px 0;padding:2px 16px;color:var(--muted);background:var(--panel2);border-radius:0 8px 8px 0}
 .dbody hr{border:none;border-top:1px solid var(--line);margin:26px 0}
-.dbody ul,.dbody ol{padding-left:22px}
+.dbody ul.dbody ol{padding-left:22px}
 .dbody li{margin:5px 0}
 .dlede{color:var(--muted);margin:0 0 22px;font-size:15px}
 @media (max-width:760px){.dwrap{grid-template-columns:1fr}.dside{position:static;display:flex;flex-wrap:wrap;gap:4px}.dside-t{width:100%}}
@@ -702,7 +716,7 @@ def _hbars(rows, tier_fn):
         out.append(f"<div class='hrow'><div class='lname'>{html.escape(label)}"
                    f"<small>{html.escape(sub)}</small></div>"
                    f"<div class='htrack {tier_fn(val)}'><i style='width:{w:.1f}%'></i></div>"
-                   f"<div class='hval'>{val:,.0f}<small> {unit}</small></div></div>")
+                   f"<div class='hval'>{val:.0f}<small> {unit}</small></div></div>")
     return "<div class='hbars'>" + "".join(out) + "</div>"
 
 
@@ -717,14 +731,16 @@ def _runtimes_section():
     rows = [(r["config"], r.get("note", ""), r["ops_per_s"], "op/s") for r in oks]
     def tier(v):
         return "tier-n" if v > 1e6 else "tier-j" if v > 6e5 else "tier-i"
+    n = len(oks)
     return f"""<section><div class='wrap'>
-  <p class='sec-eyebrow'>python runtimes · CPython · Cython · PyPy+cffi</p>
-  <h2 class='title'>Same code, four runtimes — pick your stack</h2>
+  <p class='sec-eyebrow'>python runtimes · CPython · Cython · PyPy · GraalPy · Nuitka · Codon · Mojo</p>
+  <h2 class='title'>Same workload, {n} runtimes, pick your stack</h2>
   <p class='sec-lede'>robobus's Python surface runs on whatever runtime fits, and each has a native
   acceleration path. <b>Cython stacks with CPython</b> (seal/open compiled to C in-process);
   <b>PyPy does not stack with Cython</b> (its cpyext C-API layer is slow) but <b>stacks with native
-  code via cffi</b> — the JIT optimizes straight through the FFI into <code>librobobus</code>. Same
-  RBX1 seal+open workload, measured on each:</p>
+  code via cffi</b>, the JIT optimizing straight through the FFI into <code>librobobus</code>. The AOT
+  routes (<b>Nuitka</b>, <b>Codon</b>, <b>Mojo</b>) and the Truffle JIT (<b>GraalPy</b>) reach the same
+  native core through their own C interop. Same RBX1 seal+open workload, timed on each:</p>
   {_hbars(rows, tier)}
   {_runtime_pending(rt)}
   <p class='sec-lede' style='margin-top:16px'>{html.escape(rt.get('note',''))}</p>
@@ -737,8 +753,8 @@ def _runtime_pending(rt):
         return ""
     rows = "".join(f"<tr class='speed-skip'><td>{html.escape(r['config'])}</td>"
                    f"<td>{html.escape(r.get('note',''))}</td></tr>" for r in sk)
-    return (f"<table class='ltab' style='margin-top:14px'><thead><tr><th>Runtime mix (tracked)</th>"
-            f"<th>status</th></tr></thead><tbody>{rows}</tbody></table>")
+    return (f"<table class='ltab' style='margin-top:14px'><thead><tr><th>Deliberate non-config</th>"
+            f"<th>why it is not its own row</th></tr></thead><tbody>{rows}</tbody></table>")
 
 
 def _ruby_runtimes_section():
@@ -753,9 +769,9 @@ def _ruby_runtimes_section():
     return f"""<section><div class='wrap'>
   <p class='sec-eyebrow'>ruby runtimes · the ruby family</p>
   <h2 class='title'>Ruby, accelerated the Ruby way</h2>
-  <p class='sec-lede'>The same story holds beyond Python — a three-rung runtime ladder on one CPU
+  <p class='sec-lede'>The same story holds beyond Python, a three-rung runtime ladder on one CPU
   kernel. The <b>MRI</b> interpreter is the baseline; <b>YJIT</b>, Ruby's in-box JIT (just
-  <code>--yjit</code>, zero dependencies — the Ruby analog of PyPy), compiles the hot method for a
+  <code>--yjit</code>, zero dependencies, the Ruby analog of PyPy), compiles the hot method for a
   few-fold lift once it's warmed past the call threshold; and <b>crystalruby</b> compiles Crystal hot
   paths and calls them from MRI via FFI (the Ruby analog of CPython+Cython) for a ~50× jump. <b>Crystal</b>
   standalone (Ruby-like syntax, LLVM-compiled) sits in the codec matrix above at C-class 0.79&nbsp;ns/op:</p>
@@ -772,9 +788,9 @@ def _profiles_section():
     for p in pr["profiles"]:
         lvl = p["level"]
         lbadge = ("classical" if lvl == 0 else f"NIST {lvl}")
-        ss = f"{p['session_setup_ns']/1e6:.2f} ms" if p.get("session_setup_ns") else "—"
-        pm = f"{p['per_message_ns']/1000:.2f} µs" if p.get("per_message_ns") else "—"
-        mps = f"{p['msg_per_s']:,.0f}" if p.get("msg_per_s") else "—"
+        ss = f"{p['session_setup_ns']/1e6:.2f} ms" if p.get("session_setup_ns") else ", "
+        pm = f"{p['per_message_ns']/1000:.2f} µs" if p.get("per_message_ns") else ", "
+        mps = f"{p['msg_per_s']:.0f}" if p.get("msg_per_s") else ", "
         km = p["components"].get("kem", {})
         sg = p["components"].get("sig", {})
         sub = ""
@@ -790,12 +806,12 @@ def _profiles_section():
     return f"""<section><div class='wrap'>
   <p class='sec-eyebrow'>requirements · speed under each profile</p>
   <h2 class='title'>Pick your requirement, see the cost</h2>
-  <p class='sec-lede'>Security is a spectrum you choose per link, not a mandate — from
+  <p class='sec-lede'>Security is a spectrum you choose per link, not a mandate, from
   <b>classical</b> (backwards-compatible with non-PQ peers) through hybrid transition profiles to
   <b>CNSA&nbsp;2.0</b> for National Security Systems. Each profile splits into two cost centres:
   <b>session setup</b> (the ML-KEM / ML-DSA handshake, once per peer, amortized) and the
   <b>per-message</b> hot path (AES-256-GCM, every frame). Session cost swings ~130× with assurance;
-  per-message stays flat at line rate — so higher security buys handshake latency, not throughput.</p>
+  per-message stays flat at line rate, so higher security buys handshake latency, not throughput.</p>
   <div style='overflow-x:auto'><table class='ltab pftab'>
   <thead><tr><th>Profile</th><th>Level</th><th>Session setup</th><th>Per-message</th><th>msg/s</th><th>Standards</th></tr></thead>
   <tbody>{rows}</tbody></table></div>
@@ -821,19 +837,19 @@ def _ffi_bindings_section():
                         f"</td></tr>" for r in sk)
         sktab = (f"<table class='ltab' style='margin-top:14px'><thead><tr>"
                  f"<th>Binding (tracked)</th><th>status</th></tr></thead><tbody>{srows}</tbody></table>")
-    # narrow spread — all near the C ceiling — so a linear tier by op/s reads better than log
+    # narrow spread, all near the C ceiling, so a linear tier by op/s reads better than log
     def tier(v):
         return "tier-n" if v > 1.2e6 else "tier-j" if v > 9e5 else "tier-i"
     return f"""<section><div class='wrap'>
   <p class='sec-eyebrow'>one C-ABI · every language's FFI</p>
-  <h2 class='title'>Full robobus from any language — over its own FFI</h2>
+  <h2 class='title'>Full robobus from any language, over its own FFI</h2>
   <p class='sec-lede'>You don't need a native robobus port to get the real thing. <code>librobobus</code>
   is one C-ABI shared library, and every language reaches its <b>complete</b> seal/open surface
-  through its own foreign-function interface — <b>LuaJIT</b>'s native FFI, <b>Perl</b>'s FFI::Platypus
+  through its own foreign-function interface, <b>LuaJIT</b>'s native FFI, <b>Perl</b>'s FFI::Platypus
   (libffi), <b>Octave</b>'s compiled <code>.oct</code> C-linkage (it has no raw <code>loadlibrary</code>),
   and <b>CPython</b>'s cffi. The same RBX1 <code>seal(41&nbsp;B)</code>→<code>open</code> round trip
   (AES-256-GCM), each verified to round-trip before timing. Because the work happens in the shared C,
-  every binding lands near the C ceiling — <b>the FFI overhead is nearly free</b>:</p>
+  every binding lands near the C ceiling, <b>the FFI overhead is nearly free</b>:</p>
   {_hbars(rows, tier)}
   {sktab}
   <p class='sec-lede' style='margin-top:16px'>{html.escape(fb.get('note',''))}</p>
@@ -870,7 +886,7 @@ def _config_chooser_section():
                               "p50": r["metrics"].get("p50_ns"), "p99": r["metrics"].get("p99_ns")}
                   for r in tm["results"] if r["status"] == "ok" and r["metrics"].get("ops_per_s")}
     # NIST security category per primitive (0 = classical, not quantum-safe). Equivalent NIST classes
-    # are treated as equally secure — no bonus for hash-based vs lattice sigs, per the design intent.
+    # are treated as equally secure, no bonus for hash-based vs lattice sigs, per the design intent.
     # Hash category is by COLLISION resistance (output/2): SHA-256/SHA3-256/BLAKE3 = Cat 2 (128-bit),
     # SHA-384 = Cat 4 (192-bit), SHA-512/SHA3-512 = Cat 5 (256-bit). NIST Category 5 therefore needs
     # SHA-512 / SHA3-512 / SHAKE-256. CNSA 2.0 is a SEPARATE NSA profile that specifies SHA-384.
@@ -959,10 +975,10 @@ def _config_chooser_section():
     js = """<script>(function(){
 var D=JSON.parse(document.getElementById('cfg-data').textContent);
 var $=function(id){return document.getElementById(id)};
-function ns(v){ if(v==null)return '—'; if(v<1000)return (v<100?v.toFixed(1):v.toFixed(0))+' ns';
+function ns(v){ if(v==null)return ', '; if(v<1000)return (v<100?v.toFixed(1):v.toFixed(0))+' ns';
   if(v<1e6)return (v/1e3).toFixed(2)+' µs'; return (v/1e6).toFixed(2)+' ms'; }
-function fmt(v){ return v==null?'—':Math.round(v).toLocaleString(); }
-function bps(b){ if(b==null)return '—'; if(b>=1e9)return (b/1e9).toFixed(2)+' GB/s';
+function fmt(v){ return v==null?', ':Math.round(v).toLocaleString(); }
+function bps(b){ if(b==null)return ', '; if(b>=1e9)return (b/1e9).toFixed(2)+' GB/s';
   if(b>=1e6)return (b/1e6).toFixed(1)+' MB/s'; if(b>=1e3)return (b/1e3).toFixed(0)+' kB/s'; return b.toFixed(0)+' B/s'; }
 function T(lang){ return (D.langs[lang]||{}).tech||{}; }
 function pick(lang,g,filt){ var b=null,bv=Infinity,t=T(lang); (D.groups[g]||[]).forEach(function(x){
@@ -1012,10 +1028,10 @@ function upd(){
   var q=$('cf-qs'); q.className='cfg-qs '+(qs?'yes':'no'); q.textContent = qs?'✓ quantum-safe':'⚠ classical KEM/sig';
   var notes=[];
   if(qs && weak && D.lvl[weak[1]]<5) notes.push('level capped by the '+weak[0]+' ('+weak[1]+' = NIST Cat '+D.lvl[weak[1]]+')');
-  if(!qs) notes.push(kem==='X25519'||sig==='Ed25519'?'classical KEM/signature — NOT post-quantum':'');
+  if(!qs) notes.push(kem==='X25519'||sig==='Ed25519'?'classical KEM/signature, NOT post-quantum':'');
   // NIST-5 hash requirement + SHA-2 length-extension caveat
   if(hash==='SHA-256'||hash==='SHA-512') notes.push('⚠ '+hash+' (SHA-2) is length-extension-vulnerable; SHA-3 / BLAKE3 / truncated SHA-384 are immune');
-  if(hash==='BLAKE3'||hash==='SHA-256'||hash==='SHA3-256') notes.push(hash+' has 128-bit collision resistance (NIST Cat 2) — NIST-5 needs SHA-512 / SHA3-512 / SHAKE-256');
+  if(hash==='BLAKE3'||hash==='SHA-256'||hash==='SHA3-256') notes.push(hash+' has 128-bit collision resistance (NIST Cat 2), NIST-5 needs SHA-512 / SHA3-512 / SHAKE-256');
   $('cf-cap').innerHTML = notes.filter(Boolean).map(function(n){return '<div>'+n+'</div>';}).join('');
   // standards
   var std=[];
@@ -1034,7 +1050,7 @@ function upd(){
   var hs=(t[kem]||0)+(t[sig]||0), seal=t[aead], ks=t[kdf], xns=X&&X.fps?1e9/X.fps:null;
   var FB=D.frame_bytes||75;
   var pipe=(codec||0)+(seal||0)+(xns||0), rate=pipe>0?1e9/pipe:0, thru=rate*FB/1e6;
-  // TWO HEADLINE NUMBERS (combine the steps) — with byte-rate (data rate) alongside message rate
+  // TWO HEADLINE NUMBERS (combine the steps), with byte-rate (data rate) alongside message rate
   $('h-rate').innerHTML=fmt(rate)+' <span style="font-size:.5em;font-weight:600;color:var(--muted)">msg/s</span>';
   $('h-rate-s').textContent='data rate '+bps(rate*FB)+' sealed'+(X?' · '+fmt(X.fps)+' f/s ('+bps(X.fps*FB)+') transport ceiling':'');
   $('h-time').innerHTML=ns(pipe); $('h-time-s').textContent='decode '+ns(codec)+' + seal/open '+ns(seal)+' + transport '+ns(xns);
@@ -1053,7 +1069,7 @@ function upd(){
   $('r-seal').innerHTML=ns(seal); $('r-seal-s').textContent=aead;
   $('r-hash').innerHTML=ns(t[hash]); $('r-hash-s').textContent=hash+' · Cat '+D.lvl[hash];
   $('r-dec').innerHTML=ns(codec); $('r-dec-s').textContent=lang;
-  $('r-xt').innerHTML=X?fmt(X.fps)+' f/s':'—';
+  $('r-xt').innerHTML=X?fmt(X.fps)+' f/s':', ';
   $('r-xt-s').textContent=X?(X.mbps.toFixed(0)+' MB/s'+(X.p50?' · p50 '+(X.p50/1000).toFixed(1)+' µs':'')+(X.p99?' · p99 '+(X.p99/1000).toFixed(1)+' µs':'')):'';
   if(pipe>0){ var d=codec||0,s=seal||0,x=xns||0;
     $('seg1').style.width=(100*d/pipe)+'%'; $('seg2').style.width=(100*s/pipe)+'%'; $('seg3').style.width=(100*x/pipe)+'%'; }
@@ -1071,14 +1087,14 @@ preset('secure');
 })();</script>"""
     return f"""<section><div class='wrap'>{css}
   <p class='sec-eyebrow'>interactive · build your config · read the spec</p>
-  <h2 class='title'>Configure your bus — get the performance spec</h2>
-  <p class='sec-lede'>Choose every axis — language, KEM, signature, AEAD cipher, hash, keystore KDF,
-  transport — and this composes a full <b>performance specification</b> from the real measurements on
+  <h2 class='title'>Configure your bus, get the performance spec</h2>
+  <p class='sec-lede'>Choose every axis, language, KEM, signature, AEAD cipher, hash, keystore KDF,
+  transport, and this composes a full <b>performance specification</b> from the real measurements on
   this page: session handshake, per-message envelope, transport rate, keystore-unlock cost, and the
   end-to-end pipeline, alongside the <b>NIST level and standards</b> your combo satisfies. It's the
   spec sheet you'd hand to a competitor for a head-to-head. Two smart presets: <b>Fastest possible</b>
   (lowest latency, any security) and <b>Most secure + fast</b> (NIST-5 everywhere, then the fastest
-  option within that level — equivalent NIST classes count as equally secure). The NIST-level buttons
+  option within that level, equivalent NIST classes count as equally secure). The NIST-level buttons
   set the standard ML-KEM + ML-DSA suite at that category (only 1/3/5 have ML-KEM parameter sets);
   <b>CNSA 2.0</b> is a separate NSA profile (same PQC primitives but SHA-384, not the Cat-5 SHA-512).</p>
   <script type='application/json' id='cfg-data'>{blob}</script>
@@ -1103,42 +1119,42 @@ preset('secure');
     </div>
     <div class='cfg-out'>
       <div class='cfg-sec'>
-        <div class='cfg-sec-top'><span class='cfg-lvl l5' id='cf-lvl'>—</span>
-          <span class='cfg-qs yes' id='cf-qs'>—</span></div>
+        <div class='cfg-sec-top'><span class='cfg-lvl l5' id='cf-lvl'>, </span>
+          <span class='cfg-qs yes' id='cf-qs'>, </span></div>
         <div class='cfg-cap' id='cf-cap'></div>
         <div class='cfg-std' id='cf-std'></div>
       </div>
       <div class='cfg-heads'>
-        <div class='cfg-head'><div class='k'>Sustained message rate</div><div class='v' id='h-rate'>—</div><div class='s' id='h-rate-s'></div></div>
-        <div class='cfg-head'><div class='k'>Time per message block</div><div class='v' id='h-time'>—</div><div class='s' id='h-time-s'></div></div>
+        <div class='cfg-head'><div class='k'>Sustained message rate</div><div class='v' id='h-rate'>, </div><div class='s' id='h-rate-s'></div></div>
+        <div class='cfg-head'><div class='k'>Time per message block</div><div class='v' id='h-time'>, </div><div class='s' id='h-time-s'></div></div>
       </div>
       <div class='cfg-cap' style='color:var(--muted)'>The steady-state rate is set by <b>language + AEAD +
-      transport</b> only. <b>KEM, signature, hash and KDF do not appear in the per-message hot path</b> —
+      transport</b> only. <b>KEM, signature, hash and KDF do not appear in the per-message hot path</b>, 
       they're one-time (handshake + keystore), so changing them updates those numbers below, not the
-      rate. (And over a slow transport the AEAD choice is swamped — the transport is the ceiling.)</div>
+      rate. (And over a slow transport the AEAD choice is swamped, the transport is the ceiling.)</div>
       <div class='cfg-stats' id='cf-stats'>
-        <div class='cfg-once-t'>Per-message envelope (seal + open) — <b>measured distribution</b>, <span id='st-alg'></span></div>
+        <div class='cfg-once-t'>Per-message envelope (seal + open), <b>measured distribution</b>, <span id='st-alg'></span></div>
         <div class='cfg-stats-g'>
           <div><span class='k'>Latency / message</span><span class='s' id='st-t'></span></div>
           <div><span class='k'>Sustained rate</span><span class='s' id='st-r'></span></div>
         </div>
-        <div class='cfg-stats-n'>200k per-op timings (high-res clock) + 1000×1&nbsp;ms throughput windows, C/OpenSSL reference —
+        <div class='cfg-stats-n'>200k per-op timings (high-res clock) + 1000×1&nbsp;ms throughput windows, C/OpenSSL reference, 
           <b>p99 is the tail latency</b>; σ is inflated by rare µs-scale outliers (scheduler/cache hiccups). Native-crypto
           languages differ in the median; the jitter shape is representative.</div>
       </div>
       <div class='cfg-once'>
-        <div class='cfg-once-t'>One-time / amortized costs — <b>not</b> counted in the per-message rate above</div>
+        <div class='cfg-once-t'>One-time / amortized costs, <b>not</b> counted in the per-message rate above</div>
         <div class='cfg-once-g'>
-          <div><span class='k'>Session handshake · once per peer</span><b class='v' id='o-hs'>—</b><span class='s' id='o-hs-s'></span></div>
-          <div><span class='k'>Keystore unlock · once at startup</span><b class='v' id='o-ks'>—</b><span class='s' id='o-ks-s'></span></div>
-          <div><span class='k'>Warm-up · cold start</span><b class='v'>amortized</b><span class='s'>steady-state numbers are measured after a 5,000-iteration warm-up; JIT/interpreted runtimes (PyPy, JVM, Node, .NET) need a cold-start ramp before reaching it</span></div>
+          <div><span class='k'>Session handshake · once per peer</span><b class='v' id='o-hs'>, </b><span class='s' id='o-hs-s'></span></div>
+          <div><span class='k'>Keystore unlock · once at startup</span><b class='v' id='o-ks'>, </b><span class='s' id='o-ks-s'></span></div>
+          <div><span class='k'>Warm-up · cold start</span><b class='v'>amortized</b><span class='s'>steady-state numbers are measured after a 5,000-iteration warm-up; JIT/interpreted runtimes (PyPy, JVM, Node.NET) need a cold-start ramp before reaching it</span></div>
         </div>
       </div>
       <div class='cfg-cards'>
-        <div class='cfg-card'><div class='k'>Seal + open</div><div class='v' id='r-seal'>—</div><div class='s' id='r-seal-s'></div></div>
-        <div class='cfg-card'><div class='k'>Hash</div><div class='v' id='r-hash'>—</div><div class='s' id='r-hash-s'></div></div>
-        <div class='cfg-card'><div class='k'>Codec decode</div><div class='v' id='r-dec'>—</div><div class='s' id='r-dec-s'></div></div>
-        <div class='cfg-card'><div class='k'>Transport</div><div class='v' id='r-xt'>—</div><div class='s' id='r-xt-s'></div></div>
+        <div class='cfg-card'><div class='k'>Seal + open</div><div class='v' id='r-seal'>, </div><div class='s' id='r-seal-s'></div></div>
+        <div class='cfg-card'><div class='k'>Hash</div><div class='v' id='r-hash'>, </div><div class='s' id='r-hash-s'></div></div>
+        <div class='cfg-card'><div class='k'>Codec decode</div><div class='v' id='r-dec'>, </div><div class='s' id='r-dec-s'></div></div>
+        <div class='cfg-card'><div class='k'>Transport</div><div class='v' id='r-xt'>, </div><div class='s' id='r-xt-s'></div></div>
       </div>
       <div class='cfg-bar'>
         <div class='bt'>Per-message pipeline (decode → seal+open → transport)</div>
@@ -1210,7 +1226,7 @@ def _crypto_matrix_section():
         blocks.append(
             f"<details class='cgroup'>"
             f"<summary class='cgroup-t'><span>{html.escape(grp['title'])}</span>"
-            f"<span class='cgroup-c'>{html.escape(chips)} — expand for the full ranked bars</span></summary>"
+            f"<span class='cgroup-c'>{html.escape(chips)}, expand for the full ranked bars</span></summary>"
             + "".join(inner) + "</details>")
     overview = "<div class='ovw'>" + "".join(overview_groups) + "</div>"
     css = ("<style>.cgroup{margin:14px 0;border:1px solid var(--line);border-radius:12px;"
@@ -1241,24 +1257,159 @@ def _crypto_matrix_section():
     return f"""<section><div class='wrap'>{css}
   <p class='sec-eyebrow'>crypto · every primitive · every language · grouped by technique</p>
   <h2 class='title'>The crypto matrix</h2>
-  <p class='sec-lede'>robobus is a post-quantum bus, so its crypto is a whole suite, not one cipher.
-  This is the <b>complete</b> grid — every one of the <b>26 primitives</b>
-  robobus uses (AEAD ciphers, SHA-2/SHA-3/BLAKE3 hashes, Argon2id/scrypt/PBKDF2/HKDF/KMAC KDFs, ML-KEM +
-  X25519 KEMs, and ML-DSA/SLH-DSA/Falcon + Ed25519 signatures) measured in <b>every one of the 33
-  language configs</b>, <b>grouped per technique</b> so each bar chart is a coherent apples-to-apples
-  comparison (identical workload, ranked fastest first). Each language uses its <b>native-maximum
-  stack</b> where it has one (stdlib, CryptoKit/JCE, RustCrypto, OpenSSL via its own FFI…); where a
-  language has no native implementation — most of the SHA-3, BLAKE3, PQC and classical-curve cells —
-  it reaches the primitive through one labeled C shim over OpenSSL&nbsp;3.6.3&nbsp;+&nbsp;liboqs&nbsp;+
-  &nbsp;libblake3, so <b>no cell is empty</b>. The post-quantum groups also carry the distinct backends
+  <p class='sec-lede'>robobus carries a whole crypto suite, not one cipher, so this is the
+  <b>complete</b> grid: every one of the <b>26 primitives</b> it uses (AEAD ciphers,
+  SHA-2/SHA-3/BLAKE3 hashes, Argon2id/scrypt/PBKDF2/HKDF/KMAC KDFs, the ML-KEM and X25519 KEMs,
+  and the ML-DSA/SLH-DSA/Falcon and Ed25519 signatures) timed in <b>every one of the 33 language
+  configs</b>, <b>grouped per technique</b> so each bar chart is a coherent apples-to-apples
+  comparison (identical workload, ranked fastest first). Pick whichever primitives your
+  requirements call for; the <a href='#configure'>configurator</a> below reports which
+  <b>compliance regime</b> (FIPS, CNSA&nbsp;2.0, CSfC, NIST&nbsp;level) any given selection satisfies.
+  Each language uses its <b>native-maximum stack</b> where it has one (stdlib, CryptoKit/JCE,
+  RustCrypto, OpenSSL via its own FFI); where a language has no native implementation it reaches the
+  primitive through one labeled C shim over OpenSSL&nbsp;3.6.3&nbsp;+&nbsp;liboqs&nbsp;+&nbsp;libblake3,
+  so <b>no cell is empty</b>. The KEM and signature groups also carry the distinct backends
   (<b>OpenSSL&nbsp;EVP</b>, <b>liboqs</b>, Go's native <b>crypto/mlkem</b>) for an implementation-quality
   comparison. Argon2id is known-answer-verified in every language.</p>
   <p class='sec-lede' style='margin-top:-8px'><b>Overview:</b> each strip is one primitive's language
-  spread — slowest&nbsp;→&nbsp;fastest on a per-group log scale, the tick is the median, the label is
+  spread, slowest&nbsp;→&nbsp;fastest on a per-group log scale, the tick is the median, the label is
   the fastest language. Expand any group for the full ranked bars.</p>
   {overview}
   {"".join(blocks)}
   <p class='sec-lede' style='margin-top:16px'>{html.escape(cm.get('note',''))}</p>
+</div></section>"""
+
+
+def _compliance_regimes_section():
+    """Stipulate the indicated methods for each compliance regime, so a reader can map a requirement
+    straight to a suite (the configurator computes the same mapping live for any custom selection)."""
+    # regime -> (KEM, signature, AEAD, hash, KDF/notes). These are the indicated methods, not the
+    # only permissible ones; the configurator reports which regime any custom pick satisfies.
+    rows = [
+        ("NIST Level 1", "ML-KEM-512", "ML-DSA-44", "AES-256-GCM", "SHA3-256", "HKDF / Argon2id keystore"),
+        ("NIST Level 3", "ML-KEM-768", "ML-DSA-65", "AES-256-GCM", "SHA3-256 / SHA-384", "HKDF / Argon2id keystore"),
+        ("NIST Level 5", "ML-KEM-1024", "ML-DSA-87", "AES-256-GCM", "SHA-512 / SHA3-512", "HKDF / Argon2id keystore"),
+        ("CNSA 2.0", "ML-KEM-1024", "ML-DSA-87", "AES-256-GCM", "SHA-384", "HKDF-SHA384 (the NSA suite)"),
+        ("FIPS (approved algs)", "ML-KEM 512/768/1024", "ML-DSA / SLH-DSA", "AES-256-GCM", "SHA-2 / SHA-3", "HKDF / PBKDF2"),
+        ("CSfC (defence in depth)", "two independent KEMs", "two independent signers", "two AEAD layers", "SHA-384 / SHA-512", "per-layer HKDF"),
+    ]
+    body = "".join(
+        f"<tr><td class='rg'>{html.escape(r[0])}</td><td>{html.escape(r[1])}</td>"
+        f"<td>{html.escape(r[2])}</td><td>{html.escape(r[3])}</td><td>{html.escape(r[4])}</td>"
+        f"<td class='rn'>{html.escape(r[5])}</td></tr>" for r in rows)
+    css = ("<style>.rgtab{border-collapse:collapse;width:100%;margin:14px 0;font-size:13.5px;display:block;overflow-x:auto}"
+           ".rgtab th.rgtab td{border:1px solid var(--line);padding:9px 12px;text-align:left;white-space:nowrap}"
+           ".rgtab th{background:var(--panel);color:var(--fg);font-family:'Space Grotesk';font-weight:600;font-size:12.5px}"
+           ".rgtab td.rg{font-family:'JetBrains Mono';color:var(--signal);font-size:12.5px}"
+           ".rgtab td.rn{white-space:normal;color:var(--muted);font-size:12.5px}"
+           ".rgtab tr:hover td{background:var(--panel2)}</style>")
+    return f"""<section><div class='wrap'>{css}
+  <p class='sec-eyebrow'>compliance · indicated methods per regime</p>
+  <h2 class='title'>Which methods each regime asks for</h2>
+  <p class='sec-lede'>Read the matrix for speed, then read this for fit. Each row stipulates the methods
+  a given compliance regime indicates; choose them in the <a href='#configure'>configurator</a> and it
+  reports the exact NIST category, whether the selection meets CNSA&nbsp;2.0, the length-extension
+  caveat, and the measured cost. Equivalent NIST categories are equally strong, so within a category
+  the pick is a speed decision, not a security one.</p>
+  <table class='rgtab'><thead><tr><th>Regime</th><th>KEM</th><th>Signature</th><th>AEAD</th>
+  <th>Hash</th><th>KDF / keystore</th></tr></thead><tbody>{body}</tbody></table>
+</div></section>"""
+
+
+def _portability_section():
+    """Render the local QEMU portability proof: the stack conforms on every CPU architecture,
+    verified with Docker+QEMU on a workstation (no CI runner). Timing under emulation is not claimed."""
+    pm = _load("portability-matrix.json")
+    if not pm or not pm.get("arches"):
+        return ""
+    arches = pm["arches"]
+    # friendly arch labels
+    NAME = {"aarch64": "ARM64", "x86_64": "x86-64", "s390x": "s390x", "ppc64le": "ppc64le",
+            "riscv64": "RISC-V 64", "armv7l": "ARMv7 (32-bit)", "i686": "x86 (32-bit)", "ppc64": "ppc64"}
+    SUITE_COLS = [("wire_conformance", "Wire"), ("codec", "Codec"), ("codegen", "Codegen"),
+                  ("rust", "Rust"), ("javascript", "Node"), ("java", "Java"),
+                  ("transports", "Transports"), ("transports_extra", "Transports+")]
+
+    def cellhtml(c):
+        if c and c.get("env"):                         # toolchain broken under emulation, not a robobus fault
+            return "<td class='pc-env'>env</td>"
+        if not c or not c.get("ran"):
+            return "<td class='pc-na'>·</td>"
+        p, f = c.get("passed", 0), c.get("failed", 0)
+        if f == 0 and p > 0:
+            return f"<td class='pc-ok'>{p}✓</td>"
+        if p == 0 and f == 0:
+            return "<td class='pc-na'>·</td>"
+        return f"<td class='pc-bad'>{p}✓/{f}✗</td>"
+
+    head = "".join(f"<th>{h}</th>" for _, h in SUITE_COLS)
+    body = ""
+    be = []
+    edges = []
+    env_arches = []
+    for a in sorted(arches, key=lambda x: x["arch"]):
+        s = a["suites"]
+        lbl = NAME.get(a["arch"], a["arch"])
+        bo = a.get("byteorder", "")
+        botag = ("<span class='pbe'>big-endian</span>" if bo == "big" else "")
+        if bo == "big":
+            be.append(lbl)
+        cv = a.get("crypto_verify") == "ok"
+        cvtag = "<td class='pc-ok'>✓</td>" if cv else "<td class='pc-bad'>✗</td>"
+        cells = "".join(cellhtml(s.get(k)) for k, _ in SUITE_COLS)
+        body += (f"<tr><td class='pa'>{html.escape(lbl)}{botag}</td>{cvtag}{cells}</tr>")
+        # collect any true failure for an honest caveat footnote (env-limited cells are not failures)
+        for k, hh in SUITE_COLS:
+            c = s.get(k) or {}
+            if c.get("ran") and c.get("failed", 0) > 0:
+                edges.append(f"{lbl} {hh} ({c['passed']}/{c['passed']+c['failed']})")
+        if a.get("java_env"):
+            env_arches.append(lbl)
+    nbe = f", including big-endian {', '.join(be)}," if be else ""
+    notes = []
+    if edges:
+        notes.append(f"<b>Edges (shown in red, not hidden):</b> {html.escape('; '.join(edges))}. "
+                     f"These are minimal-container gaps in a language binding, not the wire or crypto core.")
+    if env_arches:
+        notes.append(f"<b>env</b> on {html.escape(', '.join(env_arches))}: the 32-bit-x86 OpenJDK aborts at "
+                     f"JVM init when x86 is emulated on this arm64 host, under <b>both</b> qemu-user "
+                     f"(<code>JceSecurity: Can not initialize cryptographic mechanism</code>) and full-system "
+                     f"<code>qemu-system-x86_64</code> (<code>SIGABRT</code> in the 32-bit JVM). It needs real "
+                     f"32-bit-capable x86 hardware, so it is a JVM/emulation limitation, not a robobus defect: "
+                     f"the Java binding conforms on 32-bit ARM, every other ISA here, and real x86 CI. Marked "
+                     f"<b>env</b>, not counted as a failure.")
+    edge_note = (f"<p class='sec-lede' style='margin-top:10px;font-size:12.5px;color:var(--amber,#f4b46a)'>"
+                 f"{'  '.join(notes)}</p>" if notes else "")
+    css = ("<style>.ptab{border-collapse:collapse;width:100%;margin:14px 0;font-size:13px;display:block;overflow-x:auto}"
+           ".ptab th.ptab td{border:1px solid var(--line);padding:8px 10px;text-align:center;white-space:nowrap}"
+           ".ptab th{background:var(--panel);color:var(--fg);font-family:'Space Grotesk';font-weight:600;font-size:12px}"
+           ".ptab td.pa{text-align:left;font-family:'JetBrains Mono';color:var(--fg);font-size:12.5px}"
+           ".ptab td.pc-ok{color:var(--qr,#4ec97a);font-family:'JetBrains Mono';font-weight:600}"
+           ".ptab td.pc-bad{color:#f4736a;font-family:'JetBrains Mono';font-weight:600}"
+           ".ptab td.pc-env{color:var(--amber,#f4b46a);font-family:'JetBrains Mono';font-weight:600;font-size:11px}"
+           ".ptab td.pc-na{color:var(--dim)}"
+           ".pbe{margin-left:7px;font:600 10px/1 'JetBrains Mono';color:var(--amber,#f4b46a);"
+           "border:1px solid var(--amber,#f4b46a);border-radius:5px;padding:2px 5px;vertical-align:middle}"
+           ".ptab tr:hover td{background:var(--panel2)}</style>")
+    return f"""<section><div class='wrap'>{css}
+  <p class='sec-eyebrow'>portability · every CPU architecture · local QEMU, no CI runner</p>
+  <h2 class='title'>It conforms on every architecture</h2>
+  <p class='sec-lede'>Speed is one axis; running <b>correctly everywhere</b> is the other. This grid is
+  produced by a local harness (<code>bench/portability_harness.sh</code>) that builds and runs the whole
+  stack inside a container for each ISA using Docker&nbsp;+&nbsp;QEMU on one workstation, so it
+  reproduces anywhere without a paid CI runner. On each architecture{nbe} the crypto suite verifies and
+  the wire codec, schema codegen, the language bindings, and the transport bridges <b>conform</b> (each
+  seals frames the Python reference opens and vice-versa). Where a toolchain itself cannot run under
+  x86-on-arm64 emulation (a 32-bit-x86 JVM, which aborts under both qemu modes), that cell is marked
+  <b>env</b> and explained below, not scored as a pass or a failure. The wire is
+  little-endian-canonical, so a frame sealed on any of these opens on any other. Timing under emulation
+  is not cycle-accurate and is deliberately not shown here; this axis proves <b>correctness</b> across
+  endianness, word size and alignment.</p>
+  <table class='ptab'><thead><tr><th>Architecture</th><th>Crypto</th>{head}</tr></thead>
+  <tbody>{body}</tbody></table>
+  {edge_note}
+  <p class='sec-lede' style='margin-top:10px;font-size:13px'>{html.escape(pm.get('note',''))}
+  Reproduce: <code>bench/portability_harness.sh</code> (needs Docker with QEMU binfmt registered).</p>
 </div></section>"""
 
 
@@ -1302,7 +1453,7 @@ def speed():
   <h2 class='title'>Decode speed, every target language</h2>
   <p class='sec-lede'>The {html.escape(rec.get('name','record'))} wire record
   ({html.escape(rec.get('fields',''))}, {rec.get('bytes','?')} B) parsed at native maximum in each
-  language robobus code-generates for — measured on this host ({html.escape(hoststr)}), decode in a
+  language robobus code-generates for, measured on this host ({html.escape(hoststr)}), decode in a
   tight loop with a field checksum (no dead-code elision). Log scale; the span is ~1,700×.</p>
   {strip}
   <p class='cfg-cap' style='color:var(--muted);margin:-6px 0 4px'>Fastest: {top} … median {_o(_med)} dec/s,
@@ -1321,12 +1472,12 @@ def speed():
         sec2 = f"""<section><div class='wrap'>
   <p class='sec-eyebrow'>languages · crypto</p>
   <h2 class='title'>Seal + open, native per language</h2>
-  <p class='sec-lede'>The full RBX1 round trip — codec encode → AES-256-GCM seal → open — in each
+  <p class='sec-lede'>The full RBX1 round trip, codec encode → AES-256-GCM seal → open, in each
   language's own crypto stack. This is the app-layer post-quantum envelope's per-message cost.</p>
   {_hbars(rows, lambda v: 'tier-n' if v > 2e6 else 'tier-j' if v > 3e5 else 'tier-i')}
 </div></section>"""
 
-    # 3) transport throughput — grouped by category, with the per-transport methodology note surfaced
+    # 3) transport throughput, grouped by category, with the per-transport methodology note surfaced
     sec3 = ""
     if tm:
         cat_of = {
@@ -1335,7 +1486,7 @@ def speed():
             "DDS": "ros", "ROS 2": "ros", "ROS 2 (C++)": "ros", "ROS 1": "ros",
         }
         cats = [("kernel", "Kernel &amp; in-process",
-                 "The OS's own loopback ceiling — no broker, no discovery. This is the floor every "
+                 "The OS's own loopback ceiling, no broker, no discovery. This is the floor every "
                  "higher-level transport builds on."),
                 ("broker", "Pub/sub brokers &amp; streaming",
                  "A real broker/router relays each frame. Numbers include the broker round-trip on the "
@@ -1347,11 +1498,11 @@ def speed():
 
         def _cell(r):
             m = r["metrics"]
-            lat = (str(round(m['p50_ns'] / 1000, 1)) + ' µs') if m.get('p50_ns') else '—'
+            lat = (str(round(m['p50_ns'] / 1000, 1)) + ' µs') if m.get('p50_ns') else ', '
             if r["status"] == "ok" and m.get("ops_per_s"):
                 head = (f"<tr class='xr'><td class='xn'>{html.escape(r['name'])}</td>"
                         f"<td class='reg'>{html.escape(r['dependency'])}</td>"
-                        f"<td class='n'>{m['ops_per_s']:,.0f}</td><td class='n'>{m['mb_per_s']:.1f}</td>"
+                        f"<td class='n'>{m['ops_per_s']:.0f}</td><td class='n'>{m['mb_per_s']:.1f}</td>"
                         f"<td class='n'>{lat}</td></tr>")
             else:
                 head = (f"<tr class='xr speed-skip'><td class='xn'>{html.escape(r['name'])}</td>"
@@ -1383,7 +1534,7 @@ def speed():
   <p class='sec-eyebrow'>transports · throughput</p>
   <h2 class='title'>Every transport, moving a sealed frame</h2>
   <p class='sec-lede'>Sustained one-way throughput of the {tm['frame_bytes']}-byte AES-256-GCM sealed
-  robobus frame over each transport, loopback on one host — the transport's software ceiling.
+  robobus frame over each transport, loopback on one host, the transport's software ceiling.
   <b>All {nmeas} transports measured</b>, grouped by kind; every row carries the exact backend, QoS,
   and delivery count it was measured with. (Throughput is jittery on a shared laptop; each figure is a
   real single run, methodology in its note.)</p>
@@ -1412,13 +1563,13 @@ def speed():
             for l in langs:
                 c = grid.get((xp, l))
                 if c and c.get("frames_per_s"):
-                    t = (math.log10(c["frames_per_s"]) - lo) / span      # log scale — values span 4,000×
+                    t = (math.log10(c["frames_per_s"]) - lo) / span      # log scale, values span 4,000×
                     bg = f"color-mix(in srgb, var(--signal) {int(12+t*72)}%, transparent)"
                     v = c["frames_per_s"]
-                    disp = f"{v/1e6:,.1f}M" if v >= 1e6 else f"{v/1e3:,.0f}k"
+                    disp = f"{v/1e6:.1f}M" if v >= 1e6 else f"{v/1e3:.0f}k"
                     tds += f"<td style='background:{bg}'>{disp}</td>"
                 else:
-                    tds += "<td class='na'>—</td>"
+                    tds += "<td class='na'>, </td>"
             tag = " <small>·shim</small>" if xp in shim_x else ""
             body += f"<tr><td class='rl'>{html.escape(xp.upper())}{tag}</td>{tds}</tr>"
         sec4 = f"""<section><div class='wrap'>
@@ -1426,18 +1577,18 @@ def speed():
   <h2 class='title'>Every language, every transport</h2>
   <p class='sec-lede'>The complete grid: each of <b>{len(langs)} languages</b> driving each of
   <b>{len(xports)} transports</b> with the real 75-byte sealed frame (frames/s, loopback). The three
-  <b>socket</b> transports (UDP/TCP/UDS) each language drives with its own native BSD sockets — or libc
+  <b>socket</b> transports (UDP/TCP/UDS) each language drives with its own native BSD sockets, or libc
   sockets via C interop for Fortran/Nelua/Pascal/COBOL/Mojo. The <b>broker &amp; middleware</b> rows
-  (SHM, Serial, CAN, MQTT, AMQP, Kafka, DDS, ZeroCM, LSL — marked <small>·shim</small>) have no native
+  (SHM, Serial, CAN, MQTT, AMQP, Kafka, DDS, ZeroCM, LSL, marked <small>·shim</small>) have no native
   per-language client, so every language reaches them the same way the crypto matrix reaches a missing
   primitive: through one labeled C shim (<code>librbxport</code>) wrapping each transport's real C
   library (libmosquitto, rabbitmq-c, librdkafka, CycloneDDS, libzcm, liblsl, plus an in-C virtual CAN
-  bus and POSIX shm/pty) — called through the language's own FFI. Read it by <i>row</i>: the transport
+  bus and POSIX shm/pty), called through the language's own FFI. Read it by <i>row</i>: the transport
   work happens in shared C, so within a row languages <b>converge</b> (the FFI overhead is nearly free)
   and the spread is run-to-run noise on a shared host, not language speed. <b>The transport sets the
-  ceiling, not the caller</b> — the opposite of the codec table (language spans ~1,700×). Colour is
+  ceiling, not the caller</b>, the opposite of the codec table (language spans ~1,700×). Colour is
   log-scaled; the grid spans SHM (~50M f/s, an in-process ring) down to Kafka (~15k, a full broker
-  round-trip). <b>Every cell is filled — all {len(langs)} languages × {len(xports)} transports, zero
+  round-trip). <b>Every cell is filled, all {len(langs)} languages × {len(xports)} transports, zero
   blanks.</b> Where a language ships no native socket client (TCP/UDS in the JVM, Node, Lua, Mojo,
   Octave…) it reaches the socket through the same shim's UDP/TCP/UDS path. Runtime/accelerator variants
   share their base language's row.</p>
@@ -1446,11 +1597,12 @@ def speed():
 </div></section>"""
 
     hero = """<header class='hero'><div class='wrap reveal'>
-  <p class='eyebrow'>native maximum speed · languages · transports · interop</p>
-  <h1>The speed matrix</h1>
+  <p class='eyebrow'>native maximum speed · languages · transports · architectures · interop</p>
+  <h1>The full matrix</h1>
   <p class='lede'>Real measured throughput across every language robobus targets and every transport it
-  bridges — decode speed, crypto seal/open, transport frame rate, and the full transport × language
-  product. Measured, never estimated; unprovisioned cells say so.</p>
+  bridges: decode speed, crypto seal/open, transport frame rate, and the full transport × language
+  product, plus a portability proof that the whole stack conforms on every CPU architecture. Every
+  cell runs on a real toolchain; unprovisioned cells say why.</p>
 </div></header>"""
     # the per-technique crypto matrix supersedes the old 6-language sec2 (kept as fallback only)
     crypto = _crypto_matrix_section() or sec2
@@ -1461,10 +1613,12 @@ def speed():
     # reordered so the transport charts sit high (transport×language was dead-last); deep-dive
     # runtime/FFI sections and the big crypto reference move toward the end.
     ordered = [("configure", "Configure", tag(_config_chooser_section(), "configure")),
+               ("regimes", "Compliance", tag(_compliance_regimes_section(), "regimes")),
                ("codec", "Codec", tag(sec1, "codec")),
                ("transports", "Transports", tag(sec3, "transports")),
                ("grid", "Transport × Language", tag(sec4, "grid")),
                ("crypto", "Crypto", tag(crypto, "crypto")),
+               ("portability", "Portability", tag(_portability_section(), "portability")),
                ("runtimes", "Runtimes & FFI",
                 tag(_runtimes_section(), "runtimes") + _ruby_runtimes_section() + _ffi_bindings_section()),
                ("profiles", "Requirements", tag(_profiles_section(), "profiles"))]
@@ -1473,7 +1627,7 @@ def speed():
     secnav = f"<nav class='secnav'><div class='wrap'><div class='secnav-row'>{pills}</div></div></nav>"
     # jump-nav: explicit click handler scrolls to the section with a fixed header offset (reliable,
     # no page-bounce). The observer ONLY highlights the active pill and scrolls the pill row
-    # HORIZONTALLY (never the page — that was the old scrollIntoView bounce bug).
+    # HORIZONTALLY (never the page, that was the old scrollIntoView bounce bug).
     spy = ("<script>(function(){var L=[].slice.call(document.querySelectorAll('.secnav a')),M={},"
            "nav=document.querySelector('.secnav-row');"
            "L.forEach(function(a){var id=a.getAttribute('href').slice(1);M[id]=a;"
@@ -1498,7 +1652,7 @@ def speed():
             "@media(max-width:640px){.secnav{top:0}}</style>")
     body = hero + secnav + "".join(hp for _, _, hp in ordered if hp) + spy
     return page("Speed matrix · robobus", "speed", body, canon="speed.html", extra_head=head,
-                desc="Native maximum speed across every robobus language and transport — codec, "
+                desc="Native maximum speed across every robobus language and transport, codec, "
                      "crypto, transport throughput, and the full transport × language product.")
 
 
@@ -1512,7 +1666,7 @@ def main():
     for slug, content in docs.items():
         open(os.path.join(SITE, "docs", f"{slug}.html"), "w").write(content)
     print(f"[build_site] wrote index.html, benchmarks.html, docs/ ({len(docs)} pages: "
-          f"{', '.join(sorted(present)) or 'none — add docs-src/*.md'})")
+          f"{', '.join(sorted(present)) or 'none, add docs-src/*.md'})")
 
 
 if __name__ == "__main__":

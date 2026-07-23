@@ -1,8 +1,8 @@
-# CMVP readiness — cryptographic module preparation
+# CMVP readiness, cryptographic module preparation
 
 This document is a **preparation skeleton** for a future FIPS 140-3 / CMVP submission.
 It defines the cryptographic module boundary, the approved algorithm set, required
-self-tests, and a submission checklist. It does **not** assert validation — that is
+self-tests, and a submission checklist. It does **not** assert validation, that is
 issued by an accredited CST lab + NIST/CSE after testing. Use it to scope the work and
 to structure the eventual **Security Policy** (per SP 800-140B / ISO/IEC 19790 + 24759).
 
@@ -14,7 +14,7 @@ to structure the eventual **Security Policy** (per SP 800-140B / ISO/IEC 19790 +
   the sidecar process (`robobus.crypto.sidecar`).
 * **Embodiment:** the **sidecar process** is the module; applications are *outside* the
   boundary and call it over the local AF_UNIX socket. Keeping the boundary in a separate
-  process is deliberate — it isolates keys and the approved algorithm implementations
+  process is deliberate, it isolates keys and the approved algorithm implementations
   from application code.
 
 ## 2. Cryptographic boundary
@@ -61,15 +61,15 @@ come from the backend you bind (OpenSSL 3 FIPS provider / AWS-LC-FIPS / PKCS#11 
 | KDF | HKDF | SP 800-56C / 800-108 | _(from backend)_ |
 | DRBG | CTR/Hash_DRBG | SP 800-90A | _(from OS/backend)_ |
 
-Non-approved (must be disabled in FIPS mode — enforced by `compliance.POLICY['fips']`):
+Non-approved (must be disabled in FIPS mode, enforced by `compliance.POLICY['fips']`):
 ChaCha20-Poly1305, X25519/X448 ECDH.
 
 ## 5. Self-tests (implemented)
 
 `robobus.crypto.compliance.run_self_tests()` runs at start-up and on demand:
 
-* **KATs** — AES-256-GCM (NIST vector), SHA-256, SHA-384, SHA3-256, SHA3-512.
-* **Pairwise-consistency tests** — ML-KEM-512/768/1024, ML-DSA-44/65/87, SLH-DSA.
+* **KATs**, AES-256-GCM (NIST vector), SHA-256, SHA-384, SHA3-256, SHA3-512.
+* **Pairwise-consistency tests**, ML-KEM-512/768/1024, ML-DSA-44/65/87, SLH-DSA.
 * On any failure the module must enter an error state and refuse service (the policy
   checker returns a non-zero exit and refuses suite selection).
 
@@ -101,5 +101,5 @@ backend's CAVP harness provides these).
 
 ISO/IEC 19790 (≈ FIPS 140-3) and ISO/IEC 24759 (test requirements) mirror this structure
 internationally; CNSA 2.0 (see [COMPLIANCE.md](COMPLIANCE.md)) constrains the algorithm
-choices to Level 5 (`cnsa20` suite). CSfC requires two validated layers — model with the
+choices to Level 5 (`cnsa20` suite). CSfC requires two validated layers, model with the
 `csfc` suite plus a second validated transport (e.g., MACsec/IPsec) beneath.

@@ -1,273 +1,273 @@
 {
-  "schema": "robobus-bench/1",
-  "generated_unix": 1783026451,
-  "label": "macOS \u00b7 PQC-DDS-Security handshake (CycloneDDS + Fast DDS, Apple Silicon CI)",
-  "quick": false,
-  "platform": {
-    "python_version": "3.12.13",
-    "python_impl": "CPython",
-    "system": "Darwin",
-    "release": "25.1.0",
-    "version": "Darwin Kernel Version 25.1.0: Mon Oct 20 19:34:03 PDT 2025; root:xnu-12377.41.6~2/RELEASE_ARM64_T8142",
-    "machine": "arm64",
-    "processor": "arm",
-    "platform": "macOS-26.1-arm64-arm-64bit",
-    "cpu_count_logical": 10,
-    "cpu_count_physical": 10,
-    "mem_total_bytes": 34359738368,
-    "cpu_freq_mhz": {
-      "current": 4,
-      "min": 0,
-      "max": 4
-    },
-    "cpu_brand": "PQC-DDS build \u2014 macOS Apple Silicon CI",
-    "environment": {
-      "virtualized": false,
-      "self_hosted": false
-    },
-    "measurement": {
-      "pinned": null,
-      "thermal": "Note: No thermal warning level has been recorded Note: No performance warning level has been recorded Note: No CPU power status has been recorded",
-      "note": "macOS does not expose governor/isolcpus/SMT toggles; RT via Mach time-constraint policy only (soft-RT). Use Linux + isolcpus for hard bounds.",
-      "pmu_perf_available": false,
-      "uncontrolled_noise": [
-        "macOS: no core isolation / governor control (soft-RT only)"
-      ],
-      "fidelity_tier": "3-baremetal-partial (real hardware, some noise controls)"
-    },
-    "dependencies": {
-      "available": {
-        "cryptography": "49.0.0",
-        "oqs": "0.15.0",
-        "argon2": "25.1.0",
-        "psutil": "7.2.2",
-        "blake3": "1.0.9"
-      },
-      "missing": {}
-    }
+ "schema": "robobus-bench/1",
+ "generated_unix": 1783026451,
+ "label": "macOS · PQC-DDS-Security handshake (CycloneDDS + Fast DDS, Apple Silicon CI)",
+ "quick": false,
+ "platform": {
+  "python_version": "3.12.13",
+  "python_impl": "CPython",
+  "system": "Darwin",
+  "release": "25.1.0",
+  "version": "Darwin Kernel Version 25.1.0: Mon Oct 20 19:34:03 PDT 2025; root:xnu-12377.41.6~2/RELEASE_ARM64_T8142",
+  "machine": "arm64",
+  "processor": "arm",
+  "platform": "macOS-26.1-arm64-arm-64bit",
+  "cpu_count_logical": 10,
+  "cpu_count_physical": 10,
+  "mem_total_bytes": 34359738368,
+  "cpu_freq_mhz": {
+   "current": 4,
+   "min": 0,
+   "max": 4
   },
-  "results": [
-    {
-      "group": "dds_handshake",
-      "name": "CycloneDDS classical (RSA id \u00b7 ECDH P-256)",
-      "config": {},
-      "unit": "ns",
-      "dependency": "cunit_security_core",
-      "status": "ok",
-      "note": "ISOLATED handshake window (FSM begin->OK), excludes startup/discovery/teardown",
-      "metrics": {
-        "n": 20,
-        "min_ns": 1725912.094116211,
-        "p50_ns": 1967906.9519042969,
-        "p90_ns": 3477311.1343383817,
-        "p99_ns": 5991098.880767821,
-        "max_ns": 6160020.82824707,
-        "mean_ns": 2460467.81539917,
-        "runs": 20
-      }
-    },
-    {
-      "group": "dds_handshake",
-      "name": "CycloneDDS classical (RSA id \u00b7 ECDH P-256) \u2014 full process",
-      "config": {},
-      "unit": "ns",
-      "dependency": "cunit_security_core",
-      "status": "ok",
-      "note": "whole test process: startup + participant create + SPDP discovery + handshake + teardown",
-      "metrics": {
-        "n": 20,
-        "min_ns": 97925041,
-        "p50_ns": 105295438.0,
-        "p90_ns": 161968042.00000018,
-        "p99_ns": 281522511.72999996,
-        "max_ns": 284089000,
-        "mean_ns": 125502439.65,
-        "runs": 20
-      }
-    },
-    {
-      "group": "dds_handshake",
-      "name": "CycloneDDS hybrid ECDH+ML-KEM-768",
-      "config": {
-        "CYCLONEDDS_PQC_KAGREE": "ECDH+ML-KEM-768"
-      },
-      "unit": "ns",
-      "dependency": "cunit_security_core",
-      "status": "ok",
-      "note": "ISOLATED handshake window (FSM begin->OK), excludes startup/discovery/teardown",
-      "metrics": {
-        "n": 20,
-        "min_ns": 1716136.9323730469,
-        "p50_ns": 2036929.1305541992,
-        "p90_ns": 2251672.7447509766,
-        "p99_ns": 3521838.188171385,
-        "max_ns": 3793001.174926758,
-        "mean_ns": 2141761.7797851562,
-        "runs": 20
-      }
-    },
-    {
-      "group": "dds_handshake",
-      "name": "CycloneDDS hybrid ECDH+ML-KEM-768 \u2014 full process",
-      "config": {
-        "CYCLONEDDS_PQC_KAGREE": "ECDH+ML-KEM-768"
-      },
-      "unit": "ns",
-      "dependency": "cunit_security_core",
-      "status": "ok",
-      "note": "whole test process: startup + participant create + SPDP discovery + handshake + teardown",
-      "metrics": {
-        "n": 20,
-        "min_ns": 97301958,
-        "p50_ns": 101787062.5,
-        "p90_ns": 118649612.5,
-        "p99_ns": 134791246.95999998,
-        "max_ns": 138211041,
-        "mean_ns": 105449754.25,
-        "runs": 20
-      }
-    },
-    {
-      "group": "dds_handshake",
-      "name": "CycloneDDS hybrid ECDH+ML-KEM-1024",
-      "config": {
-        "CYCLONEDDS_PQC_KAGREE": "ECDH+ML-KEM-1024"
-      },
-      "unit": "ns",
-      "dependency": "cunit_security_core",
-      "status": "ok",
-      "note": "ISOLATED handshake window (FSM begin->OK), excludes startup/discovery/teardown",
-      "metrics": {
-        "n": 20,
-        "min_ns": 1678943.6340332031,
-        "p50_ns": 1989483.8333129883,
-        "p90_ns": 2118849.754333496,
-        "p99_ns": 2176656.723022461,
-        "max_ns": 2180099.4873046875,
-        "mean_ns": 1992976.6654968262,
-        "runs": 20
-      }
-    },
-    {
-      "group": "dds_handshake",
-      "name": "CycloneDDS hybrid ECDH+ML-KEM-1024 \u2014 full process",
-      "config": {
-        "CYCLONEDDS_PQC_KAGREE": "ECDH+ML-KEM-1024"
-      },
-      "unit": "ns",
-      "dependency": "cunit_security_core",
-      "status": "ok",
-      "note": "whole test process: startup + participant create + SPDP discovery + handshake + teardown",
-      "metrics": {
-        "n": 20,
-        "min_ns": 96235209,
-        "p50_ns": 98954146.0,
-        "p90_ns": 106322166.9,
-        "p99_ns": 112494670.28999999,
-        "max_ns": 112623625,
-        "mean_ns": 100927631.3,
-        "runs": 20
-      }
-    },
-    {
-      "group": "dds_handshake",
-      "name": "CycloneDDS ML-DSA-87 identity (PQ auth)",
-      "config": {},
-      "unit": "ns",
-      "dependency": "cunit_security_core",
-      "status": "ok",
-      "note": "ISOLATED handshake window (FSM begin->OK), excludes startup/discovery/teardown",
-      "metrics": {
-        "n": 20,
-        "min_ns": 1708984.375,
-        "p50_ns": 2300024.0325927734,
-        "p90_ns": 3315377.2354125986,
-        "p99_ns": 4398710.727691649,
-        "max_ns": 4517078.399658203,
-        "mean_ns": 2495694.160461426,
-        "runs": 20
-      }
-    },
-    {
-      "group": "dds_handshake",
-      "name": "CycloneDDS ML-DSA-87 identity (PQ auth) \u2014 full process",
-      "config": {},
-      "unit": "ns",
-      "dependency": "cunit_security_core",
-      "status": "ok",
-      "note": "whole test process: startup + participant create + SPDP discovery + handshake + teardown",
-      "metrics": {
-        "n": 20,
-        "min_ns": 56518500,
-        "p50_ns": 59722063.0,
-        "p90_ns": 64038508.3,
-        "p99_ns": 64673263.27,
-        "max_ns": 64715000,
-        "mean_ns": 60159274.95,
-        "runs": 20
-      }
-    },
-    {
-      "group": "dds_handshake",
-      "name": "CycloneDDS full CNSA 2.0 (ML-DSA-87 \u00b7 ML-KEM-1024)",
-      "config": {
-        "CYCLONEDDS_PQC_KAGREE": "ECDH+ML-KEM-1024"
-      },
-      "unit": "ns",
-      "dependency": "cunit_security_core",
-      "status": "ok",
-      "note": "ISOLATED handshake window (FSM begin->OK), excludes startup/discovery/teardown",
-      "metrics": {
-        "n": 20,
-        "min_ns": 1909971.2371826172,
-        "p50_ns": 2547025.680541992,
-        "p90_ns": 3020453.4530639667,
-        "p99_ns": 7621128.559112543,
-        "max_ns": 8427143.096923828,
-        "mean_ns": 2832913.398742676,
-        "runs": 20
-      }
-    },
-    {
-      "group": "dds_handshake",
-      "name": "CycloneDDS full CNSA 2.0 (ML-DSA-87 \u00b7 ML-KEM-1024) \u2014 full process",
-      "config": {
-        "CYCLONEDDS_PQC_KAGREE": "ECDH+ML-KEM-1024"
-      },
-      "unit": "ns",
-      "dependency": "cunit_security_core",
-      "status": "ok",
-      "note": "whole test process: startup + participant create + SPDP discovery + handshake + teardown",
-      "metrics": {
-        "n": 20,
-        "min_ns": 55956375,
-        "p50_ns": 59296125.0,
-        "p90_ns": 62846845.6,
-        "p99_ns": 67621424.71,
-        "max_ns": 68318875,
-        "mean_ns": 59980256.35,
-        "runs": 20
-      }
-    },
-    {
-      "group": "dds_handshake",
-      "name": "FastDDS PKI-DH local-identity validate \u2014 full process",
-      "config": {},
-      "unit": "ns",
-      "dependency": "BuiltinPKIDH",
-      "status": "ok",
-      "note": "whole test process: startup + participant create + SPDP discovery + handshake + teardown",
-      "metrics": {
-        "n": 20,
-        "min_ns": 35352792,
-        "p50_ns": 37702604.0,
-        "p90_ns": 40146275.0,
-        "p99_ns": 86470916.95999992,
-        "max_ns": 97207041,
-        "mean_ns": 40710185.3,
-        "runs": 20
-      }
-    }
-  ],
-  "note": "Measured on this host only. Numbers are platform/CPU/build-specific. Re-run the identical script on each target OS to compare. Skipped rows indicate a capability/dependency absent on THIS platform, not a failure."
+  "cpu_brand": "PQC-DDS build, macOS Apple Silicon CI",
+  "environment": {
+   "virtualized": false,
+   "self_hosted": false
+  },
+  "measurement": {
+   "pinned": null,
+   "thermal": "Note: No thermal warning level has been recorded Note: No performance warning level has been recorded Note: No CPU power status has been recorded",
+   "note": "macOS does not expose governor/isolcpus/SMT toggles; RT via Mach time-constraint policy only (soft-RT). Use Linux + isolcpus for hard bounds.",
+   "pmu_perf_available": false,
+   "uncontrolled_noise": [
+    "macOS: no core isolation / governor control (soft-RT only)"
+   ],
+   "fidelity_tier": "3-baremetal-partial (real hardware, some noise controls)"
+  },
+  "dependencies": {
+   "available": {
+    "cryptography": "49.0.0",
+    "oqs": "0.15.0",
+    "argon2": "25.1.0",
+    "psutil": "7.2.2",
+    "blake3": "1.0.9"
+   },
+   "missing": {}
+  }
+ },
+ "results": [
+  {
+   "group": "dds_handshake",
+   "name": "CycloneDDS classical (RSA id · ECDH P-256)",
+   "config": {},
+   "unit": "ns",
+   "dependency": "cunit_security_core",
+   "status": "ok",
+   "note": "ISOLATED handshake window (FSM begin->OK), excludes startup/discovery/teardown",
+   "metrics": {
+    "n": 20,
+    "min_ns": 1725912.094116211,
+    "p50_ns": 1967906.9519042969,
+    "p90_ns": 3477311.1343383817,
+    "p99_ns": 5991098.880767821,
+    "max_ns": 6160020.82824707,
+    "mean_ns": 2460467.81539917,
+    "runs": 20
+   }
+  },
+  {
+   "group": "dds_handshake",
+   "name": "CycloneDDS classical (RSA id · ECDH P-256), full process",
+   "config": {},
+   "unit": "ns",
+   "dependency": "cunit_security_core",
+   "status": "ok",
+   "note": "whole test process: startup + participant create + SPDP discovery + handshake + teardown",
+   "metrics": {
+    "n": 20,
+    "min_ns": 97925041,
+    "p50_ns": 105295438.0,
+    "p90_ns": 161968042.00000018,
+    "p99_ns": 281522511.72999996,
+    "max_ns": 284089000,
+    "mean_ns": 125502439.65,
+    "runs": 20
+   }
+  },
+  {
+   "group": "dds_handshake",
+   "name": "CycloneDDS hybrid ECDH+ML-KEM-768",
+   "config": {
+    "CYCLONEDDS_PQC_KAGREE": "ECDH+ML-KEM-768"
+   },
+   "unit": "ns",
+   "dependency": "cunit_security_core",
+   "status": "ok",
+   "note": "ISOLATED handshake window (FSM begin->OK), excludes startup/discovery/teardown",
+   "metrics": {
+    "n": 20,
+    "min_ns": 1716136.9323730469,
+    "p50_ns": 2036929.1305541992,
+    "p90_ns": 2251672.7447509766,
+    "p99_ns": 3521838.188171385,
+    "max_ns": 3793001.174926758,
+    "mean_ns": 2141761.7797851562,
+    "runs": 20
+   }
+  },
+  {
+   "group": "dds_handshake",
+   "name": "CycloneDDS hybrid ECDH+ML-KEM-768, full process",
+   "config": {
+    "CYCLONEDDS_PQC_KAGREE": "ECDH+ML-KEM-768"
+   },
+   "unit": "ns",
+   "dependency": "cunit_security_core",
+   "status": "ok",
+   "note": "whole test process: startup + participant create + SPDP discovery + handshake + teardown",
+   "metrics": {
+    "n": 20,
+    "min_ns": 97301958,
+    "p50_ns": 101787062.5,
+    "p90_ns": 118649612.5,
+    "p99_ns": 134791246.95999998,
+    "max_ns": 138211041,
+    "mean_ns": 105449754.25,
+    "runs": 20
+   }
+  },
+  {
+   "group": "dds_handshake",
+   "name": "CycloneDDS hybrid ECDH+ML-KEM-1024",
+   "config": {
+    "CYCLONEDDS_PQC_KAGREE": "ECDH+ML-KEM-1024"
+   },
+   "unit": "ns",
+   "dependency": "cunit_security_core",
+   "status": "ok",
+   "note": "ISOLATED handshake window (FSM begin->OK), excludes startup/discovery/teardown",
+   "metrics": {
+    "n": 20,
+    "min_ns": 1678943.6340332031,
+    "p50_ns": 1989483.8333129883,
+    "p90_ns": 2118849.754333496,
+    "p99_ns": 2176656.723022461,
+    "max_ns": 2180099.4873046875,
+    "mean_ns": 1992976.6654968262,
+    "runs": 20
+   }
+  },
+  {
+   "group": "dds_handshake",
+   "name": "CycloneDDS hybrid ECDH+ML-KEM-1024, full process",
+   "config": {
+    "CYCLONEDDS_PQC_KAGREE": "ECDH+ML-KEM-1024"
+   },
+   "unit": "ns",
+   "dependency": "cunit_security_core",
+   "status": "ok",
+   "note": "whole test process: startup + participant create + SPDP discovery + handshake + teardown",
+   "metrics": {
+    "n": 20,
+    "min_ns": 96235209,
+    "p50_ns": 98954146.0,
+    "p90_ns": 106322166.9,
+    "p99_ns": 112494670.28999999,
+    "max_ns": 112623625,
+    "mean_ns": 100927631.3,
+    "runs": 20
+   }
+  },
+  {
+   "group": "dds_handshake",
+   "name": "CycloneDDS ML-DSA-87 identity (PQ auth)",
+   "config": {},
+   "unit": "ns",
+   "dependency": "cunit_security_core",
+   "status": "ok",
+   "note": "ISOLATED handshake window (FSM begin->OK), excludes startup/discovery/teardown",
+   "metrics": {
+    "n": 20,
+    "min_ns": 1708984.375,
+    "p50_ns": 2300024.0325927734,
+    "p90_ns": 3315377.2354125986,
+    "p99_ns": 4398710.727691649,
+    "max_ns": 4517078.399658203,
+    "mean_ns": 2495694.160461426,
+    "runs": 20
+   }
+  },
+  {
+   "group": "dds_handshake",
+   "name": "CycloneDDS ML-DSA-87 identity (PQ auth), full process",
+   "config": {},
+   "unit": "ns",
+   "dependency": "cunit_security_core",
+   "status": "ok",
+   "note": "whole test process: startup + participant create + SPDP discovery + handshake + teardown",
+   "metrics": {
+    "n": 20,
+    "min_ns": 56518500,
+    "p50_ns": 59722063.0,
+    "p90_ns": 64038508.3,
+    "p99_ns": 64673263.27,
+    "max_ns": 64715000,
+    "mean_ns": 60159274.95,
+    "runs": 20
+   }
+  },
+  {
+   "group": "dds_handshake",
+   "name": "CycloneDDS full CNSA 2.0 (ML-DSA-87 · ML-KEM-1024)",
+   "config": {
+    "CYCLONEDDS_PQC_KAGREE": "ECDH+ML-KEM-1024"
+   },
+   "unit": "ns",
+   "dependency": "cunit_security_core",
+   "status": "ok",
+   "note": "ISOLATED handshake window (FSM begin->OK), excludes startup/discovery/teardown",
+   "metrics": {
+    "n": 20,
+    "min_ns": 1909971.2371826172,
+    "p50_ns": 2547025.680541992,
+    "p90_ns": 3020453.4530639667,
+    "p99_ns": 7621128.559112543,
+    "max_ns": 8427143.096923828,
+    "mean_ns": 2832913.398742676,
+    "runs": 20
+   }
+  },
+  {
+   "group": "dds_handshake",
+   "name": "CycloneDDS full CNSA 2.0 (ML-DSA-87 · ML-KEM-1024), full process",
+   "config": {
+    "CYCLONEDDS_PQC_KAGREE": "ECDH+ML-KEM-1024"
+   },
+   "unit": "ns",
+   "dependency": "cunit_security_core",
+   "status": "ok",
+   "note": "whole test process: startup + participant create + SPDP discovery + handshake + teardown",
+   "metrics": {
+    "n": 20,
+    "min_ns": 55956375,
+    "p50_ns": 59296125.0,
+    "p90_ns": 62846845.6,
+    "p99_ns": 67621424.71,
+    "max_ns": 68318875,
+    "mean_ns": 59980256.35,
+    "runs": 20
+   }
+  },
+  {
+   "group": "dds_handshake",
+   "name": "FastDDS PKI-DH local-identity validate, full process",
+   "config": {},
+   "unit": "ns",
+   "dependency": "BuiltinPKIDH",
+   "status": "ok",
+   "note": "whole test process: startup + participant create + SPDP discovery + handshake + teardown",
+   "metrics": {
+    "n": 20,
+    "min_ns": 35352792,
+    "p50_ns": 37702604.0,
+    "p90_ns": 40146275.0,
+    "p99_ns": 86470916.95999992,
+    "max_ns": 97207041,
+    "mean_ns": 40710185.3,
+    "runs": 20
+   }
+  }
+ ],
+ "note": "Measured on this host only. Numbers are platform/CPU/build-specific. Re-run the identical script on each target OS to compare. Skipped rows indicate a capability/dependency absent on THIS platform, not a failure."
 }

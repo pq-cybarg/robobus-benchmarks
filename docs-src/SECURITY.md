@@ -11,7 +11,7 @@ runtime or transport (the crypto sits on opaque bytes below the codec).
 | Confidentiality | AES-256-GCM / ChaCha20-Poly1305 / **AES-GCM-SIV** (nonce-misuse-resistant) |
 | Integrity + authenticity | AEAD tag (tamper → frame rejected) |
 | **Anti-replay** | per-message authenticated counter + IPsec/DTLS sliding window; replays & too-old frames dropped |
-| **Channel binding** | per-channel HKDF subkey bound to the shared transport id — a frame for channel A can't be accepted on B |
+| **Channel binding** | per-channel HKDF subkey bound to the shared transport id, a frame for channel A can't be accepted on B |
 | **In-session rekey** | epoch keys (HKDF ratchet every N messages) bound nonce usage + single-key blast radius |
 | Quantum-safe key agreement | ML-KEM (+ hybrid X25519/X448); MITM-resistant via ML-DSA-signed offer |
 | Forward secrecy | per-session at handshake; run a fresh KEM handshake periodically for in-session FS |
@@ -24,7 +24,7 @@ runtime or transport (the crypto sits on opaque bytes below the codec).
   interleave counters.
 * **CPython `bytes` can't be wiped.** Transient key copies (from `os.urandom`/key files)
   persist until GC; the long-lived copy lives in a `SecretBuffer`. For true zeroization
-  use the native AEAD + the **sidecar** (separate, mlock'd process — the strong boundary).
+  use the native AEAD + the **sidecar** (separate, mlock'd process, the strong boundary).
 * **Metadata is not hidden** on network transports (who talks to whom, timing). For the
   Tor/privacy-distro case, add Noise/TLS + constant-rate padding under the transport
   (roadmap).

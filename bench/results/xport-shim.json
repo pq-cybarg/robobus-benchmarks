@@ -1,1423 +1,1423 @@
 {
-  "schema": "robobus-xport-shim/1",
-  "generated_unix": 1784684784,
-  "frame_bytes": 75,
-  "transports": [
-    "SHM",
-    "Serial",
-    "MQTT",
-    "AMQP",
-    "Kafka",
-    "DDS",
-    "ZeroCM",
-    "LSL",
-    "CAN"
-  ],
-  "note": "Each language reaches every broker/middleware transport through one labeled C shim (librbxport) that wraps the transport's real C client. The transport work is in the shared C, so within a transport languages converge \u2014 the FFI overhead is nearly free (like the crypto matrix's shim cells). Coverage, not per-language transport speed, is the point here.",
-  "cells": [
-    {
-      "transport": "shm",
-      "language": "c",
-      "frames_per_s": 67204299.355421,
-      "note": "via librbxport C shim (FFI)"
-    },
-    {
-      "transport": "serial",
-      "language": "c",
-      "frames_per_s": 161328.312784,
-      "note": "via librbxport C shim (FFI)"
-    },
-    {
-      "transport": "mqtt",
-      "language": "c",
-      "frames_per_s": 495717.00504,
-      "note": "via librbxport C shim (FFI)"
-    },
-    {
-      "transport": "amqp",
-      "language": "c",
-      "frames_per_s": 262062.748312,
-      "note": "via librbxport C shim (FFI)"
-    },
-    {
-      "transport": "kafka",
-      "language": "c",
-      "frames_per_s": 14865.772481,
-      "note": "via librbxport C shim (FFI)"
-    },
-    {
-      "transport": "dds",
-      "language": "c",
-      "frames_per_s": 4843084.074728,
-      "note": "via librbxport C shim (FFI)"
-    },
-    {
-      "transport": "zerocm",
-      "language": "c",
-      "frames_per_s": 1607665.348356,
-      "note": "via librbxport C shim (FFI)"
-    },
-    {
-      "transport": "lsl",
-      "language": "c",
-      "frames_per_s": 80258.600481,
-      "note": "via librbxport C shim (FFI)"
-    },
-    {
-      "transport": "can",
-      "language": "c",
-      "frames_per_s": 2888837.535048,
-      "note": "via librbxport C shim (FFI)"
-    },
-    {
-      "transport": "shm",
-      "language": "cpp",
-      "frames_per_s": 56689342.853652,
-      "note": "via librbxport C shim (FFI)"
-    },
-    {
-      "transport": "serial",
-      "language": "cpp",
-      "frames_per_s": 170961.796882,
-      "note": "via librbxport C shim (FFI)"
-    },
-    {
-      "transport": "mqtt",
-      "language": "cpp",
-      "frames_per_s": 598795.223898,
-      "note": "via librbxport C shim (FFI)"
-    },
-    {
-      "transport": "amqp",
-      "language": "cpp",
-      "frames_per_s": 248658.487471,
-      "note": "via librbxport C shim (FFI)"
-    },
-    {
-      "transport": "kafka",
-      "language": "cpp",
-      "frames_per_s": 14804.594162,
-      "note": "via librbxport C shim (FFI)"
-    },
-    {
-      "transport": "dds",
-      "language": "cpp",
-      "frames_per_s": 6123698.730934,
-      "note": "via librbxport C shim (FFI)"
-    },
-    {
-      "transport": "zerocm",
-      "language": "cpp",
-      "frames_per_s": 1312990.730077,
-      "note": "via librbxport C shim (FFI)"
-    },
-    {
-      "transport": "lsl",
-      "language": "cpp",
-      "frames_per_s": 87276.306156,
-      "note": "via librbxport C shim (FFI)"
-    },
-    {
-      "transport": "can",
-      "language": "cpp",
-      "frames_per_s": 3333111.121129,
-      "note": "via librbxport C shim (FFI)"
-    },
-    {
-      "transport": "shm",
-      "language": "rust",
-      "frames_per_s": 63131312.638232,
-      "note": "via librbxport C shim (FFI)"
-    },
-    {
-      "transport": "serial",
-      "language": "rust",
-      "frames_per_s": 175518.657631,
-      "note": "via librbxport C shim (FFI)"
-    },
-    {
-      "transport": "mqtt",
-      "language": "rust",
-      "frames_per_s": 531118.216408,
-      "note": "via librbxport C shim (FFI)"
-    },
-    {
-      "transport": "amqp",
-      "language": "rust",
-      "frames_per_s": 266794.728159,
-      "note": "via librbxport C shim (FFI)"
-    },
-    {
-      "transport": "kafka",
-      "language": "rust",
-      "frames_per_s": 14935.257154,
-      "note": "via librbxport C shim (FFI)"
-    },
-    {
-      "transport": "dds",
-      "language": "rust",
-      "frames_per_s": 4974629.380557,
-      "note": "via librbxport C shim (FFI)"
-    },
-    {
-      "transport": "zerocm",
-      "language": "rust",
-      "frames_per_s": 1845767.654075,
-      "note": "via librbxport C shim (FFI)"
-    },
-    {
-      "transport": "lsl",
-      "language": "rust",
-      "frames_per_s": 99780.632514,
-      "note": "via librbxport C shim (FFI)"
-    },
-    {
-      "transport": "can",
-      "language": "rust",
-      "frames_per_s": 2602811.036113,
-      "note": "via librbxport C shim (FFI)"
-    },
-    {
-      "transport": "shm",
-      "language": "go",
-      "frames_per_s": 68119890.905838,
-      "note": "via librbxport C shim (FFI)"
-    },
-    {
-      "transport": "serial",
-      "language": "go",
-      "frames_per_s": 172997.809845,
-      "note": "via librbxport C shim (FFI)"
-    },
-    {
-      "transport": "mqtt",
-      "language": "go",
-      "frames_per_s": 461573.967193,
-      "note": "via librbxport C shim (FFI)"
-    },
-    {
-      "transport": "amqp",
-      "language": "go",
-      "frames_per_s": 269812.318548,
-      "note": "via librbxport C shim (FFI)"
-    },
-    {
-      "transport": "kafka",
-      "language": "go",
-      "frames_per_s": 15064.887483,
-      "note": "via librbxport C shim (FFI)"
-    },
-    {
-      "transport": "dds",
-      "language": "go",
-      "frames_per_s": 4576659.047075,
-      "note": "via librbxport C shim (FFI)"
-    },
-    {
-      "transport": "zerocm",
-      "language": "go",
-      "frames_per_s": 1675378.635334,
-      "note": "via librbxport C shim (FFI)"
-    },
-    {
-      "transport": "lsl",
-      "language": "go",
-      "frames_per_s": 94385.451372,
-      "note": "via librbxport C shim (FFI)"
-    },
-    {
-      "transport": "can",
-      "language": "go",
-      "frames_per_s": 3546350.806855,
-      "note": "via librbxport C shim (FFI)"
-    },
-    {
-      "transport": "shm",
-      "language": "zig",
-      "frames_per_s": 64516129.6021,
-      "note": "via librbxport C shim (FFI)"
-    },
-    {
-      "transport": "serial",
-      "language": "zig",
-      "frames_per_s": 169816.767697,
-      "note": "via librbxport C shim (FFI)"
-    },
-    {
-      "transport": "mqtt",
-      "language": "zig",
-      "frames_per_s": 489054.950251,
-      "note": "via librbxport C shim (FFI)"
-    },
-    {
-      "transport": "amqp",
-      "language": "zig",
-      "frames_per_s": 240832.703148,
-      "note": "via librbxport C shim (FFI)"
-    },
-    {
-      "transport": "kafka",
-      "language": "zig",
-      "frames_per_s": 14795.6528,
-      "note": "via librbxport C shim (FFI)"
-    },
-    {
-      "transport": "dds",
-      "language": "zig",
-      "frames_per_s": 5912262.018801,
-      "note": "via librbxport C shim (FFI)"
-    },
-    {
-      "transport": "zerocm",
-      "language": "zig",
-      "frames_per_s": 1726698.207552,
-      "note": "via librbxport C shim (FFI)"
-    },
-    {
-      "transport": "lsl",
-      "language": "zig",
-      "frames_per_s": 92129.098293,
-      "note": "via librbxport C shim (FFI)"
-    },
-    {
-      "transport": "can",
-      "language": "zig",
-      "frames_per_s": 2744086.497127,
-      "note": "via librbxport C shim (FFI)"
-    },
-    {
-      "transport": "shm",
-      "language": "swift",
-      "frames_per_s": 65445026.460106,
-      "note": "via librbxport C shim (FFI)"
-    },
-    {
-      "transport": "serial",
-      "language": "swift",
-      "frames_per_s": 169742.398946,
-      "note": "via librbxport C shim (FFI)"
-    },
-    {
-      "transport": "mqtt",
-      "language": "swift",
-      "frames_per_s": 569579.877863,
-      "note": "via librbxport C shim (FFI)"
-    },
-    {
-      "transport": "amqp",
-      "language": "swift",
-      "frames_per_s": 246952.604888,
-      "note": "via librbxport C shim (FFI)"
-    },
-    {
-      "transport": "kafka",
-      "language": "swift",
-      "frames_per_s": 14999.880001,
-      "note": "via librbxport C shim (FFI)"
-    },
-    {
-      "transport": "dds",
-      "language": "swift",
-      "frames_per_s": 6045218.233266,
-      "note": "via librbxport C shim (FFI)"
-    },
-    {
-      "transport": "zerocm",
-      "language": "swift",
-      "frames_per_s": 1704158.145398,
-      "note": "via librbxport C shim (FFI)"
-    },
-    {
-      "transport": "lsl",
-      "language": "swift",
-      "frames_per_s": 92846.434198,
-      "note": "via librbxport C shim (FFI)"
-    },
-    {
-      "transport": "can",
-      "language": "swift",
-      "frames_per_s": 2843332.386503,
-      "note": "via librbxport C shim (FFI)"
-    },
-    {
-      "transport": "shm",
-      "language": "nim",
-      "frames_per_s": 57736721.38220478,
-      "note": "via librbxport C shim (FFI)"
-    },
-    {
-      "transport": "serial",
-      "language": "nim",
-      "frames_per_s": 171844.92713007217,
-      "note": "via librbxport C shim (FFI)"
-    },
-    {
-      "transport": "mqtt",
-      "language": "nim",
-      "frames_per_s": 506390.649999991,
-      "note": "via librbxport C shim (FFI)"
-    },
-    {
-      "transport": "amqp",
-      "language": "nim",
-      "frames_per_s": 248914.73178596282,
-      "note": "via librbxport C shim (FFI)"
-    },
-    {
-      "transport": "kafka",
-      "language": "nim",
-      "frames_per_s": 15002.850541607308,
-      "note": "via librbxport C shim (FFI)"
-    },
-    {
-      "transport": "dds",
-      "language": "nim",
-      "frames_per_s": 6249999.998726708,
-      "note": "via librbxport C shim (FFI)"
-    },
-    {
-      "transport": "zerocm",
-      "language": "nim",
-      "frames_per_s": 1765536.7224049862,
-      "note": "via librbxport C shim (FFI)"
-    },
-    {
-      "transport": "lsl",
-      "language": "nim",
-      "frames_per_s": 99649.22288746663,
-      "note": "via librbxport C shim (FFI)"
-    },
-    {
-      "transport": "can",
-      "language": "nim",
-      "frames_per_s": 3163355.685643462,
-      "note": "via librbxport C shim (FFI)"
-    },
-    {
-      "transport": "shm",
-      "language": "haskell",
-      "frames_per_s": 58072010.73400673,
-      "note": "via librbxport C shim (FFI)"
-    },
-    {
-      "transport": "serial",
-      "language": "haskell",
-      "frames_per_s": 162982.18278795973,
-      "note": "via librbxport C shim (FFI)"
-    },
-    {
-      "transport": "mqtt",
-      "language": "haskell",
-      "frames_per_s": 468845.2342208677,
-      "note": "via librbxport C shim (FFI)"
-    },
-    {
-      "transport": "amqp",
-      "language": "haskell",
-      "frames_per_s": 238115.64800757385,
-      "note": "via librbxport C shim (FFI)"
-    },
-    {
-      "transport": "kafka",
-      "language": "haskell",
-      "frames_per_s": 15049.968906751303,
-      "note": "via librbxport C shim (FFI)"
-    },
-    {
-      "transport": "dds",
-      "language": "haskell",
-      "frames_per_s": 6144770.8022561185,
-      "note": "via librbxport C shim (FFI)"
-    },
-    {
-      "transport": "zerocm",
-      "language": "haskell",
-      "frames_per_s": 1069335.7283864128,
-      "note": "via librbxport C shim (FFI)"
-    },
-    {
-      "transport": "lsl",
-      "language": "haskell",
-      "frames_per_s": 85854.90166765789,
-      "note": "via librbxport C shim (FFI)"
-    },
-    {
-      "transport": "can",
-      "language": "haskell",
-      "frames_per_s": 2830135.2792889858,
-      "note": "via librbxport C shim (FFI)"
-    },
-    {
-      "transport": "shm",
-      "language": "crystal",
-      "frames_per_s": 74183975.17210123,
-      "note": "via librbxport C shim (FFI)"
-    },
-    {
-      "transport": "serial",
-      "language": "crystal",
-      "frames_per_s": 151700.87015805757,
-      "note": "via librbxport C shim (FFI)"
-    },
-    {
-      "transport": "mqtt",
-      "language": "crystal",
-      "frames_per_s": 562006.1371779566,
-      "note": "via librbxport C shim (FFI)"
-    },
-    {
-      "transport": "amqp",
-      "language": "crystal",
-      "frames_per_s": 251191.90558794892,
-      "note": "via librbxport C shim (FFI)"
-    },
-    {
-      "transport": "kafka",
-      "language": "crystal",
-      "frames_per_s": 14995.70972742389,
-      "note": "via librbxport C shim (FFI)"
-    },
-    {
-      "transport": "dds",
-      "language": "crystal",
-      "frames_per_s": 5931901.761641493,
-      "note": "via librbxport C shim (FFI)"
-    },
-    {
-      "transport": "zerocm",
-      "language": "crystal",
-      "frames_per_s": 1710220.2762470562,
-      "note": "via librbxport C shim (FFI)"
-    },
-    {
-      "transport": "lsl",
-      "language": "crystal",
-      "frames_per_s": 87965.08678823538,
-      "note": "via librbxport C shim (FFI)"
-    },
-    {
-      "transport": "can",
-      "language": "crystal",
-      "frames_per_s": 611583.389455199,
-      "note": "via librbxport C shim (FFI)"
-    },
-    {
-      "transport": "shm",
-      "language": "ocaml",
-      "frames_per_s": 19018638.301181,
-      "note": "via librbxport C shim (FFI)"
-    },
-    {
-      "transport": "serial",
-      "language": "ocaml",
-      "frames_per_s": 55642.914934,
-      "note": "via librbxport C shim (FFI)"
-    },
-    {
-      "transport": "mqtt",
-      "language": "ocaml",
-      "frames_per_s": 295234.327475,
-      "note": "via librbxport C shim (FFI)"
-    },
-    {
-      "transport": "amqp",
-      "language": "ocaml",
-      "frames_per_s": 77978.789768,
-      "note": "via librbxport C shim (FFI)"
-    },
-    {
-      "transport": "kafka",
-      "language": "ocaml",
-      "frames_per_s": 14633.866513,
-      "note": "via librbxport C shim (FFI)"
-    },
-    {
-      "transport": "dds",
-      "language": "ocaml",
-      "frames_per_s": 4332004.843581,
-      "note": "via librbxport C shim (FFI)"
-    },
-    {
-      "transport": "zerocm",
-      "language": "ocaml",
-      "frames_per_s": 1749903.754204,
-      "note": "via librbxport C shim (FFI)"
-    },
-    {
-      "transport": "lsl",
-      "language": "ocaml",
-      "frames_per_s": 56897.862501,
-      "note": "via librbxport C shim (FFI)"
-    },
-    {
-      "transport": "can",
-      "language": "ocaml",
-      "frames_per_s": 3216882.200508,
-      "note": "via librbxport C shim (FFI)"
-    },
-    {
-      "transport": "shm",
-      "language": "lua-luajit",
-      "frames_per_s": 59241706.534,
-      "note": "via librbxport C shim (FFI)"
-    },
-    {
-      "transport": "serial",
-      "language": "lua-luajit",
-      "frames_per_s": 154134.029,
-      "note": "via librbxport C shim (FFI)"
-    },
-    {
-      "transport": "mqtt",
-      "language": "lua-luajit",
-      "frames_per_s": 556997.56,
-      "note": "via librbxport C shim (FFI)"
-    },
-    {
-      "transport": "amqp",
-      "language": "lua-luajit",
-      "frames_per_s": 241548.228,
-      "note": "via librbxport C shim (FFI)"
-    },
-    {
-      "transport": "kafka",
-      "language": "lua-luajit",
-      "frames_per_s": 14978.872,
-      "note": "via librbxport C shim (FFI)"
-    },
-    {
-      "transport": "dds",
-      "language": "lua-luajit",
-      "frames_per_s": 5498130.631,
-      "note": "via librbxport C shim (FFI)"
-    },
-    {
-      "transport": "zerocm",
-      "language": "lua-luajit",
-      "frames_per_s": 1823752.553,
-      "note": "via librbxport C shim (FFI)"
-    },
-    {
-      "transport": "lsl",
-      "language": "lua-luajit",
-      "frames_per_s": 80341.767,
-      "note": "via librbxport C shim (FFI)"
-    },
-    {
-      "transport": "can",
-      "language": "lua-luajit",
-      "frames_per_s": 2693094.903,
-      "note": "via librbxport C shim (FFI)"
-    },
-    {
-      "transport": "shm",
-      "language": "julia",
-      "frames_per_s": 35161743.993,
-      "note": "via librbxport C shim (FFI)"
-    },
-    {
-      "transport": "serial",
-      "language": "julia",
-      "frames_per_s": 153265.161,
-      "note": "via librbxport C shim (FFI)"
-    },
-    {
-      "transport": "mqtt",
-      "language": "julia",
-      "frames_per_s": 461603.796,
-      "note": "via librbxport C shim (FFI)"
-    },
-    {
-      "transport": "amqp",
-      "language": "julia",
-      "frames_per_s": 248741.369,
-      "note": "via librbxport C shim (FFI)"
-    },
-    {
-      "transport": "kafka",
-      "language": "julia",
-      "frames_per_s": 15014.14,
-      "note": "via librbxport C shim (FFI)"
-    },
-    {
-      "transport": "dds",
-      "language": "julia",
-      "frames_per_s": 5758378.426,
-      "note": "via librbxport C shim (FFI)"
-    },
-    {
-      "transport": "zerocm",
-      "language": "julia",
-      "frames_per_s": 1735147.14,
-      "note": "via librbxport C shim (FFI)"
-    },
-    {
-      "transport": "lsl",
-      "language": "julia",
-      "frames_per_s": 95684.023,
-      "note": "via librbxport C shim (FFI)"
-    },
-    {
-      "transport": "can",
-      "language": "julia",
-      "frames_per_s": 3122268.011,
-      "note": "via librbxport C shim (FFI)"
-    },
-    {
-      "transport": "shm",
-      "language": "python",
-      "frames_per_s": 52742617.60902754,
-      "note": "via librbxport C shim (FFI)"
-    },
-    {
-      "transport": "serial",
-      "language": "python",
-      "frames_per_s": 156197.7713668661,
-      "note": "via librbxport C shim (FFI)"
-    },
-    {
-      "transport": "mqtt",
-      "language": "python",
-      "frames_per_s": 450486.97644545435,
-      "note": "via librbxport C shim (FFI)"
-    },
-    {
-      "transport": "amqp",
-      "language": "python",
-      "frames_per_s": 264607.6662246727,
-      "note": "via librbxport C shim (FFI)"
-    },
-    {
-      "transport": "kafka",
-      "language": "python",
-      "frames_per_s": 14955.194238128086,
-      "note": "via librbxport C shim (FFI)"
-    },
-    {
-      "transport": "dds",
-      "language": "python",
-      "frames_per_s": 6205783.7911871215,
-      "note": "via librbxport C shim (FFI)"
-    },
-    {
-      "transport": "zerocm",
-      "language": "python",
-      "frames_per_s": 1911534.1962658558,
-      "note": "via librbxport C shim (FFI)"
-    },
-    {
-      "transport": "lsl",
-      "language": "python",
-      "frames_per_s": 86866.52357067399,
-      "note": "via librbxport C shim (FFI)"
-    },
-    {
-      "transport": "can",
-      "language": "python",
-      "frames_per_s": 3611933.8311053356,
-      "note": "via librbxport C shim (FFI)"
-    },
-    {
-      "transport": "shm",
-      "language": "ruby",
-      "frames_per_s": 67385444.39783822,
-      "note": "via librbxport C shim (FFI)"
-    },
-    {
-      "transport": "serial",
-      "language": "ruby",
-      "frames_per_s": 150472.33265334996,
-      "note": "via librbxport C shim (FFI)"
-    },
-    {
-      "transport": "mqtt",
-      "language": "ruby",
-      "frames_per_s": 522155.0382588204,
-      "note": "via librbxport C shim (FFI)"
-    },
-    {
-      "transport": "amqp",
-      "language": "ruby",
-      "frames_per_s": 257972.64460972048,
-      "note": "via librbxport C shim (FFI)"
-    },
-    {
-      "transport": "kafka",
-      "language": "ruby",
-      "frames_per_s": 14945.748427869543,
-      "note": "via librbxport C shim (FFI)"
-    },
-    {
-      "transport": "dds",
-      "language": "ruby",
-      "frames_per_s": 6032818.524217239,
-      "note": "via librbxport C shim (FFI)"
-    },
-    {
-      "transport": "zerocm",
-      "language": "ruby",
-      "frames_per_s": 1809889.2350731662,
-      "note": "via librbxport C shim (FFI)"
-    },
-    {
-      "transport": "lsl",
-      "language": "ruby",
-      "frames_per_s": 92014.20552391176,
-      "note": "via librbxport C shim (FFI)"
-    },
-    {
-      "transport": "can",
-      "language": "ruby",
-      "frames_per_s": 3301419.6141334786,
-      "note": "via librbxport C shim (FFI)"
-    },
-    {
-      "transport": "shm",
-      "language": "perl",
-      "frames_per_s": 57803467.6019191,
-      "note": "via librbxport C shim (FFI)"
-    },
-    {
-      "transport": "serial",
-      "language": "perl",
-      "frames_per_s": 160991.190567785,
-      "note": "via librbxport C shim (FFI)"
-    },
-    {
-      "transport": "mqtt",
-      "language": "perl",
-      "frames_per_s": 433459.614511625,
-      "note": "via librbxport C shim (FFI)"
-    },
-    {
-      "transport": "amqp",
-      "language": "perl",
-      "frames_per_s": 261696.526253404,
-      "note": "via librbxport C shim (FFI)"
-    },
-    {
-      "transport": "kafka",
-      "language": "perl",
-      "frames_per_s": 15001.1040811976,
-      "note": "via librbxport C shim (FFI)"
-    },
-    {
-      "transport": "dds",
-      "language": "perl",
-      "frames_per_s": 6090875.87362722,
-      "note": "via librbxport C shim (FFI)"
-    },
-    {
-      "transport": "zerocm",
-      "language": "perl",
-      "frames_per_s": 1876383.83162613,
-      "note": "via librbxport C shim (FFI)"
-    },
-    {
-      "transport": "lsl",
-      "language": "perl",
-      "frames_per_s": 86033.3952136939,
-      "note": "via librbxport C shim (FFI)"
-    },
-    {
-      "transport": "can",
-      "language": "perl",
-      "frames_per_s": 1642629.52162604,
-      "note": "via librbxport C shim (FFI)"
-    },
-    {
-      "transport": "shm",
-      "language": "typescript",
-      "frames_per_s": 44444445.20789901,
-      "note": "via librbxport C shim (FFI)"
-    },
-    {
-      "transport": "serial",
-      "language": "typescript",
-      "frames_per_s": 120191.72985220136,
-      "note": "via librbxport C shim (FFI)"
-    },
-    {
-      "transport": "mqtt",
-      "language": "typescript",
-      "frames_per_s": 364676.02183457883,
-      "note": "via librbxport C shim (FFI)"
-    },
-    {
-      "transport": "amqp",
-      "language": "typescript",
-      "frames_per_s": 192102.29062656002,
-      "note": "via librbxport C shim (FFI)"
-    },
-    {
-      "transport": "kafka",
-      "language": "typescript",
-      "frames_per_s": 15106.684919469253,
-      "note": "via librbxport C shim (FFI)"
-    },
-    {
-      "transport": "dds",
-      "language": "typescript",
-      "frames_per_s": 5378078.943587491,
-      "note": "via librbxport C shim (FFI)"
-    },
-    {
-      "transport": "zerocm",
-      "language": "typescript",
-      "frames_per_s": 1771981.428775348,
-      "note": "via librbxport C shim (FFI)"
-    },
-    {
-      "transport": "lsl",
-      "language": "typescript",
-      "frames_per_s": 70482.66485290382,
-      "note": "via librbxport C shim (FFI)"
-    },
-    {
-      "transport": "can",
-      "language": "typescript",
-      "frames_per_s": 3373136.3410375346,
-      "note": "via librbxport C shim (FFI)"
-    },
-    {
-      "transport": "shm",
-      "language": "mojo",
-      "frames_per_s": 50658560.952119276,
-      "note": "via librbxport C shim (FFI)"
-    },
-    {
-      "transport": "serial",
-      "language": "mojo",
-      "frames_per_s": 157904.0448663918,
-      "note": "via librbxport C shim (FFI)"
-    },
-    {
-      "transport": "mqtt",
-      "language": "mojo",
-      "frames_per_s": 493797.8984231409,
-      "note": "via librbxport C shim (FFI)"
-    },
-    {
-      "transport": "amqp",
-      "language": "mojo",
-      "frames_per_s": 214282.34700703196,
-      "note": "via librbxport C shim (FFI)"
-    },
-    {
-      "transport": "kafka",
-      "language": "mojo",
-      "frames_per_s": 14931.885219201351,
-      "note": "via librbxport C shim (FFI)"
-    },
-    {
-      "transport": "dds",
-      "language": "mojo",
-      "frames_per_s": 5270925.560928085,
-      "note": "via librbxport C shim (FFI)"
-    },
-    {
-      "transport": "zerocm",
-      "language": "mojo",
-      "frames_per_s": 1595608.8836087722,
-      "note": "via librbxport C shim (FFI)"
-    },
-    {
-      "transport": "lsl",
-      "language": "mojo",
-      "frames_per_s": 76185.9369380164,
-      "note": "via librbxport C shim (FFI)"
-    },
-    {
-      "transport": "can",
-      "language": "mojo",
-      "frames_per_s": 3303382.669806089,
-      "note": "via librbxport C shim (FFI)"
-    },
-    {
-      "transport": "shm",
-      "language": "lua",
-      "frames_per_s": 41152263.48993685,
-      "note": "via librbxport C shim (FFI)"
-    },
-    {
-      "transport": "serial",
-      "language": "lua",
-      "frames_per_s": 155382.76990817554,
-      "note": "via librbxport C shim (FFI)"
-    },
-    {
-      "transport": "mqtt",
-      "language": "lua",
-      "frames_per_s": 500430.3700163142,
-      "note": "via librbxport C shim (FFI)"
-    },
-    {
-      "transport": "amqp",
-      "language": "lua",
-      "frames_per_s": 175918.20507439747,
-      "note": "via librbxport C shim (FFI)"
-    },
-    {
-      "transport": "kafka",
-      "language": "lua",
-      "frames_per_s": 14921.760731904435,
-      "note": "via librbxport C shim (FFI)"
-    },
-    {
-      "transport": "dds",
-      "language": "lua",
-      "frames_per_s": 2924318.6368249217,
-      "note": "via librbxport C shim (FFI)"
-    },
-    {
-      "transport": "zerocm",
-      "language": "lua",
-      "frames_per_s": 1211445.7390569926,
-      "note": "via librbxport C shim (FFI)"
-    },
-    {
-      "transport": "lsl",
-      "language": "lua",
-      "frames_per_s": 26066.62753439412,
-      "note": "via librbxport C shim (FFI)"
-    },
-    {
-      "transport": "can",
-      "language": "lua",
-      "frames_per_s": 1891646.4881521992,
-      "note": "via librbxport C shim (FFI)"
-    },
-    {
-      "transport": "shm",
-      "language": "java",
-      "frames_per_s": 51867221.14899329,
-      "note": "via librbxport C shim (FFI)"
-    },
-    {
-      "transport": "serial",
-      "language": "java",
-      "frames_per_s": 72950.84717589171,
-      "note": "via librbxport C shim (FFI)"
-    },
-    {
-      "transport": "mqtt",
-      "language": "java",
-      "frames_per_s": 291215.76760406373,
-      "note": "via librbxport C shim (FFI)"
-    },
-    {
-      "transport": "amqp",
-      "language": "java",
-      "frames_per_s": 67027.63281120127,
-      "note": "via librbxport C shim (FFI)"
-    },
-    {
-      "transport": "kafka",
-      "language": "java",
-      "frames_per_s": 14819.148592393758,
-      "note": "via librbxport C shim (FFI)"
-    },
-    {
-      "transport": "dds",
-      "language": "java",
-      "frames_per_s": 2391086.0313194934,
-      "note": "via librbxport C shim (FFI)"
-    },
-    {
-      "transport": "zerocm",
-      "language": "java",
-      "frames_per_s": 1623587.4785572242,
-      "note": "via librbxport C shim (FFI)"
-    },
-    {
-      "transport": "lsl",
-      "language": "java",
-      "frames_per_s": 24299.067940238834,
-      "note": "via librbxport C shim (FFI)"
-    },
-    {
-      "transport": "can",
-      "language": "java",
-      "frames_per_s": 1455011.0584265587,
-      "note": "via librbxport C shim (FFI)"
-    },
-    {
-      "transport": "shm",
-      "language": "kotlin",
-      "frames_per_s": 53134964.12728574,
-      "note": "via librbxport C shim (FFI)"
-    },
-    {
-      "transport": "serial",
-      "language": "kotlin",
-      "frames_per_s": 70837.48323041605,
-      "note": "via librbxport C shim (FFI)"
-    },
-    {
-      "transport": "mqtt",
-      "language": "kotlin",
-      "frames_per_s": 233555.36664468198,
-      "note": "via librbxport C shim (FFI)"
-    },
-    {
-      "transport": "amqp",
-      "language": "kotlin",
-      "frames_per_s": 48971.068873118435,
-      "note": "via librbxport C shim (FFI)"
-    },
-    {
-      "transport": "kafka",
-      "language": "kotlin",
-      "frames_per_s": 12407.188029982099,
-      "note": "via librbxport C shim (FFI)"
-    },
-    {
-      "transport": "dds",
-      "language": "kotlin",
-      "frames_per_s": 2977076.5103017353,
-      "note": "via librbxport C shim (FFI)"
-    },
-    {
-      "transport": "zerocm",
-      "language": "kotlin",
-      "frames_per_s": 1254453.309130349,
-      "note": "via librbxport C shim (FFI)"
-    },
-    {
-      "transport": "lsl",
-      "language": "kotlin",
-      "frames_per_s": 20589.59099889918,
-      "note": "via librbxport C shim (FFI)"
-    },
-    {
-      "transport": "can",
-      "language": "kotlin",
-      "frames_per_s": 2444270.629838192,
-      "note": "via librbxport C shim (FFI)"
-    },
-    {
-      "transport": "shm",
-      "language": "csharp",
-      "frames_per_s": 5438329.354786311,
-      "note": "via librbxport C shim (FFI)"
-    },
-    {
-      "transport": "serial",
-      "language": "csharp",
-      "frames_per_s": 62192.84508563637,
-      "note": "via librbxport C shim (FFI)"
-    },
-    {
-      "transport": "mqtt",
-      "language": "csharp",
-      "frames_per_s": 341915.4101441709,
-      "note": "via librbxport C shim (FFI)"
-    },
-    {
-      "transport": "amqp",
-      "language": "csharp",
-      "frames_per_s": 61746.91913892676,
-      "note": "via librbxport C shim (FFI)"
-    },
-    {
-      "transport": "kafka",
-      "language": "csharp",
-      "frames_per_s": 13756.073994471702,
-      "note": "via librbxport C shim (FFI)"
-    },
-    {
-      "transport": "dds",
-      "language": "csharp",
-      "frames_per_s": 3565316.6065722234,
-      "note": "via librbxport C shim (FFI)"
-    },
-    {
-      "transport": "zerocm",
-      "language": "csharp",
-      "frames_per_s": 1683558.3686242225,
-      "note": "via librbxport C shim (FFI)"
-    },
-    {
-      "transport": "lsl",
-      "language": "csharp",
-      "frames_per_s": 29481.233463297576,
-      "note": "via librbxport C shim (FFI)"
-    },
-    {
-      "transport": "can",
-      "language": "csharp",
-      "frames_per_s": 1025430.6813901123,
-      "note": "via librbxport C shim (FFI)"
-    },
-    {
-      "transport": "shm",
-      "language": "fortran",
-      "frames_per_s": 26150627.519,
-      "note": "via librbxport C shim (FFI)"
-    },
-    {
-      "transport": "serial",
-      "language": "fortran",
-      "frames_per_s": 64916.349,
-      "note": "via librbxport C shim (FFI)"
-    },
-    {
-      "transport": "mqtt",
-      "language": "fortran",
-      "frames_per_s": 405738.769,
-      "note": "via librbxport C shim (FFI)"
-    },
-    {
-      "transport": "amqp",
-      "language": "fortran",
-      "frames_per_s": 69001.017,
-      "note": "via librbxport C shim (FFI)"
-    },
-    {
-      "transport": "kafka",
-      "language": "fortran",
-      "frames_per_s": 13707.29,
-      "note": "via librbxport C shim (FFI)"
-    },
-    {
-      "transport": "dds",
-      "language": "fortran",
-      "frames_per_s": 2472187.888,
-      "note": "via librbxport C shim (FFI)"
-    },
-    {
-      "transport": "zerocm",
-      "language": "fortran",
-      "frames_per_s": 694743.57,
-      "note": "via librbxport C shim (FFI)"
-    },
-    {
-      "transport": "lsl",
-      "language": "fortran",
-      "frames_per_s": 30375.206,
-      "note": "via librbxport C shim (FFI)"
-    },
-    {
-      "transport": "can",
-      "language": "fortran",
-      "frames_per_s": 2574665.294,
-      "note": "via librbxport C shim (FFI)"
-    },
-    {
-      "transport": "shm",
-      "language": "pascal",
-      "frames_per_s": 9900990.085,
-      "note": "via librbxport C shim (FFI)"
-    },
-    {
-      "transport": "serial",
-      "language": "pascal",
-      "frames_per_s": 121188.324,
-      "note": "via librbxport C shim (FFI)"
-    },
-    {
-      "transport": "mqtt",
-      "language": "pascal",
-      "frames_per_s": 196089.966,
-      "note": "via librbxport C shim (FFI)"
-    },
-    {
-      "transport": "amqp",
-      "language": "pascal",
-      "frames_per_s": 63760.871,
-      "note": "via librbxport C shim (FFI)"
-    },
-    {
-      "transport": "kafka",
-      "language": "pascal",
-      "frames_per_s": 14903.165,
-      "note": "via librbxport C shim (FFI); FPC FP-exception mask required for librdkafka"
-    },
-    {
-      "transport": "dds",
-      "language": "pascal",
-      "frames_per_s": 1614882.76,
-      "note": "via librbxport C shim (FFI)"
-    },
-    {
-      "transport": "zerocm",
-      "language": "pascal",
-      "frames_per_s": 465423.675,
-      "note": "via librbxport C shim (FFI)"
-    },
-    {
-      "transport": "lsl",
-      "language": "pascal",
-      "frames_per_s": 15293.634,
-      "note": "via librbxport C shim (FFI)"
-    },
-    {
-      "transport": "can",
-      "language": "pascal",
-      "frames_per_s": 1969356.807,
-      "note": "via librbxport C shim (FFI)"
-    },
-    {
-      "transport": "shm",
-      "language": "nelua",
-      "frames_per_s": 54466230.629,
-      "note": "via librbxport C shim (FFI)"
-    },
-    {
-      "transport": "serial",
-      "language": "nelua",
-      "frames_per_s": 109895.665,
-      "note": "via librbxport C shim (FFI)"
-    },
-    {
-      "transport": "mqtt",
-      "language": "nelua",
-      "frames_per_s": 235093.873,
-      "note": "via librbxport C shim (FFI)"
-    },
-    {
-      "transport": "amqp",
-      "language": "nelua",
-      "frames_per_s": 81962.645,
-      "note": "via librbxport C shim (FFI)"
-    },
-    {
-      "transport": "kafka",
-      "language": "nelua",
-      "frames_per_s": 13747.681,
-      "note": "via librbxport C shim (FFI)"
-    },
-    {
-      "transport": "dds",
-      "language": "nelua",
-      "frames_per_s": 2676372.98,
-      "note": "via librbxport C shim (FFI)"
-    },
-    {
-      "transport": "zerocm",
-      "language": "nelua",
-      "frames_per_s": 1209628.644,
-      "note": "via librbxport C shim (FFI)"
-    },
-    {
-      "transport": "lsl",
-      "language": "nelua",
-      "frames_per_s": 31580.596,
-      "note": "via librbxport C shim (FFI)"
-    },
-    {
-      "transport": "can",
-      "language": "nelua",
-      "frames_per_s": 1249750.05,
-      "note": "via librbxport C shim (FFI)"
-    },
-    {
-      "transport": "shm",
-      "language": "cobol",
-      "frames_per_s": 62500001.578,
-      "note": "via librbxport C shim (FFI)"
-    },
-    {
-      "transport": "serial",
-      "language": "cobol",
-      "frames_per_s": 99254.006,
-      "note": "via librbxport C shim (FFI)"
-    },
-    {
-      "transport": "mqtt",
-      "language": "cobol",
-      "frames_per_s": 186027.822,
-      "note": "via librbxport C shim (FFI)"
-    },
-    {
-      "transport": "amqp",
-      "language": "cobol",
-      "frames_per_s": 63427.87,
-      "note": "via librbxport C shim (FFI)"
-    },
-    {
-      "transport": "kafka",
-      "language": "cobol",
-      "frames_per_s": 13158.826,
-      "note": "via librbxport C shim (FFI)"
-    },
-    {
-      "transport": "dds",
-      "language": "cobol",
-      "frames_per_s": 2795482.497,
-      "note": "via librbxport C shim (FFI)"
-    },
-    {
-      "transport": "zerocm",
-      "language": "cobol",
-      "frames_per_s": 1322016.868,
-      "note": "via librbxport C shim (FFI)"
-    },
-    {
-      "transport": "lsl",
-      "language": "cobol",
-      "frames_per_s": 34844.996,
-      "note": "via librbxport C shim (FFI)"
-    },
-    {
-      "transport": "can",
-      "language": "cobol",
-      "frames_per_s": 2467795.271,
-      "note": "via librbxport C shim (FFI)"
-    },
-    {
-      "transport": "shm",
-      "language": "octave",
-      "frames_per_s": 63291139.965,
-      "note": "via librbxport C shim (FFI)"
-    },
-    {
-      "transport": "serial",
-      "language": "octave",
-      "frames_per_s": 90785.128,
-      "note": "via librbxport C shim (FFI)"
-    },
-    {
-      "transport": "mqtt",
-      "language": "octave",
-      "frames_per_s": 346341.936,
-      "note": "via librbxport C shim (FFI)"
-    },
-    {
-      "transport": "amqp",
-      "language": "octave",
-      "frames_per_s": 56126.487,
-      "note": "via librbxport C shim (FFI)"
-    },
-    {
-      "transport": "kafka",
-      "language": "octave",
-      "frames_per_s": 13939.936,
-      "note": "via librbxport C shim (FFI)"
-    },
-    {
-      "transport": "dds",
-      "language": "octave",
-      "frames_per_s": 2816108.137,
-      "note": "via librbxport C shim (FFI)"
-    },
-    {
-      "transport": "zerocm",
-      "language": "octave",
-      "frames_per_s": 1311475.41,
-      "note": "via librbxport C shim (FFI)"
-    },
-    {
-      "transport": "lsl",
-      "language": "octave",
-      "frames_per_s": 35503.479,
-      "note": "via librbxport C shim (FFI)"
-    },
-    {
-      "transport": "can",
-      "language": "octave",
-      "frames_per_s": 1147420.599,
-      "note": "via librbxport C shim (FFI)"
-    }
-  ]
+ "schema": "robobus-xport-shim/1",
+ "generated_unix": 1784684784,
+ "frame_bytes": 75,
+ "transports": [
+  "SHM",
+  "Serial",
+  "MQTT",
+  "AMQP",
+  "Kafka",
+  "DDS",
+  "ZeroCM",
+  "LSL",
+  "CAN"
+ ],
+ "note": "Each language reaches every broker/middleware transport through one labeled C shim (librbxport) that wraps the transport's real C client. The transport work is in the shared C, so within a transport languages converge, the FFI overhead is nearly free (like the crypto matrix's shim cells). Coverage, not per-language transport speed, is the point here.",
+ "cells": [
+  {
+   "transport": "shm",
+   "language": "c",
+   "frames_per_s": 67204299.355421,
+   "note": "via librbxport C shim (FFI)"
+  },
+  {
+   "transport": "serial",
+   "language": "c",
+   "frames_per_s": 161328.312784,
+   "note": "via librbxport C shim (FFI)"
+  },
+  {
+   "transport": "mqtt",
+   "language": "c",
+   "frames_per_s": 495717.00504,
+   "note": "via librbxport C shim (FFI)"
+  },
+  {
+   "transport": "amqp",
+   "language": "c",
+   "frames_per_s": 262062.748312,
+   "note": "via librbxport C shim (FFI)"
+  },
+  {
+   "transport": "kafka",
+   "language": "c",
+   "frames_per_s": 14865.772481,
+   "note": "via librbxport C shim (FFI)"
+  },
+  {
+   "transport": "dds",
+   "language": "c",
+   "frames_per_s": 4843084.074728,
+   "note": "via librbxport C shim (FFI)"
+  },
+  {
+   "transport": "zerocm",
+   "language": "c",
+   "frames_per_s": 1607665.348356,
+   "note": "via librbxport C shim (FFI)"
+  },
+  {
+   "transport": "lsl",
+   "language": "c",
+   "frames_per_s": 80258.600481,
+   "note": "via librbxport C shim (FFI)"
+  },
+  {
+   "transport": "can",
+   "language": "c",
+   "frames_per_s": 2888837.535048,
+   "note": "via librbxport C shim (FFI)"
+  },
+  {
+   "transport": "shm",
+   "language": "cpp",
+   "frames_per_s": 56689342.853652,
+   "note": "via librbxport C shim (FFI)"
+  },
+  {
+   "transport": "serial",
+   "language": "cpp",
+   "frames_per_s": 170961.796882,
+   "note": "via librbxport C shim (FFI)"
+  },
+  {
+   "transport": "mqtt",
+   "language": "cpp",
+   "frames_per_s": 598795.223898,
+   "note": "via librbxport C shim (FFI)"
+  },
+  {
+   "transport": "amqp",
+   "language": "cpp",
+   "frames_per_s": 248658.487471,
+   "note": "via librbxport C shim (FFI)"
+  },
+  {
+   "transport": "kafka",
+   "language": "cpp",
+   "frames_per_s": 14804.594162,
+   "note": "via librbxport C shim (FFI)"
+  },
+  {
+   "transport": "dds",
+   "language": "cpp",
+   "frames_per_s": 6123698.730934,
+   "note": "via librbxport C shim (FFI)"
+  },
+  {
+   "transport": "zerocm",
+   "language": "cpp",
+   "frames_per_s": 1312990.730077,
+   "note": "via librbxport C shim (FFI)"
+  },
+  {
+   "transport": "lsl",
+   "language": "cpp",
+   "frames_per_s": 87276.306156,
+   "note": "via librbxport C shim (FFI)"
+  },
+  {
+   "transport": "can",
+   "language": "cpp",
+   "frames_per_s": 3333111.121129,
+   "note": "via librbxport C shim (FFI)"
+  },
+  {
+   "transport": "shm",
+   "language": "rust",
+   "frames_per_s": 63131312.638232,
+   "note": "via librbxport C shim (FFI)"
+  },
+  {
+   "transport": "serial",
+   "language": "rust",
+   "frames_per_s": 175518.657631,
+   "note": "via librbxport C shim (FFI)"
+  },
+  {
+   "transport": "mqtt",
+   "language": "rust",
+   "frames_per_s": 531118.216408,
+   "note": "via librbxport C shim (FFI)"
+  },
+  {
+   "transport": "amqp",
+   "language": "rust",
+   "frames_per_s": 266794.728159,
+   "note": "via librbxport C shim (FFI)"
+  },
+  {
+   "transport": "kafka",
+   "language": "rust",
+   "frames_per_s": 14935.257154,
+   "note": "via librbxport C shim (FFI)"
+  },
+  {
+   "transport": "dds",
+   "language": "rust",
+   "frames_per_s": 4974629.380557,
+   "note": "via librbxport C shim (FFI)"
+  },
+  {
+   "transport": "zerocm",
+   "language": "rust",
+   "frames_per_s": 1845767.654075,
+   "note": "via librbxport C shim (FFI)"
+  },
+  {
+   "transport": "lsl",
+   "language": "rust",
+   "frames_per_s": 99780.632514,
+   "note": "via librbxport C shim (FFI)"
+  },
+  {
+   "transport": "can",
+   "language": "rust",
+   "frames_per_s": 2602811.036113,
+   "note": "via librbxport C shim (FFI)"
+  },
+  {
+   "transport": "shm",
+   "language": "go",
+   "frames_per_s": 68119890.905838,
+   "note": "via librbxport C shim (FFI)"
+  },
+  {
+   "transport": "serial",
+   "language": "go",
+   "frames_per_s": 172997.809845,
+   "note": "via librbxport C shim (FFI)"
+  },
+  {
+   "transport": "mqtt",
+   "language": "go",
+   "frames_per_s": 461573.967193,
+   "note": "via librbxport C shim (FFI)"
+  },
+  {
+   "transport": "amqp",
+   "language": "go",
+   "frames_per_s": 269812.318548,
+   "note": "via librbxport C shim (FFI)"
+  },
+  {
+   "transport": "kafka",
+   "language": "go",
+   "frames_per_s": 15064.887483,
+   "note": "via librbxport C shim (FFI)"
+  },
+  {
+   "transport": "dds",
+   "language": "go",
+   "frames_per_s": 4576659.047075,
+   "note": "via librbxport C shim (FFI)"
+  },
+  {
+   "transport": "zerocm",
+   "language": "go",
+   "frames_per_s": 1675378.635334,
+   "note": "via librbxport C shim (FFI)"
+  },
+  {
+   "transport": "lsl",
+   "language": "go",
+   "frames_per_s": 94385.451372,
+   "note": "via librbxport C shim (FFI)"
+  },
+  {
+   "transport": "can",
+   "language": "go",
+   "frames_per_s": 3546350.806855,
+   "note": "via librbxport C shim (FFI)"
+  },
+  {
+   "transport": "shm",
+   "language": "zig",
+   "frames_per_s": 64516129.6021,
+   "note": "via librbxport C shim (FFI)"
+  },
+  {
+   "transport": "serial",
+   "language": "zig",
+   "frames_per_s": 169816.767697,
+   "note": "via librbxport C shim (FFI)"
+  },
+  {
+   "transport": "mqtt",
+   "language": "zig",
+   "frames_per_s": 489054.950251,
+   "note": "via librbxport C shim (FFI)"
+  },
+  {
+   "transport": "amqp",
+   "language": "zig",
+   "frames_per_s": 240832.703148,
+   "note": "via librbxport C shim (FFI)"
+  },
+  {
+   "transport": "kafka",
+   "language": "zig",
+   "frames_per_s": 14795.6528,
+   "note": "via librbxport C shim (FFI)"
+  },
+  {
+   "transport": "dds",
+   "language": "zig",
+   "frames_per_s": 5912262.018801,
+   "note": "via librbxport C shim (FFI)"
+  },
+  {
+   "transport": "zerocm",
+   "language": "zig",
+   "frames_per_s": 1726698.207552,
+   "note": "via librbxport C shim (FFI)"
+  },
+  {
+   "transport": "lsl",
+   "language": "zig",
+   "frames_per_s": 92129.098293,
+   "note": "via librbxport C shim (FFI)"
+  },
+  {
+   "transport": "can",
+   "language": "zig",
+   "frames_per_s": 2744086.497127,
+   "note": "via librbxport C shim (FFI)"
+  },
+  {
+   "transport": "shm",
+   "language": "swift",
+   "frames_per_s": 65445026.460106,
+   "note": "via librbxport C shim (FFI)"
+  },
+  {
+   "transport": "serial",
+   "language": "swift",
+   "frames_per_s": 169742.398946,
+   "note": "via librbxport C shim (FFI)"
+  },
+  {
+   "transport": "mqtt",
+   "language": "swift",
+   "frames_per_s": 569579.877863,
+   "note": "via librbxport C shim (FFI)"
+  },
+  {
+   "transport": "amqp",
+   "language": "swift",
+   "frames_per_s": 246952.604888,
+   "note": "via librbxport C shim (FFI)"
+  },
+  {
+   "transport": "kafka",
+   "language": "swift",
+   "frames_per_s": 14999.880001,
+   "note": "via librbxport C shim (FFI)"
+  },
+  {
+   "transport": "dds",
+   "language": "swift",
+   "frames_per_s": 6045218.233266,
+   "note": "via librbxport C shim (FFI)"
+  },
+  {
+   "transport": "zerocm",
+   "language": "swift",
+   "frames_per_s": 1704158.145398,
+   "note": "via librbxport C shim (FFI)"
+  },
+  {
+   "transport": "lsl",
+   "language": "swift",
+   "frames_per_s": 92846.434198,
+   "note": "via librbxport C shim (FFI)"
+  },
+  {
+   "transport": "can",
+   "language": "swift",
+   "frames_per_s": 2843332.386503,
+   "note": "via librbxport C shim (FFI)"
+  },
+  {
+   "transport": "shm",
+   "language": "nim",
+   "frames_per_s": 57736721.38220478,
+   "note": "via librbxport C shim (FFI)"
+  },
+  {
+   "transport": "serial",
+   "language": "nim",
+   "frames_per_s": 171844.92713007217,
+   "note": "via librbxport C shim (FFI)"
+  },
+  {
+   "transport": "mqtt",
+   "language": "nim",
+   "frames_per_s": 506390.649999991,
+   "note": "via librbxport C shim (FFI)"
+  },
+  {
+   "transport": "amqp",
+   "language": "nim",
+   "frames_per_s": 248914.73178596282,
+   "note": "via librbxport C shim (FFI)"
+  },
+  {
+   "transport": "kafka",
+   "language": "nim",
+   "frames_per_s": 15002.850541607308,
+   "note": "via librbxport C shim (FFI)"
+  },
+  {
+   "transport": "dds",
+   "language": "nim",
+   "frames_per_s": 6249999.998726708,
+   "note": "via librbxport C shim (FFI)"
+  },
+  {
+   "transport": "zerocm",
+   "language": "nim",
+   "frames_per_s": 1765536.7224049862,
+   "note": "via librbxport C shim (FFI)"
+  },
+  {
+   "transport": "lsl",
+   "language": "nim",
+   "frames_per_s": 99649.22288746663,
+   "note": "via librbxport C shim (FFI)"
+  },
+  {
+   "transport": "can",
+   "language": "nim",
+   "frames_per_s": 3163355.685643462,
+   "note": "via librbxport C shim (FFI)"
+  },
+  {
+   "transport": "shm",
+   "language": "haskell",
+   "frames_per_s": 58072010.73400673,
+   "note": "via librbxport C shim (FFI)"
+  },
+  {
+   "transport": "serial",
+   "language": "haskell",
+   "frames_per_s": 162982.18278795973,
+   "note": "via librbxport C shim (FFI)"
+  },
+  {
+   "transport": "mqtt",
+   "language": "haskell",
+   "frames_per_s": 468845.2342208677,
+   "note": "via librbxport C shim (FFI)"
+  },
+  {
+   "transport": "amqp",
+   "language": "haskell",
+   "frames_per_s": 238115.64800757385,
+   "note": "via librbxport C shim (FFI)"
+  },
+  {
+   "transport": "kafka",
+   "language": "haskell",
+   "frames_per_s": 15049.968906751303,
+   "note": "via librbxport C shim (FFI)"
+  },
+  {
+   "transport": "dds",
+   "language": "haskell",
+   "frames_per_s": 6144770.8022561185,
+   "note": "via librbxport C shim (FFI)"
+  },
+  {
+   "transport": "zerocm",
+   "language": "haskell",
+   "frames_per_s": 1069335.7283864128,
+   "note": "via librbxport C shim (FFI)"
+  },
+  {
+   "transport": "lsl",
+   "language": "haskell",
+   "frames_per_s": 85854.90166765789,
+   "note": "via librbxport C shim (FFI)"
+  },
+  {
+   "transport": "can",
+   "language": "haskell",
+   "frames_per_s": 2830135.2792889858,
+   "note": "via librbxport C shim (FFI)"
+  },
+  {
+   "transport": "shm",
+   "language": "crystal",
+   "frames_per_s": 74183975.17210123,
+   "note": "via librbxport C shim (FFI)"
+  },
+  {
+   "transport": "serial",
+   "language": "crystal",
+   "frames_per_s": 151700.87015805757,
+   "note": "via librbxport C shim (FFI)"
+  },
+  {
+   "transport": "mqtt",
+   "language": "crystal",
+   "frames_per_s": 562006.1371779566,
+   "note": "via librbxport C shim (FFI)"
+  },
+  {
+   "transport": "amqp",
+   "language": "crystal",
+   "frames_per_s": 251191.90558794892,
+   "note": "via librbxport C shim (FFI)"
+  },
+  {
+   "transport": "kafka",
+   "language": "crystal",
+   "frames_per_s": 14995.70972742389,
+   "note": "via librbxport C shim (FFI)"
+  },
+  {
+   "transport": "dds",
+   "language": "crystal",
+   "frames_per_s": 5931901.761641493,
+   "note": "via librbxport C shim (FFI)"
+  },
+  {
+   "transport": "zerocm",
+   "language": "crystal",
+   "frames_per_s": 1710220.2762470562,
+   "note": "via librbxport C shim (FFI)"
+  },
+  {
+   "transport": "lsl",
+   "language": "crystal",
+   "frames_per_s": 87965.08678823538,
+   "note": "via librbxport C shim (FFI)"
+  },
+  {
+   "transport": "can",
+   "language": "crystal",
+   "frames_per_s": 611583.389455199,
+   "note": "via librbxport C shim (FFI)"
+  },
+  {
+   "transport": "shm",
+   "language": "ocaml",
+   "frames_per_s": 19018638.301181,
+   "note": "via librbxport C shim (FFI)"
+  },
+  {
+   "transport": "serial",
+   "language": "ocaml",
+   "frames_per_s": 55642.914934,
+   "note": "via librbxport C shim (FFI)"
+  },
+  {
+   "transport": "mqtt",
+   "language": "ocaml",
+   "frames_per_s": 295234.327475,
+   "note": "via librbxport C shim (FFI)"
+  },
+  {
+   "transport": "amqp",
+   "language": "ocaml",
+   "frames_per_s": 77978.789768,
+   "note": "via librbxport C shim (FFI)"
+  },
+  {
+   "transport": "kafka",
+   "language": "ocaml",
+   "frames_per_s": 14633.866513,
+   "note": "via librbxport C shim (FFI)"
+  },
+  {
+   "transport": "dds",
+   "language": "ocaml",
+   "frames_per_s": 4332004.843581,
+   "note": "via librbxport C shim (FFI)"
+  },
+  {
+   "transport": "zerocm",
+   "language": "ocaml",
+   "frames_per_s": 1749903.754204,
+   "note": "via librbxport C shim (FFI)"
+  },
+  {
+   "transport": "lsl",
+   "language": "ocaml",
+   "frames_per_s": 56897.862501,
+   "note": "via librbxport C shim (FFI)"
+  },
+  {
+   "transport": "can",
+   "language": "ocaml",
+   "frames_per_s": 3216882.200508,
+   "note": "via librbxport C shim (FFI)"
+  },
+  {
+   "transport": "shm",
+   "language": "lua-luajit",
+   "frames_per_s": 59241706.534,
+   "note": "via librbxport C shim (FFI)"
+  },
+  {
+   "transport": "serial",
+   "language": "lua-luajit",
+   "frames_per_s": 154134.029,
+   "note": "via librbxport C shim (FFI)"
+  },
+  {
+   "transport": "mqtt",
+   "language": "lua-luajit",
+   "frames_per_s": 556997.56,
+   "note": "via librbxport C shim (FFI)"
+  },
+  {
+   "transport": "amqp",
+   "language": "lua-luajit",
+   "frames_per_s": 241548.228,
+   "note": "via librbxport C shim (FFI)"
+  },
+  {
+   "transport": "kafka",
+   "language": "lua-luajit",
+   "frames_per_s": 14978.872,
+   "note": "via librbxport C shim (FFI)"
+  },
+  {
+   "transport": "dds",
+   "language": "lua-luajit",
+   "frames_per_s": 5498130.631,
+   "note": "via librbxport C shim (FFI)"
+  },
+  {
+   "transport": "zerocm",
+   "language": "lua-luajit",
+   "frames_per_s": 1823752.553,
+   "note": "via librbxport C shim (FFI)"
+  },
+  {
+   "transport": "lsl",
+   "language": "lua-luajit",
+   "frames_per_s": 80341.767,
+   "note": "via librbxport C shim (FFI)"
+  },
+  {
+   "transport": "can",
+   "language": "lua-luajit",
+   "frames_per_s": 2693094.903,
+   "note": "via librbxport C shim (FFI)"
+  },
+  {
+   "transport": "shm",
+   "language": "julia",
+   "frames_per_s": 35161743.993,
+   "note": "via librbxport C shim (FFI)"
+  },
+  {
+   "transport": "serial",
+   "language": "julia",
+   "frames_per_s": 153265.161,
+   "note": "via librbxport C shim (FFI)"
+  },
+  {
+   "transport": "mqtt",
+   "language": "julia",
+   "frames_per_s": 461603.796,
+   "note": "via librbxport C shim (FFI)"
+  },
+  {
+   "transport": "amqp",
+   "language": "julia",
+   "frames_per_s": 248741.369,
+   "note": "via librbxport C shim (FFI)"
+  },
+  {
+   "transport": "kafka",
+   "language": "julia",
+   "frames_per_s": 15014.14,
+   "note": "via librbxport C shim (FFI)"
+  },
+  {
+   "transport": "dds",
+   "language": "julia",
+   "frames_per_s": 5758378.426,
+   "note": "via librbxport C shim (FFI)"
+  },
+  {
+   "transport": "zerocm",
+   "language": "julia",
+   "frames_per_s": 1735147.14,
+   "note": "via librbxport C shim (FFI)"
+  },
+  {
+   "transport": "lsl",
+   "language": "julia",
+   "frames_per_s": 95684.023,
+   "note": "via librbxport C shim (FFI)"
+  },
+  {
+   "transport": "can",
+   "language": "julia",
+   "frames_per_s": 3122268.011,
+   "note": "via librbxport C shim (FFI)"
+  },
+  {
+   "transport": "shm",
+   "language": "python",
+   "frames_per_s": 52742617.60902754,
+   "note": "via librbxport C shim (FFI)"
+  },
+  {
+   "transport": "serial",
+   "language": "python",
+   "frames_per_s": 156197.7713668661,
+   "note": "via librbxport C shim (FFI)"
+  },
+  {
+   "transport": "mqtt",
+   "language": "python",
+   "frames_per_s": 450486.97644545435,
+   "note": "via librbxport C shim (FFI)"
+  },
+  {
+   "transport": "amqp",
+   "language": "python",
+   "frames_per_s": 264607.6662246727,
+   "note": "via librbxport C shim (FFI)"
+  },
+  {
+   "transport": "kafka",
+   "language": "python",
+   "frames_per_s": 14955.194238128086,
+   "note": "via librbxport C shim (FFI)"
+  },
+  {
+   "transport": "dds",
+   "language": "python",
+   "frames_per_s": 6205783.7911871215,
+   "note": "via librbxport C shim (FFI)"
+  },
+  {
+   "transport": "zerocm",
+   "language": "python",
+   "frames_per_s": 1911534.1962658558,
+   "note": "via librbxport C shim (FFI)"
+  },
+  {
+   "transport": "lsl",
+   "language": "python",
+   "frames_per_s": 86866.52357067399,
+   "note": "via librbxport C shim (FFI)"
+  },
+  {
+   "transport": "can",
+   "language": "python",
+   "frames_per_s": 3611933.8311053356,
+   "note": "via librbxport C shim (FFI)"
+  },
+  {
+   "transport": "shm",
+   "language": "ruby",
+   "frames_per_s": 67385444.39783822,
+   "note": "via librbxport C shim (FFI)"
+  },
+  {
+   "transport": "serial",
+   "language": "ruby",
+   "frames_per_s": 150472.33265334996,
+   "note": "via librbxport C shim (FFI)"
+  },
+  {
+   "transport": "mqtt",
+   "language": "ruby",
+   "frames_per_s": 522155.0382588204,
+   "note": "via librbxport C shim (FFI)"
+  },
+  {
+   "transport": "amqp",
+   "language": "ruby",
+   "frames_per_s": 257972.64460972048,
+   "note": "via librbxport C shim (FFI)"
+  },
+  {
+   "transport": "kafka",
+   "language": "ruby",
+   "frames_per_s": 14945.748427869543,
+   "note": "via librbxport C shim (FFI)"
+  },
+  {
+   "transport": "dds",
+   "language": "ruby",
+   "frames_per_s": 6032818.524217239,
+   "note": "via librbxport C shim (FFI)"
+  },
+  {
+   "transport": "zerocm",
+   "language": "ruby",
+   "frames_per_s": 1809889.2350731662,
+   "note": "via librbxport C shim (FFI)"
+  },
+  {
+   "transport": "lsl",
+   "language": "ruby",
+   "frames_per_s": 92014.20552391176,
+   "note": "via librbxport C shim (FFI)"
+  },
+  {
+   "transport": "can",
+   "language": "ruby",
+   "frames_per_s": 3301419.6141334786,
+   "note": "via librbxport C shim (FFI)"
+  },
+  {
+   "transport": "shm",
+   "language": "perl",
+   "frames_per_s": 57803467.6019191,
+   "note": "via librbxport C shim (FFI)"
+  },
+  {
+   "transport": "serial",
+   "language": "perl",
+   "frames_per_s": 160991.190567785,
+   "note": "via librbxport C shim (FFI)"
+  },
+  {
+   "transport": "mqtt",
+   "language": "perl",
+   "frames_per_s": 433459.614511625,
+   "note": "via librbxport C shim (FFI)"
+  },
+  {
+   "transport": "amqp",
+   "language": "perl",
+   "frames_per_s": 261696.526253404,
+   "note": "via librbxport C shim (FFI)"
+  },
+  {
+   "transport": "kafka",
+   "language": "perl",
+   "frames_per_s": 15001.1040811976,
+   "note": "via librbxport C shim (FFI)"
+  },
+  {
+   "transport": "dds",
+   "language": "perl",
+   "frames_per_s": 6090875.87362722,
+   "note": "via librbxport C shim (FFI)"
+  },
+  {
+   "transport": "zerocm",
+   "language": "perl",
+   "frames_per_s": 1876383.83162613,
+   "note": "via librbxport C shim (FFI)"
+  },
+  {
+   "transport": "lsl",
+   "language": "perl",
+   "frames_per_s": 86033.3952136939,
+   "note": "via librbxport C shim (FFI)"
+  },
+  {
+   "transport": "can",
+   "language": "perl",
+   "frames_per_s": 1642629.52162604,
+   "note": "via librbxport C shim (FFI)"
+  },
+  {
+   "transport": "shm",
+   "language": "typescript",
+   "frames_per_s": 44444445.20789901,
+   "note": "via librbxport C shim (FFI)"
+  },
+  {
+   "transport": "serial",
+   "language": "typescript",
+   "frames_per_s": 120191.72985220136,
+   "note": "via librbxport C shim (FFI)"
+  },
+  {
+   "transport": "mqtt",
+   "language": "typescript",
+   "frames_per_s": 364676.02183457883,
+   "note": "via librbxport C shim (FFI)"
+  },
+  {
+   "transport": "amqp",
+   "language": "typescript",
+   "frames_per_s": 192102.29062656002,
+   "note": "via librbxport C shim (FFI)"
+  },
+  {
+   "transport": "kafka",
+   "language": "typescript",
+   "frames_per_s": 15106.684919469253,
+   "note": "via librbxport C shim (FFI)"
+  },
+  {
+   "transport": "dds",
+   "language": "typescript",
+   "frames_per_s": 5378078.943587491,
+   "note": "via librbxport C shim (FFI)"
+  },
+  {
+   "transport": "zerocm",
+   "language": "typescript",
+   "frames_per_s": 1771981.428775348,
+   "note": "via librbxport C shim (FFI)"
+  },
+  {
+   "transport": "lsl",
+   "language": "typescript",
+   "frames_per_s": 70482.66485290382,
+   "note": "via librbxport C shim (FFI)"
+  },
+  {
+   "transport": "can",
+   "language": "typescript",
+   "frames_per_s": 3373136.3410375346,
+   "note": "via librbxport C shim (FFI)"
+  },
+  {
+   "transport": "shm",
+   "language": "mojo",
+   "frames_per_s": 50658560.952119276,
+   "note": "via librbxport C shim (FFI)"
+  },
+  {
+   "transport": "serial",
+   "language": "mojo",
+   "frames_per_s": 157904.0448663918,
+   "note": "via librbxport C shim (FFI)"
+  },
+  {
+   "transport": "mqtt",
+   "language": "mojo",
+   "frames_per_s": 493797.8984231409,
+   "note": "via librbxport C shim (FFI)"
+  },
+  {
+   "transport": "amqp",
+   "language": "mojo",
+   "frames_per_s": 214282.34700703196,
+   "note": "via librbxport C shim (FFI)"
+  },
+  {
+   "transport": "kafka",
+   "language": "mojo",
+   "frames_per_s": 14931.885219201351,
+   "note": "via librbxport C shim (FFI)"
+  },
+  {
+   "transport": "dds",
+   "language": "mojo",
+   "frames_per_s": 5270925.560928085,
+   "note": "via librbxport C shim (FFI)"
+  },
+  {
+   "transport": "zerocm",
+   "language": "mojo",
+   "frames_per_s": 1595608.8836087722,
+   "note": "via librbxport C shim (FFI)"
+  },
+  {
+   "transport": "lsl",
+   "language": "mojo",
+   "frames_per_s": 76185.9369380164,
+   "note": "via librbxport C shim (FFI)"
+  },
+  {
+   "transport": "can",
+   "language": "mojo",
+   "frames_per_s": 3303382.669806089,
+   "note": "via librbxport C shim (FFI)"
+  },
+  {
+   "transport": "shm",
+   "language": "lua",
+   "frames_per_s": 41152263.48993685,
+   "note": "via librbxport C shim (FFI)"
+  },
+  {
+   "transport": "serial",
+   "language": "lua",
+   "frames_per_s": 155382.76990817554,
+   "note": "via librbxport C shim (FFI)"
+  },
+  {
+   "transport": "mqtt",
+   "language": "lua",
+   "frames_per_s": 500430.3700163142,
+   "note": "via librbxport C shim (FFI)"
+  },
+  {
+   "transport": "amqp",
+   "language": "lua",
+   "frames_per_s": 175918.20507439747,
+   "note": "via librbxport C shim (FFI)"
+  },
+  {
+   "transport": "kafka",
+   "language": "lua",
+   "frames_per_s": 14921.760731904435,
+   "note": "via librbxport C shim (FFI)"
+  },
+  {
+   "transport": "dds",
+   "language": "lua",
+   "frames_per_s": 2924318.6368249217,
+   "note": "via librbxport C shim (FFI)"
+  },
+  {
+   "transport": "zerocm",
+   "language": "lua",
+   "frames_per_s": 1211445.7390569926,
+   "note": "via librbxport C shim (FFI)"
+  },
+  {
+   "transport": "lsl",
+   "language": "lua",
+   "frames_per_s": 26066.62753439412,
+   "note": "via librbxport C shim (FFI)"
+  },
+  {
+   "transport": "can",
+   "language": "lua",
+   "frames_per_s": 1891646.4881521992,
+   "note": "via librbxport C shim (FFI)"
+  },
+  {
+   "transport": "shm",
+   "language": "java",
+   "frames_per_s": 51867221.14899329,
+   "note": "via librbxport C shim (FFI)"
+  },
+  {
+   "transport": "serial",
+   "language": "java",
+   "frames_per_s": 72950.84717589171,
+   "note": "via librbxport C shim (FFI)"
+  },
+  {
+   "transport": "mqtt",
+   "language": "java",
+   "frames_per_s": 291215.76760406373,
+   "note": "via librbxport C shim (FFI)"
+  },
+  {
+   "transport": "amqp",
+   "language": "java",
+   "frames_per_s": 67027.63281120127,
+   "note": "via librbxport C shim (FFI)"
+  },
+  {
+   "transport": "kafka",
+   "language": "java",
+   "frames_per_s": 14819.148592393758,
+   "note": "via librbxport C shim (FFI)"
+  },
+  {
+   "transport": "dds",
+   "language": "java",
+   "frames_per_s": 2391086.0313194934,
+   "note": "via librbxport C shim (FFI)"
+  },
+  {
+   "transport": "zerocm",
+   "language": "java",
+   "frames_per_s": 1623587.4785572242,
+   "note": "via librbxport C shim (FFI)"
+  },
+  {
+   "transport": "lsl",
+   "language": "java",
+   "frames_per_s": 24299.067940238834,
+   "note": "via librbxport C shim (FFI)"
+  },
+  {
+   "transport": "can",
+   "language": "java",
+   "frames_per_s": 1455011.0584265587,
+   "note": "via librbxport C shim (FFI)"
+  },
+  {
+   "transport": "shm",
+   "language": "kotlin",
+   "frames_per_s": 53134964.12728574,
+   "note": "via librbxport C shim (FFI)"
+  },
+  {
+   "transport": "serial",
+   "language": "kotlin",
+   "frames_per_s": 70837.48323041605,
+   "note": "via librbxport C shim (FFI)"
+  },
+  {
+   "transport": "mqtt",
+   "language": "kotlin",
+   "frames_per_s": 233555.36664468198,
+   "note": "via librbxport C shim (FFI)"
+  },
+  {
+   "transport": "amqp",
+   "language": "kotlin",
+   "frames_per_s": 48971.068873118435,
+   "note": "via librbxport C shim (FFI)"
+  },
+  {
+   "transport": "kafka",
+   "language": "kotlin",
+   "frames_per_s": 12407.188029982099,
+   "note": "via librbxport C shim (FFI)"
+  },
+  {
+   "transport": "dds",
+   "language": "kotlin",
+   "frames_per_s": 2977076.5103017353,
+   "note": "via librbxport C shim (FFI)"
+  },
+  {
+   "transport": "zerocm",
+   "language": "kotlin",
+   "frames_per_s": 1254453.309130349,
+   "note": "via librbxport C shim (FFI)"
+  },
+  {
+   "transport": "lsl",
+   "language": "kotlin",
+   "frames_per_s": 20589.59099889918,
+   "note": "via librbxport C shim (FFI)"
+  },
+  {
+   "transport": "can",
+   "language": "kotlin",
+   "frames_per_s": 2444270.629838192,
+   "note": "via librbxport C shim (FFI)"
+  },
+  {
+   "transport": "shm",
+   "language": "csharp",
+   "frames_per_s": 5438329.354786311,
+   "note": "via librbxport C shim (FFI)"
+  },
+  {
+   "transport": "serial",
+   "language": "csharp",
+   "frames_per_s": 62192.84508563637,
+   "note": "via librbxport C shim (FFI)"
+  },
+  {
+   "transport": "mqtt",
+   "language": "csharp",
+   "frames_per_s": 341915.4101441709,
+   "note": "via librbxport C shim (FFI)"
+  },
+  {
+   "transport": "amqp",
+   "language": "csharp",
+   "frames_per_s": 61746.91913892676,
+   "note": "via librbxport C shim (FFI)"
+  },
+  {
+   "transport": "kafka",
+   "language": "csharp",
+   "frames_per_s": 13756.073994471702,
+   "note": "via librbxport C shim (FFI)"
+  },
+  {
+   "transport": "dds",
+   "language": "csharp",
+   "frames_per_s": 3565316.6065722234,
+   "note": "via librbxport C shim (FFI)"
+  },
+  {
+   "transport": "zerocm",
+   "language": "csharp",
+   "frames_per_s": 1683558.3686242225,
+   "note": "via librbxport C shim (FFI)"
+  },
+  {
+   "transport": "lsl",
+   "language": "csharp",
+   "frames_per_s": 29481.233463297576,
+   "note": "via librbxport C shim (FFI)"
+  },
+  {
+   "transport": "can",
+   "language": "csharp",
+   "frames_per_s": 1025430.6813901123,
+   "note": "via librbxport C shim (FFI)"
+  },
+  {
+   "transport": "shm",
+   "language": "fortran",
+   "frames_per_s": 26150627.519,
+   "note": "via librbxport C shim (FFI)"
+  },
+  {
+   "transport": "serial",
+   "language": "fortran",
+   "frames_per_s": 64916.349,
+   "note": "via librbxport C shim (FFI)"
+  },
+  {
+   "transport": "mqtt",
+   "language": "fortran",
+   "frames_per_s": 405738.769,
+   "note": "via librbxport C shim (FFI)"
+  },
+  {
+   "transport": "amqp",
+   "language": "fortran",
+   "frames_per_s": 69001.017,
+   "note": "via librbxport C shim (FFI)"
+  },
+  {
+   "transport": "kafka",
+   "language": "fortran",
+   "frames_per_s": 13707.29,
+   "note": "via librbxport C shim (FFI)"
+  },
+  {
+   "transport": "dds",
+   "language": "fortran",
+   "frames_per_s": 2472187.888,
+   "note": "via librbxport C shim (FFI)"
+  },
+  {
+   "transport": "zerocm",
+   "language": "fortran",
+   "frames_per_s": 694743.57,
+   "note": "via librbxport C shim (FFI)"
+  },
+  {
+   "transport": "lsl",
+   "language": "fortran",
+   "frames_per_s": 30375.206,
+   "note": "via librbxport C shim (FFI)"
+  },
+  {
+   "transport": "can",
+   "language": "fortran",
+   "frames_per_s": 2574665.294,
+   "note": "via librbxport C shim (FFI)"
+  },
+  {
+   "transport": "shm",
+   "language": "pascal",
+   "frames_per_s": 9900990.085,
+   "note": "via librbxport C shim (FFI)"
+  },
+  {
+   "transport": "serial",
+   "language": "pascal",
+   "frames_per_s": 121188.324,
+   "note": "via librbxport C shim (FFI)"
+  },
+  {
+   "transport": "mqtt",
+   "language": "pascal",
+   "frames_per_s": 196089.966,
+   "note": "via librbxport C shim (FFI)"
+  },
+  {
+   "transport": "amqp",
+   "language": "pascal",
+   "frames_per_s": 63760.871,
+   "note": "via librbxport C shim (FFI)"
+  },
+  {
+   "transport": "kafka",
+   "language": "pascal",
+   "frames_per_s": 14903.165,
+   "note": "via librbxport C shim (FFI); FPC FP-exception mask required for librdkafka"
+  },
+  {
+   "transport": "dds",
+   "language": "pascal",
+   "frames_per_s": 1614882.76,
+   "note": "via librbxport C shim (FFI)"
+  },
+  {
+   "transport": "zerocm",
+   "language": "pascal",
+   "frames_per_s": 465423.675,
+   "note": "via librbxport C shim (FFI)"
+  },
+  {
+   "transport": "lsl",
+   "language": "pascal",
+   "frames_per_s": 15293.634,
+   "note": "via librbxport C shim (FFI)"
+  },
+  {
+   "transport": "can",
+   "language": "pascal",
+   "frames_per_s": 1969356.807,
+   "note": "via librbxport C shim (FFI)"
+  },
+  {
+   "transport": "shm",
+   "language": "nelua",
+   "frames_per_s": 54466230.629,
+   "note": "via librbxport C shim (FFI)"
+  },
+  {
+   "transport": "serial",
+   "language": "nelua",
+   "frames_per_s": 109895.665,
+   "note": "via librbxport C shim (FFI)"
+  },
+  {
+   "transport": "mqtt",
+   "language": "nelua",
+   "frames_per_s": 235093.873,
+   "note": "via librbxport C shim (FFI)"
+  },
+  {
+   "transport": "amqp",
+   "language": "nelua",
+   "frames_per_s": 81962.645,
+   "note": "via librbxport C shim (FFI)"
+  },
+  {
+   "transport": "kafka",
+   "language": "nelua",
+   "frames_per_s": 13747.681,
+   "note": "via librbxport C shim (FFI)"
+  },
+  {
+   "transport": "dds",
+   "language": "nelua",
+   "frames_per_s": 2676372.98,
+   "note": "via librbxport C shim (FFI)"
+  },
+  {
+   "transport": "zerocm",
+   "language": "nelua",
+   "frames_per_s": 1209628.644,
+   "note": "via librbxport C shim (FFI)"
+  },
+  {
+   "transport": "lsl",
+   "language": "nelua",
+   "frames_per_s": 31580.596,
+   "note": "via librbxport C shim (FFI)"
+  },
+  {
+   "transport": "can",
+   "language": "nelua",
+   "frames_per_s": 1249750.05,
+   "note": "via librbxport C shim (FFI)"
+  },
+  {
+   "transport": "shm",
+   "language": "cobol",
+   "frames_per_s": 62500001.578,
+   "note": "via librbxport C shim (FFI)"
+  },
+  {
+   "transport": "serial",
+   "language": "cobol",
+   "frames_per_s": 99254.006,
+   "note": "via librbxport C shim (FFI)"
+  },
+  {
+   "transport": "mqtt",
+   "language": "cobol",
+   "frames_per_s": 186027.822,
+   "note": "via librbxport C shim (FFI)"
+  },
+  {
+   "transport": "amqp",
+   "language": "cobol",
+   "frames_per_s": 63427.87,
+   "note": "via librbxport C shim (FFI)"
+  },
+  {
+   "transport": "kafka",
+   "language": "cobol",
+   "frames_per_s": 13158.826,
+   "note": "via librbxport C shim (FFI)"
+  },
+  {
+   "transport": "dds",
+   "language": "cobol",
+   "frames_per_s": 2795482.497,
+   "note": "via librbxport C shim (FFI)"
+  },
+  {
+   "transport": "zerocm",
+   "language": "cobol",
+   "frames_per_s": 1322016.868,
+   "note": "via librbxport C shim (FFI)"
+  },
+  {
+   "transport": "lsl",
+   "language": "cobol",
+   "frames_per_s": 34844.996,
+   "note": "via librbxport C shim (FFI)"
+  },
+  {
+   "transport": "can",
+   "language": "cobol",
+   "frames_per_s": 2467795.271,
+   "note": "via librbxport C shim (FFI)"
+  },
+  {
+   "transport": "shm",
+   "language": "octave",
+   "frames_per_s": 63291139.965,
+   "note": "via librbxport C shim (FFI)"
+  },
+  {
+   "transport": "serial",
+   "language": "octave",
+   "frames_per_s": 90785.128,
+   "note": "via librbxport C shim (FFI)"
+  },
+  {
+   "transport": "mqtt",
+   "language": "octave",
+   "frames_per_s": 346341.936,
+   "note": "via librbxport C shim (FFI)"
+  },
+  {
+   "transport": "amqp",
+   "language": "octave",
+   "frames_per_s": 56126.487,
+   "note": "via librbxport C shim (FFI)"
+  },
+  {
+   "transport": "kafka",
+   "language": "octave",
+   "frames_per_s": 13939.936,
+   "note": "via librbxport C shim (FFI)"
+  },
+  {
+   "transport": "dds",
+   "language": "octave",
+   "frames_per_s": 2816108.137,
+   "note": "via librbxport C shim (FFI)"
+  },
+  {
+   "transport": "zerocm",
+   "language": "octave",
+   "frames_per_s": 1311475.41,
+   "note": "via librbxport C shim (FFI)"
+  },
+  {
+   "transport": "lsl",
+   "language": "octave",
+   "frames_per_s": 35503.479,
+   "note": "via librbxport C shim (FFI)"
+  },
+  {
+   "transport": "can",
+   "language": "octave",
+   "frames_per_s": 1147420.599,
+   "note": "via librbxport C shim (FFI)"
+  }
+ ]
 }

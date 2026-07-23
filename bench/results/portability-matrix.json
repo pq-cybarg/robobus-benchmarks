@@ -1,0 +1,387 @@
+{
+  "schema": "robobus-portability/1",
+  "generated_unix": 1784843793,
+  "note": "Correctness across CPU architectures via local Docker+QEMU (no CI runner). Timing under emulation is not cycle-accurate and is not recorded; this proves the wire, crypto, language bindings and transports COMPUTE correctly on each ISA (endianness, word size).",
+  "arches": [
+    {
+      "arch": "i686",
+      "byteorder": "little",
+      "java_env": true,
+      "toolchains": {
+        "cc": "cc (Debian 14.2.0-19) 14.2.0",
+        "python": "Python 3.13.5",
+        "rust": "cargo 1.85.0 (d73d2caf9 2024-12-31)",
+        "node": "v20.19.2",
+        "java": "javac 21.0.11",
+        "cython": "Cython version 3.0.11"
+      },
+      "suites": {
+        "wire_conformance": {
+          "passed": 3,
+          "failed": 0,
+          "ran": true,
+          "env": false
+        },
+        "codec": {
+          "passed": 7,
+          "failed": 0,
+          "ran": true,
+          "env": false
+        },
+        "codegen": {
+          "passed": 17,
+          "failed": 0,
+          "ran": true,
+          "env": false
+        },
+        "rust": {
+          "passed": 3,
+          "failed": 0,
+          "ran": true,
+          "env": false
+        },
+        "javascript": {
+          "passed": 3,
+          "failed": 0,
+          "ran": true,
+          "env": false
+        },
+        "java": {
+          "passed": 0,
+          "failed": 0,
+          "ran": false,
+          "env": true
+        },
+        "cython": {
+          "passed": 5,
+          "failed": 0,
+          "ran": true,
+          "env": false
+        },
+        "transports": {
+          "passed": 4,
+          "failed": 0,
+          "ran": true,
+          "env": false
+        },
+        "transports_extra": {
+          "passed": 10,
+          "failed": 0,
+          "ran": true,
+          "env": false
+        }
+      },
+      "crypto_verify": "ok"
+    },
+    {
+      "arch": "armv7l",
+      "byteorder": "little",
+      "java_env": false,
+      "toolchains": {
+        "cc": "cc (Debian 14.2.0-19) 14.2.0",
+        "python": "Python 3.13.5",
+        "rust": "cargo 1.85.0 (d73d2caf9 2024-12-31)",
+        "node": "v20.19.2",
+        "java": "javac 21.0.11",
+        "cython": "Cython version 3.0.11"
+      },
+      "suites": {
+        "wire_conformance": {
+          "passed": 3,
+          "failed": 0,
+          "ran": true,
+          "env": false
+        },
+        "codec": {
+          "passed": 7,
+          "failed": 0,
+          "ran": true,
+          "env": false
+        },
+        "codegen": {
+          "passed": 18,
+          "failed": 0,
+          "ran": true,
+          "env": false
+        },
+        "rust": {
+          "passed": 3,
+          "failed": 0,
+          "ran": true,
+          "env": false
+        },
+        "javascript": {
+          "passed": 3,
+          "failed": 0,
+          "ran": true,
+          "env": false
+        },
+        "java": {
+          "passed": 3,
+          "failed": 0,
+          "ran": true,
+          "env": false
+        },
+        "cython": {
+          "passed": 5,
+          "failed": 0,
+          "ran": true,
+          "env": false
+        },
+        "transports": {
+          "passed": 4,
+          "failed": 0,
+          "ran": true,
+          "env": false
+        },
+        "transports_extra": {
+          "passed": 10,
+          "failed": 0,
+          "ran": true,
+          "env": false
+        }
+      },
+      "crypto_verify": "ok"
+    },
+    {
+      "arch": "aarch64",
+      "byteorder": "little",
+      "toolchains": {
+        "cc": "cc (Debian 14.2.0-19) 14.2.0",
+        "python": "Python 3.13.5",
+        "rust": "cargo 1.85.0 (d73d2caf9 2024-12-31)",
+        "node": "v20.19.2",
+        "java": "javac 21.0.11",
+        "cython": "Cython version 3.0.11"
+      },
+      "suites": {
+        "wire_conformance": {
+          "passed": 3,
+          "failed": 0,
+          "ran": true
+        },
+        "codec": {
+          "passed": 7,
+          "failed": 0,
+          "ran": true
+        },
+        "codegen": {
+          "passed": 18,
+          "failed": 0,
+          "ran": true
+        },
+        "rust": {
+          "passed": 3,
+          "failed": 0,
+          "ran": true
+        },
+        "javascript": {
+          "passed": 3,
+          "failed": 0,
+          "ran": true
+        },
+        "java": {
+          "passed": 3,
+          "failed": 0,
+          "ran": true
+        },
+        "cython": {
+          "passed": 0,
+          "failed": 0,
+          "ran": true
+        },
+        "transports": {
+          "passed": 4,
+          "failed": 0,
+          "ran": true
+        },
+        "transports_extra": {
+          "passed": 10,
+          "failed": 0,
+          "ran": true
+        }
+      },
+      "crypto_verify": "ok"
+    },
+    {
+      "arch": "ppc64le",
+      "byteorder": "little",
+      "toolchains": {
+        "cc": "cc (Debian 14.2.0-19) 14.2.0",
+        "python": "Python 3.13.5",
+        "rust": "cargo 1.85.0 (d73d2caf9 2024-12-31)",
+        "node": "v20.19.2",
+        "java": "javac 21.0.11",
+        "cython": "Cython version 3.0.11"
+      },
+      "suites": {
+        "wire_conformance": {
+          "passed": 3,
+          "failed": 0,
+          "ran": true
+        },
+        "codec": {
+          "passed": 7,
+          "failed": 0,
+          "ran": true
+        },
+        "codegen": {
+          "passed": 18,
+          "failed": 0,
+          "ran": true
+        },
+        "rust": {
+          "passed": 3,
+          "failed": 0,
+          "ran": true
+        },
+        "javascript": {
+          "passed": 3,
+          "failed": 0,
+          "ran": true
+        },
+        "java": {
+          "passed": 3,
+          "failed": 0,
+          "ran": true
+        },
+        "cython": {
+          "passed": 0,
+          "failed": 0,
+          "ran": true
+        },
+        "transports": {
+          "passed": 4,
+          "failed": 0,
+          "ran": true
+        },
+        "transports_extra": {
+          "passed": 10,
+          "failed": 0,
+          "ran": true
+        }
+      },
+      "crypto_verify": "ok"
+    },
+    {
+      "arch": "riscv64",
+      "byteorder": "little",
+      "toolchains": {
+        "cc": "cc (Debian 14.2.0-19) 14.2.0",
+        "python": "Python 3.13.5",
+        "rust": "cargo 1.85.0 (d73d2caf9 2024-12-31)",
+        "node": "v20.19.2",
+        "java": "javac 21.0.11",
+        "cython": "Cython version 3.0.11"
+      },
+      "suites": {
+        "wire_conformance": {
+          "passed": 3,
+          "failed": 0,
+          "ran": true
+        },
+        "codec": {
+          "passed": 7,
+          "failed": 0,
+          "ran": true
+        },
+        "codegen": {
+          "passed": 18,
+          "failed": 0,
+          "ran": true
+        },
+        "rust": {
+          "passed": 3,
+          "failed": 0,
+          "ran": true
+        },
+        "javascript": {
+          "passed": 3,
+          "failed": 0,
+          "ran": true
+        },
+        "java": {
+          "passed": 3,
+          "failed": 0,
+          "ran": true
+        },
+        "cython": {
+          "passed": 0,
+          "failed": 0,
+          "ran": true
+        },
+        "transports": {
+          "passed": 4,
+          "failed": 0,
+          "ran": true
+        },
+        "transports_extra": {
+          "passed": 10,
+          "failed": 0,
+          "ran": true
+        }
+      },
+      "crypto_verify": "ok"
+    },
+    {
+      "arch": "s390x",
+      "byteorder": "big",
+      "toolchains": {
+        "cc": "cc (Debian 14.2.0-19) 14.2.0",
+        "python": "Python 3.13.5",
+        "rust": "cargo 1.85.0 (d73d2caf9 2024-12-31)",
+        "node": "v20.19.2",
+        "java": "javac 21.0.11",
+        "cython": "Cython version 3.0.11"
+      },
+      "suites": {
+        "wire_conformance": {
+          "passed": 3,
+          "failed": 0,
+          "ran": true
+        },
+        "codec": {
+          "passed": 7,
+          "failed": 0,
+          "ran": true
+        },
+        "codegen": {
+          "passed": 18,
+          "failed": 0,
+          "ran": true
+        },
+        "rust": {
+          "passed": 3,
+          "failed": 0,
+          "ran": true
+        },
+        "javascript": {
+          "passed": 3,
+          "failed": 0,
+          "ran": true
+        },
+        "java": {
+          "passed": 3,
+          "failed": 0,
+          "ran": true
+        },
+        "cython": {
+          "passed": 0,
+          "failed": 0,
+          "ran": true
+        },
+        "transports": {
+          "passed": 4,
+          "failed": 0,
+          "ran": true
+        },
+        "transports_extra": {
+          "passed": 10,
+          "failed": 0,
+          "ran": true
+        }
+      },
+      "crypto_verify": "ok"
+    }
+  ]
+}

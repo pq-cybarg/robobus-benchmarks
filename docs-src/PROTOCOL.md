@@ -2,7 +2,7 @@
 
 Everything on the bus is bytes in a fixed, documented layout, so the bus is **not
 Python-specific**. The Python core and the C poller (`native/shm_bench.c`) already
-interoperate over the *same* ring file — any language with mmap + integer/byte ops can
+interoperate over the *same* ring file, any language with mmap + integer/byte ops can
 join. All integers are **little-endian** unless noted.
 
 ## 1. Ring file (shared-memory channel)
@@ -35,7 +35,7 @@ Slot i  (at off = 64 + i*slot_size):
 **Reader (any number):** track your own `next` (start at `cursor+1` for live, or
 `max(1, cursor-n_slots+1)` for oldest). If `cursor >= next`: if `cursor-next >= n_slots`
 you were lapped (skip ahead, count drops); read slot for `next`, copy payload, re-read
-`seq` — if it changed, the writer lapped you mid-copy: retry/skip (seqlock). See
+`seq`, if it changed, the writer lapped you mid-copy: retry/skip (seqlock). See
 `robobus/shm_ring.py` and `native/shm_bench.c` for two reference implementations.
 
 ## 2. Codec frame (the slot payload, plaintext)
@@ -50,7 +50,7 @@ you were lapped (skip ahead, count drops); read slot for `next`, copy payload, r
 **Typed/schema frames (type 6)** carry a fixed, packed, little-endian struct plus a
 4-byte schema id for validation (`robobus.schema.Schema`). Because the layout is fixed,
 a field can be read at its offset without unpacking the whole message, and
-`Schema.c_struct()` emits the matching `#pragma pack(1)` C struct — a C/Rust program can
+`Schema.c_struct()` emits the matching `#pragma pack(1)` C struct, a C/Rust program can
 `fread` the body directly. This is verified in `tests/test_schema.py` (a compiled C
 program reads Python's packed bytes).
 
@@ -79,12 +79,12 @@ A responder publishes `{suite, kem_pub, token, identity_pub}` where `token = Sig
 `KEM.encapsulate(kem_pub) -> (ct, ss)`, and both sides derive
 `session_key = HKDF(hash, ss, salt=H(kem_pub||ct), info="robobus-session")`. Algorithms
 per suite (see `robobus/crypto/suites.py`); ML-KEM/ML-DSA byte sizes are the FIPS 203/204
-standard sizes. This layer is transport-agnostic — exchange the bytes over any channel.
+standard sizes. This layer is transport-agnostic, exchange the bytes over any channel.
 
 ## 5. Implementing a binding
 
 Minimum to join the bus from another language:
-1. mmap the ring file; implement the §1 reader/writer (the hard part is the seqlock — copy
+1. mmap the ring file; implement the §1 reader/writer (the hard part is the seqlock, copy
    the reference logic exactly).
 2. Implement §2 encode/decode (trivial: a type byte, a u64, and an array/string/bytes).
 3. (Optional) §3 with the platform AEAD (every crypto lib has AES-256-GCM) for encryption,

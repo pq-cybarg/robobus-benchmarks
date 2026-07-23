@@ -15,7 +15,7 @@ verifiable component inventory (feed it to Dependency-Track, `grype`, `osv-scann
 
 ## 2. Vulnerability gating
 
-`pip-audit` (deps) + `bandit` (code) run in `make audit` and the CI `audit` job — a finding
+`pip-audit` (deps) + `bandit` (code) run in `make audit` and the CI `audit` job, a finding
 is visible on every build. Native code is gated by ASan/UBSan/TSan; parsers by fuzzing;
 resources by the fd/thread leak test.
 
@@ -31,7 +31,7 @@ Generate the lock with `pip-compile --generate-hashes` (pip-tools) or `pip freez
 The conda side is already pinned by exact build strings in the RoboStack channels + our
 `scripts/install_*.sh`.
 
-## 4. Artifact signing (Sigstore) + provenance — the live release pipeline
+## 4. Artifact signing (Sigstore) + provenance, the live release pipeline
 
 A tag push (`v*`) runs `.github/workflows/release.yml`,
 which with **OIDC identity only (no long-lived secrets)**:
@@ -61,7 +61,7 @@ the signing/attestation steps require the CI OIDC identity and run on tag.
 ## 5. Module integrity (runtime)
 
 `robobus crypto compliance` prints a SHA3-256 over all robobus sources
-(`compliance.module_integrity()`). Pin the digest at release and compare on start-up — the
+(`compliance.module_integrity()`). Pin the digest at release and compare on start-up, the
 software-integrity self-test a FIPS 140-3 module runs at load (see
 [CMVP-READINESS.md](CMVP-READINESS.md)).
 
