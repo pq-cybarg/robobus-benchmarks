@@ -1,109 +1,109 @@
 {
- "schema": "robobus-bench/1",
- "label": "Formal verification, cbmc 6.9.0 (C bus ring, exhaustive)",
- "platform": {
-  "system": "formal",
-  "release": "machine-checked",
-  "version": "6.9.0",
-  "processor": "cbmc",
-  "machine": "cbmc",
-  "cpu_brand": "cbmc 6.9.0 bounded model checker",
-  "cpu_count_logical": 1,
-  "platform": "cbmc 6.9.0 (bit-precise SAT/SMT decision procedure)",
-  "python_version": "n/a",
-  "python_impl": "cbmc",
-  "environment": {
-   "virtualized": false,
-   "formal": true,
-   "caveat": "exhaustive over ALL inputs (not sampled). Atomics are modelled as their sequential equivalent for these single-threaded proofs (cbmc_atomic_shim.h); concurrent interleavings are covered by the SymbiYosys/k-induction RTL proof."
+  "schema": "robobus-bench/1",
+  "label": "Formal verification, cbmc 6.9.0 (C bus ring, exhaustive)",
+  "platform": {
+    "system": "formal",
+    "release": "machine-checked",
+    "version": "6.9.0",
+    "processor": "cbmc",
+    "machine": "cbmc",
+    "cpu_brand": "cbmc 6.9.0 bounded model checker",
+    "cpu_count_logical": 1,
+    "platform": "cbmc 6.9.0 (bit-precise SAT/SMT decision procedure)",
+    "python_version": "n/a",
+    "python_impl": "cbmc",
+    "environment": {
+      "virtualized": false,
+      "formal": true,
+      "caveat": "exhaustive over ALL inputs (not sampled). Atomics are modelled as their sequential equivalent for these single-threaded proofs (cbmc_atomic_shim.h); concurrent interleavings are covered by the SymbiYosys/k-induction RTL proof."
+    },
+    "measurement": {
+      "fidelity_tier": "formal (exhaustive proof, not measurement)",
+      "uncontrolled_noise": []
+    },
+    "dependencies": {
+      "available": {
+        "cbmc": "6.9.0"
+      },
+      "missing": {}
+    }
   },
-  "measurement": {
-   "fidelity_tier": "formal (exhaustive proof, not measurement)",
-   "uncontrolled_noise": []
-  },
-  "dependencies": {
-   "available": {
-    "cbmc": "6.9.0"
-   },
-   "missing": {}
-  }
- },
- "results": [
-  {
-   "group": "formal",
-   "name": "PROP_safety",
-   "config": {
-    "tool": "cbmc",
-    "ring_slots": 8
-   },
-   "unit": "pass",
-   "dependency": "cbmc",
-   "status": "ok",
-   "note": "ring_put/ring_get never index out of bounds or deref a bad pointer, for ANY 64-bit position",
-   "metrics": {
-    "passed": true
-   }
-  },
-  {
-   "group": "formal",
-   "name": "PROP_roundtrip",
-   "config": {
-    "tool": "cbmc",
-    "ring_slots": 8
-   },
-   "unit": "pass",
-   "dependency": "cbmc",
-   "status": "ok",
-   "note": "put(w) then get(w) returns EXACTLY the stamp+payload written, and reports success",
-   "metrics": {
-    "passed": true
-   }
-  },
-  {
-   "group": "formal",
-   "name": "PROP_reject_writing",
-   "config": {
-    "tool": "cbmc",
-    "ring_slots": 8
-   },
-   "unit": "pass",
-   "dependency": "cbmc",
-   "status": "ok",
-   "note": "a reader meeting a slot mid-write (odd sequence) rejects it, no torn read",
-   "metrics": {
-    "passed": true
-   }
-  },
-  {
-   "group": "formal",
-   "name": "PROP_reject_stale",
-   "config": {
-    "tool": "cbmc",
-    "ring_slots": 8
-   },
-   "unit": "pass",
-   "dependency": "cbmc",
-   "status": "ok",
-   "note": "a reader meeting a slot holding a different published generation rejects it",
-   "metrics": {
-    "passed": true
-   }
-  },
-  {
-   "group": "formal",
-   "name": "PROP_backpressure",
-   "config": {
-    "tool": "cbmc",
-    "ring_slots": 1024
-   },
-   "unit": "pass",
-   "dependency": "cbmc",
-   "status": "ok",
-   "note": "within the producer's backpressure window (< ring size) no two live positions alias a slot",
-   "metrics": {
-    "passed": true
-   }
-  }
- ],
- "note": "Machine-checked proofs of bench/native/ring.h, the SAME ring nsbus.c benchmarks. SUCCESS means cbmc proved no counterexample exists up to the bound."
+  "results": [
+    {
+      "group": "formal",
+      "name": "PROP_safety",
+      "config": {
+        "tool": "cbmc",
+        "ring_slots": 8
+      },
+      "unit": "pass",
+      "dependency": "cbmc",
+      "status": "ok",
+      "note": "ring_put/ring_get never index out of bounds or deref a bad pointer, for ANY 64-bit position",
+      "metrics": {
+        "passed": true
+      }
+    },
+    {
+      "group": "formal",
+      "name": "PROP_roundtrip",
+      "config": {
+        "tool": "cbmc",
+        "ring_slots": 8
+      },
+      "unit": "pass",
+      "dependency": "cbmc",
+      "status": "ok",
+      "note": "put(w) then get(w) returns EXACTLY the stamp+payload written, and reports success",
+      "metrics": {
+        "passed": true
+      }
+    },
+    {
+      "group": "formal",
+      "name": "PROP_reject_writing",
+      "config": {
+        "tool": "cbmc",
+        "ring_slots": 8
+      },
+      "unit": "pass",
+      "dependency": "cbmc",
+      "status": "ok",
+      "note": "a reader meeting a slot mid-write (odd sequence) rejects it, no torn read",
+      "metrics": {
+        "passed": true
+      }
+    },
+    {
+      "group": "formal",
+      "name": "PROP_reject_stale",
+      "config": {
+        "tool": "cbmc",
+        "ring_slots": 8
+      },
+      "unit": "pass",
+      "dependency": "cbmc",
+      "status": "ok",
+      "note": "a reader meeting a slot holding a different published generation rejects it",
+      "metrics": {
+        "passed": true
+      }
+    },
+    {
+      "group": "formal",
+      "name": "PROP_backpressure",
+      "config": {
+        "tool": "cbmc",
+        "ring_slots": 1024
+      },
+      "unit": "pass",
+      "dependency": "cbmc",
+      "status": "ok",
+      "note": "within the producer's backpressure window (< ring size) no two live positions alias a slot",
+      "metrics": {
+        "passed": true
+      }
+    }
+  ],
+  "note": "Machine-checked proofs of bench/native/ring.h, the SAME ring nsbus.c benchmarks. SUCCESS means cbmc proved no counterexample exists up to the bound."
 }

@@ -1,4 +1,4 @@
-<!doctype html><html lang='en'><head><meta charset='utf-8'><meta name='viewport' content='width=device-width,initial-scale=1'><title>Wire protocol · robobus docs</title><meta name='description' content='robobus wire protocol (language-agnostic)'><link rel='canonical' href='https://pq-cybarg.github.io/robobus-benchmarks/'><meta property='og:type' content='website'><meta property='og:site_name' content='robobus'><meta property='og:title' content='Wire protocol · robobus docs'><meta property='og:description' content='robobus wire protocol (language-agnostic)'><meta property='og:url' content='https://pq-cybarg.github.io/robobus-benchmarks/'><meta property='og:image' content='https://pq-cybarg.github.io/robobus-benchmarks/og-image.png'><meta property='og:image:width' content='1200'><meta property='og:image:height' content='630'><meta property='og:image:alt' content='robobus — post-quantum, real-time robotics middleware'><meta name='twitter:card' content='summary_large_image'><meta name='twitter:title' content='Wire protocol · robobus docs'><meta name='twitter:description' content='robobus wire protocol (language-agnostic)'><meta name='twitter:image' content='https://pq-cybarg.github.io/robobus-benchmarks/og-image.png'><link rel='preconnect' href='https://fonts.googleapis.com'><link rel='preconnect' href='https://fonts.gstatic.com' crossorigin><link href='https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=JetBrains+Mono:wght@400;500;700&family=Inter:wght@400;500;600&display=swap' rel='stylesheet'><style>
+<!doctype html><html lang='en'><head><meta charset='utf-8'><meta name='viewport' content='width=device-width,initial-scale=1'><title>Wire protocol · robobus docs</title><meta name='description' content='robobus wire protocol (language-agnostic)'><link rel='canonical' href='https://pq-cybarg.github.io/robobus-benchmarks/'><meta property='og:type' content='website'><meta property='og:site_name' content='robobus'><meta property='og:title' content='Wire protocol · robobus docs'><meta property='og:description' content='robobus wire protocol (language-agnostic)'><meta property='og:url' content='https://pq-cybarg.github.io/robobus-benchmarks/'><meta property='og:image' content='https://pq-cybarg.github.io/robobus-benchmarks/og-image.png'><meta property='og:image:width' content='1200'><meta property='og:image:height' content='630'><meta property='og:image:alt' content='robobus, one message bus benchmarked in 33 languages across 26 crypto primitives and 15 transports'><meta name='twitter:card' content='summary_large_image'><meta name='twitter:title' content='Wire protocol · robobus docs'><meta name='twitter:description' content='robobus wire protocol (language-agnostic)'><meta name='twitter:image' content='https://pq-cybarg.github.io/robobus-benchmarks/og-image.png'><link rel='preconnect' href='https://fonts.googleapis.com'><link rel='preconnect' href='https://fonts.gstatic.com' crossorigin><link href='https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=JetBrains+Mono:wght@400;500;700&family=Inter:wght@400;500;600&display=swap' rel='stylesheet'><style>
 :root{
   --bg:#0a0e13; --bg2:#0d131b; --panel:#111a24; --panel2:#0f1620; --line:#1e2a37;
   --fg:#e9eef4; --muted:#8a9bab; --dim:#5f7183;
@@ -75,7 +75,7 @@ h2.title{font-size:clamp(24px,3.5vw,34px);margin:0 0 8px}
 .fcard p{color:var(--muted);font-size:14.5px;margin:0}
 .fcard .pqc{color:var(--pqc)}.fcard .hybrid{color:var(--hybrid)}.fcard .qr{color:var(--qr)}
 
-/* plain-language explainer — the layperson on-ramp */
+/* plain-language explainer, the layperson on-ramp */
 .plain{display:grid;gap:16px}
 @media(min-width:760px){.plain{grid-template-columns:repeat(3,1fr)}}
 .pcard{background:linear-gradient(180deg,var(--panel),var(--panel2));border:1px solid var(--line);border-radius:16px;padding:24px 22px}
@@ -103,13 +103,13 @@ h2.title{font-size:clamp(24px,3.5vw,34px);margin:0 0 8px}
 
 /* layer table */
 .ltab{width:100%;border-collapse:collapse;font-size:14.5px}
-.ltab th,.ltab td{text-align:left;padding:11px 14px;border-bottom:1px solid var(--line)}
+.ltab th.ltab td{text-align:left;padding:11px 14px;border-bottom:1px solid var(--line)}
 .ltab th{font-size:11.5px;text-transform:uppercase;letter-spacing:.06em;color:var(--dim);font-weight:600}
 .ltab td.reg{font-family:'JetBrains Mono';color:var(--signal);font-size:13px}
 .ltab td.n{font-family:'JetBrains Mono';color:var(--fg)}
 .ltab tr:hover td{background:var(--panel2)}
 
-/* speed matrices — horizontal bars + transport×language heatmap */
+/* speed matrices, horizontal bars + transport×language heatmap */
 .hbars{display:flex;flex-direction:column;gap:7px;margin:6px 0 4px}
 .hrow{display:grid;grid-template-columns:118px 1fr 132px;align-items:center;gap:12px}
 .hrow .lname{font-weight:600;font-size:13.5px}
@@ -123,7 +123,7 @@ h2.title{font-size:clamp(24px,3.5vw,34px);margin:0 0 8px}
 .tier-i>i{background:linear-gradient(90deg,var(--violet),var(--hybrid))}
 .heatwrap{overflow-x:auto}
 .heat{border-collapse:collapse;font-size:12.5px;min-width:520px}
-.heat th,.heat td{padding:9px 12px;text-align:center;border:1px solid var(--line);font-variant-numeric:tabular-nums}
+.heat th.heat td{padding:9px 12px;text-align:center;border:1px solid var(--line);font-variant-numeric:tabular-nums}
 .heat th{font:600 11px/1 'JetBrains Mono';text-transform:uppercase;letter-spacing:.05em;color:var(--dim)}
 .heat td.rl{text-align:left;font-weight:600;color:var(--fg);font-family:'Inter'}
 .heat td.na{color:var(--dim)}
@@ -157,7 +157,7 @@ footer.site a{color:var(--muted)}
 
 @media (max-width:640px){.hero{padding:48px 0 20px}.nav a.tab{padding:6px 9px}}
 @media (prefers-reduced-motion:no-preference){
-  .reveal{animation:rise .7s cubic-bezier(.2,.7,.2,1) both}
+  .reveal{animation:rise .7s cubic-bezier(.2.7.2,1) both}
   @keyframes rise{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:none}}
   .spec-mark{animation:pop .5s ease both}@keyframes pop{from{opacity:0}to{opacity:1}}
 }
@@ -173,25 +173,25 @@ footer.site a{color:var(--muted)}
 .dbody h1{font-size:clamp(26px,4vw,38px);margin:0 0 8px;letter-spacing:-.02em}
 .dbody h2{font-size:23px;margin:36px 0 10px;padding-top:14px;border-top:1px solid var(--line)}
 .dbody h3{font-size:18px;margin:26px 0 8px;color:var(--fg)}
-.dbody p,.dbody li{color:#cdd6e0}
+.dbody p.dbody li{color:#cdd6e0}
 .dbody a{color:var(--signal)}
 .dbody code{font-family:'JetBrains Mono';background:#060a10;border:1px solid var(--line);padding:1px 6px;border-radius:5px;font-size:.85em}
 .dbody pre{background:#060a10;border:1px solid var(--line);border-radius:10px;padding:15px 17px;overflow:auto;font-size:13px}
 .dbody pre code{background:none;border:none;padding:0}
 .dbody table{border-collapse:collapse;width:100%;margin:16px 0;font-size:14px;display:block;overflow-x:auto}
-.dbody th,.dbody td{border:1px solid var(--line);padding:9px 12px;text-align:left}
+.dbody th.dbody td{border:1px solid var(--line);padding:9px 12px;text-align:left}
 .dbody th{background:var(--panel);color:var(--fg);font-family:'Space Grotesk'}
 .dbody tr:hover td{background:var(--panel2)}
 .dbody blockquote{border-left:3px solid var(--signal);margin:14px 0;padding:2px 16px;color:var(--muted);background:var(--panel2);border-radius:0 8px 8px 0}
 .dbody hr{border:none;border-top:1px solid var(--line);margin:26px 0}
-.dbody ul,.dbody ol{padding-left:22px}
+.dbody ul.dbody ol{padding-left:22px}
 .dbody li{margin:5px 0}
 .dlede{color:var(--muted);margin:0 0 22px;font-size:15px}
 @media (max-width:760px){.dwrap{grid-template-columns:1fr}.dside{position:static;display:flex;flex-wrap:wrap;gap:4px}.dside-t{width:100%}}
 </style></head><body><div class='nav'><div class='row'><a class='brand' href='../index.html'><svg class='glyph' viewBox='0 0 32 32' fill='none' aria-hidden='true'><rect x='1.5' y='1.5' width='29' height='29' rx='8' stroke='#1e2a37' stroke-width='1.5'/><path d='M7 20 L11 20 L13 10 L16 24 L19 13 L21 20 L25 20' stroke='#4fd1c5' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'/></svg>robobus</a><nav class='links'><a class='tab' href='../index.html'>Home</a><a class='tab' href='../benchmarks.html'>Benchmarks</a><a class='tab' href='../speed.html'>Speed matrix</a><a class='tab active' href='../docs/index.html'>Docs</a><a class='gh' href='https://github.com/pq-cybarg/robobus-benchmarks' aria-label='GitHub'><svg width='19' height='19' viewBox='0 0 16 16' fill='currentColor'><path d='M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.01 8.01 0 0016 8c0-4.42-3.58-8-8-8z'/></svg></a></nav></div></div><div class='dwrap'><aside class='dside'><div class='dside-t'>Documentation</div><a href='architecture.html' class='ditem'>Architecture</a><a href='protocol.html' class='ditem active'>Wire protocol</a><a href='security.html' class='ditem'>Security model</a><a href='compliance.html' class='ditem'>Compliance</a><a href='cmvp-readiness.html' class='ditem'>CMVP readiness</a><a href='crypto-provenance.html' class='ditem'>Crypto provenance</a><a href='portability.html' class='ditem'>Portability</a><a href='determinism.html' class='ditem'>Determinism</a><a href='realtime.html' class='ditem'>Real-time</a><a href='supply-chain.html' class='ditem'>Supply chain</a><a href='bindings.html' class='ditem'>Language bindings</a><a href='roadmap.html' class='ditem'>Roadmap</a></aside><article class='dbody'><h1 id="robobus-wire-protocol-language-agnostic">robobus wire protocol (language-agnostic)</h1>
 <p>Everything on the bus is bytes in a fixed, documented layout, so the bus is <strong>not
 Python-specific</strong>. The Python core and the C poller (<code>native/shm_bench.c</code>) already
-interoperate over the <em>same</em> ring file — any language with mmap + integer/byte ops can
+interoperate over the <em>same</em> ring file, any language with mmap + integer/byte ops can
 join. All integers are <strong>little-endian</strong> unless noted.</p>
 <h2 id="1-ring-file-shared-memory-channel">1. Ring file (shared-memory channel)</h2>
 <p>One mmap'd file per channel: <code>&lt;dir&gt;/&lt;channel&gt;.ring</code> where <code>&lt;dir&gt;</code> is <code>/dev/shm/robobus</code>
@@ -218,7 +218,7 @@ Slot i  (at off = 64 + i*slot_size):
 <p><strong>Reader (any number):</strong> track your own <code>next</code> (start at <code>cursor+1</code> for live, or
 <code>max(1, cursor-n_slots+1)</code> for oldest). If <code>cursor &gt;= next</code>: if <code>cursor-next &gt;= n_slots</code>
 you were lapped (skip ahead, count drops); read slot for <code>next</code>, copy payload, re-read
-<code>seq</code> — if it changed, the writer lapped you mid-copy: retry/skip (seqlock). See
+<code>seq</code>, if it changed, the writer lapped you mid-copy: retry/skip (seqlock). See
 <code>robobus/shm_ring.py</code> and <code>native/shm_bench.c</code> for two reference implementations.</p>
 <h2 id="2-codec-frame-the-slot-payload-plaintext">2. Codec frame (the slot payload, plaintext)</h2>
 <pre><code>  off 0   u8   type         1=float64[] 2=int32[] 3=utf8 str 4=utf8 JSON 5=bytes 6=schema
@@ -229,7 +229,7 @@ you were lapped (skip ahead, count drops); read slot for <code>next</code>, copy
 <p><strong>Typed/schema frames (type 6)</strong> carry a fixed, packed, little-endian struct plus a
 4-byte schema id for validation (<code>robobus.schema.Schema</code>). Because the layout is fixed,
 a field can be read at its offset without unpacking the whole message, and
-<code>Schema.c_struct()</code> emits the matching <code>#pragma pack(1)</code> C struct — a C/Rust program can
+<code>Schema.c_struct()</code> emits the matching <code>#pragma pack(1)</code> C struct, a C/Rust program can
 <code>fread</code> the body directly. This is verified in <code>tests/test_schema.py</code> (a compiled C
 program reads Python's packed bytes).</p>
 <p><code>stamp_ns</code> lets any reader compute one-way latency against its own monotonic clock.</p>
@@ -250,10 +250,10 @@ altered). For CSfC (<code>layers=2</code>) the frame is sealed twice under two H
 <code>KEM.encapsulate(kem_pub) -&gt; (ct, ss)</code>, and both sides derive
 <code>session_key = HKDF(hash, ss, salt=H(kem_pub||ct), info="robobus-session")</code>. Algorithms
 per suite (see <code>robobus/crypto/suites.py</code>); ML-KEM/ML-DSA byte sizes are the FIPS 203/204
-standard sizes. This layer is transport-agnostic — exchange the bytes over any channel.</p>
+standard sizes. This layer is transport-agnostic, exchange the bytes over any channel.</p>
 <h2 id="5-implementing-a-binding">5. Implementing a binding</h2>
 <p>Minimum to join the bus from another language:
-1. mmap the ring file; implement the §1 reader/writer (the hard part is the seqlock — copy
+1. mmap the ring file; implement the §1 reader/writer (the hard part is the seqlock, copy
    the reference logic exactly).
 2. Implement §2 encode/decode (trivial: a type byte, a u64, and an array/string/bytes).
 3. (Optional) §3 with the platform AEAD (every crypto lib has AES-256-GCM) for encryption,
@@ -262,4 +262,4 @@ standard sizes. This layer is transport-agnostic — exchange the bytes over any
 (codec parser + AES-256-GCM open). <strong>Cross-language interop is tested</strong>:
 <code>tests/test_conformance.py</code> has the compiled C program parse Python's plaintext codec
 frames and decrypt Python's AES-256-GCM frames, byte-for-byte. Rust/C++/JS bindings are
-on the roadmap (<a href="roadmap.html">ROADMAP.md</a>).</p></article></div><footer class='site'><div class='wrap'><div class='row'><div>robobus — post-quantum, real-time robotics middleware. CNSA 2.0 (FIPS 203 ML-KEM · FIPS 204 ML-DSA).</div><div><a href='../index.html'>Home</a> · <a href='../benchmarks.html'>Benchmarks</a> · <a href='../docs/index.html'>Docs</a> · <a href='https://github.com/pq-cybarg/robobus-benchmarks'>GitHub</a></div></div></div></footer></body></html>
+on the roadmap (<a href="roadmap.html">ROADMAP.md</a>).</p></article></div><footer class='site'><div class='wrap'><div class='row'><div>robobus, a post-quantum, real-time robotics message bus. Benchmarked in 33 languages across 26 crypto primitives and 15 transports.</div><div><a href='../index.html'>Home</a> · <a href='../benchmarks.html'>Benchmarks</a> · <a href='../docs/index.html'>Docs</a> · <a href='https://github.com/pq-cybarg/robobus-benchmarks'>GitHub</a></div></div></div></footer></body></html>

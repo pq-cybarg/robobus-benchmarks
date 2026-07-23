@@ -1,4 +1,4 @@
-<!doctype html><html lang='en'><head><meta charset='utf-8'><meta name='viewport' content='width=device-width,initial-scale=1'><title>Docs · robobus</title><meta name='description' content='Design, protocol, security and compliance documentation for robobus.'><link rel='canonical' href='https://pq-cybarg.github.io/robobus-benchmarks/'><meta property='og:type' content='website'><meta property='og:site_name' content='robobus'><meta property='og:title' content='Docs · robobus'><meta property='og:description' content='Design, protocol, security and compliance documentation for robobus.'><meta property='og:url' content='https://pq-cybarg.github.io/robobus-benchmarks/'><meta property='og:image' content='https://pq-cybarg.github.io/robobus-benchmarks/og-image.png'><meta property='og:image:width' content='1200'><meta property='og:image:height' content='630'><meta property='og:image:alt' content='robobus, one message bus benchmarked in 33 languages across 26 crypto primitives and 15 transports'><meta name='twitter:card' content='summary_large_image'><meta name='twitter:title' content='Docs · robobus'><meta name='twitter:description' content='Design, protocol, security and compliance documentation for robobus.'><meta name='twitter:image' content='https://pq-cybarg.github.io/robobus-benchmarks/og-image.png'><link rel='preconnect' href='https://fonts.googleapis.com'><link rel='preconnect' href='https://fonts.gstatic.com' crossorigin><link href='https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=JetBrains+Mono:wght@400;500;700&family=Inter:wght@400;500;600&display=swap' rel='stylesheet'><style>
+<!doctype html><html lang='en'><head><meta charset='utf-8'><meta name='viewport' content='width=device-width,initial-scale=1'><title>robobus, a fast, universal, quantum-safe way for machines to talk</title><meta name='description' content='robobus is a super-fast, universal messaging system for robots, sensors and devices, locked with CNSA 2.0 post-quantum encryption (FIPS 203 ML-KEM · FIPS 204 ML-DSA) and PQC-hardened DDS-Security, measured across nine orders of magnitude.'><link rel='canonical' href='https://pq-cybarg.github.io/robobus-benchmarks/'><meta property='og:type' content='website'><meta property='og:site_name' content='robobus'><meta property='og:title' content='robobus, a fast, universal, quantum-safe way for machines to talk'><meta property='og:description' content='robobus is a super-fast, universal messaging system for robots, sensors and devices, locked with CNSA 2.0 post-quantum encryption (FIPS 203 ML-KEM · FIPS 204 ML-DSA) and PQC-hardened DDS-Security, measured across nine orders of magnitude.'><meta property='og:url' content='https://pq-cybarg.github.io/robobus-benchmarks/'><meta property='og:image' content='https://pq-cybarg.github.io/robobus-benchmarks/og-image.png'><meta property='og:image:width' content='1200'><meta property='og:image:height' content='630'><meta property='og:image:alt' content='robobus, one message bus benchmarked in 33 languages across 26 crypto primitives and 15 transports'><meta name='twitter:card' content='summary_large_image'><meta name='twitter:title' content='robobus, a fast, universal, quantum-safe way for machines to talk'><meta name='twitter:description' content='robobus is a super-fast, universal messaging system for robots, sensors and devices, locked with CNSA 2.0 post-quantum encryption (FIPS 203 ML-KEM · FIPS 204 ML-DSA) and PQC-hardened DDS-Security, measured across nine orders of magnitude.'><meta name='twitter:image' content='https://pq-cybarg.github.io/robobus-benchmarks/og-image.png'><link rel='preconnect' href='https://fonts.googleapis.com'><link rel='preconnect' href='https://fonts.gstatic.com' crossorigin><link href='https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=JetBrains+Mono:wght@400;500;700&family=Inter:wght@400;500;600&display=swap' rel='stylesheet'><style>
 :root{
   --bg:#0a0e13; --bg2:#0d131b; --panel:#111a24; --panel2:#0f1620; --line:#1e2a37;
   --fg:#e9eef4; --muted:#8a9bab; --dim:#5f7183;
@@ -161,31 +161,125 @@ footer.site a{color:var(--muted)}
   @keyframes rise{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:none}}
   .spec-mark{animation:pop .5s ease both}@keyframes pop{from{opacity:0}to{opacity:1}}
 }
-</style>
-<style>
-.dwrap{max-width:var(--maxw);margin:0 auto;padding:34px 22px 40px;display:grid;grid-template-columns:220px 1fr;gap:34px;align-items:start}
-.dside{position:sticky;top:70px;font-size:14px}
-.dside-t{font-family:'JetBrains Mono';font-size:11.5px;letter-spacing:.12em;text-transform:uppercase;color:var(--dim);margin:0 0 10px;padding-left:12px}
-.dside a.ditem{display:block;color:var(--muted);padding:7px 12px;border-radius:8px;border-left:2px solid transparent}
-.dside a.ditem:hover{color:var(--fg);background:var(--panel);text-decoration:none}
-.dside a.ditem.active{color:var(--signal);border-left-color:var(--signal);background:color-mix(in srgb,var(--signal) 9%,transparent)}
-.dbody{min-width:0}
-.dbody h1{font-size:clamp(26px,4vw,38px);margin:0 0 8px;letter-spacing:-.02em}
-.dbody h2{font-size:23px;margin:36px 0 10px;padding-top:14px;border-top:1px solid var(--line)}
-.dbody h3{font-size:18px;margin:26px 0 8px;color:var(--fg)}
-.dbody p.dbody li{color:#cdd6e0}
-.dbody a{color:var(--signal)}
-.dbody code{font-family:'JetBrains Mono';background:#060a10;border:1px solid var(--line);padding:1px 6px;border-radius:5px;font-size:.85em}
-.dbody pre{background:#060a10;border:1px solid var(--line);border-radius:10px;padding:15px 17px;overflow:auto;font-size:13px}
-.dbody pre code{background:none;border:none;padding:0}
-.dbody table{border-collapse:collapse;width:100%;margin:16px 0;font-size:14px;display:block;overflow-x:auto}
-.dbody th.dbody td{border:1px solid var(--line);padding:9px 12px;text-align:left}
-.dbody th{background:var(--panel);color:var(--fg);font-family:'Space Grotesk'}
-.dbody tr:hover td{background:var(--panel2)}
-.dbody blockquote{border-left:3px solid var(--signal);margin:14px 0;padding:2px 16px;color:var(--muted);background:var(--panel2);border-radius:0 8px 8px 0}
-.dbody hr{border:none;border-top:1px solid var(--line);margin:26px 0}
-.dbody ul.dbody ol{padding-left:22px}
-.dbody li{margin:5px 0}
-.dlede{color:var(--muted);margin:0 0 22px;font-size:15px}
-@media (max-width:760px){.dwrap{grid-template-columns:1fr}.dside{position:static;display:flex;flex-wrap:wrap;gap:4px}.dside-t{width:100%}}
-</style></head><body><div class='nav'><div class='row'><a class='brand' href='../index.html'><svg class='glyph' viewBox='0 0 32 32' fill='none' aria-hidden='true'><rect x='1.5' y='1.5' width='29' height='29' rx='8' stroke='#1e2a37' stroke-width='1.5'/><path d='M7 20 L11 20 L13 10 L16 24 L19 13 L21 20 L25 20' stroke='#4fd1c5' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'/></svg>robobus</a><nav class='links'><a class='tab' href='../index.html'>Home</a><a class='tab' href='../benchmarks.html'>Benchmarks</a><a class='tab' href='../speed.html'>Speed matrix</a><a class='tab active' href='../docs/index.html'>Docs</a><a class='gh' href='https://github.com/pq-cybarg/robobus-benchmarks' aria-label='GitHub'><svg width='19' height='19' viewBox='0 0 16 16' fill='currentColor'><path d='M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.01 8.01 0 0016 8c0-4.42-3.58-8-8-8z'/></svg></a></nav></div></div><div class='dwrap'><aside class='dside'><div class='dside-t'>Documentation</div><a href='architecture.html' class='ditem'>Architecture</a><a href='protocol.html' class='ditem'>Wire protocol</a><a href='security.html' class='ditem'>Security model</a><a href='compliance.html' class='ditem'>Compliance</a><a href='cmvp-readiness.html' class='ditem'>CMVP readiness</a><a href='crypto-provenance.html' class='ditem'>Crypto provenance</a><a href='portability.html' class='ditem'>Portability</a><a href='determinism.html' class='ditem'>Determinism</a><a href='realtime.html' class='ditem'>Real-time</a><a href='supply-chain.html' class='ditem'>Supply chain</a><a href='bindings.html' class='ditem'>Language bindings</a><a href='roadmap.html' class='ditem'>Roadmap</a></aside><div class='dbody'><h1>Documentation</h1><p class='dlede'>Design, protocol, security and compliance references for the robobus stack.</p><div class='cards'><a class='fcard' href='architecture.html' style='text-decoration:none;display:block'><h3 style='color:var(--fg)'>Architecture</h3><p>Architecture</p></a><a class='fcard' href='protocol.html' style='text-decoration:none;display:block'><h3 style='color:var(--fg)'>Wire protocol</h3><p>robobus wire protocol (language-agnostic)</p></a><a class='fcard' href='security.html' style='text-decoration:none;display:block'><h3 style='color:var(--fg)'>Security model</h3><p>Security model</p></a><a class='fcard' href='compliance.html' style='text-decoration:none;display:block'><h3 style='color:var(--fg)'>Compliance</h3><p>Compliance</p></a><a class='fcard' href='cmvp-readiness.html' style='text-decoration:none;display:block'><h3 style='color:var(--fg)'>CMVP readiness</h3><p>CMVP readiness, cryptographic module preparation</p></a><a class='fcard' href='crypto-provenance.html' style='text-decoration:none;display:block'><h3 style='color:var(--fg)'>Crypto provenance</h3><p>Cryptographic provenance, what&#x27;s audited COTS vs. our code</p></a><a class='fcard' href='portability.html' style='text-decoration:none;display:block'><h3 style='color:var(--fg)'>Portability</h3><p>Portability matrix</p></a><a class='fcard' href='determinism.html' style='text-decoration:none;display:block'><h3 style='color:var(--fg)'>Determinism</h3><p>Forcing the tail to ~100%: hardware &amp; firmware workarounds</p></a><a class='fcard' href='realtime.html' style='text-decoration:none;display:block'><h3 style='color:var(--fg)'>Real-time</h3><p>Hard real-time: bounding the bus latency tail</p></a><a class='fcard' href='supply-chain.html' style='text-decoration:none;display:block'><h3 style='color:var(--fg)'>Supply chain</h3><p>Supply-chain integrity</p></a><a class='fcard' href='bindings.html' style='text-decoration:none;display:block'><h3 style='color:var(--fg)'>Language bindings</h3><p>Multi-language bindings</p></a><a class='fcard' href='roadmap.html' style='text-decoration:none;display:block'><h3 style='color:var(--fg)'>Roadmap</h3><p>Roadmap</p></a></div></div></div><footer class='site'><div class='wrap'><div class='row'><div>robobus, a post-quantum, real-time robotics message bus. Benchmarked in 33 languages across 26 crypto primitives and 15 transports.</div><div><a href='../index.html'>Home</a> · <a href='../benchmarks.html'>Benchmarks</a> · <a href='../docs/index.html'>Docs</a> · <a href='https://github.com/pq-cybarg/robobus-benchmarks'>GitHub</a></div></div></div></footer></body></html>
+</style></head><body><div class='nav'><div class='row'><a class='brand' href='index.html'><svg class='glyph' viewBox='0 0 32 32' fill='none' aria-hidden='true'><rect x='1.5' y='1.5' width='29' height='29' rx='8' stroke='#1e2a37' stroke-width='1.5'/><path d='M7 20 L11 20 L13 10 L16 24 L19 13 L21 20 L25 20' stroke='#4fd1c5' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'/></svg>robobus</a><nav class='links'><a class='tab active' href='index.html'>Home</a><a class='tab' href='benchmarks.html'>Benchmarks</a><a class='tab' href='speed.html'>Speed matrix</a><a class='tab' href='docs/index.html'>Docs</a><a class='gh' href='https://github.com/pq-cybarg/robobus-benchmarks' aria-label='GitHub'><svg width='19' height='19' viewBox='0 0 16 16' fill='currentColor'><path d='M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.01 8.01 0 0016 8c0-4.42-3.58-8-8-8z'/></svg></a></nav></div></div>
+<header class='hero'><div class='wrap reveal'>
+  <p class='eyebrow'>secure real-time messaging for robots &amp; devices</p>
+  <h1>The nervous system for machines, instant, universal, and <em>quantum-safe</em>.</h1>
+  <p class='lede'>robobus lets robots, sensors and devices react to one another the moment something
+  happens, and locks every message with encryption built to outlast tomorrow's quantum computers.
+  It can even add that protection to older systems that never had any.</p>
+  <div class='cta'>
+    <a class='btn primary' href='benchmarks.html'>See the benchmarks →</a>
+    <a class='btn ghost' href='docs/index.html'>Read the docs</a>
+  </div>
+  <div class='spectrum'>
+    <div class='cap'><b>How fast is “instant”?</b><span>billionths → thousandths of a second</span></div>
+    <div class='spec-scroll'><svg class='spec-svg' viewBox='0 0 1040 250' role='img' aria-label='Latency spectrum from nanoseconds to milliseconds, log scale'><defs><linearGradient id='sg' x1='0' x2='1'><stop offset='0' stop-color='#4fd1c5'/><stop offset='.5' stop-color='#8b7cff'/><stop offset='1' stop-color='#f4b46a'/></linearGradient><filter id='glow' x='-60%' y='-60%' width='220%' height='220%'><feGaussianBlur stdDeviation='3.2' result='b'/><feMerge><feMergeNode in='b'/><feMergeNode in='SourceGraphic'/></feMerge></filter></defs><rect x='12.0' y='16' width='435.4' height='160' fill='#0f2a2b' opacity='.5'/><text x='229.7' y='30' fill='#46586a' font-size='10.5' letter-spacing='2.5' font-family='JetBrains Mono' text-anchor='middle'>NANOSECONDS</text><line x1='447.4' y1='16' x2='447.4' y2='176' stroke='#223040' stroke-width='1' stroke-dasharray='2 4'/><rect x='447.4' y='16' width='435.4' height='160' fill='#181633' opacity='.5'/><text x='665.1' y='30' fill='#46586a' font-size='10.5' letter-spacing='2.5' font-family='JetBrains Mono' text-anchor='middle'>MICROSECONDS</text><line x1='882.9' y1='16' x2='882.9' y2='176' stroke='#223040' stroke-width='1' stroke-dasharray='2 4'/><rect x='882.9' y='16' width='145.1' height='160' fill='#2a1e17' opacity='.5'/><text x='955.4' y='30' fill='#46586a' font-size='10.5' letter-spacing='2.5' font-family='JetBrains Mono' text-anchor='middle'>MILLISECONDS</text><line x1='1028.0' y1='16' x2='1028.0' y2='176' stroke='#223040' stroke-width='1' stroke-dasharray='2 4'/><line x1='12' y1='176' x2='1028' y2='176' stroke='url(#sg)' stroke-width='2.5'/><line x1='12.0' y1='172' x2='12.0' y2='181' stroke='#33475a' stroke-width='1'/><text x='12.0' y='198' fill='#6d8296' font-size='11.5' font-family='JetBrains Mono' text-anchor='middle'>1 ns</text><line x1='157.1' y1='172' x2='157.1' y2='181' stroke='#33475a' stroke-width='1'/><line x1='302.3' y1='172' x2='302.3' y2='181' stroke='#33475a' stroke-width='1'/><line x1='447.4' y1='172' x2='447.4' y2='181' stroke='#33475a' stroke-width='1'/><text x='447.4' y='198' fill='#6d8296' font-size='11.5' font-family='JetBrains Mono' text-anchor='middle'>1 µs</text><line x1='592.6' y1='172' x2='592.6' y2='181' stroke='#33475a' stroke-width='1'/><line x1='737.7' y1='172' x2='737.7' y2='181' stroke='#33475a' stroke-width='1'/><line x1='882.9' y1='172' x2='882.9' y2='181' stroke='#33475a' stroke-width='1'/><text x='882.9' y='198' fill='#6d8296' font-size='11.5' font-family='JetBrains Mono' text-anchor='middle'>1 ms</text><line x1='1028.0' y1='172' x2='1028.0' y2='181' stroke='#33475a' stroke-width='1'/><text x='1028.0' y='198' fill='#6d8296' font-size='11.5' font-family='JetBrains Mono' text-anchor='middle'>10 ms</text><g class='spec-mark' style='animation-delay:0.15s'><line x1='97.8' y1='138' x2='97.8' y2='173' stroke='var(--signal)' stroke-width='1.2' opacity='.45'/><circle cx='97.8' cy='176' r='5' fill='var(--signal)' filter='url(#glow)'/><circle cx='97.8' cy='176' r='5' fill='var(--signal)'/><text x='97.8' y='130' fill='var(--signal)' font-size='15' font-weight='700' font-family='JetBrains Mono' text-anchor='middle'>3.9 ns</text><text x='97.8' y='112' fill='#9fb0bf' font-size='12' font-family='Inter' text-anchor='middle'>Bus op</text></g><g class='spec-mark' style='animation-delay:0.22s'><line x1='290.5' y1='96' x2='290.5' y2='173' stroke='var(--signal)' stroke-width='1.2' opacity='.45'/><circle cx='290.5' cy='176' r='5' fill='var(--signal)' filter='url(#glow)'/><circle cx='290.5' cy='176' r='5' fill='var(--signal)'/><text x='290.5' y='88' fill='var(--signal)' font-size='15' font-weight='700' font-family='JetBrains Mono' text-anchor='middle'>83 ns</text><text x='290.5' y='70' fill='#9fb0bf' font-size='12' font-family='Inter' text-anchor='middle'>Bus one-way IPC</text></g><g class='spec-mark' style='animation-delay:0.29s'><line x1='756.6' y1='138' x2='756.6' y2='173' stroke='var(--hybrid)' stroke-width='1.2' opacity='.45'/><circle cx='756.6' cy='176' r='5' fill='var(--hybrid)' filter='url(#glow)'/><circle cx='756.6' cy='176' r='5' fill='var(--hybrid)'/><text x='756.6' y='130' fill='var(--hybrid)' font-size='15' font-weight='700' font-family='JetBrains Mono' text-anchor='middle'>≈135 µs</text><text x='756.6' y='112' fill='#9fb0bf' font-size='12' font-family='Inter' text-anchor='middle'>PQC key agreement</text></g><g class='spec-mark' style='animation-delay:0.36s'><line x1='891.7' y1='78' x2='891.7' y2='173' stroke='var(--pqc)' stroke-width='1.2' opacity='.45'/><circle cx='891.7' cy='176' r='5' fill='var(--pqc)' filter='url(#glow)'/><circle cx='891.7' cy='176' r='5' fill='var(--pqc)'/><text x='887.7' y='70' fill='var(--pqc)' font-size='15' font-weight='700' font-family='JetBrains Mono' text-anchor='end'>0.6–1.2 ms</text><text x='887.7' y='52' fill='#9fb0bf' font-size='12' font-family='Inter' text-anchor='end'>Auth handshake</text></g><g class='spec-mark' style='animation-delay:0.43s'><line x1='926.5' y1='120' x2='926.5' y2='173' stroke='var(--amber)' stroke-width='1.2' opacity='.45'/><circle cx='926.5' cy='176' r='5' fill='var(--amber)' filter='url(#glow)'/><circle cx='926.5' cy='176' r='5' fill='var(--amber)'/><text x='930.5' y='112' fill='var(--amber)' font-size='15' font-weight='700' font-family='JetBrains Mono' text-anchor='start'>≈2 ms</text><text x='930.5' y='94' fill='#9fb0bf' font-size='12' font-family='Inter' text-anchor='start'>DDS-Sec window</text></g></svg></div>
+  </div>
+</div></header>
+
+<section><div class='wrap'>
+  <p class='sec-eyebrow'>what it is, in plain terms</p>
+  <h2 class='title'>A fast, universal, quantum-safe way for machines to talk</h2>
+  <p class='sec-lede'>Not an engineer? Here's the whole idea in three parts, everything further down
+  the page is the measured proof behind them.</p>
+  <div class='plain'>
+    <div class='pcard'><div class='ic spd'><svg viewBox='0 0 24 24' fill='currentColor' aria-hidden='true'><path d='M13 2 L4 13.5 h6.2 L9 22 l10-12 h-6.2 z'/></svg></div>
+      <h3>Reacts before you can blink</h3>
+      <p class='an'>A message crosses the system in billionths of a second.</p>
+      <p>That's millions of times quicker than an eye-blink, fast enough for a robot to catch
+      itself mid-stumble, or a prosthetic hand to move the instant a nerve signal arrives.</p></div>
+    <div class='pcard'><div class='ic rch'><svg viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='1.9' stroke-linecap='round' aria-hidden='true'><circle cx='12' cy='12' r='2.6'/><circle cx='4.5' cy='5' r='1.8'/><circle cx='19.5' cy='5' r='1.8'/><circle cx='4.5' cy='19' r='1.8'/><circle cx='19.5' cy='19' r='1.8'/><path d='M6 6.2 L10 10 M18 6.2 L14 10 M6 17.8 L10 14 M18 17.8 L14 14'/></svg></div>
+      <h3>One hub for everything</h3>
+      <p class='an'>Robots, drones, medical sensors, even brain-signal headsets.</p>
+      <p>These devices normally speak incompatible languages. robobus is the common connector that
+      lets them work together, bridging the standards each field already uses.</p></div>
+    <div class='pcard'><div class='ic sec'><svg viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='1.9' stroke-linecap='round' stroke-linejoin='round' aria-hidden='true'><path d='M12 3 L19.5 6 v6.2 c0 4.8-3.7 7.6-7.5 8.6 -3.8-1-7.5-3.8-7.5-8.6 V6 z'/><path d='M8.7 12 l2.2 2.2 4.4-4.4'/></svg></div>
+      <h3>Safe against tomorrow's computers</h3>
+      <p class='an'>Every message is sealed with post-quantum encryption.</p>
+      <p>Future quantum computers could break today's encryption. robobus uses the U.S. government's
+      post-quantum standard, so messages stay private for decades, even on devices that shipped
+      with no security at all.</p></div>
+  </div>
+  <p class='oneline'><b>In one line:</b> robobus is a super-fast, universal, quantum-safe messaging
+  layer for machines, and everything below is the measurement that backs each claim up.</p>
+</div></section>
+
+<section><div class='wrap'>
+  <p class='sec-eyebrow'>the proof · headline numbers</p>
+  <h2 class='title'>Measured live, in the open</h2>
+  <p class='sec-lede'>From here down the page is for engineers. Every figure is produced by
+  <code>run_benchmarks.py</code> and refreshed on CI; numbers are CPU/OS/build-specific, the
+  deliverable is the method.</p>
+  <div class='stats'><div class='stat'><div class='n mono'>3.9<small>ns</small></div><div class='l'>Shared-memory bus op (amortized), Apple M5</div></div><div class='stat'><div class='n mono'>83<small>ns</small></div><div class='l'>Bus one-way IPC · p50 · 98%+ &lt; 100 ns (RT)</div></div><div class='stat'><div class='n mono'>≈135<small>µs</small></div><div class='l'>PQC key agreement, ECDH ‖ ML-KEM → HKDF-384</div></div><div class='stat'><div class='n mono'>6<small>ISAs</small></div><div class='l'>Bindings + C-ABI lib byte-identical: x86-64, aarch64, armv7, ppc64le, riscv64, s390x (BE)</div></div><div class='stat'><div class='n mono'>4<small>OS</small></div><div class='l'>Handshake measured on Linux, macOS, Windows (MSVC + WSL2)</div></div><div class='stat'><div class='n mono'>9<small>orders</small></div><div class='l'>Latency regimes spanned, ns to ms, each measured on its own terms</div></div></div>
+</div></section>
+
+<section><div class='wrap'>
+  <p class='sec-eyebrow'>the whole point</p>
+  <h2 class='title'>Read the layers</h2>
+  <p class='sec-lede'>The stack spans nine orders of magnitude and each layer has its own regime, 
+  conflating them is how benchmarks lie. The runtime hot path is ns/GB·s; handshakes are a
+  one-time per-peer cost amortised to zero over a session.</p>
+  <div style='overflow-x:auto'><table class='ltab'><thead><tr><th>Layer</th><th>Regime</th><th>Apple M5</th></tr></thead>
+  <tbody><tr><td>Shared-memory bus op (amortized)</td><td class='reg'>nanoseconds</td><td class='n'>3.9 ns/op</td></tr><tr><td>Bus one-way IPC latency</td><td class='reg'>nanoseconds</td><td class='n'>p50 83 ns</td></tr><tr><td>Per-message AEAD (AES-256-GCM)</td><td class='reg'>ns / byte</td><td class='n'>multi-GB/s</td></tr><tr><td>Key agreement / rekey (ECDH+ML-KEM)</td><td class='reg'>microseconds</td><td class='n'>129–142 µs</td></tr><tr><td>Full authenticated handshake</td><td class='reg'>µs → ~1 ms</td><td class='n'>0.6 → 1.15 ms</td></tr><tr><td>DDS-Security handshake window</td><td class='reg'>milliseconds</td><td class='n'>≈2 ms (isolated)</td></tr></tbody></table></div>
+</div></section>
+
+<section><div class='wrap'>
+  <p class='sec-eyebrow'>one bus · every transport</p>
+  <h2 class='title'>Bridges everything, and secures the links that can't secure themselves</h2>
+  <p class='sec-lede'>robobus sits at the centre as a post-quantum-secured hub; a thin bridge maps
+  each protocol's topics or streams onto bus channels. And <b>any</b> bridge takes
+  <code>--security cnsa20 --keyfile</code>, so CNSA&nbsp;2.0 crypto wraps MQTT, Kafka, serial or
+  CAN exactly as it wraps DDS, even where the wire protocol has no security of its own.</p>
+  <div class='xgrid'><div class='xgrp'><div class='xh'>Robotics &amp; real-time</div><div class='xrow'><div class='chip'>ROS 2<small>rclpy</small></div><div class='chip'>ROS 1<small>rospy</small></div><div class='chip'>DDS<small>topic</small></div><div class='chip'>Zenoh<small>eclipse</small></div><div class='chip'>ZeroCM<small>zcm</small></div><div class='chip'>CAN bus<small>python-can</small></div></div></div><div class='xgrp'><div class='xh'>Messaging &amp; streaming</div><div class='xrow'><div class='chip'>MQTT<small>IoT</small></div><div class='chip'>Apache Kafka<small>pipelines</small></div><div class='chip'>AMQP<small>RabbitMQ</small></div></div></div><div class='xgrp'><div class='xh'>Wire &amp; edge</div><div class='xrow'><div class='chip'>UDP<small>uni/multicast</small></div><div class='chip'>TCP<small>stdlib</small></div><div class='chip'>Serial<small>radio</small></div></div></div><div class='xgrp'><div class='xh'>Biosignals</div><div class='xrow'><div class='chip'>LSL<small>Lab Streaming Layer</small></div></div></div></div>
+  <div class='lock'>🔒&nbsp;<span><b>Post-quantum on any link.</b> One <code>--security</code> flag seals the
+  payload the same way regardless of transport, ML-KEM key agreement, AES-256-GCM, ML-DSA identity.</span></div>
+</div></section>
+
+<section><div class='wrap'>
+  <p class='sec-eyebrow'>reach it from any language</p>
+  <h2 class='title'>Six native implementations, fourteen generated</h2>
+  <p class='sec-lede'>The wire format is small, an mmap seqlock ring, a codec frame, an
+  AES-256-GCM frame, fixed-layout schema structs. Six languages implement it natively and are
+  <b>bidirectionally conformance-tested against Python</b> (Python seals → the other opens, and
+  back); the schema layout is code-generated for fourteen more, each compile/run-verified
+  against Python's packed little-endian bytes. Every one of these toolchains is installed and
+  run green together, no language is ever silently skipped.</p>
+  <div class='xrow' style='margin:0 0 16px'>
+    <div class='chip'>Python<small>reference</small></div>
+    <div class='chip'>C<small>native ring + C ABI</small></div>
+    <div class='chip'>Cython<small>typed → C, 3.4× Python</small></div>
+    <div class='chip'>Rust<small>crates.io</small></div>
+    <div class='chip'>JavaScript · Node<small>npm</small></div>
+    <div class='chip'>Java<small>Maven Central</small></div>
+  </div>
+  <p style='color:var(--muted);font-size:13.5px;margin:0 0 14px'><span style='font-family:"JetBrains Mono";
+  font-size:11.5px;letter-spacing:.06em;color:var(--dim)'>SCHEMA CODEGEN · 14 &nbsp;</span>
+  C · C++ · Rust · Go · Java · C# · TypeScript · Python · Julia · MATLAB/Octave · Swift · Kotlin · Ruby · Lua</p>
+  <div class='note'><b>Embed it anywhere, <code>librobobus</code>.</b> A dependency-light C-ABI
+  shared library (<code>robobus.dll</code> · <code>librobobus.dylib</code> · <code>librobobus.so</code>,
+  built by CMake on every OS) exposes AES-256-GCM RBX1 seal/open + the codec, so software in any
+  language links robobus over its FFI. Proven byte-identical to the Python reference on Linux,
+  macOS, Windows and five emulated ISAs, including big-endian s390x.</div>
+</div></section>
+
+<section><div class='wrap'>
+  <p class='sec-eyebrow'>architecture</p>
+  <h2 class='title'>Four things, done to standard</h2>
+  <div class='cards'><div class='fcard'><div class='k'>crypto</div><h3 class='pqc'>CNSA 2.0 post-quantum</h3><p>FIPS 203 ML-KEM and FIPS 204 ML-DSA, hybridised with classical ECDH/ECDSA through HKDF-SHA384, the NSA CNSA 2.0 transition profile, not a toy.</p></div><div class='fcard'><div class='k'>transport</div><h3 class=''>Sub-microsecond bus</h3><p>A lock-free shared-memory SPSC ring in C: single-digit-nanosecond ops, p50 one-way IPC under 100 ns, formally proven (CBMC) and RT-hardened.</p></div><div class='fcard'><div class='k'>dds</div><h3 class='hybrid'>PQC-hardened DDS-Security</h3><p>Patched CycloneDDS & Fast DDS authentication: hybrid ECDH+ML-KEM key agreement and ML-DSA-87 identity signatures, measured live on Linux, macOS and Windows.</p></div><div class='fcard'><div class='k'>proof</div><h3 class='qr'>Every number is measured live</h3><p>Every language toolchain installed and run green together, 6 native seal/open bindings plus 14 schema-codegen targets, no silent skips; the C-ABI shared library proven byte-identical on six ISAs incl. big-endian s390x; CBMC + SymbiYosys proofs of the ring.</p></div></div>
+</div></section>
+
+<section><div class='wrap'>
+  <p class='sec-eyebrow'>honest measurement</p>
+  <h2 class='title'>How the numbers are made</h2>
+  <p class='sec-lede'>Nanosecond timing uses amortised batching (a single <code>clock_gettime</code>
+  on macOS is only ~1&nbsp;µs granular); a 20k-message warmup is discarded so cold-start jitter
+  doesn't pollute the steady-state tail; DDS handshakes are reported as the isolated FSM window
+  (begin → OK), not the ~100&nbsp;ms process wall-clock (startup + SPDP discovery + teardown).</p>
+  <div class='note'><b>Coverage, honestly.</b> The public site's CI runners are
+  <b>virtualized</b> (shared vCPUs, no real-time scheduling), so their columns are for
+  cross-platform coverage and relative comparison, not bare-metal nanosecond claims. Each run
+  self-labels its measurement fidelity.</div>
+  <p style='margin-top:22px'><a class='btn ghost' href='benchmarks.html'>Open the full report →</a></p>
+</div></section>
+<footer class='site'><div class='wrap'><div class='row'><div>robobus, a post-quantum, real-time robotics message bus. Benchmarked in 33 languages across 26 crypto primitives and 15 transports.</div><div><a href='index.html'>Home</a> · <a href='benchmarks.html'>Benchmarks</a> · <a href='docs/index.html'>Docs</a> · <a href='https://github.com/pq-cybarg/robobus-benchmarks'>GitHub</a></div></div></div></footer></body></html>

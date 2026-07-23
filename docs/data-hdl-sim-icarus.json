@@ -1,83 +1,83 @@
 {
- "schema": "robobus-bench/1",
- "label": "HDL simulation (icarus), cycle-exact, no FPGA",
- "platform": {
-  "system": "HDL-sim",
-  "release": "cycle-exact",
-  "version": "",
-  "processor": "icarus",
-  "machine": "icarus",
-  "cpu_brand": "RTL @ 200 MHz (icarus)",
-  "cpu_count_logical": 1,
-  "platform": "cocotb/icarus cycle-accurate simulation",
-  "python_version": "n/a",
-  "python_impl": "cocotb",
-  "environment": {
-   "virtualized": false,
-   "simulated": true,
-   "caveat": "cycle-EXACT (simulator evaluates every edge); ns assume the stated clock, real silicon adds place&route Fmax limits"
+  "schema": "robobus-bench/1",
+  "label": "HDL simulation (icarus), cycle-exact, no FPGA",
+  "platform": {
+    "system": "HDL-sim",
+    "release": "cycle-exact",
+    "version": "",
+    "processor": "icarus",
+    "machine": "icarus",
+    "cpu_brand": "RTL @ 200 MHz (icarus)",
+    "cpu_count_logical": 1,
+    "platform": "cocotb/icarus cycle-accurate simulation",
+    "python_version": "n/a",
+    "python_impl": "cocotb",
+    "environment": {
+      "virtualized": false,
+      "simulated": true,
+      "caveat": "cycle-EXACT (simulator evaluates every edge); ns assume the stated clock, real silicon adds place&route Fmax limits"
+    },
+    "measurement": {
+      "fidelity_tier": "6/7-hdl-sim (cycle-exact RTL, no hardware)",
+      "uncontrolled_noise": [],
+      "clock_mhz": 200.0
+    },
+    "dependencies": {
+      "available": {
+        "cocotb": "2.0.1",
+        "icarus": "present"
+      },
+      "missing": {}
+    }
   },
-  "measurement": {
-   "fidelity_tier": "6/7-hdl-sim (cycle-exact RTL, no hardware)",
-   "uncontrolled_noise": [],
-   "clock_mhz": 200.0
-  },
-  "dependencies": {
-   "available": {
-    "cocotb": "2.0.1",
-    "icarus": "present"
-   },
-   "missing": {}
-  }
- },
- "results": [
-  {
-   "group": "hdl_sim",
-   "name": "SPSC FIFO enqueue->dequeue latency",
-   "config": {
-    "clock_mhz": 200.0,
-    "width_bits": 64,
-    "depth": 16
-   },
-   "unit": "ns",
-   "dependency": "cocotb/icarus",
-   "status": "ok",
-   "note": "2 clock cycles, cycle-exact; = 10.00 ns @ 200 MHz. The bus ring as RTL.",
-   "metrics": {
-    "cycles": 2,
-    "p50_ns": 10.0,
-    "mean_ns": 10.0
-   }
-  },
-  {
-   "group": "hdl_sim",
-   "name": "SPSC FIFO steady-state throughput",
-   "config": {
-    "clock_mhz": 200.0
-   },
-   "unit": "items/s",
-   "dependency": "cocotb/icarus",
-   "status": "ok",
-   "note": "1.000 items/cycle x 200 MHz (1.0 = full rate)",
-   "metrics": {
-    "items_per_cycle": 0.9995119570522206,
-    "ops_per_s": 199902391.4104441
-   }
-  },
-  {
-   "group": "hdl_sim",
-   "name": "SPSC FIFO formal proof (SymbiYosys + z3)",
-   "config": {
-    "method": "k-induction"
-   },
-   "unit": "proof",
-   "dependency": "symbiyosys/z3",
-   "status": "ok",
-   "note": "PROVEN unbounded (k-induction): never overflow, never full&empty, count consistent",
-   "metrics": {
-    "proven": true
-   }
-  }
- ],
- "note": "Cycle-exact RTL simulation on the dev machine (cocotb + Verilator/Icarus). Formal invariants proven separately via SymbiYosys."
+  "results": [
+    {
+      "group": "hdl_sim",
+      "name": "SPSC FIFO enqueue->dequeue latency",
+      "config": {
+        "clock_mhz": 200.0,
+        "width_bits": 64,
+        "depth": 16
+      },
+      "unit": "ns",
+      "dependency": "cocotb/icarus",
+      "status": "ok",
+      "note": "2 clock cycles, cycle-exact; = 10.00 ns @ 200 MHz. The bus ring as RTL.",
+      "metrics": {
+        "cycles": 2,
+        "p50_ns": 10.0,
+        "mean_ns": 10.0
+      }
+    },
+    {
+      "group": "hdl_sim",
+      "name": "SPSC FIFO steady-state throughput",
+      "config": {
+        "clock_mhz": 200.0
+      },
+      "unit": "items/s",
+      "dependency": "cocotb/icarus",
+      "status": "ok",
+      "note": "1.000 items/cycle x 200 MHz (1.0 = full rate)",
+      "metrics": {
+        "items_per_cycle": 0.9995119570522206,
+        "ops_per_s": 199902391.4104441
+      }
+    },
+    {
+      "group": "hdl_sim",
+      "name": "SPSC FIFO formal proof (SymbiYosys + z3)",
+      "config": {
+        "method": "k-induction"
+      },
+      "unit": "proof",
+      "dependency": "symbiyosys/z3",
+      "status": "ok",
+      "note": "PROVEN unbounded (k-induction): never overflow, never full&empty, count consistent",
+      "metrics": {
+        "proven": true
+      }
+    }
+  ],
+  "note": "Cycle-exact RTL simulation on the dev machine (cocotb + Verilator/Icarus). Formal invariants proven separately via SymbiYosys."
 }

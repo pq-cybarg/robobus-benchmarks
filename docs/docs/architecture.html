@@ -1,4 +1,4 @@
-<!doctype html><html lang='en'><head><meta charset='utf-8'><meta name='viewport' content='width=device-width,initial-scale=1'><title>Architecture · robobus docs</title><meta name='description' content='Architecture'><link rel='canonical' href='https://pq-cybarg.github.io/robobus-benchmarks/'><meta property='og:type' content='website'><meta property='og:site_name' content='robobus'><meta property='og:title' content='Architecture · robobus docs'><meta property='og:description' content='Architecture'><meta property='og:url' content='https://pq-cybarg.github.io/robobus-benchmarks/'><meta property='og:image' content='https://pq-cybarg.github.io/robobus-benchmarks/og-image.png'><meta property='og:image:width' content='1200'><meta property='og:image:height' content='630'><meta property='og:image:alt' content='robobus — post-quantum, real-time robotics middleware'><meta name='twitter:card' content='summary_large_image'><meta name='twitter:title' content='Architecture · robobus docs'><meta name='twitter:description' content='Architecture'><meta name='twitter:image' content='https://pq-cybarg.github.io/robobus-benchmarks/og-image.png'><link rel='preconnect' href='https://fonts.googleapis.com'><link rel='preconnect' href='https://fonts.gstatic.com' crossorigin><link href='https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=JetBrains+Mono:wght@400;500;700&family=Inter:wght@400;500;600&display=swap' rel='stylesheet'><style>
+<!doctype html><html lang='en'><head><meta charset='utf-8'><meta name='viewport' content='width=device-width,initial-scale=1'><title>Architecture · robobus docs</title><meta name='description' content='Architecture'><link rel='canonical' href='https://pq-cybarg.github.io/robobus-benchmarks/'><meta property='og:type' content='website'><meta property='og:site_name' content='robobus'><meta property='og:title' content='Architecture · robobus docs'><meta property='og:description' content='Architecture'><meta property='og:url' content='https://pq-cybarg.github.io/robobus-benchmarks/'><meta property='og:image' content='https://pq-cybarg.github.io/robobus-benchmarks/og-image.png'><meta property='og:image:width' content='1200'><meta property='og:image:height' content='630'><meta property='og:image:alt' content='robobus, one message bus benchmarked in 33 languages across 26 crypto primitives and 15 transports'><meta name='twitter:card' content='summary_large_image'><meta name='twitter:title' content='Architecture · robobus docs'><meta name='twitter:description' content='Architecture'><meta name='twitter:image' content='https://pq-cybarg.github.io/robobus-benchmarks/og-image.png'><link rel='preconnect' href='https://fonts.googleapis.com'><link rel='preconnect' href='https://fonts.gstatic.com' crossorigin><link href='https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=JetBrains+Mono:wght@400;500;700&family=Inter:wght@400;500;600&display=swap' rel='stylesheet'><style>
 :root{
   --bg:#0a0e13; --bg2:#0d131b; --panel:#111a24; --panel2:#0f1620; --line:#1e2a37;
   --fg:#e9eef4; --muted:#8a9bab; --dim:#5f7183;
@@ -75,7 +75,7 @@ h2.title{font-size:clamp(24px,3.5vw,34px);margin:0 0 8px}
 .fcard p{color:var(--muted);font-size:14.5px;margin:0}
 .fcard .pqc{color:var(--pqc)}.fcard .hybrid{color:var(--hybrid)}.fcard .qr{color:var(--qr)}
 
-/* plain-language explainer — the layperson on-ramp */
+/* plain-language explainer, the layperson on-ramp */
 .plain{display:grid;gap:16px}
 @media(min-width:760px){.plain{grid-template-columns:repeat(3,1fr)}}
 .pcard{background:linear-gradient(180deg,var(--panel),var(--panel2));border:1px solid var(--line);border-radius:16px;padding:24px 22px}
@@ -103,13 +103,13 @@ h2.title{font-size:clamp(24px,3.5vw,34px);margin:0 0 8px}
 
 /* layer table */
 .ltab{width:100%;border-collapse:collapse;font-size:14.5px}
-.ltab th,.ltab td{text-align:left;padding:11px 14px;border-bottom:1px solid var(--line)}
+.ltab th.ltab td{text-align:left;padding:11px 14px;border-bottom:1px solid var(--line)}
 .ltab th{font-size:11.5px;text-transform:uppercase;letter-spacing:.06em;color:var(--dim);font-weight:600}
 .ltab td.reg{font-family:'JetBrains Mono';color:var(--signal);font-size:13px}
 .ltab td.n{font-family:'JetBrains Mono';color:var(--fg)}
 .ltab tr:hover td{background:var(--panel2)}
 
-/* speed matrices — horizontal bars + transport×language heatmap */
+/* speed matrices, horizontal bars + transport×language heatmap */
 .hbars{display:flex;flex-direction:column;gap:7px;margin:6px 0 4px}
 .hrow{display:grid;grid-template-columns:118px 1fr 132px;align-items:center;gap:12px}
 .hrow .lname{font-weight:600;font-size:13.5px}
@@ -123,7 +123,7 @@ h2.title{font-size:clamp(24px,3.5vw,34px);margin:0 0 8px}
 .tier-i>i{background:linear-gradient(90deg,var(--violet),var(--hybrid))}
 .heatwrap{overflow-x:auto}
 .heat{border-collapse:collapse;font-size:12.5px;min-width:520px}
-.heat th,.heat td{padding:9px 12px;text-align:center;border:1px solid var(--line);font-variant-numeric:tabular-nums}
+.heat th.heat td{padding:9px 12px;text-align:center;border:1px solid var(--line);font-variant-numeric:tabular-nums}
 .heat th{font:600 11px/1 'JetBrains Mono';text-transform:uppercase;letter-spacing:.05em;color:var(--dim)}
 .heat td.rl{text-align:left;font-weight:600;color:var(--fg);font-family:'Inter'}
 .heat td.na{color:var(--dim)}
@@ -157,7 +157,7 @@ footer.site a{color:var(--muted)}
 
 @media (max-width:640px){.hero{padding:48px 0 20px}.nav a.tab{padding:6px 9px}}
 @media (prefers-reduced-motion:no-preference){
-  .reveal{animation:rise .7s cubic-bezier(.2,.7,.2,1) both}
+  .reveal{animation:rise .7s cubic-bezier(.2.7.2,1) both}
   @keyframes rise{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:none}}
   .spec-mark{animation:pop .5s ease both}@keyframes pop{from{opacity:0}to{opacity:1}}
 }
@@ -173,18 +173,18 @@ footer.site a{color:var(--muted)}
 .dbody h1{font-size:clamp(26px,4vw,38px);margin:0 0 8px;letter-spacing:-.02em}
 .dbody h2{font-size:23px;margin:36px 0 10px;padding-top:14px;border-top:1px solid var(--line)}
 .dbody h3{font-size:18px;margin:26px 0 8px;color:var(--fg)}
-.dbody p,.dbody li{color:#cdd6e0}
+.dbody p.dbody li{color:#cdd6e0}
 .dbody a{color:var(--signal)}
 .dbody code{font-family:'JetBrains Mono';background:#060a10;border:1px solid var(--line);padding:1px 6px;border-radius:5px;font-size:.85em}
 .dbody pre{background:#060a10;border:1px solid var(--line);border-radius:10px;padding:15px 17px;overflow:auto;font-size:13px}
 .dbody pre code{background:none;border:none;padding:0}
 .dbody table{border-collapse:collapse;width:100%;margin:16px 0;font-size:14px;display:block;overflow-x:auto}
-.dbody th,.dbody td{border:1px solid var(--line);padding:9px 12px;text-align:left}
+.dbody th.dbody td{border:1px solid var(--line);padding:9px 12px;text-align:left}
 .dbody th{background:var(--panel);color:var(--fg);font-family:'Space Grotesk'}
 .dbody tr:hover td{background:var(--panel2)}
 .dbody blockquote{border-left:3px solid var(--signal);margin:14px 0;padding:2px 16px;color:var(--muted);background:var(--panel2);border-radius:0 8px 8px 0}
 .dbody hr{border:none;border-top:1px solid var(--line);margin:26px 0}
-.dbody ul,.dbody ol{padding-left:22px}
+.dbody ul.dbody ol{padding-left:22px}
 .dbody li{margin:5px 0}
 .dlede{color:var(--muted);margin:0 0 22px;font-size:15px}
 @media (max-width:760px){.dwrap{grid-template-columns:1fr}.dside{position:static;display:flex;flex-wrap:wrap;gap:4px}.dside-t{width:100%}}
@@ -198,7 +198,7 @@ footer.site a{color:var(--muted)}
   <em>current shell only</em> and <code>conda activate</code> the target env. Close the shell, it's gone.</li>
 <li><strong>Three environments</strong>, all Python 3.12.13 (same ABI, so the pure-stdlib bus imports
   identically): <code>ros2_kilted</code>, <code>ros1_noetic</code>, <code>lsl</code>.</li>
-<li><strong>RoboStack</strong> provides ROS as conda packages — the only open-source path to ROS on
+<li><strong>RoboStack</strong> provides ROS as conda packages, the only open-source path to ROS on
   Apple Silicon. ROS 2 from <code>robostack-kilted</code>, ROS 1 from <code>robostack-staging</code>.</li>
 </ul>
 <h2 id="2-the-bus-robobusshm_ring">2. The bus (<code>robobus.shm_ring</code>)</h2>
@@ -211,8 +211,8 @@ footer.site a{color:var(--muted)}
   <code>struct</code> do not.</li>
 <li><strong>Seqlock overwrite semantics (LMAX-Disruptor style):</strong> a monotonically increasing
   <code>cursor</code>; each slot stamped with its sequence. A reader copies a slot then re-checks
-  the stamp — if the writer lapped it mid-copy, it retries or skips ahead (counting
-  drops). Wait-free for the producer; "latest-wins" — the right default for sensors and
+  the stamp, if the writer lapped it mid-copy, it retries or skips ahead (counting
+  drops). Wait-free for the producer; "latest-wins", the right default for sensors and
   control loops. Correctness is covered by <code>tests/test_shm_ring.py</code> (wraparound,
   drop-detection, multi-reader, torn-read).</li>
 </ul>
@@ -222,30 +222,30 @@ footer.site a{color:var(--muted)}
 ROS 2 distros, and never for this pairing on RoboStack). Rather than fight that, each
 runtime gets a thin adapter that maps its topics/streams onto bus channels:</p>
 <ul>
-<li><code>robobus.ros2_adapter</code> (rclpy) — <code>--to-bus</code> subscriptions + <code>--from-bus</code> busy-poll
+<li><code>robobus.ros2_adapter</code> (rclpy), <code>--to-bus</code> subscriptions + <code>--from-bus</code> busy-poll
   publisher threads.</li>
-<li><code>robobus.ros1_adapter</code> (rospy) — the same, in ROS 1. ROS1→bus→ROS2 <em>is</em> the
+<li><code>robobus.ros1_adapter</code> (rospy), the same, in ROS 1. ROS1→bus→ROS2 <em>is</em> the
   <code>ros1_bridge</code> replacement, and it's faster (shared memory, not DDS+TCPROS).</li>
-<li><code>robobus.lsl_adapter</code> (pylsl) — LSL inlets/outlets ↔ bus, including an opaque
+<li><code>robobus.lsl_adapter</code> (pylsl), LSL inlets/outlets ↔ bus, including an opaque
   encrypted-string transport mode.</li>
 </ul>
 <p>Proven end-to-end by <code>scripts/e2e_demo.sh</code>: ROS1→bus→ROS2 topic and ROS2→bus→live LSL
 stream, all delivering at ~27 µs (dominated by ROS serialization + thread poll, not the
 bus).</p>
-<p>Beyond ROS/LSL, <code>robobus.transports.*</code> bridges the bus to the wider streaming world —
+<p>Beyond ROS/LSL, <code>robobus.transports.*</code> bridges the bus to the wider streaming world, 
 <strong>MQTT, Apache Kafka, AMQP/RabbitMQ, Eclipse Zenoh, DDS, CAN/CAN-FD, ZeroCM, raw TCP,
 UDP (unicast/multicast) and serial/radio</strong>. Each maps a protocol's topics onto bus channels,
 and <em>any</em> bridge accepts <code>--security &lt;suite&gt; --keyfile</code>, so CNSA 2.0 post-quantum crypto
 (ML-KEM key agreement, AES-256-GCM, ML-DSA identity) wraps that link even when the wire
 protocol has no security of its own. The same PQC-hardened frames carry across five native
-language implementations (Python, C, Rust, JS/Node, Java — bidirectionally conformance-tested)
+language implementations (Python, C, Rust, JS/Node, Java, bidirectionally conformance-tested)
 plus schema codegen for fourteen more.</p>
 <h2 id="4-latency-engineering">4. Latency engineering</h2>
 <p>Three transports, each tuned for localhost:</p>
 <ul>
 <li><strong>Bus:</strong> the floor. Raw in-thread hop ~0.52 µs; Python cross-process round-trip
   p50 3.2 µs. The compiled <code>native/shm_bench.c</code> (C11 atomics, busy-spin) puts 97% of
-  cross-process messages under the 1 µs clock tick — <strong>sub-microsecond is real with a
+  cross-process messages under the 1 µs clock tick, <strong>sub-microsecond is real with a
   compiled poller</strong>; the residual tail is the macOS scheduler descheduling busy-spin
   threads (fixable with RT thread QoS / core isolation).</li>
 <li><strong>ROS 2 DDS:</strong> <code>config/fastdds_shm.xml</code> forces the Fast DDS shared-memory transport +
@@ -257,7 +257,7 @@ plus schema codegen for fourteen more.</p>
 <p>For the lowest possible latency, use the bus with <code>put_raw</code>/<code>recv_raw</code> (skip the codec)
 and busy-spin readers (<code>spin_us=0</code>).</p>
 <h2 id="5-codec">5. Codec</h2>
-<p><code>robobus.codec</code> — a compact self-describing frame <code>[type][stamp_ns][payload]</code> carrying
+<p><code>robobus.codec</code>, a compact self-describing frame <code>[type][stamp_ns][payload]</code> carrying
 float64/int32 arrays, strings, JSON, or raw bytes, with a <code>monotonic_ns</code> send timestamp
 (one host-wide clock, so any reader computes true one-way latency). JSON is the generic
 path for arbitrary ROS messages; bytes is the opaque path for already-serialized data.</p>
@@ -265,7 +265,7 @@ path for arbitrary ROS messages; bytes is the opaque path for already-serialized
 <p><code>robobus.crypto</code> adds authenticated encryption <strong>without touching the hot path's
 design</strong>: PQC math runs once per session; every message is just AEAD.</p>
 <ul>
-<li><strong>Per message:</strong> AES-256-GCM (default) or ChaCha20-Poly1305 — a self-describing
+<li><strong>Per message:</strong> AES-256-GCM (default) or ChaCha20-Poly1305, a self-describing
   <code>magic|alg|nonce|ciphertext+tag</code> frame. Hardware-accelerated; GB/s.</li>
 <li><strong>Per session:</strong> a KEM handshake (ML-KEM, optionally hybrid with X25519/X448),
   authenticated by a PQ signature (ML-DSA / Falcon / SLH-DSA) over the transcript to
@@ -279,4 +279,4 @@ design</strong>: PQC math runs once per session; every message is just AEAD.</p>
   <a href="compliance.html">COMPLIANCE.md</a> and <a href="cmvp-readiness.html">CMVP-READINESS.md</a>.</li>
 </ul>
 <p>The same encrypted bytes ride the bus, ROS topics, and LSL string streams unchanged, so
-encryption is uniform across all three runtimes — and entirely opt-in.</p></article></div><footer class='site'><div class='wrap'><div class='row'><div>robobus — post-quantum, real-time robotics middleware. CNSA 2.0 (FIPS 203 ML-KEM · FIPS 204 ML-DSA).</div><div><a href='../index.html'>Home</a> · <a href='../benchmarks.html'>Benchmarks</a> · <a href='../docs/index.html'>Docs</a> · <a href='https://github.com/pq-cybarg/robobus-benchmarks'>GitHub</a></div></div></div></footer></body></html>
+encryption is uniform across all three runtimes, and entirely opt-in.</p></article></div><footer class='site'><div class='wrap'><div class='row'><div>robobus, a post-quantum, real-time robotics message bus. Benchmarked in 33 languages across 26 crypto primitives and 15 transports.</div><div><a href='../index.html'>Home</a> · <a href='../benchmarks.html'>Benchmarks</a> · <a href='../docs/index.html'>Docs</a> · <a href='https://github.com/pq-cybarg/robobus-benchmarks'>GitHub</a></div></div></div></footer></body></html>

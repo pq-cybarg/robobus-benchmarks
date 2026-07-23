@@ -1,4 +1,4 @@
-<!doctype html><html lang='en'><head><meta charset='utf-8'><meta name='viewport' content='width=device-width,initial-scale=1'><title>Language bindings · robobus docs</title><meta name='description' content='Multi-language bindings'><link rel='canonical' href='https://pq-cybarg.github.io/robobus-benchmarks/'><meta property='og:type' content='website'><meta property='og:site_name' content='robobus'><meta property='og:title' content='Language bindings · robobus docs'><meta property='og:description' content='Multi-language bindings'><meta property='og:url' content='https://pq-cybarg.github.io/robobus-benchmarks/'><meta property='og:image' content='https://pq-cybarg.github.io/robobus-benchmarks/og-image.png'><meta property='og:image:width' content='1200'><meta property='og:image:height' content='630'><meta property='og:image:alt' content='robobus — post-quantum, real-time robotics middleware'><meta name='twitter:card' content='summary_large_image'><meta name='twitter:title' content='Language bindings · robobus docs'><meta name='twitter:description' content='Multi-language bindings'><meta name='twitter:image' content='https://pq-cybarg.github.io/robobus-benchmarks/og-image.png'><link rel='preconnect' href='https://fonts.googleapis.com'><link rel='preconnect' href='https://fonts.gstatic.com' crossorigin><link href='https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=JetBrains+Mono:wght@400;500;700&family=Inter:wght@400;500;600&display=swap' rel='stylesheet'><style>
+<!doctype html><html lang='en'><head><meta charset='utf-8'><meta name='viewport' content='width=device-width,initial-scale=1'><title>Language bindings · robobus docs</title><meta name='description' content='Multi-language bindings'><link rel='canonical' href='https://pq-cybarg.github.io/robobus-benchmarks/'><meta property='og:type' content='website'><meta property='og:site_name' content='robobus'><meta property='og:title' content='Language bindings · robobus docs'><meta property='og:description' content='Multi-language bindings'><meta property='og:url' content='https://pq-cybarg.github.io/robobus-benchmarks/'><meta property='og:image' content='https://pq-cybarg.github.io/robobus-benchmarks/og-image.png'><meta property='og:image:width' content='1200'><meta property='og:image:height' content='630'><meta property='og:image:alt' content='robobus, one message bus benchmarked in 33 languages across 26 crypto primitives and 15 transports'><meta name='twitter:card' content='summary_large_image'><meta name='twitter:title' content='Language bindings · robobus docs'><meta name='twitter:description' content='Multi-language bindings'><meta name='twitter:image' content='https://pq-cybarg.github.io/robobus-benchmarks/og-image.png'><link rel='preconnect' href='https://fonts.googleapis.com'><link rel='preconnect' href='https://fonts.gstatic.com' crossorigin><link href='https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=JetBrains+Mono:wght@400;500;700&family=Inter:wght@400;500;600&display=swap' rel='stylesheet'><style>
 :root{
   --bg:#0a0e13; --bg2:#0d131b; --panel:#111a24; --panel2:#0f1620; --line:#1e2a37;
   --fg:#e9eef4; --muted:#8a9bab; --dim:#5f7183;
@@ -75,7 +75,7 @@ h2.title{font-size:clamp(24px,3.5vw,34px);margin:0 0 8px}
 .fcard p{color:var(--muted);font-size:14.5px;margin:0}
 .fcard .pqc{color:var(--pqc)}.fcard .hybrid{color:var(--hybrid)}.fcard .qr{color:var(--qr)}
 
-/* plain-language explainer — the layperson on-ramp */
+/* plain-language explainer, the layperson on-ramp */
 .plain{display:grid;gap:16px}
 @media(min-width:760px){.plain{grid-template-columns:repeat(3,1fr)}}
 .pcard{background:linear-gradient(180deg,var(--panel),var(--panel2));border:1px solid var(--line);border-radius:16px;padding:24px 22px}
@@ -103,13 +103,13 @@ h2.title{font-size:clamp(24px,3.5vw,34px);margin:0 0 8px}
 
 /* layer table */
 .ltab{width:100%;border-collapse:collapse;font-size:14.5px}
-.ltab th,.ltab td{text-align:left;padding:11px 14px;border-bottom:1px solid var(--line)}
+.ltab th.ltab td{text-align:left;padding:11px 14px;border-bottom:1px solid var(--line)}
 .ltab th{font-size:11.5px;text-transform:uppercase;letter-spacing:.06em;color:var(--dim);font-weight:600}
 .ltab td.reg{font-family:'JetBrains Mono';color:var(--signal);font-size:13px}
 .ltab td.n{font-family:'JetBrains Mono';color:var(--fg)}
 .ltab tr:hover td{background:var(--panel2)}
 
-/* speed matrices — horizontal bars + transport×language heatmap */
+/* speed matrices, horizontal bars + transport×language heatmap */
 .hbars{display:flex;flex-direction:column;gap:7px;margin:6px 0 4px}
 .hrow{display:grid;grid-template-columns:118px 1fr 132px;align-items:center;gap:12px}
 .hrow .lname{font-weight:600;font-size:13.5px}
@@ -123,7 +123,7 @@ h2.title{font-size:clamp(24px,3.5vw,34px);margin:0 0 8px}
 .tier-i>i{background:linear-gradient(90deg,var(--violet),var(--hybrid))}
 .heatwrap{overflow-x:auto}
 .heat{border-collapse:collapse;font-size:12.5px;min-width:520px}
-.heat th,.heat td{padding:9px 12px;text-align:center;border:1px solid var(--line);font-variant-numeric:tabular-nums}
+.heat th.heat td{padding:9px 12px;text-align:center;border:1px solid var(--line);font-variant-numeric:tabular-nums}
 .heat th{font:600 11px/1 'JetBrains Mono';text-transform:uppercase;letter-spacing:.05em;color:var(--dim)}
 .heat td.rl{text-align:left;font-weight:600;color:var(--fg);font-family:'Inter'}
 .heat td.na{color:var(--dim)}
@@ -157,7 +157,7 @@ footer.site a{color:var(--muted)}
 
 @media (max-width:640px){.hero{padding:48px 0 20px}.nav a.tab{padding:6px 9px}}
 @media (prefers-reduced-motion:no-preference){
-  .reveal{animation:rise .7s cubic-bezier(.2,.7,.2,1) both}
+  .reveal{animation:rise .7s cubic-bezier(.2.7.2,1) both}
   @keyframes rise{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:none}}
   .spec-mark{animation:pop .5s ease both}@keyframes pop{from{opacity:0}to{opacity:1}}
 }
@@ -173,18 +173,18 @@ footer.site a{color:var(--muted)}
 .dbody h1{font-size:clamp(26px,4vw,38px);margin:0 0 8px;letter-spacing:-.02em}
 .dbody h2{font-size:23px;margin:36px 0 10px;padding-top:14px;border-top:1px solid var(--line)}
 .dbody h3{font-size:18px;margin:26px 0 8px;color:var(--fg)}
-.dbody p,.dbody li{color:#cdd6e0}
+.dbody p.dbody li{color:#cdd6e0}
 .dbody a{color:var(--signal)}
 .dbody code{font-family:'JetBrains Mono';background:#060a10;border:1px solid var(--line);padding:1px 6px;border-radius:5px;font-size:.85em}
 .dbody pre{background:#060a10;border:1px solid var(--line);border-radius:10px;padding:15px 17px;overflow:auto;font-size:13px}
 .dbody pre code{background:none;border:none;padding:0}
 .dbody table{border-collapse:collapse;width:100%;margin:16px 0;font-size:14px;display:block;overflow-x:auto}
-.dbody th,.dbody td{border:1px solid var(--line);padding:9px 12px;text-align:left}
+.dbody th.dbody td{border:1px solid var(--line);padding:9px 12px;text-align:left}
 .dbody th{background:var(--panel);color:var(--fg);font-family:'Space Grotesk'}
 .dbody tr:hover td{background:var(--panel2)}
 .dbody blockquote{border-left:3px solid var(--signal);margin:14px 0;padding:2px 16px;color:var(--muted);background:var(--panel2);border-radius:0 8px 8px 0}
 .dbody hr{border:none;border-top:1px solid var(--line);margin:26px 0}
-.dbody ul,.dbody ol{padding-left:22px}
+.dbody ul.dbody ol{padding-left:22px}
 .dbody li{margin:5px 0}
 .dlede{color:var(--muted);margin:0 0 22px;font-size:15px}
 @media (max-width:760px){.dwrap{grid-template-columns:1fr}.dside{position:static;display:flex;flex-wrap:wrap;gap:4px}.dside-t{width:100%}}
@@ -251,132 +251,183 @@ footer.site a{color:var(--muted)}
 </tr>
 </tbody>
 </table>
-<p>So "multi-language" is the <strong>union</strong> of all these ecosystems — effectively every mainstream
-language. Two ways to reach robobus from any language:</p>
+<p>So "multi-language" is the <strong>union</strong> of all these ecosystems, effectively every mainstream
+language.</p>
+<h2 id="the-speed-matrix-every-binding-measured-live">The Speed matrix: every binding, measured live</h2>
+<p>"Multi-language" is no longer a claim: the <strong><a href="../speed.html">Speed matrix</a></strong> measures the same
+workloads in <strong>33 language configs</strong> on real toolchains, with <em>no faked cells</em>:</p>
+<ul>
+<li><strong>Wire codec</strong> decode, all 33 configs (Mojo ~0.6 ns → COBOL ~1 µs).</li>
+<li><strong>Crypto suite</strong>, every one of <strong>26 primitives</strong> (AEAD ×4, hashes ×6, KDF/MAC ×5, PQC KEM ×4,
+  PQC + classical signatures ×7) measured in each language. Where a language has no native
+  implementation it reaches the primitive through <strong>one labeled C shim, <code>librbcrypto</code></strong>, over
+  OpenSSL 3.6.3 + liboqs + libblake3, so the grid is fully dense (872 cells, zero empty).</li>
+<li><strong>Transports</strong>, every language drives all <strong>12 transports</strong> (UDP/TCP/UDS natively; the nine
+  broker/middleware transports, SHM, Serial, CAN, MQTT, AMQP, Kafka, DDS, ZeroCM, LSL, through
+  a second labeled shim, <strong><code>librbxport</code></strong>, wrapping each transport's real C client). 26 × 12,
+  zero blanks.</li>
+<li><strong>FFI bindings</strong>, 10 languages reach the full <code>librobobus</code> seal/open surface over their own
+  FFI, all landing near the C AES-GCM ceiling (the binding overhead is nearly free).</li>
+<li>An <strong>interactive configurator</strong> composes any (language × KEM × signature × AEAD × hash × KDF ×
+  transport × security profile) into a live performance spec, handshake, per-message envelope
+  (with measured p50/p90/p99 latency + rate distributions and byte/data rate), transport rate,
+  keystore-unlock, and the NIST level + standards it satisfies.</li>
+</ul>
+<p>The shims are the honest generalisation of "reach it from any language": the crypto/transport
+work happens in one audited C core, and every language calls it through its native FFI at
+near-zero overhead, the same pattern <code>librobobus</code> uses. Two ways to reach robobus from any
+language:</p>
 <h3 id="1-native-endpoint-implement-the-wire-format">1. Native endpoint (implement the wire format)</h3>
 <p>The format (<a href="protocol.html">PROTOCOL.md</a>) is small: an mmap seqlock ring, a codec frame, an
 AES-256-GCM (<code>RBX1</code>) frame, and fixed-layout schema structs. Implement those and you have a
 full, hardened robobus peer. Proven today:</p>
 <ul>
-<li><strong>C</strong> — <code>native/shm_bench.c</code> (ring), <code>native/conformance.c</code> (codec + AEAD), tested vs Python.</li>
-<li><strong>Rust</strong> — <code>bindings/rust/</code> (codec + AES-256-GCM), <strong>bidirectional Python↔Rust conformance tested</strong>.</li>
-<li><strong>JavaScript / Node</strong> — <code>bindings/js/</code> (codec + AES-256-GCM via <code>node:crypto</code>; WebCrypto in
-  browsers), <strong>bidirectional Python↔Node conformance tested</strong> — powers web/Electron dashboards.</li>
-<li><strong>Java</strong> — <code>bindings/java/</code> (codec + AES-256-GCM via JCE), <strong>bidirectional Python↔Java
-  conformance tested</strong> (<code>tests/test_java.py</code>) — for JVM/Android robotics apps.</li>
-<li><strong>Cython</strong> — <code>bench/cython/cyaead.pyx</code> (typed-Python → C AES-256-GCM on OpenSSL EVP),
+<li><strong>C</strong>, <code>native/shm_bench.c</code> (ring), <code>native/conformance.c</code> (codec + AEAD), tested vs Python.</li>
+<li><strong>Rust</strong>, <code>bindings/rust/</code> (codec + AES-256-GCM), <strong>bidirectional Python↔Rust conformance tested</strong>.</li>
+<li><strong>JavaScript / Node</strong>, <code>bindings/js/</code> (codec + AES-256-GCM via <code>node:crypto</code>; WebCrypto in
+  browsers), <strong>bidirectional Python↔Node conformance tested</strong>, powers web/Electron dashboards.</li>
+<li><strong>Java</strong>, <code>bindings/java/</code> (codec + AES-256-GCM via JCE), <strong>bidirectional Python↔Java
+  conformance tested</strong> (<code>tests/test_java.py</code>), for JVM/Android robotics apps.</li>
+<li><strong>Cython</strong>, <code>bench/cython/cyaead.pyx</code> (typed-Python → C AES-256-GCM on OpenSSL EVP),
   wire-compatible <code>RBX1</code>, <strong>bidirectional Python↔Cython conformance tested</strong> (<code>tests/test_cython.py</code>).
-  ~3.4× faster than pure Python (1.4 vs 4.7 µs seal+open), closing most of the gap to native C —
+  ~3.4× faster than pure Python (1.4 vs 4.7 µs seal+open), closing most of the gap to native C, 
   the point of Cython: keep Python ergonomics, get near-C throughput.</li>
 </ul>
-<p><strong>Embed it anywhere — <code>librobobus</code> (C ABI):</strong> <code>librobobus/</code> builds a dependency-light shared
+<p><strong>Embed it anywhere, <code>librobobus</code> (C ABI):</strong> <code>librobobus/</code> builds a dependency-light shared
 library (<code>robobus.dll</code> / <code>librobobus.dylib</code> / <code>librobobus.so</code> + a static lib, via CMake on every
 OS) exposing AES-256-GCM <code>RBX1</code> seal/open and the codec behind a stable C ABI. Any language links
 it over its FFI (<code>ctypes</code>, P/Invoke, JNA/Panama, <code>ffi-napi</code>, <code>bindgen</code>). It is proven byte-identical
 to the Python reference on Linux, macOS, Windows <strong>and five emulated ISAs including big-endian
-s390x</strong> — its C self-test embeds the exact bytes Python emits, and a <code>ctypes</code> test cross-conforms
+s390x</strong>, its C self-test embeds the exact bytes Python emits, and a <code>ctypes</code> test cross-conforms
 both directions (<code>tests/test_cabi.py</code>, <code>.github/workflows/shared-lib.yml</code>).</p>
 <p><strong>Packaged &amp; publishable:</strong> Rust → <strong>crates.io</strong> (<code>Cargo.toml</code>), JS → <strong>npm</strong>
 (<code>package.json</code> + TypeScript types), Java → <strong>Maven Central</strong> (<code>pom.xml</code>, sources+javadoc+GPG).
 <code>cargo package</code> / <code>npm pack</code> / <code>javac</code> all build locally; a tag runs
 <code>.github/workflows/publish-bindings.yml</code> (each registry gated on a repo variable).
-* <strong>Struct codegen for the layout</strong> — <code>Schema.render(lang)</code> emits all 14: C, C++, Rust, Go,
-  Java, C#, TypeScript, Python, Julia, MATLAB/Octave, Swift, Kotlin, Ruby, Lua — and <strong>every one
+* <strong>Struct codegen for the layout</strong>, <code>Schema.render(lang)</code> emits all 14: C, C++, Rust, Go,
+  Java, C#, TypeScript, Python, Julia, MATLAB/Octave, Swift, Kotlin, Ruby, Lua, and <strong>every one
   is compile/run-verified</strong>: its generated reader parses Python's packed little-endian bytes
   byte-for-byte in <code>tests/test_codegen.py</code>.</p>
-<p><strong>Every toolchain, actually run — no silent skips.</strong> <code>tools/all-languages.Dockerfile</code> installs
+<p><strong>Every toolchain, actually run, no silent skips.</strong> <code>tools/all-languages.Dockerfile</code> installs
 <em>all</em> of these toolchains in one image (gcc/clang, Go, Rust, JDK, .NET, Node+TypeScript, Julia,
 Octave, Swift, Kotlin, Ruby, Lua, Python+Cython) and runs the full polyglot conformance with a
-hard "versions print or abort" gate — 12-language codegen + the six native seal/open bindings,
+hard "versions print or abort" gate, 12-language codegen + the six native seal/open bindings,
 green together. It reproduces on any machine with Docker (<code>docker build -f
 tools/all-languages.Dockerfile …</code>), so "all languages pass" is a command anyone can re-run, not a
 claim.</p>
 <h3 id="2-via-a-transport-client-reach-the-bus-over-a-wire-it-already-speaks">2. Via a transport client (reach the bus over a wire it already speaks)</h3>
 <p>A language with no native binding but <em>any</em> MQTT/AMQP/Zenoh/TCP client can talk to robobus:
 run a <code>robobus &lt;transport&gt;</code> bridge, and have the app implement just the <code>RBX1</code> AEAD (one
-AES-256-GCM call — available in every platform crypto lib) to send/receive hardened frames.
+AES-256-GCM call, available in every platform crypto lib) to send/receive hardened frames.
 Example: a Swift/iOS app uses an MQTT client + CryptoKit AES-256-GCM.</p>
 <h2 id="language-matrix-hardened-endpoints">Language matrix (hardened endpoints)</h2>
+<p>Every row below is <strong>measured live</strong> on the <a href="../speed.html">Speed matrix</a>, codec decode, the full
+26-primitive crypto suite, and all 12 transports, not just asserted. "Native" = the language's own
+stdlib/crypto stack; "shim" = the labeled <code>librbcrypto</code> / <code>librbxport</code> C core reached over the
+language's FFI (near-zero overhead).</p>
 <table>
 <thead>
 <tr>
 <th>Language</th>
-<th>native binding</th>
+<th>AEAD path</th>
+<th>full crypto suite</th>
+<th>transports</th>
 <th>struct codegen</th>
-<th>AES-256-GCM lib</th>
-<th>PQC (ML-KEM/ML-DSA)</th>
 </tr>
 </thead>
 <tbody>
 <tr>
 <td>C / C++</td>
-<td>✅ (<code>native/</code> + <code>librobobus</code> C ABI)</td>
+<td>native (OpenSSL EVP)</td>
+<td>✅ native + liboqs</td>
+<td>✅ all 12</td>
 <td>✅</td>
-<td>OpenSSL</td>
-<td>liboqs</td>
 </tr>
 <tr>
 <td>Rust</td>
-<td>✅ (<code>bindings/rust</code>)</td>
+<td>native (RustCrypto)</td>
+<td>✅ native + shim</td>
+<td>✅ all 12</td>
 <td>✅</td>
-<td><code>aes-gcm</code> (RustCrypto)</td>
-<td><code>oqs</code> crate</td>
-</tr>
-<tr>
-<td>Python</td>
-<td>✅ (core)</td>
-<td>✅</td>
-<td><code>cryptography</code></td>
-<td>liboqs / quantcrypt</td>
-</tr>
-<tr>
-<td>Cython</td>
-<td>✅ (<code>bench/cython</code>)</td>
-<td>✅ (via Python)</td>
-<td>OpenSSL EVP</td>
-<td>liboqs / quantcrypt</td>
 </tr>
 <tr>
 <td>Go</td>
-<td>codegen ✅</td>
+<td>native (<code>crypto/cipher</code>)</td>
+<td>✅ native + cgo shim</td>
+<td>✅ all 12</td>
 <td>✅</td>
-<td><code>crypto/aes</code>+<code>cipher</code></td>
-<td>liboqs-go</td>
+</tr>
+<tr>
+<td>Zig</td>
+<td>native (<code>std.crypto</code>)</td>
+<td>✅ native + shim</td>
+<td>✅ all 12</td>
+<td>✅</td>
+</tr>
+<tr>
+<td>Swift</td>
+<td>native (CryptoKit)</td>
+<td>✅ native + shim</td>
+<td>✅ all 12</td>
+<td>✅</td>
+</tr>
+<tr>
+<td>Nim / Crystal / Nelua</td>
+<td>native/EVP FFI</td>
+<td>✅</td>
+<td>✅ all 12</td>
+<td>(Crystal via codegen)</td>
+</tr>
+<tr>
+<td>Haskell / OCaml / LuaJIT / Julia</td>
+<td>native/EVP FFI</td>
+<td>✅</td>
+<td>✅ all 12</td>
+<td>✅ Julia</td>
 </tr>
 <tr>
 <td>Java / Kotlin</td>
-<td>codegen ✅</td>
+<td>native (JCE + BouncyCastle)</td>
+<td>✅ native + FFM shim</td>
+<td>✅ all 12</td>
 <td>✅</td>
-<td>JCE / BouncyCastle</td>
-<td>liboqs-java, BC</td>
 </tr>
 <tr>
 <td>C# / .NET</td>
-<td>codegen ✅</td>
+<td>native (<code>System.Security.Cryptography</code>)</td>
+<td>✅ native + P/Invoke shim</td>
+<td>✅ all 12</td>
 <td>✅</td>
-<td><code>System.Security.Cryptography</code></td>
-<td>liboqs / BC</td>
 </tr>
 <tr>
-<td>JavaScript / TS</td>
-<td>✅ (<code>bindings/js</code>)</td>
+<td>Python (CPython/PyPy/Cython)</td>
+<td>native (<code>cryptography</code>)</td>
+<td>✅ native + cffi shim</td>
+<td>✅ all 12</td>
 <td>✅</td>
-<td>WebCrypto / node:crypto</td>
-<td>liboqs-wasm</td>
 </tr>
 <tr>
-<td>Julia, MATLAB, Swift, Ruby, Lua, …</td>
-<td>via transport client</td>
-<td>(add to <code>render</code>)</td>
-<td>platform crypto</td>
-<td>liboqs bindings</td>
+<td>Ruby / Perl / Node.js / Lua / Mojo</td>
+<td>native + shim</td>
+<td>✅</td>
+<td>✅ all 12</td>
+<td>✅ (TS/Ruby/Lua)</td>
+</tr>
+<tr>
+<td>Fortran / Pascal / COBOL / Octave</td>
+<td>shim via C interop</td>
+<td>✅</td>
+<td>✅ all 12</td>
+<td>✅ (Octave)</td>
 </tr>
 </tbody>
 </table>
-<p>Every listed language has an AES-256-GCM implementation and a liboqs binding, so <strong>national-
+<p>That's <strong>33 configs</strong> (the runtime/accelerator variants, PyPy, Cython, NumPy, PDL, vectorize,
+batch, share their base language's crypto). Every one has an AES-256-GCM path and a liboqs route,
+so <strong>national-
 security-grade hardening (CNSA 2.0 / FIPS) is reachable in all of them</strong>.</p>
 <h2 id="build-from-source-release-automation">Build from source &amp; release automation</h2>
-<p>One portable command builds <strong>every</strong> artifact from source into <code>dist/</code> — no conda/ROS, runs
+<p>One portable command builds <strong>every</strong> artifact from source into <code>dist/</code>, no conda/ROS, runs
 on Linux, macOS, and Windows (Git Bash); each component is skipped-and-reported if its
 toolchain is absent:</p>
 <pre><code>scripts/build_release.sh            # or: make release
@@ -388,8 +439,8 @@ big-endian s390x): <code>tools/package-librobobus-arches.sh</code> (<code>make r
 <p>On a <code>v*</code> tag, <code>release.yml</code> runs the same build across Linux/macOS/Windows + the five ISAs and
 attaches the packaged <code>librobobus</code> artifacts to the GitHub Release alongside Sigstore-signed +
 SLSA-attested Python wheels and a CycloneDX SBOM; <code>publish-bindings.yml</code> publishes the
-Rust/npm/Maven packages — one tag, every language, every platform.</p>
+Rust/npm/Maven packages, one tag, every language, every platform.</p>
 <h2 id="adding-a-language-to-render">Adding a language to <code>render()</code></h2>
 <p>Add a type map + a <code>_render_&lt;lang&gt;</code> method in <code>robobus/schema.py</code> (see the eight existing
 ones). The layout is fixed little-endian packed, so a generator is ~20 lines; add a compile
-check to <code>tests/test_codegen.py</code> if a toolchain is available.</p></article></div><footer class='site'><div class='wrap'><div class='row'><div>robobus — post-quantum, real-time robotics middleware. CNSA 2.0 (FIPS 203 ML-KEM · FIPS 204 ML-DSA).</div><div><a href='../index.html'>Home</a> · <a href='../benchmarks.html'>Benchmarks</a> · <a href='../docs/index.html'>Docs</a> · <a href='https://github.com/pq-cybarg/robobus-benchmarks'>GitHub</a></div></div></div></footer></body></html>
+check to <code>tests/test_codegen.py</code> if a toolchain is available.</p></article></div><footer class='site'><div class='wrap'><div class='row'><div>robobus, a post-quantum, real-time robotics message bus. Benchmarked in 33 languages across 26 crypto primitives and 15 transports.</div><div><a href='../index.html'>Home</a> · <a href='../benchmarks.html'>Benchmarks</a> · <a href='../docs/index.html'>Docs</a> · <a href='https://github.com/pq-cybarg/robobus-benchmarks'>GitHub</a></div></div></div></footer></body></html>

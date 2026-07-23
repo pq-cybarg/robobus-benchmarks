@@ -1,4 +1,4 @@
-<!doctype html><html lang='en'><head><meta charset='utf-8'><meta name='viewport' content='width=device-width,initial-scale=1'><title>Roadmap · robobus docs</title><meta name='description' content='Roadmap'><link rel='canonical' href='https://pq-cybarg.github.io/robobus-benchmarks/'><meta property='og:type' content='website'><meta property='og:site_name' content='robobus'><meta property='og:title' content='Roadmap · robobus docs'><meta property='og:description' content='Roadmap'><meta property='og:url' content='https://pq-cybarg.github.io/robobus-benchmarks/'><meta property='og:image' content='https://pq-cybarg.github.io/robobus-benchmarks/og-image.png'><meta property='og:image:width' content='1200'><meta property='og:image:height' content='630'><meta property='og:image:alt' content='robobus — post-quantum, real-time robotics middleware'><meta name='twitter:card' content='summary_large_image'><meta name='twitter:title' content='Roadmap · robobus docs'><meta name='twitter:description' content='Roadmap'><meta name='twitter:image' content='https://pq-cybarg.github.io/robobus-benchmarks/og-image.png'><link rel='preconnect' href='https://fonts.googleapis.com'><link rel='preconnect' href='https://fonts.gstatic.com' crossorigin><link href='https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=JetBrains+Mono:wght@400;500;700&family=Inter:wght@400;500;600&display=swap' rel='stylesheet'><style>
+<!doctype html><html lang='en'><head><meta charset='utf-8'><meta name='viewport' content='width=device-width,initial-scale=1'><title>Roadmap · robobus docs</title><meta name='description' content='Roadmap'><link rel='canonical' href='https://pq-cybarg.github.io/robobus-benchmarks/'><meta property='og:type' content='website'><meta property='og:site_name' content='robobus'><meta property='og:title' content='Roadmap · robobus docs'><meta property='og:description' content='Roadmap'><meta property='og:url' content='https://pq-cybarg.github.io/robobus-benchmarks/'><meta property='og:image' content='https://pq-cybarg.github.io/robobus-benchmarks/og-image.png'><meta property='og:image:width' content='1200'><meta property='og:image:height' content='630'><meta property='og:image:alt' content='robobus, one message bus benchmarked in 33 languages across 26 crypto primitives and 15 transports'><meta name='twitter:card' content='summary_large_image'><meta name='twitter:title' content='Roadmap · robobus docs'><meta name='twitter:description' content='Roadmap'><meta name='twitter:image' content='https://pq-cybarg.github.io/robobus-benchmarks/og-image.png'><link rel='preconnect' href='https://fonts.googleapis.com'><link rel='preconnect' href='https://fonts.gstatic.com' crossorigin><link href='https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=JetBrains+Mono:wght@400;500;700&family=Inter:wght@400;500;600&display=swap' rel='stylesheet'><style>
 :root{
   --bg:#0a0e13; --bg2:#0d131b; --panel:#111a24; --panel2:#0f1620; --line:#1e2a37;
   --fg:#e9eef4; --muted:#8a9bab; --dim:#5f7183;
@@ -75,7 +75,7 @@ h2.title{font-size:clamp(24px,3.5vw,34px);margin:0 0 8px}
 .fcard p{color:var(--muted);font-size:14.5px;margin:0}
 .fcard .pqc{color:var(--pqc)}.fcard .hybrid{color:var(--hybrid)}.fcard .qr{color:var(--qr)}
 
-/* plain-language explainer — the layperson on-ramp */
+/* plain-language explainer, the layperson on-ramp */
 .plain{display:grid;gap:16px}
 @media(min-width:760px){.plain{grid-template-columns:repeat(3,1fr)}}
 .pcard{background:linear-gradient(180deg,var(--panel),var(--panel2));border:1px solid var(--line);border-radius:16px;padding:24px 22px}
@@ -103,13 +103,13 @@ h2.title{font-size:clamp(24px,3.5vw,34px);margin:0 0 8px}
 
 /* layer table */
 .ltab{width:100%;border-collapse:collapse;font-size:14.5px}
-.ltab th,.ltab td{text-align:left;padding:11px 14px;border-bottom:1px solid var(--line)}
+.ltab th.ltab td{text-align:left;padding:11px 14px;border-bottom:1px solid var(--line)}
 .ltab th{font-size:11.5px;text-transform:uppercase;letter-spacing:.06em;color:var(--dim);font-weight:600}
 .ltab td.reg{font-family:'JetBrains Mono';color:var(--signal);font-size:13px}
 .ltab td.n{font-family:'JetBrains Mono';color:var(--fg)}
 .ltab tr:hover td{background:var(--panel2)}
 
-/* speed matrices — horizontal bars + transport×language heatmap */
+/* speed matrices, horizontal bars + transport×language heatmap */
 .hbars{display:flex;flex-direction:column;gap:7px;margin:6px 0 4px}
 .hrow{display:grid;grid-template-columns:118px 1fr 132px;align-items:center;gap:12px}
 .hrow .lname{font-weight:600;font-size:13.5px}
@@ -123,7 +123,7 @@ h2.title{font-size:clamp(24px,3.5vw,34px);margin:0 0 8px}
 .tier-i>i{background:linear-gradient(90deg,var(--violet),var(--hybrid))}
 .heatwrap{overflow-x:auto}
 .heat{border-collapse:collapse;font-size:12.5px;min-width:520px}
-.heat th,.heat td{padding:9px 12px;text-align:center;border:1px solid var(--line);font-variant-numeric:tabular-nums}
+.heat th.heat td{padding:9px 12px;text-align:center;border:1px solid var(--line);font-variant-numeric:tabular-nums}
 .heat th{font:600 11px/1 'JetBrains Mono';text-transform:uppercase;letter-spacing:.05em;color:var(--dim)}
 .heat td.rl{text-align:left;font-weight:600;color:var(--fg);font-family:'Inter'}
 .heat td.na{color:var(--dim)}
@@ -157,7 +157,7 @@ footer.site a{color:var(--muted)}
 
 @media (max-width:640px){.hero{padding:48px 0 20px}.nav a.tab{padding:6px 9px}}
 @media (prefers-reduced-motion:no-preference){
-  .reveal{animation:rise .7s cubic-bezier(.2,.7,.2,1) both}
+  .reveal{animation:rise .7s cubic-bezier(.2.7.2,1) both}
   @keyframes rise{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:none}}
   .spec-mark{animation:pop .5s ease both}@keyframes pop{from{opacity:0}to{opacity:1}}
 }
@@ -173,18 +173,18 @@ footer.site a{color:var(--muted)}
 .dbody h1{font-size:clamp(26px,4vw,38px);margin:0 0 8px;letter-spacing:-.02em}
 .dbody h2{font-size:23px;margin:36px 0 10px;padding-top:14px;border-top:1px solid var(--line)}
 .dbody h3{font-size:18px;margin:26px 0 8px;color:var(--fg)}
-.dbody p,.dbody li{color:#cdd6e0}
+.dbody p.dbody li{color:#cdd6e0}
 .dbody a{color:var(--signal)}
 .dbody code{font-family:'JetBrains Mono';background:#060a10;border:1px solid var(--line);padding:1px 6px;border-radius:5px;font-size:.85em}
 .dbody pre{background:#060a10;border:1px solid var(--line);border-radius:10px;padding:15px 17px;overflow:auto;font-size:13px}
 .dbody pre code{background:none;border:none;padding:0}
 .dbody table{border-collapse:collapse;width:100%;margin:16px 0;font-size:14px;display:block;overflow-x:auto}
-.dbody th,.dbody td{border:1px solid var(--line);padding:9px 12px;text-align:left}
+.dbody th.dbody td{border:1px solid var(--line);padding:9px 12px;text-align:left}
 .dbody th{background:var(--panel);color:var(--fg);font-family:'Space Grotesk'}
 .dbody tr:hover td{background:var(--panel2)}
 .dbody blockquote{border-left:3px solid var(--signal);margin:14px 0;padding:2px 16px;color:var(--muted);background:var(--panel2);border-radius:0 8px 8px 0}
 .dbody hr{border:none;border-top:1px solid var(--line);margin:26px 0}
-.dbody ul,.dbody ol{padding-left:22px}
+.dbody ul.dbody ol{padding-left:22px}
 .dbody li{margin:5px 0}
 .dlede{color:var(--muted);margin:0 0 22px;font-size:15px}
 @media (max-width:760px){.dwrap{grid-template-columns:1fr}.dside{position:static;display:flex;flex-wrap:wrap;gap:4px}.dside-t{width:100%}}
@@ -193,50 +193,50 @@ footer.site a{color:var(--muted)}
 bus + PQC crypto + compliance) is complete and tested today; these extend reach.</p>
 <h2 id="1-pqc-in-sros2-dds-security">1. PQC in SROS2 / DDS-Security</h2>
 <ul>
-<li><strong>Key agreement — LIVE on CI.</strong> <code>patches/fastdds/0001-cnsa2-pqc-dds-security.patch</code>
+<li><strong>Key agreement, LIVE on CI.</strong> <code>patches/fastdds/0001-cnsa2-pqc-dds-security.patch</code>
   adds hybrid <strong>ECDH+ML-KEM-768/1024</strong> to Fast DDS's built-in PKI-DH auth plugin
   (<code>SharedSecret = HKDF-SHA384(ECDH‖ML-KEM)</code>, CNSA 2.0). The ML-KEM material rides
   inside the already-signed <code>dh1</code>/<code>dh2</code> properties, so no signature-code changes.
   The whole patched Fast DDS tree builds green on CI and links liboqs 0.15.0; crypto core</li>
 <li>full handshake math are conformance-verified vs OpenSSL 3, and <code>git apply --check</code> is
   clean vs pristine v3.1.0.</li>
-<li><strong>Identity/auth — dependency-gated.</strong> DDS identity certs signed with <strong>ML-DSA-87</strong>
+<li><strong>Identity/auth, dependency-gated.</strong> DDS identity certs signed with <strong>ML-DSA-87</strong>
   (FIPS 204) need Fast DDS built against an OpenSSL that exposes ML-DSA (OpenSSL 3.5+ /
   <code>oqs-provider</code>); no plugin code change once the cert path accepts PQC signatures.
   Until then, run RSA-3072/ECDSA-P384 identities with the hybrid ML-KEM key agreement
   above (confidentiality is already quantum-safe).</li>
-<li><strong>CycloneDDS — LIVE-VERIFIED, incl. ML-DSA-87 identity.</strong> <code>patches/cyclonedds/0001-cnsa2-pqc-dds-security.patch</code>
+<li><strong>CycloneDDS, LIVE-VERIFIED, incl. ML-DSA-87 identity.</strong> <code>patches/cyclonedds/0001-cnsa2-pqc-dds-security.patch</code>
   ports the same hybrid ECDH+ML-KEM design to CycloneDDS's C auth plugin, plus <strong>ML-DSA-87</strong>
   (FIPS 204) post-quantum identity signatures. From-scratch on CI it passes CycloneDDS's own
-  two-peer <code>ddssec_handshake</code> suite — classical, hybrid ML-KEM-768 <strong>and</strong> 1024, and a full
-  CNSA 2.0 handshake (ML-DSA-87 identity + ML-KEM-1024) — measured live on <strong>Linux, macOS and
+  two-peer <code>ddssec_handshake</code> suite, classical, hybrid ML-KEM-768 <strong>and</strong> 1024, and a full
+  CNSA 2.0 handshake (ML-DSA-87 identity + ML-KEM-1024), measured live on <strong>Linux, macOS and
   Windows (native MSVC + WSL2)</strong>. A separate <code>0002</code> patch makes the handshake <code>INITIAL_DELAY</code>
   env-tunable (the 10 ms settle, not crypto, dominates the end-to-end time; ~9 ms recoverable).</li>
 <li><strong>Available now (defence in depth):</strong> even without the DDS build, layer <strong>robobus
-  app-layer PQC</strong> (<code>--security cnsa20</code>) on the payloads — quantum-safe end-to-end across
+  app-layer PQC</strong> (<code>--security cnsa20</code>) on the payloads, quantum-safe end-to-end across
   DDS <strong>and</strong> ROS 1 / LSL (which DDS-Security can't touch).</li>
 </ul>
-<h2 id="2-transports-implemented-udp-mqtt-serial-zerocm">2. Transports — IMPLEMENTED (UDP / MQTT / serial / ZeroCM)</h2>
+<h2 id="2-transports-implemented-udp-mqtt-serial-zerocm">2. Transports, IMPLEMENTED (UDP / MQTT / serial / ZeroCM)</h2>
 <p>Shipped in <code>robobus/transports/</code> (a <code>FrameBridge</code> base + thin subclasses):</p>
 <ul>
-<li><strong>UDP</strong> (<code>robobus udp</code>) — stdlib, unicast/multicast; tested with PQC encryption.</li>
-<li><strong>TCP</strong> (<code>robobus tcp</code>) — stdlib, length-framed, auto-reconnect; tested with PQC.</li>
-<li><strong>MQTT</strong> (<code>robobus mqtt</code>) — needs <code>paho-mqtt</code>.</li>
-<li><strong>serial/radio</strong> (<code>robobus serial</code>) — needs <code>pyserial</code>; length-framed stream.</li>
-<li><strong>CAN bus</strong> (<code>robobus can</code>) — needs <code>python-can</code>; segments frames over CAN/CAN-FD MTU.</li>
-<li><strong>Zenoh</strong> (<code>robobus zenoh</code>) — needs <code>eclipse-zenoh</code>; LAN/WAN/edge pub-sub.</li>
-<li><strong>ZeroCM</strong> (<code>robobus zcm</code>) — needs <code>zerocm</code>; UDP-multicast/IPC/serial for embedded+radio.</li>
-<li><strong>AMQP / RabbitMQ</strong> (<code>robobus amqp</code>) — needs <code>pika</code>.</li>
+<li><strong>UDP</strong> (<code>robobus udp</code>), stdlib, unicast/multicast; tested with PQC encryption.</li>
+<li><strong>TCP</strong> (<code>robobus tcp</code>), stdlib, length-framed, auto-reconnect; tested with PQC.</li>
+<li><strong>MQTT</strong> (<code>robobus mqtt</code>), needs <code>paho-mqtt</code>.</li>
+<li><strong>serial/radio</strong> (<code>robobus serial</code>), needs <code>pyserial</code>; length-framed stream.</li>
+<li><strong>CAN bus</strong> (<code>robobus can</code>), needs <code>python-can</code>; segments frames over CAN/CAN-FD MTU.</li>
+<li><strong>Zenoh</strong> (<code>robobus zenoh</code>), needs <code>eclipse-zenoh</code>; LAN/WAN/edge pub-sub.</li>
+<li><strong>ZeroCM</strong> (<code>robobus zcm</code>), needs <code>zerocm</code>; UDP-multicast/IPC/serial for embedded+radio.</li>
+<li><strong>AMQP / RabbitMQ</strong> (<code>robobus amqp</code>), needs <code>pika</code>.</li>
 </ul>
 <p>Each carries opaque, optionally AEAD-sealed frames, so <strong>all transports inherit the full
 PQC suite</strong> via <code>--security</code>. UDP &amp; TCP are tested on loopback (plaintext + CNSA-2.0).</p>
 <p>Implemented transports today: UDP, TCP, MQTT, serial, CAN, Zenoh, ZeroCM, AMQP, <strong>Kafka</strong>
 (confluent-kafka / kafka-python), and <strong>DDS-as-a-transport</strong> (<code>robobus dds</code>, opaque sealed
-frames on a native DDS topic) — plus the ROS 1, ROS 2, LSL runtime adapters. Kafka is tested
+frames on a native DDS topic), plus the ROS 1, ROS 2, LSL runtime adapters. Kafka is tested
 with an in-memory broker (plaintext + CNSA-2.0), DDS with a real rclpy round-trip
-(<code>tests/test_kafka_dds.py</code>). <strong>Still to add:</strong> raw multicast discovery — each is just another
+(<code>tests/test_kafka_dds.py</code>). <strong>Still to add:</strong> raw multicast discovery, each is just another
 <code>FrameBridge</code> subclass.</p>
-<p><strong>Multi-language — DONE:</strong> Rust reference binding (<code>bindings/rust/</code>, Python↔Rust AES-256-GCM
+<p><strong>Multi-language, DONE:</strong> Rust reference binding (<code>bindings/rust/</code>, Python↔Rust AES-256-GCM
 conformance tested); C reference (<code>native/</code>); and <code>Schema.render()</code> codegen for 14 languages
 (C, C++, Rust, Go, Java, C#, TypeScript/JS, Python, Julia, MATLAB/Octave, Swift, Kotlin, Ruby,
 Lua) with C++/Go/Rust compile-verified. See <a href="bindings.html">BINDINGS.md</a>. Any language with
@@ -255,10 +255,10 @@ cross-language: <code>native/shm_bench.c</code> (C) reads/writes the <em>same</e
 <li>Deliverable shape: a small <code>bindings/&lt;lang&gt;/</code> reference implementation per language plus
   a shared conformance test (encode a frame in lang A, decode in lang B).</li>
 </ul>
-<h2 id="4-hardening-done-this-round">4. Hardening — DONE this round</h2>
+<h2 id="4-hardening-done-this-round">4. Hardening, DONE this round</h2>
 <ul>
 <li><strong>Security:</strong> anti-replay (sliding window), per-channel key binding, rekey ratchet,
-  AES-GCM-SIV, <code>SecretBuffer</code> zeroization (mlock + wipe-on-drop), sidecar wipe-on-exit —
+  AES-GCM-SIV, <code>SecretBuffer</code> zeroization (mlock + wipe-on-drop), sidecar wipe-on-exit, 
   wired into SecurePub/Sub and all transports. See <a href="security.html">SECURITY.md</a>.</li>
 <li><strong>Latency tail:</strong> <code>robobus.realtime</code> (macOS QoS / Linux SCHED_FIFO + <code>mlockall</code> + core
   pinning) cut p90 ~12× on macOS; zero-copy <code>recv_view</code>. <code>robobus bench --realtime</code>.</li>
@@ -268,13 +268,13 @@ cross-language: <code>native/shm_bench.c</code> (C) reads/writes the <em>same</e
   module-integrity SHA3 self-test.</li>
 </ul>
 <p><strong>DONE:</strong> typed/schema channels (<code>robobus.schema</code>: fixed-layout structs, zero-copy field
-access, <code>c_struct()</code> codegen, T_SCHEMA frame, TypedPub/Sub) — layout proven to match C
+access, <code>c_struct()</code> codegen, T_SCHEMA frame, TypedPub/Sub), layout proven to match C
 byte-for-byte.</p>
 <p><strong>DONE since:</strong> Linux hard-RT p99 harness (<code>scripts/rt_latency.py</code> + <code>robobus.realtime</code> +
-a <code>hard-rt</code> self-hosted CI job — see <a href="realtime.html">REALTIME.md</a>); CycloneDX SBOM +
+a <code>hard-rt</code> self-hosted CI job, see <a href="realtime.html">REALTIME.md</a>); CycloneDX SBOM +
 <strong>Sigstore-signed / SLSA-attested</strong> release pipeline (<code>.github/workflows/release.yml</code>);
 <strong>Rust, JS, and Java</strong> reference bindings (all Python-cross-conformance-tested) packaged
 for crates.io / npm / Maven Central.</p>
 <p><strong>Still to add:</strong> a compiled Python ring reader (note: per the AEAD measurements, ctypes
-per-call overhead means the <em>native data-plane</em> — <code>native/shm_bench.c</code>, ~100 ns for 97.5 %
-of messages — not a ctypes reader, is the real ns-scale path).</p></article></div><footer class='site'><div class='wrap'><div class='row'><div>robobus — post-quantum, real-time robotics middleware. CNSA 2.0 (FIPS 203 ML-KEM · FIPS 204 ML-DSA).</div><div><a href='../index.html'>Home</a> · <a href='../benchmarks.html'>Benchmarks</a> · <a href='../docs/index.html'>Docs</a> · <a href='https://github.com/pq-cybarg/robobus-benchmarks'>GitHub</a></div></div></div></footer></body></html>
+per-call overhead means the <em>native data-plane</em>, <code>native/shm_bench.c</code>, ~100 ns for 97.5 %
+of messages, not a ctypes reader, is the real ns-scale path).</p></article></div><footer class='site'><div class='wrap'><div class='row'><div>robobus, a post-quantum, real-time robotics message bus. Benchmarked in 33 languages across 26 crypto primitives and 15 transports.</div><div><a href='../index.html'>Home</a> · <a href='../benchmarks.html'>Benchmarks</a> · <a href='../docs/index.html'>Docs</a> · <a href='https://github.com/pq-cybarg/robobus-benchmarks'>GitHub</a></div></div></div></footer></body></html>

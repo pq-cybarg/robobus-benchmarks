@@ -1,2486 +1,2486 @@
 {
- "schema": "robobus-bench/1",
- "generated_unix": 1783165493,
- "label": "GitHub Actions windows-latest",
- "quick": true,
- "platform": {
-  "python_version": "3.12.10",
-  "python_impl": "CPython",
-  "system": "Windows",
-  "release": "2025Server",
-  "version": "10.0.26100",
-  "machine": "AMD64",
-  "processor": "AMD64 Family 25 Model 1 Stepping 1, AuthenticAMD",
-  "platform": "Windows-2025Server-10.0.26100-SP0",
-  "cpu_count_logical": 4,
-  "cpu_count_physical": 2,
-  "mem_total_bytes": 17174360064,
-  "cpu_freq_mhz": {
-   "current": 2445.0,
-   "min": 0.0,
-   "max": 2445.0
-  },
-  "environment": {
-   "ci": "GitHub Actions",
-   "runner_os": "Windows",
-   "runner_arch": "X64",
-   "runner_name": "GitHub Actions 1000002163",
-   "runner_environment": "github-hosted",
-   "virtualized": true,
-   "self_hosted": false,
-   "caveat": "virtualized CI runner: shared vCPUs, noisy neighbours, no real-time scheduling -- absolute latency (esp. tails) is worse and noisier than bare metal; use for cross-platform coverage and relative comparison."
-  },
-  "measurement": {
-   "pinned": null,
-   "pmu_perf_available": false,
-   "uncontrolled_noise": [],
-   "fidelity_tier": "1-virtualized (GitHub-hosted VM, coverage only)"
-  },
-  "dependencies": {
-   "available": {
-    "cryptography": "49.0.0",
-    "oqs": "0.15.0",
-    "argon2": "25.1.0",
-    "psutil": "7.2.2"
-   },
-   "missing": {}
-  }
- },
- "results": [
-  {
-   "group": "bus",
-   "name": "ring put+get, amortized 1-core",
-   "config": {
-    "realtime": "off",
-    "clock_ns_per_tick": 100.0
-   },
-   "unit": "ns/op",
-   "dependency": "native/nsbus.c",
-   "status": "ok",
-   "note": "pure ring op cost; clock QueryPerformanceCounter res 100.0 ns",
-   "metrics": {
-    "mean_ns": 1.86834,
-    "ops_per_s": 535234500.0,
-    "n": 5000000
-   }
-  },
-  {
-   "group": "bus",
-   "name": "cross-thread one-way latency",
-   "config": {
-    "realtime": "off",
-    "ipc": "CreateProcess+CreateFileMapping",
-    "warmup_msgs": 20000
-   },
-   "unit": "ns",
-   "dependency": "native/nsbus.c",
-   "status": "ok",
-   "note": "1.9% <100 ns; max at 89% of run (mid-run scheduler jitter); no RT",
-   "metrics": {
-    "n": 99936,
-    "min_ns": 0.0,
-    "p50_ns": 100.0,
-    "p90_ns": 100.0,
-    "p99_ns": 300.0,
-    "p999_ns": 15500.0,
-    "max_ns": 29600.0,
-    "mean_ns": 171.807,
-    "frac_under_100ns": 0.01897214,
-    "frac_under_1us": 0.9912244,
-    "spike_rate": 0.00862552,
-    "stable_max_ns": 1000.0,
-    "max_position_frac": 0.8908101
-   }
-  },
-  {
-   "group": "bus",
-   "name": "cross-process one-way latency",
-   "config": {
-    "realtime": "off",
-    "ipc": "CreateProcess+CreateFileMapping",
-    "warmup_msgs": 20000
-   },
-   "unit": "ns",
-   "dependency": "native/nsbus.c",
-   "status": "ok",
-   "note": "0.4% <100 ns; max at 27% of run (mid-run scheduler jitter); no RT",
-   "metrics": {
-    "n": 99936,
-    "min_ns": 0.0,
-    "p50_ns": 100.0,
-    "p90_ns": 100.0,
-    "p99_ns": 600.0,
-    "p999_ns": 14600.0,
-    "max_ns": 51700.0,
-    "mean_ns": 176.0887,
-    "frac_under_100ns": 0.004212696,
-    "frac_under_1us": 0.9910142,
-    "spike_rate": 0.0089057,
-    "stable_max_ns": 1000.0,
-    "max_position_frac": 0.2696226
-   }
-  },
-  {
-   "group": "bus",
-   "name": "ring put+get, amortized 1-core (RT)",
-   "config": {
-    "realtime": "on",
-    "clock_ns_per_tick": 100.0
-   },
-   "unit": "ns/op",
-   "dependency": "native/nsbus.c",
-   "status": "ok",
-   "note": "pure ring op cost; clock QueryPerformanceCounter res 100.0 ns",
-   "metrics": {
-    "mean_ns": 1.89334,
-    "ops_per_s": 528167200.0,
-    "n": 5000000
-   }
-  },
-  {
-   "group": "bus",
-   "name": "cross-thread one-way latency (RT)",
-   "config": {
-    "realtime": "on",
-    "ipc": "CreateProcess+CreateFileMapping",
-    "warmup_msgs": 20000
-   },
-   "unit": "ns",
-   "dependency": "native/nsbus.c",
-   "status": "ok",
-   "note": "1.3% <100 ns; max at 69% of run (mid-run scheduler jitter); RT hardened",
-   "metrics": {
-    "n": 99936,
-    "min_ns": 0.0,
-    "p50_ns": 100.0,
-    "p90_ns": 100.0,
-    "p99_ns": 400.0,
-    "p999_ns": 6600.0,
-    "max_ns": 18300.0,
-    "mean_ns": 132.2707,
-    "frac_under_100ns": 0.01293828,
-    "frac_under_1us": 0.9915146,
-    "spike_rate": 0.008285303,
-    "stable_max_ns": 1000.0,
-    "max_position_frac": 0.6946546
-   }
-  },
-  {
-   "group": "bus",
-   "name": "cross-process one-way latency (RT)",
-   "config": {
-    "realtime": "on",
-    "ipc": "CreateProcess+CreateFileMapping",
-    "warmup_msgs": 20000
-   },
-   "unit": "ns",
-   "dependency": "native/nsbus.c",
-   "status": "ok",
-   "note": "0.3% <100 ns; max at 93% of run (mid-run scheduler jitter); RT hardened",
-   "metrics": {
-    "n": 99936,
-    "min_ns": 0.0,
-    "p50_ns": 100.0,
-    "p90_ns": 100.0,
-    "p99_ns": 1800.0,
-    "p999_ns": 18000.0,
-    "max_ns": 41000.0,
-    "mean_ns": 180.1063,
-    "frac_under_100ns": 0.003432197,
-    "frac_under_1us": 0.9880223,
-    "spike_rate": 0.01174752,
-    "stable_max_ns": 1000.0,
-    "max_position_frac": 0.9346682
-   }
-  },
-  {
-   "group": "kem",
-   "name": "X25519",
-   "config": {
-    "op": "keygen"
-   },
-   "unit": "ops/s",
-   "dependency": "cryptography",
-   "status": "ok",
-   "note": "",
-   "metrics": {
-    "iters": 3607,
-    "elapsed_s": 0.1500332,
-    "ops_per_s": 24041.345515525896,
-    "n": 3607,
-    "min_ns": 40200,
-    "p50_ns": 40400.0,
-    "p90_ns": 40600.0,
-    "p99_ns": 71500.0,
-    "max_ns": 82500,
-    "mean_ns": 41158.83005267535,
-    "stdev_ns": 4649.02922822091
-   }
-  },
-  {
-   "group": "kem",
-   "name": "X25519",
-   "config": {
-    "op": "derive"
-   },
-   "unit": "ops/s",
-   "dependency": "cryptography",
-   "status": "ok",
-   "note": "",
-   "metrics": {
-    "iters": 3717,
-    "elapsed_s": 0.1500087,
-    "ops_per_s": 24778.562843355085,
-    "n": 3717,
-    "min_ns": 38200,
-    "p50_ns": 39300.0,
-    "p90_ns": 39300.0,
-    "p99_ns": 64884.000000000015,
-    "max_ns": 119100,
-    "mean_ns": 39940.05918751682,
-    "stdev_ns": 4057.084769545042
-   }
-  },
-  {
-   "group": "kem",
-   "name": "ECDH-P256",
-   "config": {
-    "op": "keygen"
-   },
-   "unit": "ops/s",
-   "dependency": "cryptography",
-   "status": "ok",
-   "note": "",
-   "metrics": {
-    "iters": 7717,
-    "elapsed_s": 0.1500113,
-    "ops_per_s": 51442.79130972134,
-    "n": 4000,
-    "min_ns": 18200,
-    "p50_ns": 18500.0,
-    "p90_ns": 18800.0,
-    "p99_ns": 37300.0,
-    "max_ns": 122200,
-    "mean_ns": 19085.05,
-    "stdev_ns": 3515.9431874676247
-   }
-  },
-  {
-   "group": "kem",
-   "name": "ECDH-P256",
-   "config": {
-    "op": "derive"
-   },
-   "unit": "ops/s",
-   "dependency": "cryptography",
-   "status": "ok",
-   "note": "",
-   "metrics": {
-    "iters": 2640,
-    "elapsed_s": 0.150041,
-    "ops_per_s": 17595.190647889576,
-    "n": 2640,
-    "min_ns": 54800,
-    "p50_ns": 55300.0,
-    "p90_ns": 56300.0,
-    "p99_ns": 75400.0,
-    "max_ns": 182600,
-    "mean_ns": 56434.88636363636,
-    "stdev_ns": 4904.469860066315
-   }
-  },
-  {
-   "group": "kem",
-   "name": "ML-KEM-512",
-   "config": {
-    "op": "keygen"
-   },
-   "unit": "ops/s",
-   "dependency": "oqs",
-   "status": "ok",
-   "note": "",
-   "metrics": {
-    "iters": 775,
-    "elapsed_s": 0.1501096,
-    "ops_per_s": 5162.894311889446,
-    "n": 775,
-    "min_ns": 184600,
-    "p50_ns": 187000.0,
-    "p90_ns": 211700.0,
-    "p99_ns": 235043.99999999997,
-    "max_ns": 279200,
-    "mean_ns": 192963.48387096773,
-    "stdev_ns": 12987.37533858261
-   }
-  },
-  {
-   "group": "kem",
-   "name": "ML-KEM-512",
-   "config": {
-    "op": "encapsulate"
-   },
-   "unit": "ops/s",
-   "dependency": "oqs",
-   "status": "ok",
-   "note": "",
-   "metrics": {
-    "iters": 606,
-    "elapsed_s": 0.150048,
-    "ops_per_s": 4038.70761356366,
-    "n": 606,
-    "min_ns": 233600,
-    "p50_ns": 235800.0,
-    "p90_ns": 273550.0,
-    "p99_ns": 388280.0000000001,
-    "max_ns": 958500,
-    "mean_ns": 246977.55775577558,
-    "stdev_ns": 42611.494110616135
-   }
-  },
-  {
-   "group": "kem",
-   "name": "ML-KEM-512",
-   "config": {
-    "op": "decapsulate"
-   },
-   "unit": "ops/s",
-   "dependency": "oqs",
-   "status": "ok",
-   "note": "",
-   "metrics": {
-    "iters": 506,
-    "elapsed_s": 0.1503057,
-    "ops_per_s": 3366.4724624548508,
-    "n": 506,
-    "min_ns": 288200,
-    "p50_ns": 289600.0,
-    "p90_ns": 324000.0,
-    "p99_ns": 351159.99999999994,
-    "max_ns": 380500,
-    "mean_ns": 296424.70355731226,
-    "stdev_ns": 14901.687121340301
-   }
-  },
-  {
-   "group": "kem",
-   "name": "ML-KEM-768",
-   "config": {
-    "op": "keygen"
-   },
-   "unit": "ops/s",
-   "dependency": "oqs",
-   "status": "ok",
-   "note": "",
-   "metrics": {
-    "iters": 490,
-    "elapsed_s": 0.1501793,
-    "ops_per_s": 3262.766573023047,
-    "n": 490,
-    "min_ns": 294000,
-    "p50_ns": 297700.0,
-    "p90_ns": 332220.0,
-    "p99_ns": 352574.00000000006,
-    "max_ns": 383500,
-    "mean_ns": 305848.5714285714,
-    "stdev_ns": 15223.296057593534
-   }
-  },
-  {
-   "group": "kem",
-   "name": "ML-KEM-768",
-   "config": {
-    "op": "encapsulate"
-   },
-   "unit": "ops/s",
-   "dependency": "oqs",
-   "status": "ok",
-   "note": "",
-   "metrics": {
-    "iters": 420,
-    "elapsed_s": 0.1502663,
-    "ops_per_s": 2795.0378760906474,
-    "n": 420,
-    "min_ns": 345200,
-    "p50_ns": 348250.0,
-    "p90_ns": 382720.0,
-    "p99_ns": 404078.0,
-    "max_ns": 491000,
-    "mean_ns": 357070.4761904762,
-    "stdev_ns": 16909.646014765396
-   }
-  },
-  {
-   "group": "kem",
-   "name": "ML-KEM-768",
-   "config": {
-    "op": "decapsulate"
-   },
-   "unit": "ops/s",
-   "dependency": "oqs",
-   "status": "ok",
-   "note": "",
-   "metrics": {
-    "iters": 351,
-    "elapsed_s": 0.1500534,
-    "ops_per_s": 2339.1672564567016,
-    "n": 351,
-    "min_ns": 415600,
-    "p50_ns": 418200.0,
-    "p90_ns": 454100.0,
-    "p99_ns": 472700.0,
-    "max_ns": 587400,
-    "mean_ns": 426894.5868945869,
-    "stdev_ns": 17879.59569476506
-   }
-  },
-  {
-   "group": "kem",
-   "name": "ML-KEM-1024",
-   "config": {
-    "op": "keygen"
-   },
-   "unit": "ops/s",
-   "dependency": "oqs",
-   "status": "ok",
-   "note": "",
-   "metrics": {
-    "iters": 344,
-    "elapsed_s": 0.1503015,
-    "ops_per_s": 2288.732980043446,
-    "n": 344,
-    "min_ns": 420200,
-    "p50_ns": 427600.0,
-    "p90_ns": 466500.0,
-    "p99_ns": 487741.0,
-    "max_ns": 507800,
-    "mean_ns": 436289.24418604653,
-    "stdev_ns": 18461.832895120406
-   }
-  },
-  {
-   "group": "kem",
-   "name": "ML-KEM-1024",
-   "config": {
-    "op": "encapsulate"
-   },
-   "unit": "ops/s",
-   "dependency": "oqs",
-   "status": "ok",
-   "note": "",
-   "metrics": {
-    "iters": 303,
-    "elapsed_s": 0.1504286,
-    "ops_per_s": 2014.2446316724347,
-    "n": 303,
-    "min_ns": 479700,
-    "p50_ns": 487500.0,
-    "p90_ns": 518180.0,
-    "p99_ns": 542396.0,
-    "max_ns": 644100,
-    "mean_ns": 495774.58745874587,
-    "stdev_ns": 19425.33767123987
-   }
-  },
-  {
-   "group": "kem",
-   "name": "ML-KEM-1024",
-   "config": {
-    "op": "decapsulate"
-   },
-   "unit": "ops/s",
-   "dependency": "oqs",
-   "status": "ok",
-   "note": "",
-   "metrics": {
-    "iters": 258,
-    "elapsed_s": 0.1505578,
-    "ops_per_s": 1713.6275902012385,
-    "n": 258,
-    "min_ns": 567500,
-    "p50_ns": 572100.0,
-    "p90_ns": 606830.0,
-    "p99_ns": 660095.0,
-    "max_ns": 806100,
-    "mean_ns": 582903.4883720931,
-    "stdev_ns": 23201.945158738083
-   }
-  },
-  {
-   "group": "hybrid_kem",
-   "name": "ECDH-P256+ML-KEM-768",
-   "config": {
-    "op": "full_two_party_handshake"
-   },
-   "unit": "handshakes/s",
-   "dependency": "cryptography+oqs",
-   "status": "ok",
-   "note": "ECDH P-256 + ML-KEM encaps/decaps + HKDF-SHA384 combine, both parties",
-   "metrics": {
-    "iters": 111,
-    "elapsed_s": 0.1508568,
-    "ops_per_s": 735.7971268116518,
-    "n": 111,
-    "min_ns": 1311400,
-    "p50_ns": 1362800.0,
-    "p90_ns": 1376700.0,
-    "p99_ns": 1536440.0000000005,
-    "max_ns": 1568800,
-    "mean_ns": 1357527.9279279278,
-    "stdev_ns": 37293.65854644177
-   }
-  },
-  {
-   "group": "hybrid_kem",
-   "name": "ECDH-P256+ML-KEM-1024",
-   "config": {
-    "op": "full_two_party_handshake"
-   },
-   "unit": "handshakes/s",
-   "dependency": "cryptography+oqs",
-   "status": "ok",
-   "note": "ECDH P-256 + ML-KEM encaps/decaps + HKDF-SHA384 combine, both parties",
-   "metrics": {
-    "iters": 84,
-    "elapsed_s": 0.1501635,
-    "ops_per_s": 559.3902646115733,
-    "n": 84,
-    "min_ns": 1732900,
-    "p50_ns": 1783550.0,
-    "p90_ns": 1820140.0,
-    "p99_ns": 1882112.0,
-    "max_ns": 1918300,
-    "mean_ns": 1786489.2857142857,
-    "stdev_ns": 27573.089096924537
-   }
-  },
-  {
-   "group": "handshake",
-   "name": "NIST-1 (ML-KEM-512 + ML-DSA-44)",
-   "config": {
-    "op": "full_authenticated_handshake"
-   },
-   "unit": "handshakes/s",
-   "dependency": "cryptography+oqs",
-   "status": "ok",
-   "note": "3 sign + 3 verify + ML-KEM + 2 ECDH + 2 HKDF, both parties; identities provisioned out-of-band (not timed); isolated from DDS transport",
-   "metrics": {
-    "iters": 21,
-    "elapsed_s": 0.1530834,
-    "ops_per_s": 137.18012534344024,
-    "n": 21,
-    "min_ns": 5802800,
-    "p50_ns": 7008500.0,
-    "p90_ns": 9051700.0,
-    "p99_ns": 10033380.0,
-    "max_ns": 10234400,
-    "mean_ns": 7288576.19047619,
-    "stdev_ns": 1224593.8261141593
-   }
-  },
-  {
-   "group": "handshake",
-   "name": "NIST-3 (ML-KEM-768 + ML-DSA-65)",
-   "config": {
-    "op": "full_authenticated_handshake"
-   },
-   "unit": "handshakes/s",
-   "dependency": "cryptography+oqs",
-   "status": "ok",
-   "note": "3 sign + 3 verify + ML-KEM + 2 ECDH + 2 HKDF, both parties; identities provisioned out-of-band (not timed); isolated from DDS transport",
-   "metrics": {
-    "iters": 20,
-    "elapsed_s": 0.226481,
-    "ops_per_s": 88.30762845448405,
-    "n": 20,
-    "min_ns": 7598900,
-    "p50_ns": 9982700.0,
-    "p90_ns": 14947470.000000002,
-    "p99_ns": 18479528.999999996,
-    "max_ns": 19148500,
-    "mean_ns": 11322865.0,
-    "stdev_ns": 3030455.883736802
-   }
-  },
-  {
-   "group": "handshake",
-   "name": "CNSA 2.0 / NIST-5 (ML-KEM-1024 + ML-DSA-87)",
-   "config": {
-    "op": "full_authenticated_handshake"
-   },
-   "unit": "handshakes/s",
-   "dependency": "cryptography+oqs",
-   "status": "ok",
-   "note": "3 sign + 3 verify + ML-KEM + 2 ECDH + 2 HKDF, both parties; identities provisioned out-of-band (not timed); isolated from DDS transport",
-   "metrics": {
-    "iters": 20,
-    "elapsed_s": 0.320543,
-    "ops_per_s": 62.394124969192895,
-    "n": 20,
-    "min_ns": 11738800,
-    "p50_ns": 15235000.0,
-    "p90_ns": 21449340.0,
-    "p99_ns": 21599010.0,
-    "max_ns": 21610600,
-    "mean_ns": 16025940.0,
-    "stdev_ns": 3098576.1441991385
-   }
-  },
-  {
-   "group": "handshake",
-   "name": "key agreement only, hybrid ECDH+ML-KEM rekey (no identity sig)",
-   "config": {
-    "note": "see hybrid_kem"
-   },
-   "unit": "",
-   "dependency": "cryptography+oqs",
-   "status": "ok",
-   "note": "the recurring/rekey cost is the hybrid_kem group: ~128 µs (ECDH+ML-KEM+HKDF, no signatures)",
-   "metrics": {}
-  },
-  {
-   "group": "sig",
-   "name": "Ed25519",
-   "config": {
-    "op": "keygen"
-   },
-   "unit": "ops/s",
-   "dependency": "cryptography",
-   "status": "ok",
-   "note": "",
-   "metrics": {
-    "iters": 3563,
-    "elapsed_s": 0.1500112,
-    "ops_per_s": 23751.559883528695,
-    "n": 3563,
-    "min_ns": 40700,
-    "p50_ns": 40900.0,
-    "p90_ns": 41200.0,
-    "p99_ns": 57800.0,
-    "max_ns": 74000,
-    "mean_ns": 41678.27673309009,
-    "stdev_ns": 3389.4836048065854
-   }
-  },
-  {
-   "group": "sig",
-   "name": "Ed25519",
-   "config": {
-    "op": "sign"
-   },
-   "unit": "ops/s",
-   "dependency": "cryptography",
-   "status": "ok",
-   "note": "",
-   "metrics": {
-    "iters": 3376,
-    "elapsed_s": 0.1500279,
-    "ops_per_s": 22502.48120516251,
-    "n": 3376,
-    "min_ns": 42900,
-    "p50_ns": 43100.0,
-    "p90_ns": 43800.0,
-    "p99_ns": 62325.0,
-    "max_ns": 171700,
-    "mean_ns": 44032.81990521327,
-    "stdev_ns": 4578.0586192315595
-   }
-  },
-  {
-   "group": "sig",
-   "name": "Ed25519",
-   "config": {
-    "op": "verify"
-   },
-   "unit": "ops/s",
-   "dependency": "cryptography",
-   "status": "ok",
-   "note": "",
-   "metrics": {
-    "iters": 1238,
-    "elapsed_s": 0.1500443,
-    "ops_per_s": 8250.896568546756,
-    "n": 1238,
-    "min_ns": 118000,
-    "p50_ns": 118400.0,
-    "p90_ns": 131730.0,
-    "p99_ns": 149088.99999999997,
-    "max_ns": 203900,
-    "mean_ns": 120767.20516962843,
-    "stdev_ns": 7044.357985395333
-   }
-  },
-  {
-   "group": "sig",
-   "name": "ECDSA-P256",
-   "config": {
-    "op": "sign"
-   },
-   "unit": "ops/s",
-   "dependency": "cryptography",
-   "status": "ok",
-   "note": "",
-   "metrics": {
-    "iters": 4619,
-    "elapsed_s": 0.1500102,
-    "ops_per_s": 30791.239529045357,
-    "n": 4000,
-    "min_ns": 30600,
-    "p50_ns": 30900.0,
-    "p90_ns": 31800.0,
-    "p99_ns": 53100.0,
-    "max_ns": 105100,
-    "mean_ns": 31951.675,
-    "stdev_ns": 4395.075903141492
-   }
-  },
-  {
-   "group": "sig",
-   "name": "ECDSA-P256",
-   "config": {
-    "op": "verify"
-   },
-   "unit": "ops/s",
-   "dependency": "cryptography",
-   "status": "ok",
-   "note": "",
-   "metrics": {
-    "iters": 1938,
-    "elapsed_s": 0.1500062,
-    "ops_per_s": 12919.465995405522,
-    "n": 1938,
-    "min_ns": 74700,
-    "p50_ns": 75200.0,
-    "p90_ns": 78900.0,
-    "p99_ns": 109125.99999999997,
-    "max_ns": 120800,
-    "mean_ns": 76936.27450980392,
-    "stdev_ns": 6327.756760919841
-   }
-  },
-  {
-   "group": "sig",
-   "name": "RSA-3072-PSS",
-   "config": {
-    "op": "sign"
-   },
-   "unit": "ops/s",
-   "dependency": "cryptography",
-   "status": "ok",
-   "note": "",
-   "metrics": {
-    "iters": 193,
-    "elapsed_s": 0.4000092,
-    "ops_per_s": 482.4889027552366,
-    "n": 193,
-    "min_ns": 2011800,
-    "p50_ns": 2042400.0,
-    "p90_ns": 2060620.0,
-    "p99_ns": 2866815.9999999995,
-    "max_ns": 2917400,
-    "mean_ns": 2071604.6632124353,
-    "stdev_ns": 143819.61870471094
-   }
-  },
-  {
-   "group": "sig",
-   "name": "RSA-3072-PSS",
-   "config": {
-    "op": "verify"
-   },
-   "unit": "ops/s",
-   "dependency": "cryptography",
-   "status": "ok",
-   "note": "",
-   "metrics": {
-    "iters": 2711,
-    "elapsed_s": 0.1500177,
-    "ops_per_s": 18071.2009316234,
-    "n": 2711,
-    "min_ns": 53000,
-    "p50_ns": 53500.0,
-    "p90_ns": 54200.0,
-    "p99_ns": 87190.00000000001,
-    "max_ns": 201700,
-    "mean_ns": 54896.016230173365,
-    "stdev_ns": 6707.877765346001
-   }
-  },
-  {
-   "group": "sig",
-   "name": "ML-DSA-44",
-   "config": {
-    "op": "keygen"
-   },
-   "unit": "ops/s",
-   "dependency": "oqs",
-   "status": "ok",
-   "note": "",
-   "metrics": {
-    "iters": 336,
-    "elapsed_s": 0.1500269,
-    "ops_per_s": 2239.5983653598123,
-    "n": 336,
-    "min_ns": 422300,
-    "p50_ns": 436850.0,
-    "p90_ns": 477250.0,
-    "p99_ns": 513939.99999999965,
-    "max_ns": 574300,
-    "mean_ns": 445862.20238095237,
-    "stdev_ns": 21305.076382715168
-   }
-  },
-  {
-   "group": "sig",
-   "name": "ML-DSA-44",
-   "config": {
-    "op": "sign"
-   },
-   "unit": "ops/s",
-   "dependency": "oqs",
-   "status": "ok",
-   "note": "",
-   "metrics": {
-    "iters": 103,
-    "elapsed_s": 0.1500672,
-    "ops_per_s": 686.3591777550323,
-    "n": 103,
-    "min_ns": 700900,
-    "p50_ns": 1173600.0,
-    "p90_ns": 2536300.0,
-    "p99_ns": 4106166.000000001,
-    "max_ns": 4333800,
-    "mean_ns": 1456171.8446601941,
-    "stdev_ns": 828597.1472967112
-   }
-  },
-  {
-   "group": "sig",
-   "name": "ML-DSA-44",
-   "config": {
-    "op": "verify"
-   },
-   "unit": "ops/s",
-   "dependency": "oqs",
-   "status": "ok",
-   "note": "",
-   "metrics": {
-    "iters": 293,
-    "elapsed_s": 0.1500872,
-    "ops_per_s": 1952.1984552979868,
-    "n": 293,
-    "min_ns": 494900,
-    "p50_ns": 501400.0,
-    "p90_ns": 537800.0,
-    "p99_ns": 579731.9999999991,
-    "max_ns": 759400,
-    "mean_ns": 511566.89419795224,
-    "stdev_ns": 25367.099225542104
-   }
-  },
-  {
-   "group": "sig",
-   "name": "ML-DSA-65",
-   "config": {
-    "op": "keygen"
-   },
-   "unit": "ops/s",
-   "dependency": "oqs",
-   "status": "ok",
-   "note": "",
-   "metrics": {
-    "iters": 191,
-    "elapsed_s": 0.1503676,
-    "ops_per_s": 1270.220446425959,
-    "n": 191,
-    "min_ns": 764700,
-    "p50_ns": 773800.0,
-    "p90_ns": 812700.0,
-    "p99_ns": 848469.9999999999,
-    "max_ns": 859700,
-    "mean_ns": 786465.9685863875,
-    "stdev_ns": 20693.860383449333
-   }
-  },
-  {
-   "group": "sig",
-   "name": "ML-DSA-65",
-   "config": {
-    "op": "sign"
-   },
-   "unit": "ops/s",
-   "dependency": "oqs",
-   "status": "ok",
-   "note": "",
-   "metrics": {
-    "iters": 58,
-    "elapsed_s": 0.1508627,
-    "ops_per_s": 384.4555347345633,
-    "n": 58,
-    "min_ns": 1077000,
-    "p50_ns": 2106300.0,
-    "p90_ns": 4792170.000000002,
-    "p99_ns": 7410399.0,
-    "max_ns": 7535400,
-    "mean_ns": 2600174.1379310344,
-    "stdev_ns": 1499419.8075118053
-   }
-  },
-  {
-   "group": "sig",
-   "name": "ML-DSA-65",
-   "config": {
-    "op": "verify"
-   },
-   "unit": "ops/s",
-   "dependency": "oqs",
-   "status": "ok",
-   "note": "",
-   "metrics": {
-    "iters": 182,
-    "elapsed_s": 0.1503233,
-    "ops_per_s": 1210.7238199267845,
-    "n": 182,
-    "min_ns": 796800,
-    "p50_ns": 809750.0,
-    "p90_ns": 848050.0,
-    "p99_ns": 988074.9999999997,
-    "max_ns": 1150200,
-    "mean_ns": 825176.3736263736,
-    "stdev_ns": 39656.746194280066
-   }
-  },
-  {
-   "group": "sig",
-   "name": "ML-DSA-87",
-   "config": {
-    "op": "keygen"
-   },
-   "unit": "ops/s",
-   "dependency": "oqs",
-   "status": "ok",
-   "note": "",
-   "metrics": {
-    "iters": 118,
-    "elapsed_s": 0.1511257,
-    "ops_per_s": 780.8069706211452,
-    "n": 118,
-    "min_ns": 1238800,
-    "p50_ns": 1284500.0,
-    "p90_ns": 1299320.0,
-    "p99_ns": 1336681.0,
-    "max_ns": 1399000,
-    "mean_ns": 1279858.4745762711,
-    "stdev_ns": 23036.262225762654
-   }
-  },
-  {
-   "group": "sig",
-   "name": "ML-DSA-87",
-   "config": {
-    "op": "sign"
-   },
-   "unit": "ops/s",
-   "dependency": "oqs",
-   "status": "ok",
-   "note": "",
-   "metrics": {
-    "iters": 50,
-    "elapsed_s": 0.1509685,
-    "ops_per_s": 331.19491814517596,
-    "n": 50,
-    "min_ns": 1706900,
-    "p50_ns": 2518350.0,
-    "p90_ns": 5263410.000000001,
-    "p99_ns": 7255003.999999997,
-    "max_ns": 7921600,
-    "mean_ns": 3018422.0,
-    "stdev_ns": 1510203.0538030309
-   }
-  },
-  {
-   "group": "sig",
-   "name": "ML-DSA-87",
-   "config": {
-    "op": "verify"
-   },
-   "unit": "ops/s",
-   "dependency": "oqs",
-   "status": "ok",
-   "note": "",
-   "metrics": {
-    "iters": 111,
-    "elapsed_s": 0.1503606,
-    "ops_per_s": 738.2253063635021,
-    "n": 111,
-    "min_ns": 1324600,
-    "p50_ns": 1361100.0,
-    "p90_ns": 1368300.0,
-    "p99_ns": 1408520.0,
-    "max_ns": 1413900,
-    "mean_ns": 1353743.2432432433,
-    "stdev_ns": 19287.75283181514
-   }
-  },
-  {
-   "group": "aead",
-   "name": "AES-256-GCM",
-   "config": {
-    "op": "encrypt",
-    "input_bytes": 64
-   },
-   "unit": "MB/s",
-   "dependency": "cryptography",
-   "status": "ok",
-   "note": "",
-   "metrics": {
-    "iters": 123710,
-    "elapsed_s": 0.150001,
-    "ops_per_s": 824727.8351477657,
-    "bytes": 7917440,
-    "mb_per_s": 52.782581449457005,
-    "mib_per_s": 50.33739228196812
-   }
-  },
-  {
-   "group": "aead",
-   "name": "AES-256-GCM",
-   "config": {
-    "op": "decrypt",
-    "input_bytes": 64
-   },
-   "unit": "MB/s",
-   "dependency": "cryptography",
-   "status": "ok",
-   "note": "",
-   "metrics": {
-    "iters": 121223,
-    "elapsed_s": 0.1500013,
-    "ops_per_s": 808146.3293984785,
-    "bytes": 7758272,
-    "mb_per_s": 51.721365081502626,
-    "mib_per_s": 49.325337487700104
-   }
-  },
-  {
-   "group": "aead",
-   "name": "AES-256-GCM",
-   "config": {
-    "op": "encrypt",
-    "input_bytes": 1024
-   },
-   "unit": "MB/s",
-   "dependency": "cryptography",
-   "status": "ok",
-   "note": "",
-   "metrics": {
-    "iters": 97215,
-    "elapsed_s": 0.1500013,
-    "ops_per_s": 648094.3831820124,
-    "bytes": 99548160,
-    "mb_per_s": 663.6486483783807,
-    "mib_per_s": 632.904671076184
-   }
-  },
-  {
-   "group": "aead",
-   "name": "AES-256-GCM",
-   "config": {
-    "op": "decrypt",
-    "input_bytes": 1024
-   },
-   "unit": "MB/s",
-   "dependency": "cryptography",
-   "status": "ok",
-   "note": "",
-   "metrics": {
-    "iters": 96729,
-    "elapsed_s": 0.1500005,
-    "ops_per_s": 644857.8504738318,
-    "bytes": 99050496,
-    "mb_per_s": 660.3344388852037,
-    "mib_per_s": 629.7439946033513
-   }
-  },
-  {
-   "group": "aead",
-   "name": "AES-256-GCM",
-   "config": {
-    "op": "encrypt",
-    "input_bytes": 65536
-   },
-   "unit": "MB/s",
-   "dependency": "cryptography",
-   "status": "ok",
-   "note": "",
-   "metrics": {
-    "iters": 7932,
-    "elapsed_s": 0.1500066,
-    "ops_per_s": 52877.67338237118,
-    "bytes": 519831552,
-    "mb_per_s": 3465.3912027870774,
-    "mib_per_s": 3304.8545863981985
-   }
-  },
-  {
-   "group": "aead",
-   "name": "AES-256-GCM",
-   "config": {
-    "op": "decrypt",
-    "input_bytes": 65536
-   },
-   "unit": "MB/s",
-   "dependency": "cryptography",
-   "status": "ok",
-   "note": "",
-   "metrics": {
-    "iters": 7957,
-    "elapsed_s": 0.1500168,
-    "ops_per_s": 53040.72610534287,
-    "bytes": 521469952,
-    "mb_per_s": 3476.0770260397503,
-    "mib_per_s": 3315.045381583929
-   }
-  },
-  {
-   "group": "aead",
-   "name": "AES-128-GCM",
-   "config": {
-    "op": "encrypt",
-    "input_bytes": 64
-   },
-   "unit": "MB/s",
-   "dependency": "cryptography",
-   "status": "ok",
-   "note": "",
-   "metrics": {
-    "iters": 124530,
-    "elapsed_s": 0.1500007,
-    "ops_per_s": 830196.1257514133,
-    "bytes": 7969920,
-    "mb_per_s": 53.132552048090446,
-    "mib_per_s": 50.67115025338216
-   }
-  },
-  {
-   "group": "aead",
-   "name": "AES-128-GCM",
-   "config": {
-    "op": "decrypt",
-    "input_bytes": 64
-   },
-   "unit": "MB/s",
-   "dependency": "cryptography",
-   "status": "ok",
-   "note": "",
-   "metrics": {
-    "iters": 120326,
-    "elapsed_s": 0.1500011,
-    "ops_per_s": 802167.4507720277,
-    "bytes": 7700864,
-    "mb_per_s": 51.33871684940977,
-    "mib_per_s": 48.960415696534895
-   }
-  },
-  {
-   "group": "aead",
-   "name": "AES-128-GCM",
-   "config": {
-    "op": "encrypt",
-    "input_bytes": 1024
-   },
-   "unit": "MB/s",
-   "dependency": "cryptography",
-   "status": "ok",
-   "note": "",
-   "metrics": {
-    "iters": 98704,
-    "elapsed_s": 0.1500015,
-    "ops_per_s": 658020.0864658019,
-    "bytes": 101072896,
-    "mb_per_s": 673.8125685409813,
-    "mib_per_s": 642.5977406892597
-   }
-  },
-  {
-   "group": "aead",
-   "name": "AES-128-GCM",
-   "config": {
-    "op": "decrypt",
-    "input_bytes": 1024
-   },
-   "unit": "MB/s",
-   "dependency": "cryptography",
-   "status": "ok",
-   "note": "",
-   "metrics": {
-    "iters": 97783,
-    "elapsed_s": 0.1500006,
-    "ops_per_s": 651884.0591304301,
-    "bytes": 100129792,
-    "mb_per_s": 667.5292765495603,
-    "mib_per_s": 636.6055264945606
-   }
-  },
-  {
-   "group": "aead",
-   "name": "AES-128-GCM",
-   "config": {
-    "op": "encrypt",
-    "input_bytes": 65536
-   },
-   "unit": "MB/s",
-   "dependency": "cryptography",
-   "status": "ok",
-   "note": "",
-   "metrics": {
-    "iters": 8457,
-    "elapsed_s": 0.1500193,
-    "ops_per_s": 56372.74670659042,
-    "bytes": 554237952,
-    "mb_per_s": 3694.4443281631093,
-    "mib_per_s": 3523.2966691619013
-   }
-  },
-  {
-   "group": "aead",
-   "name": "AES-128-GCM",
-   "config": {
-    "op": "decrypt",
-    "input_bytes": 65536
-   },
-   "unit": "MB/s",
-   "dependency": "cryptography",
-   "status": "ok",
-   "note": "",
-   "metrics": {
-    "iters": 8492,
-    "elapsed_s": 0.1500044,
-    "ops_per_s": 56611.67272426675,
-    "bytes": 556531712,
-    "mb_per_s": 3710.1025836575454,
-    "mib_per_s": 3538.2295452666717
-   }
-  },
-  {
-   "group": "aead",
-   "name": "ChaCha20-Poly1305",
-   "config": {
-    "op": "encrypt",
-    "input_bytes": 64
-   },
-   "unit": "MB/s",
-   "dependency": "cryptography",
-   "status": "ok",
-   "note": "",
-   "metrics": {
-    "iters": 107909,
-    "elapsed_s": 0.1500008,
-    "ops_per_s": 719389.4965893516,
-    "bytes": 6906176,
-    "mb_per_s": 46.0409277817185,
-    "mib_per_s": 43.908050328939915
-   }
-  },
-  {
-   "group": "aead",
-   "name": "ChaCha20-Poly1305",
-   "config": {
-    "op": "decrypt",
-    "input_bytes": 64
-   },
-   "unit": "MB/s",
-   "dependency": "cryptography",
-   "status": "ok",
-   "note": "",
-   "metrics": {
-    "iters": 107434,
-    "elapsed_s": 0.150001,
-    "ops_per_s": 716221.8918540543,
-    "bytes": 6875776,
-    "mb_per_s": 45.83820107865948,
-    "mib_per_s": 43.714715078982806
-   }
-  },
-  {
-   "group": "aead",
-   "name": "ChaCha20-Poly1305",
-   "config": {
-    "op": "encrypt",
-    "input_bytes": 1024
-   },
-   "unit": "MB/s",
-   "dependency": "cryptography",
-   "status": "ok",
-   "note": "",
-   "metrics": {
-    "iters": 80777,
-    "elapsed_s": 0.150001,
-    "ops_per_s": 538509.7432683782,
-    "bytes": 82715648,
-    "mb_per_s": 551.4339771068193,
-    "mib_per_s": 525.8884211605256
-   }
-  },
-  {
-   "group": "aead",
-   "name": "ChaCha20-Poly1305",
-   "config": {
-    "op": "decrypt",
-    "input_bytes": 1024
-   },
-   "unit": "MB/s",
-   "dependency": "cryptography",
-   "status": "ok",
-   "note": "",
-   "metrics": {
-    "iters": 80535,
-    "elapsed_s": 0.1500004,
-    "ops_per_s": 536898.5682704846,
-    "bytes": 82467840,
-    "mb_per_s": 549.7841339089762,
-    "mib_per_s": 524.3150080766451
-   }
-  },
-  {
-   "group": "aead",
-   "name": "ChaCha20-Poly1305",
-   "config": {
-    "op": "encrypt",
-    "input_bytes": 65536
-   },
-   "unit": "MB/s",
-   "dependency": "cryptography",
-   "status": "ok",
-   "note": "",
-   "metrics": {
-    "iters": 4613,
-    "elapsed_s": 0.1500316,
-    "ops_per_s": 30746.85599567025,
-    "bytes": 302317568,
-    "mb_per_s": 2015.0259545322454,
-    "mib_per_s": 1921.6784997293905
-   }
-  },
-  {
-   "group": "aead",
-   "name": "ChaCha20-Poly1305",
-   "config": {
-    "op": "decrypt",
-    "input_bytes": 65536
-   },
-   "unit": "MB/s",
-   "dependency": "cryptography",
-   "status": "ok",
-   "note": "",
-   "metrics": {
-    "iters": 4540,
-    "elapsed_s": 0.150032,
-    "ops_per_s": 30260.21115495361,
-    "bytes": 297533440,
-    "mb_per_s": 1983.1331982510396,
-    "mib_per_s": 1891.2631971846006
-   }
-  },
-  {
-   "group": "hash",
-   "name": "sha256",
-   "config": {
-    "input_bytes": 64
-   },
-   "unit": "MB/s",
-   "dependency": "hashlib",
-   "status": "ok",
-   "note": "",
-   "metrics": {
-    "iters": 131139,
-    "elapsed_s": 0.1500008,
-    "ops_per_s": 874255.3373048678,
-    "bytes": 8392896,
-    "mb_per_s": 55.95234158751154,
-    "mib_per_s": 53.36031111479906
-   }
-  },
-  {
-   "group": "hash",
-   "name": "sha256",
-   "config": {
-    "input_bytes": 1024
-   },
-   "unit": "MB/s",
-   "dependency": "hashlib",
-   "status": "ok",
-   "note": "",
-   "metrics": {
-    "iters": 86698,
-    "elapsed_s": 0.1500009,
-    "ops_per_s": 577983.198767474,
-    "bytes": 88778752,
-    "mb_per_s": 591.8547955378934,
-    "mib_per_s": 564.4367175463614
-   }
-  },
-  {
-   "group": "hash",
-   "name": "sha256",
-   "config": {
-    "input_bytes": 65536
-   },
-   "unit": "MB/s",
-   "dependency": "hashlib",
-   "status": "ok",
-   "note": "",
-   "metrics": {
-    "iters": 3525,
-    "elapsed_s": 0.1500031,
-    "ops_per_s": 23499.514343370236,
-    "bytes": 231014400,
-    "mb_per_s": 1540.064172007112,
-    "mib_per_s": 1468.7196464606398
-   }
-  },
-  {
-   "group": "hash",
-   "name": "sha384",
-   "config": {
-    "input_bytes": 64
-   },
-   "unit": "MB/s",
-   "dependency": "hashlib",
-   "status": "ok",
-   "note": "",
-   "metrics": {
-    "iters": 114464,
-    "elapsed_s": 0.1500005,
-    "ops_per_s": 763090.7896973676,
-    "bytes": 7325696,
-    "mb_per_s": 48.83781054063153,
-    "mib_per_s": 46.57536558211472
-   }
-  },
-  {
-   "group": "hash",
-   "name": "sha384",
-   "config": {
-    "input_bytes": 1024
-   },
-   "unit": "MB/s",
-   "dependency": "hashlib",
-   "status": "ok",
-   "note": "",
-   "metrics": {
-    "iters": 55590,
-    "elapsed_s": 0.150001,
-    "ops_per_s": 370597.52934980433,
-    "bytes": 56924160,
-    "mb_per_s": 379.49187005419964,
-    "mib_per_s": 361.9116497556683
-   }
-  },
-  {
-   "group": "hash",
-   "name": "sha384",
-   "config": {
-    "input_bytes": 65536
-   },
-   "unit": "MB/s",
-   "dependency": "hashlib",
-   "status": "ok",
-   "note": "",
-   "metrics": {
-    "iters": 1697,
-    "elapsed_s": 0.1500572,
-    "ops_per_s": 11309.020826724742,
-    "bytes": 111214592,
-    "mb_per_s": 741.1479889002327,
-    "mib_per_s": 706.8138016702964
-   }
-  },
-  {
-   "group": "hash",
-   "name": "sha512",
-   "config": {
-    "input_bytes": 64
-   },
-   "unit": "MB/s",
-   "dependency": "hashlib",
-   "status": "ok",
-   "note": "",
-   "metrics": {
-    "iters": 113874,
-    "elapsed_s": 0.1500009,
-    "ops_per_s": 759155.4450673297,
-    "bytes": 7287936,
-    "mb_per_s": 48.5859484843091,
-    "mib_per_s": 46.33517120772276
-   }
-  },
-  {
-   "group": "hash",
-   "name": "sha512",
-   "config": {
-    "input_bytes": 1024
-   },
-   "unit": "MB/s",
-   "dependency": "hashlib",
-   "status": "ok",
-   "note": "",
-   "metrics": {
-    "iters": 55976,
-    "elapsed_s": 0.1500023,
-    "ops_per_s": 373167.6114299581,
-    "bytes": 57319424,
-    "mb_per_s": 382.123634104277,
-    "mib_per_s": 364.42149553706844
-   }
-  },
-  {
-   "group": "hash",
-   "name": "sha512",
-   "config": {
-    "input_bytes": 65536
-   },
-   "unit": "MB/s",
-   "dependency": "hashlib",
-   "status": "ok",
-   "note": "",
-   "metrics": {
-    "iters": 1694,
-    "elapsed_s": 0.1500451,
-    "ops_per_s": 11289.938825059933,
-    "bytes": 111017984,
-    "mb_per_s": 739.8974308391278,
-    "mib_per_s": 705.6211765662458
-   }
-  },
-  {
-   "group": "hash",
-   "name": "sha3_256",
-   "config": {
-    "input_bytes": 64
-   },
-   "unit": "MB/s",
-   "dependency": "hashlib",
-   "status": "ok",
-   "note": "",
-   "metrics": {
-    "iters": 103944,
-    "elapsed_s": 0.1500005,
-    "ops_per_s": 692957.6901410328,
-    "bytes": 6652416,
-    "mb_per_s": 44.3492921690261,
-    "mib_per_s": 42.29478089239702
-   }
-  },
-  {
-   "group": "hash",
-   "name": "sha3_256",
-   "config": {
-    "input_bytes": 1024
-   },
-   "unit": "MB/s",
-   "dependency": "hashlib",
-   "status": "ok",
-   "note": "",
-   "metrics": {
-    "iters": 41537,
-    "elapsed_s": 0.1500027,
-    "ops_per_s": 276908.34898305166,
-    "bytes": 42533888,
-    "mb_per_s": 283.5541493586449,
-    "mib_per_s": 270.4183095537614
-   }
-  },
-  {
-   "group": "hash",
-   "name": "sha3_256",
-   "config": {
-    "input_bytes": 65536
-   },
-   "unit": "MB/s",
-   "dependency": "hashlib",
-   "status": "ok",
-   "note": "",
-   "metrics": {
-    "iters": 964,
-    "elapsed_s": 0.1500834,
-    "ops_per_s": 6423.095425610028,
-    "bytes": 63176704,
-    "mb_per_s": 420.94398181277876,
-    "mib_per_s": 401.4434641006267
-   }
-  },
-  {
-   "group": "hash",
-   "name": "sha3_512",
-   "config": {
-    "input_bytes": 64
-   },
-   "unit": "MB/s",
-   "dependency": "hashlib",
-   "status": "ok",
-   "note": "",
-   "metrics": {
-    "iters": 103530,
-    "elapsed_s": 0.1500006,
-    "ops_per_s": 690197.2392110431,
-    "bytes": 6625920,
-    "mb_per_s": 44.172623309506754,
-    "mib_per_s": 42.12629633856464
-   }
-  },
-  {
-   "group": "hash",
-   "name": "sha3_512",
-   "config": {
-    "input_bytes": 1024
-   },
-   "unit": "MB/s",
-   "dependency": "hashlib",
-   "status": "ok",
-   "note": "",
-   "metrics": {
-    "iters": 26247,
-    "elapsed_s": 0.1500009,
-    "ops_per_s": 174978.95012629926,
-    "bytes": 26876928,
-    "mb_per_s": 179.17844492933042,
-    "mib_per_s": 170.87788098271412
-   }
-  },
-  {
-   "group": "hash",
-   "name": "sha3_512",
-   "config": {
-    "input_bytes": 65536
-   },
-   "unit": "MB/s",
-   "dependency": "hashlib",
-   "status": "ok",
-   "note": "",
-   "metrics": {
-    "iters": 538,
-    "elapsed_s": 0.1500021,
-    "ops_per_s": 3586.61645403631,
-    "bytes": 35258368,
-    "mb_per_s": 235.0524959317236,
-    "mib_per_s": 224.1635283772694
-   }
-  },
-  {
-   "group": "hash",
-   "name": "blake2b",
-   "config": {
-    "input_bytes": 64
-   },
-   "unit": "MB/s",
-   "dependency": "hashlib",
-   "status": "ok",
-   "note": "",
-   "metrics": {
-    "iters": 163059,
-    "elapsed_s": 0.1500004,
-    "ops_per_s": 1087057.1011810636,
-    "bytes": 10435776,
-    "mb_per_s": 69.57165447558806,
-    "mib_per_s": 66.34870002325827
-   }
-  },
-  {
-   "group": "hash",
-   "name": "blake2b",
-   "config": {
-    "input_bytes": 1024
-   },
-   "unit": "MB/s",
-   "dependency": "hashlib",
-   "status": "ok",
-   "note": "",
-   "metrics": {
-    "iters": 61203,
-    "elapsed_s": 0.1500013,
-    "ops_per_s": 408016.4638573132,
-    "bytes": 62671872,
-    "mb_per_s": 417.80885898988873,
-    "mib_per_s": 398.45357798565743
-   }
-  },
-  {
-   "group": "hash",
-   "name": "blake2b",
-   "config": {
-    "input_bytes": 65536
-   },
-   "unit": "MB/s",
-   "dependency": "hashlib",
-   "status": "ok",
-   "note": "",
-   "metrics": {
-    "iters": 1342,
-    "elapsed_s": 0.1500917,
-    "ops_per_s": 8941.200612692108,
-    "bytes": 87949312,
-    "mb_per_s": 585.97052335339,
-    "mib_per_s": 558.8250382932567
-   }
-  },
-  {
-   "group": "hash",
-   "name": "blake2s",
-   "config": {
-    "input_bytes": 64
-   },
-   "unit": "MB/s",
-   "dependency": "hashlib",
-   "status": "ok",
-   "note": "",
-   "metrics": {
-    "iters": 182545,
-    "elapsed_s": 0.1500004,
-    "ops_per_s": 1216963.4214308762,
-    "bytes": 11682880,
-    "mb_per_s": 77.88565897157608,
-    "mib_per_s": 74.27755257756813
-   }
-  },
-  {
-   "group": "hash",
-   "name": "blake2s",
-   "config": {
-    "input_bytes": 1024
-   },
-   "unit": "MB/s",
-   "dependency": "hashlib",
-   "status": "ok",
-   "note": "",
-   "metrics": {
-    "iters": 42241,
-    "elapsed_s": 0.1500027,
-    "ops_per_s": 281601.59783790563,
-    "bytes": 43254784,
-    "mb_per_s": 288.36003618601535,
-    "mib_per_s": 275.0015603885797
-   }
-  },
-  {
-   "group": "hash",
-   "name": "blake2s",
-   "config": {
-    "input_bytes": 65536
-   },
-   "unit": "MB/s",
-   "dependency": "hashlib",
-   "status": "ok",
-   "note": "",
-   "metrics": {
-    "iters": 814,
-    "elapsed_s": 0.150132,
-    "ops_per_s": 5421.8953987157975,
-    "bytes": 53346304,
-    "mb_per_s": 355.3293368502385,
-    "mib_per_s": 338.86846241973734
-   }
-  },
-  {
-   "group": "hash",
-   "name": "blake3",
-   "config": {
-    "input_bytes": 64
-   },
-   "unit": "MB/s",
-   "dependency": "blake3",
-   "status": "ok",
-   "note": "",
-   "metrics": {
-    "iters": 191087,
-    "elapsed_s": 0.1500008,
-    "ops_per_s": 1273906.5391651245,
-    "bytes": 12229568,
-    "mb_per_s": 81.53001850656797,
-    "mib_per_s": 77.75308466584012
-   }
-  },
-  {
-   "group": "hash",
-   "name": "blake3",
-   "config": {
-    "input_bytes": 1024
-   },
-   "unit": "MB/s",
-   "dependency": "blake3",
-   "status": "ok",
-   "note": "",
-   "metrics": {
-    "iters": 80323,
-    "elapsed_s": 0.1500014,
-    "ops_per_s": 535481.6688377574,
-    "bytes": 82250752,
-    "mb_per_s": 548.3332288898637,
-    "mib_per_s": 522.9313172243725
-   }
-  },
-  {
-   "group": "hash",
-   "name": "blake3",
-   "config": {
-    "input_bytes": 65536
-   },
-   "unit": "MB/s",
-   "dependency": "blake3",
-   "status": "ok",
-   "note": "",
-   "metrics": {
-    "iters": 8799,
-    "elapsed_s": 0.1500041,
-    "ops_per_s": 58658.396670491005,
-    "bytes": 576651264,
-    "mb_per_s": 3844.2366841972985,
-    "mib_per_s": 3666.149791905688
-   }
-  },
-  {
-   "group": "mac",
-   "name": "HMAC-SHA256",
-   "config": {
-    "input_bytes": 64
-   },
-   "unit": "MB/s",
-   "dependency": "hmac",
-   "status": "ok",
-   "note": "",
-   "metrics": {
-    "iters": 52905,
-    "elapsed_s": 0.1500003,
-    "ops_per_s": 352699.2946014108,
-    "bytes": 3385920,
-    "mb_per_s": 22.57275485449029,
-    "mib_per_s": 21.52705655526189
-   }
-  },
-  {
-   "group": "mac",
-   "name": "HMAC-SHA256",
-   "config": {
-    "input_bytes": 1024
-   },
-   "unit": "MB/s",
-   "dependency": "hmac",
-   "status": "ok",
-   "note": "",
-   "metrics": {
-    "iters": 43784,
-    "elapsed_s": 0.1500012,
-    "ops_per_s": 291890.9982053477,
-    "bytes": 44834816,
-    "mb_per_s": 298.896382162276,
-    "mib_per_s": 285.04980293490985
-   }
-  },
-  {
-   "group": "mac",
-   "name": "HMAC-SHA256",
-   "config": {
-    "input_bytes": 65536
-   },
-   "unit": "MB/s",
-   "dependency": "hmac",
-   "status": "ok",
-   "note": "",
-   "metrics": {
-    "iters": 3281,
-    "elapsed_s": 0.1500364,
-    "ops_per_s": 21868.026692189364,
-    "bytes": 215023616,
-    "mb_per_s": 1433.1429972993221,
-    "mib_per_s": 1366.7516682618352
-   }
-  },
-  {
-   "group": "mac",
-   "name": "HMAC-SHA384",
-   "config": {
-    "input_bytes": 64
-   },
-   "unit": "MB/s",
-   "dependency": "hmac",
-   "status": "ok",
-   "note": "",
-   "metrics": {
-    "iters": 41538,
-    "elapsed_s": 0.1500012,
-    "ops_per_s": 276917.78465772275,
-    "bytes": 2658432,
-    "mb_per_s": 17.722738218094253,
-    "mib_per_s": 16.90172025498796
-   }
-  },
-  {
-   "group": "mac",
-   "name": "HMAC-SHA384",
-   "config": {
-    "input_bytes": 1024
-   },
-   "unit": "MB/s",
-   "dependency": "hmac",
-   "status": "ok",
-   "note": "",
-   "metrics": {
-    "iters": 30116,
-    "elapsed_s": 0.1500022,
-    "ops_per_s": 200770.3887009657,
-    "bytes": 30838784,
-    "mb_per_s": 205.5888780297889,
-    "mib_per_s": 196.06483271578682
-   }
-  },
-  {
-   "group": "mac",
-   "name": "HMAC-SHA384",
-   "config": {
-    "input_bytes": 65536
-   },
-   "unit": "MB/s",
-   "dependency": "hmac",
-   "status": "ok",
-   "note": "",
-   "metrics": {
-    "iters": 1619,
-    "elapsed_s": 0.150039,
-    "ops_per_s": 10790.527796106346,
-    "bytes": 106102784,
-    "mb_per_s": 707.1680296456254,
-    "mib_per_s": 674.4079872566466
-   }
-  },
-  {
-   "group": "mac",
-   "name": "HMAC-SHA512",
-   "config": {
-    "input_bytes": 64
-   },
-   "unit": "MB/s",
-   "dependency": "hmac",
-   "status": "ok",
-   "note": "",
-   "metrics": {
-    "iters": 41930,
-    "elapsed_s": 0.1500029,
-    "ops_per_s": 279527.9291267036,
-    "bytes": 2683520,
-    "mb_per_s": 17.88978746410903,
-    "mib_per_s": 17.06103083048728
-   }
-  },
-  {
-   "group": "mac",
-   "name": "HMAC-SHA512",
-   "config": {
-    "input_bytes": 1024
-   },
-   "unit": "MB/s",
-   "dependency": "hmac",
-   "status": "ok",
-   "note": "",
-   "metrics": {
-    "iters": 30292,
-    "elapsed_s": 0.1500092,
-    "ops_per_s": 201934.28136407633,
-    "bytes": 31019008,
-    "mb_per_s": 206.78070411681415,
-    "mib_per_s": 197.2014466446058
-   }
-  },
-  {
-   "group": "mac",
-   "name": "HMAC-SHA512",
-   "config": {
-    "input_bytes": 65536
-   },
-   "unit": "MB/s",
-   "dependency": "hmac",
-   "status": "ok",
-   "note": "",
-   "metrics": {
-    "iters": 1620,
-    "elapsed_s": 0.1500372,
-    "ops_per_s": 10797.322264078508,
-    "bytes": 106168320,
-    "mb_per_s": 707.613311898649,
-    "mib_per_s": 674.8326415049067
-   }
-  },
-  {
-   "group": "mac",
-   "name": "Poly1305",
-   "config": {
-    "input_bytes": 64
-   },
-   "unit": "MB/s",
-   "dependency": "cryptography",
-   "status": "ok",
-   "note": "",
-   "metrics": {
-    "iters": 27494,
-    "elapsed_s": 0.1500028,
-    "ops_per_s": 183289.91192164415,
-    "bytes": 1759616,
-    "mb_per_s": 11.730554362985226,
-    "mib_per_s": 11.187128413186288
-   }
-  },
-  {
-   "group": "mac",
-   "name": "Poly1305",
-   "config": {
-    "input_bytes": 1024
-   },
-   "unit": "MB/s",
-   "dependency": "cryptography",
-   "status": "ok",
-   "note": "",
-   "metrics": {
-    "iters": 26422,
-    "elapsed_s": 0.1500026,
-    "ops_per_s": 176143.61351069913,
-    "bytes": 27056128,
-    "mb_per_s": 180.3710602349559,
-    "mib_per_s": 172.01524756904212
-   }
-  },
-  {
-   "group": "mac",
-   "name": "Poly1305",
-   "config": {
-    "input_bytes": 65536
-   },
-   "unit": "MB/s",
-   "dependency": "cryptography",
-   "status": "ok",
-   "note": "",
-   "metrics": {
-    "iters": 9608,
-    "elapsed_s": 0.1500004,
-    "ops_per_s": 64053.16252489993,
-    "bytes": 629669888,
-    "mb_per_s": 4197.7880592318415,
-    "mib_per_s": 4003.322657806246
-   }
-  },
-  {
-   "group": "kdf",
-   "name": "PBKDF2-HMAC-SHA256",
-   "config": {
-    "iterations": 10000
-   },
-   "unit": "ops/s",
-   "dependency": "hashlib",
-   "status": "ok",
-   "note": "",
-   "metrics": {
-    "iters": 74,
-    "elapsed_s": 0.4015669,
-    "ops_per_s": 184.27813646991322,
-    "n": 74,
-    "min_ns": 4995000,
-    "p50_ns": 5033450.0,
-    "p90_ns": 5881810.000000001,
-    "p99_ns": 10378440.999999998,
-    "max_ns": 10574300,
-    "mean_ns": 5425660.810810811,
-    "stdev_ns": 1182796.7735491425
-   }
-  },
-  {
-   "group": "kdf",
-   "name": "PBKDF2-HMAC-SHA256",
-   "config": {
-    "iterations": 100000
-   },
-   "unit": "ops/s",
-   "dependency": "hashlib",
-   "status": "ok",
-   "note": "",
-   "metrics": {
-    "iters": 8,
-    "elapsed_s": 0.4009139,
-    "ops_per_s": 19.95440916366332,
-    "n": 8,
-    "min_ns": 49901000,
-    "p50_ns": 50024050.0,
-    "p90_ns": 50310870.0,
-    "p99_ns": 50749287.0,
-    "max_ns": 50798000,
-    "mean_ns": 50112587.5,
-    "stdev_ns": 265133.44487964927
-   }
-  },
-  {
-   "group": "kdf",
-   "name": "PBKDF2-HMAC-SHA256",
-   "config": {
-    "iterations": 600000
-   },
-   "unit": "ops/s",
-   "dependency": "hashlib",
-   "status": "ok",
-   "note": "",
-   "metrics": {
-    "iters": 3,
-    "elapsed_s": 0.9021837,
-    "ops_per_s": 3.325265131702113,
-    "n": 3,
-    "min_ns": 297567900,
-    "p50_ns": 297813500.0,
-    "p90_ns": 304989100.0,
-    "p99_ns": 306603610.0,
-    "max_ns": 306783000,
-    "mean_ns": 300721466.6666667,
-    "stdev_ns": 4287323.920841791
-   }
-  },
-  {
-   "group": "kdf",
-   "name": "HKDF-SHA256",
-   "config": {
-    "ikm_bytes": 64,
-    "out_bytes": 32
-   },
-   "unit": "ops/s",
-   "dependency": "cryptography",
-   "status": "ok",
-   "note": "",
-   "metrics": {
-    "iters": 25141,
-    "elapsed_s": 0.1500011,
-    "ops_per_s": 167605.43756012456,
-    "n": 4000,
-    "min_ns": 5400,
-    "p50_ns": 5500.0,
-    "p90_ns": 5600.0,
-    "p99_ns": 11600.999999999976,
-    "max_ns": 32500,
-    "mean_ns": 5643.825,
-    "stdev_ns": 1216.0435310362043
-   }
-  },
-  {
-   "group": "kdf",
-   "name": "HKDF-SHA384",
-   "config": {
-    "ikm_bytes": 64,
-    "out_bytes": 32
-   },
-   "unit": "ops/s",
-   "dependency": "cryptography",
-   "status": "ok",
-   "note": "",
-   "metrics": {
-    "iters": 20389,
-    "elapsed_s": 0.150006,
-    "ops_per_s": 135921.22981747397,
-    "n": 4000,
-    "min_ns": 6700,
-    "p50_ns": 6900.0,
-    "p90_ns": 6900.0,
-    "p99_ns": 14900.0,
-    "max_ns": 58700,
-    "mean_ns": 7028.1,
-    "stdev_ns": 1608.2274061835908
-   }
-  },
-  {
-   "group": "kdf",
-   "name": "Argon2id",
-   "config": {
-    "profile": "interactive",
-    "time_cost": 2,
-    "memory_cost": 65536,
-    "parallelism": 1
-   },
-   "unit": "ops/s",
-   "dependency": "argon2",
-   "status": "ok",
-   "note": "",
-   "metrics": {
-    "iters": 6,
-    "elapsed_s": 0.5775781,
-    "ops_per_s": 10.38820550848448,
-    "n": 6,
-    "min_ns": 95048200,
-    "p50_ns": 95762950.0,
-    "p90_ns": 97853000.0,
-    "p99_ns": 97937510.0,
-    "max_ns": 97946900,
-    "mean_ns": 96258400.0,
-    "stdev_ns": 1184254.752998695
-   }
-  },
-  {
-   "group": "kdf",
-   "name": "Argon2id",
-   "config": {
-    "profile": "moderate",
-    "time_cost": 3,
-    "memory_cost": 262144,
-    "parallelism": 4
-   },
-   "unit": "ops/s",
-   "dependency": "argon2",
-   "status": "ok",
-   "note": "",
-   "metrics": {
-    "iters": 3,
-    "elapsed_s": 0.6689142,
-    "ops_per_s": 4.484880123639175,
-    "n": 3,
-    "min_ns": 219995800,
-    "p50_ns": 220224700.0,
-    "p90_ns": 226987020.0,
-    "p99_ns": 228508542.0,
-    "max_ns": 228677600,
-    "mean_ns": 222966033.33333334,
-    "stdev_ns": 4039768.4870409206
-   }
-  },
-  {
-   "group": "dds_handshake",
-   "name": "CycloneDDS",
-   "config": {},
-   "unit": "",
-   "dependency": "cunit_security_core",
-   "status": "skipped",
-   "note": "CycloneDDS PQC test binary not built on this platform",
-   "metrics": {}
-  },
-  {
-   "group": "dds_handshake",
-   "name": "FastDDS",
-   "config": {},
-   "unit": "",
-   "dependency": "BuiltinPKIDH",
-   "status": "skipped",
-   "note": "Fast DDS PKI-DH test binary not built on this platform",
-   "metrics": {}
-  },
-  {
-   "group": "gpu",
-   "name": "swapover, Apple M5 (unified memory) (modeled)",
-   "config": {
-    "device": "Apple M5 (unified memory)",
-    "modeled": true,
-    "dispatch_us": 204.0
-   },
-   "unit": "ns",
-   "dependency": "analytical model",
-   "status": "ok",
-   "note": "projected dispatch+sync = 204 us. CALIBRATED: GPU saturates ~120 GB/s unified LPDDR5; numpy CPU ~17.5 GB/s effective -> reproduces the measured ~4 MiB crossover",
-   "metrics": {
-    "p50_ns": 204000.0,
-    "mean_ns": 204000.0
-   }
-  },
-  {
-   "group": "gpu",
-   "name": "crossover batch, Apple M5 (unified memory) (modeled)",
-   "config": {
-    "device": "Apple M5 (unified memory)",
-    "modeled": true
-   },
-   "unit": "bytes",
-   "dependency": "analytical model",
-   "status": "ok",
-   "note": "GPU overtakes CPU above ~4.0 MiB resident / 4.0 MiB cold (host<->device copy each batch); ~4,081 concurrent 1-KiB streams. Roofline projection, see GPGPU-Sim/Accel-Sim for cycle-accurate. CALIBRATED: GPU saturates ~120 GB/s unified LPDDR5; numpy CPU ~17.5 GB/s effective -> reproduces the measured ~4 MiB crossover",
-   "metrics": {
-    "crossover_bytes_resident": 4179512.1951219514,
-    "crossover_bytes_cold": 4179512.1951219514,
-    "gpu_GBps": 120.0,
-    "cpu_GBps": 17.5,
-    "link_GBps": null
-   }
-  },
-  {
-   "group": "gpu",
-   "name": "swapover, NVIDIA A100 80GB (PCIe4 x16) (modeled)",
-   "config": {
-    "device": "NVIDIA A100 80GB (PCIe4 x16)",
-    "modeled": true,
-    "dispatch_us": 8.0
-   },
-   "unit": "ns",
-   "dependency": "analytical model",
-   "status": "ok",
-   "note": "projected dispatch+sync = 8 us. PROJECTED: HBM2e 1.94 TB/s, PCIe4 x16 ~25 GB/s effective, ~8 us launch",
-   "metrics": {
-    "p50_ns": 8000.0,
-    "mean_ns": 8000.0
-   }
-  },
-  {
-   "group": "gpu",
-   "name": "crossover batch, NVIDIA A100 80GB (PCIe4 x16) (modeled)",
-   "config": {
-    "device": "NVIDIA A100 80GB (PCIe4 x16)",
-    "modeled": true
-   },
-   "unit": "bytes",
-   "dependency": "analytical model",
-   "status": "ok",
-   "note": "GPU overtakes CPU above ~319 KiB resident / never (per-byte slower) cold (host<->device copy each batch); ~319 concurrent 1-KiB streams. Roofline projection, see GPGPU-Sim/Accel-Sim for cycle-accurate. PROJECTED: HBM2e 1.94 TB/s, PCIe4 x16 ~25 GB/s effective, ~8 us launch",
-   "metrics": {
-    "crossover_bytes_resident": 326754.617414248,
-    "crossover_bytes_cold": null,
-    "gpu_GBps": 1935.0,
-    "cpu_GBps": 40.0,
-    "link_GBps": 25.0
-   }
-  },
-  {
-   "group": "gpu",
-   "name": "swapover, NVIDIA H100 (PCIe5 x16) (modeled)",
-   "config": {
-    "device": "NVIDIA H100 (PCIe5 x16)",
-    "modeled": true,
-    "dispatch_us": 6.0
-   },
-   "unit": "ns",
-   "dependency": "analytical model",
-   "status": "ok",
-   "note": "projected dispatch+sync = 6 us. PROJECTED: HBM3 3.35 TB/s, PCIe5 x16 ~55 GB/s effective, ~6 us launch",
-   "metrics": {
-    "p50_ns": 6000.0,
-    "mean_ns": 6000.0
-   }
-  },
-  {
-   "group": "gpu",
-   "name": "crossover batch, NVIDIA H100 (PCIe5 x16) (modeled)",
-   "config": {
-    "device": "NVIDIA H100 (PCIe5 x16)",
-    "modeled": true
-   },
-   "unit": "bytes",
-   "dependency": "analytical model",
-   "status": "ok",
-   "note": "GPU overtakes CPU above ~237 KiB resident / never (per-byte slower) cold (host<->device copy each batch); ~237 concurrent 1-KiB streams. Roofline projection, see GPGPU-Sim/Accel-Sim for cycle-accurate. PROJECTED: HBM3 3.35 TB/s, PCIe5 x16 ~55 GB/s effective, ~6 us launch",
-   "metrics": {
-    "crossover_bytes_resident": 242900.3021148036,
-    "crossover_bytes_cold": null,
-    "gpu_GBps": 3350.0,
-    "cpu_GBps": 40.0,
-    "link_GBps": 55.0
-   }
-  },
-  {
-   "group": "gpu",
-   "name": "swapover, NVIDIA H100 (NVLink) (modeled)",
-   "config": {
-    "device": "NVIDIA H100 (NVLink)",
-    "modeled": true,
-    "dispatch_us": 6.0
-   },
-   "unit": "ns",
-   "dependency": "analytical model",
-   "status": "ok",
-   "note": "projected dispatch+sync = 6 us. PROJECTED: HBM3 3.35 TB/s, NVLink ~450 GB/s effective, ~6 us launch",
-   "metrics": {
-    "p50_ns": 6000.0,
-    "mean_ns": 6000.0
-   }
-  },
-  {
-   "group": "gpu",
-   "name": "crossover batch, NVIDIA H100 (NVLink) (modeled)",
-   "config": {
-    "device": "NVIDIA H100 (NVLink)",
-    "modeled": true
-   },
-   "unit": "bytes",
-   "dependency": "analytical model",
-   "status": "ok",
-   "note": "GPU overtakes CPU above ~237 KiB resident / 289 KiB cold (host<->device copy each batch); ~237 concurrent 1-KiB streams. Roofline projection, see GPGPU-Sim/Accel-Sim for cycle-accurate. PROJECTED: HBM3 3.35 TB/s, NVLink ~450 GB/s effective, ~6 us launch",
-   "metrics": {
-    "crossover_bytes_resident": 242900.3021148036,
-    "crossover_bytes_cold": 296193.20507572655,
-    "gpu_GBps": 3350.0,
-    "cpu_GBps": 40.0,
-    "link_GBps": 450.0
-   }
-  },
-  {
-   "group": "gpu",
-   "name": "swapover, AMD MI250 (PCIe4 x16) (modeled)",
-   "config": {
-    "device": "AMD MI250 (PCIe4 x16)",
-    "modeled": true,
-    "dispatch_us": 8.0
-   },
-   "unit": "ns",
-   "dependency": "analytical model",
-   "status": "ok",
-   "note": "projected dispatch+sync = 8 us. PROJECTED: HBM2e ~3.2 TB/s (per-GCD aggregate), PCIe4 x16 ~25 GB/s, ~8 us launch",
-   "metrics": {
-    "p50_ns": 8000.0,
-    "mean_ns": 8000.0
-   }
-  },
-  {
-   "group": "gpu",
-   "name": "crossover batch, AMD MI250 (PCIe4 x16) (modeled)",
-   "config": {
-    "device": "AMD MI250 (PCIe4 x16)",
-    "modeled": true
-   },
-   "unit": "bytes",
-   "dependency": "analytical model",
-   "status": "ok",
-   "note": "GPU overtakes CPU above ~316 KiB resident / never (per-byte slower) cold (host<->device copy each batch); ~316 concurrent 1-KiB streams. Roofline projection, see GPGPU-Sim/Accel-Sim for cycle-accurate. PROJECTED: HBM2e ~3.2 TB/s (per-GCD aggregate), PCIe4 x16 ~25 GB/s, ~8 us launch",
-   "metrics": {
-    "crossover_bytes_resident": 324050.6329113924,
-    "crossover_bytes_cold": null,
-    "gpu_GBps": 3200.0,
-    "cpu_GBps": 40.0,
-    "link_GBps": 25.0
-   }
-  },
-  {
-   "group": "gpu",
-   "name": "swapover",
-   "config": {},
-   "unit": "",
-   "dependency": "mlx/cupy/torch",
-   "status": "skipped",
-   "note": "no GPU on this runner, the GPU swapover/crossover is measured on the Apple-Silicon host",
-   "metrics": {}
-  },
-  {
-   "group": "gpu",
-   "name": "throughput_crossover",
-   "config": {},
-   "unit": "",
-   "dependency": "mlx/cupy/torch",
-   "status": "skipped",
-   "note": "no GPU on this runner, the GPU swapover/crossover is measured on the Apple-Silicon host",
-   "metrics": {}
-  },
-  {
-   "group": "robobus",
-   "name": "determinism_probe",
-   "config": {},
-   "unit": "",
-   "dependency": "robobus",
-   "status": "skipped",
-   "note": "n/a here, needs the robobus package (private repo); the portable `bus` group measures the same ring on this platform",
-   "metrics": {}
-  },
-  {
-   "group": "robobus",
-   "name": "bus_latency",
-   "config": {},
-   "unit": "",
-   "dependency": "robobus",
-   "status": "skipped",
-   "note": "n/a here, needs the robobus package (private repo); the portable `bus` group measures the same ring on this platform",
-   "metrics": {}
-  }
- ],
- "note": "Measured on this host only. Numbers are platform/CPU/build-specific. Re-run the identical script on each target OS to compare. Skipped rows indicate a capability/dependency absent on THIS platform, not a failure."
+  "schema": "robobus-bench/1",
+  "generated_unix": 1783165493,
+  "label": "GitHub Actions windows-latest",
+  "quick": true,
+  "platform": {
+    "python_version": "3.12.10",
+    "python_impl": "CPython",
+    "system": "Windows",
+    "release": "2025Server",
+    "version": "10.0.26100",
+    "machine": "AMD64",
+    "processor": "AMD64 Family 25 Model 1 Stepping 1, AuthenticAMD",
+    "platform": "Windows-2025Server-10.0.26100-SP0",
+    "cpu_count_logical": 4,
+    "cpu_count_physical": 2,
+    "mem_total_bytes": 17174360064,
+    "cpu_freq_mhz": {
+      "current": 2445.0,
+      "min": 0.0,
+      "max": 2445.0
+    },
+    "environment": {
+      "ci": "GitHub Actions",
+      "runner_os": "Windows",
+      "runner_arch": "X64",
+      "runner_name": "GitHub Actions 1000002163",
+      "runner_environment": "github-hosted",
+      "virtualized": true,
+      "self_hosted": false,
+      "caveat": "virtualized CI runner: shared vCPUs, noisy neighbours, no real-time scheduling -- absolute latency (esp. tails) is worse and noisier than bare metal; use for cross-platform coverage and relative comparison."
+    },
+    "measurement": {
+      "pinned": null,
+      "pmu_perf_available": false,
+      "uncontrolled_noise": [],
+      "fidelity_tier": "1-virtualized (GitHub-hosted VM, coverage only)"
+    },
+    "dependencies": {
+      "available": {
+        "cryptography": "49.0.0",
+        "oqs": "0.15.0",
+        "argon2": "25.1.0",
+        "psutil": "7.2.2"
+      },
+      "missing": {}
+    }
+  },
+  "results": [
+    {
+      "group": "bus",
+      "name": "ring put+get, amortized 1-core",
+      "config": {
+        "realtime": "off",
+        "clock_ns_per_tick": 100.0
+      },
+      "unit": "ns/op",
+      "dependency": "native/nsbus.c",
+      "status": "ok",
+      "note": "pure ring op cost; clock QueryPerformanceCounter res 100.0 ns",
+      "metrics": {
+        "mean_ns": 1.86834,
+        "ops_per_s": 535234500.0,
+        "n": 5000000
+      }
+    },
+    {
+      "group": "bus",
+      "name": "cross-thread one-way latency",
+      "config": {
+        "realtime": "off",
+        "ipc": "CreateProcess+CreateFileMapping",
+        "warmup_msgs": 20000
+      },
+      "unit": "ns",
+      "dependency": "native/nsbus.c",
+      "status": "ok",
+      "note": "1.9% <100 ns; max at 89% of run (mid-run scheduler jitter); no RT",
+      "metrics": {
+        "n": 99936,
+        "min_ns": 0.0,
+        "p50_ns": 100.0,
+        "p90_ns": 100.0,
+        "p99_ns": 300.0,
+        "p999_ns": 15500.0,
+        "max_ns": 29600.0,
+        "mean_ns": 171.807,
+        "frac_under_100ns": 0.01897214,
+        "frac_under_1us": 0.9912244,
+        "spike_rate": 0.00862552,
+        "stable_max_ns": 1000.0,
+        "max_position_frac": 0.8908101
+      }
+    },
+    {
+      "group": "bus",
+      "name": "cross-process one-way latency",
+      "config": {
+        "realtime": "off",
+        "ipc": "CreateProcess+CreateFileMapping",
+        "warmup_msgs": 20000
+      },
+      "unit": "ns",
+      "dependency": "native/nsbus.c",
+      "status": "ok",
+      "note": "0.4% <100 ns; max at 27% of run (mid-run scheduler jitter); no RT",
+      "metrics": {
+        "n": 99936,
+        "min_ns": 0.0,
+        "p50_ns": 100.0,
+        "p90_ns": 100.0,
+        "p99_ns": 600.0,
+        "p999_ns": 14600.0,
+        "max_ns": 51700.0,
+        "mean_ns": 176.0887,
+        "frac_under_100ns": 0.004212696,
+        "frac_under_1us": 0.9910142,
+        "spike_rate": 0.0089057,
+        "stable_max_ns": 1000.0,
+        "max_position_frac": 0.2696226
+      }
+    },
+    {
+      "group": "bus",
+      "name": "ring put+get, amortized 1-core (RT)",
+      "config": {
+        "realtime": "on",
+        "clock_ns_per_tick": 100.0
+      },
+      "unit": "ns/op",
+      "dependency": "native/nsbus.c",
+      "status": "ok",
+      "note": "pure ring op cost; clock QueryPerformanceCounter res 100.0 ns",
+      "metrics": {
+        "mean_ns": 1.89334,
+        "ops_per_s": 528167200.0,
+        "n": 5000000
+      }
+    },
+    {
+      "group": "bus",
+      "name": "cross-thread one-way latency (RT)",
+      "config": {
+        "realtime": "on",
+        "ipc": "CreateProcess+CreateFileMapping",
+        "warmup_msgs": 20000
+      },
+      "unit": "ns",
+      "dependency": "native/nsbus.c",
+      "status": "ok",
+      "note": "1.3% <100 ns; max at 69% of run (mid-run scheduler jitter); RT hardened",
+      "metrics": {
+        "n": 99936,
+        "min_ns": 0.0,
+        "p50_ns": 100.0,
+        "p90_ns": 100.0,
+        "p99_ns": 400.0,
+        "p999_ns": 6600.0,
+        "max_ns": 18300.0,
+        "mean_ns": 132.2707,
+        "frac_under_100ns": 0.01293828,
+        "frac_under_1us": 0.9915146,
+        "spike_rate": 0.008285303,
+        "stable_max_ns": 1000.0,
+        "max_position_frac": 0.6946546
+      }
+    },
+    {
+      "group": "bus",
+      "name": "cross-process one-way latency (RT)",
+      "config": {
+        "realtime": "on",
+        "ipc": "CreateProcess+CreateFileMapping",
+        "warmup_msgs": 20000
+      },
+      "unit": "ns",
+      "dependency": "native/nsbus.c",
+      "status": "ok",
+      "note": "0.3% <100 ns; max at 93% of run (mid-run scheduler jitter); RT hardened",
+      "metrics": {
+        "n": 99936,
+        "min_ns": 0.0,
+        "p50_ns": 100.0,
+        "p90_ns": 100.0,
+        "p99_ns": 1800.0,
+        "p999_ns": 18000.0,
+        "max_ns": 41000.0,
+        "mean_ns": 180.1063,
+        "frac_under_100ns": 0.003432197,
+        "frac_under_1us": 0.9880223,
+        "spike_rate": 0.01174752,
+        "stable_max_ns": 1000.0,
+        "max_position_frac": 0.9346682
+      }
+    },
+    {
+      "group": "kem",
+      "name": "X25519",
+      "config": {
+        "op": "keygen"
+      },
+      "unit": "ops/s",
+      "dependency": "cryptography",
+      "status": "ok",
+      "note": "",
+      "metrics": {
+        "iters": 3607,
+        "elapsed_s": 0.1500332,
+        "ops_per_s": 24041.345515525896,
+        "n": 3607,
+        "min_ns": 40200,
+        "p50_ns": 40400.0,
+        "p90_ns": 40600.0,
+        "p99_ns": 71500.0,
+        "max_ns": 82500,
+        "mean_ns": 41158.83005267535,
+        "stdev_ns": 4649.02922822091
+      }
+    },
+    {
+      "group": "kem",
+      "name": "X25519",
+      "config": {
+        "op": "derive"
+      },
+      "unit": "ops/s",
+      "dependency": "cryptography",
+      "status": "ok",
+      "note": "",
+      "metrics": {
+        "iters": 3717,
+        "elapsed_s": 0.1500087,
+        "ops_per_s": 24778.562843355085,
+        "n": 3717,
+        "min_ns": 38200,
+        "p50_ns": 39300.0,
+        "p90_ns": 39300.0,
+        "p99_ns": 64884.000000000015,
+        "max_ns": 119100,
+        "mean_ns": 39940.05918751682,
+        "stdev_ns": 4057.084769545042
+      }
+    },
+    {
+      "group": "kem",
+      "name": "ECDH-P256",
+      "config": {
+        "op": "keygen"
+      },
+      "unit": "ops/s",
+      "dependency": "cryptography",
+      "status": "ok",
+      "note": "",
+      "metrics": {
+        "iters": 7717,
+        "elapsed_s": 0.1500113,
+        "ops_per_s": 51442.79130972134,
+        "n": 4000,
+        "min_ns": 18200,
+        "p50_ns": 18500.0,
+        "p90_ns": 18800.0,
+        "p99_ns": 37300.0,
+        "max_ns": 122200,
+        "mean_ns": 19085.05,
+        "stdev_ns": 3515.9431874676247
+      }
+    },
+    {
+      "group": "kem",
+      "name": "ECDH-P256",
+      "config": {
+        "op": "derive"
+      },
+      "unit": "ops/s",
+      "dependency": "cryptography",
+      "status": "ok",
+      "note": "",
+      "metrics": {
+        "iters": 2640,
+        "elapsed_s": 0.150041,
+        "ops_per_s": 17595.190647889576,
+        "n": 2640,
+        "min_ns": 54800,
+        "p50_ns": 55300.0,
+        "p90_ns": 56300.0,
+        "p99_ns": 75400.0,
+        "max_ns": 182600,
+        "mean_ns": 56434.88636363636,
+        "stdev_ns": 4904.469860066315
+      }
+    },
+    {
+      "group": "kem",
+      "name": "ML-KEM-512",
+      "config": {
+        "op": "keygen"
+      },
+      "unit": "ops/s",
+      "dependency": "oqs",
+      "status": "ok",
+      "note": "",
+      "metrics": {
+        "iters": 775,
+        "elapsed_s": 0.1501096,
+        "ops_per_s": 5162.894311889446,
+        "n": 775,
+        "min_ns": 184600,
+        "p50_ns": 187000.0,
+        "p90_ns": 211700.0,
+        "p99_ns": 235043.99999999997,
+        "max_ns": 279200,
+        "mean_ns": 192963.48387096773,
+        "stdev_ns": 12987.37533858261
+      }
+    },
+    {
+      "group": "kem",
+      "name": "ML-KEM-512",
+      "config": {
+        "op": "encapsulate"
+      },
+      "unit": "ops/s",
+      "dependency": "oqs",
+      "status": "ok",
+      "note": "",
+      "metrics": {
+        "iters": 606,
+        "elapsed_s": 0.150048,
+        "ops_per_s": 4038.70761356366,
+        "n": 606,
+        "min_ns": 233600,
+        "p50_ns": 235800.0,
+        "p90_ns": 273550.0,
+        "p99_ns": 388280.0000000001,
+        "max_ns": 958500,
+        "mean_ns": 246977.55775577558,
+        "stdev_ns": 42611.494110616135
+      }
+    },
+    {
+      "group": "kem",
+      "name": "ML-KEM-512",
+      "config": {
+        "op": "decapsulate"
+      },
+      "unit": "ops/s",
+      "dependency": "oqs",
+      "status": "ok",
+      "note": "",
+      "metrics": {
+        "iters": 506,
+        "elapsed_s": 0.1503057,
+        "ops_per_s": 3366.4724624548508,
+        "n": 506,
+        "min_ns": 288200,
+        "p50_ns": 289600.0,
+        "p90_ns": 324000.0,
+        "p99_ns": 351159.99999999994,
+        "max_ns": 380500,
+        "mean_ns": 296424.70355731226,
+        "stdev_ns": 14901.687121340301
+      }
+    },
+    {
+      "group": "kem",
+      "name": "ML-KEM-768",
+      "config": {
+        "op": "keygen"
+      },
+      "unit": "ops/s",
+      "dependency": "oqs",
+      "status": "ok",
+      "note": "",
+      "metrics": {
+        "iters": 490,
+        "elapsed_s": 0.1501793,
+        "ops_per_s": 3262.766573023047,
+        "n": 490,
+        "min_ns": 294000,
+        "p50_ns": 297700.0,
+        "p90_ns": 332220.0,
+        "p99_ns": 352574.00000000006,
+        "max_ns": 383500,
+        "mean_ns": 305848.5714285714,
+        "stdev_ns": 15223.296057593534
+      }
+    },
+    {
+      "group": "kem",
+      "name": "ML-KEM-768",
+      "config": {
+        "op": "encapsulate"
+      },
+      "unit": "ops/s",
+      "dependency": "oqs",
+      "status": "ok",
+      "note": "",
+      "metrics": {
+        "iters": 420,
+        "elapsed_s": 0.1502663,
+        "ops_per_s": 2795.0378760906474,
+        "n": 420,
+        "min_ns": 345200,
+        "p50_ns": 348250.0,
+        "p90_ns": 382720.0,
+        "p99_ns": 404078.0,
+        "max_ns": 491000,
+        "mean_ns": 357070.4761904762,
+        "stdev_ns": 16909.646014765396
+      }
+    },
+    {
+      "group": "kem",
+      "name": "ML-KEM-768",
+      "config": {
+        "op": "decapsulate"
+      },
+      "unit": "ops/s",
+      "dependency": "oqs",
+      "status": "ok",
+      "note": "",
+      "metrics": {
+        "iters": 351,
+        "elapsed_s": 0.1500534,
+        "ops_per_s": 2339.1672564567016,
+        "n": 351,
+        "min_ns": 415600,
+        "p50_ns": 418200.0,
+        "p90_ns": 454100.0,
+        "p99_ns": 472700.0,
+        "max_ns": 587400,
+        "mean_ns": 426894.5868945869,
+        "stdev_ns": 17879.59569476506
+      }
+    },
+    {
+      "group": "kem",
+      "name": "ML-KEM-1024",
+      "config": {
+        "op": "keygen"
+      },
+      "unit": "ops/s",
+      "dependency": "oqs",
+      "status": "ok",
+      "note": "",
+      "metrics": {
+        "iters": 344,
+        "elapsed_s": 0.1503015,
+        "ops_per_s": 2288.732980043446,
+        "n": 344,
+        "min_ns": 420200,
+        "p50_ns": 427600.0,
+        "p90_ns": 466500.0,
+        "p99_ns": 487741.0,
+        "max_ns": 507800,
+        "mean_ns": 436289.24418604653,
+        "stdev_ns": 18461.832895120406
+      }
+    },
+    {
+      "group": "kem",
+      "name": "ML-KEM-1024",
+      "config": {
+        "op": "encapsulate"
+      },
+      "unit": "ops/s",
+      "dependency": "oqs",
+      "status": "ok",
+      "note": "",
+      "metrics": {
+        "iters": 303,
+        "elapsed_s": 0.1504286,
+        "ops_per_s": 2014.2446316724347,
+        "n": 303,
+        "min_ns": 479700,
+        "p50_ns": 487500.0,
+        "p90_ns": 518180.0,
+        "p99_ns": 542396.0,
+        "max_ns": 644100,
+        "mean_ns": 495774.58745874587,
+        "stdev_ns": 19425.33767123987
+      }
+    },
+    {
+      "group": "kem",
+      "name": "ML-KEM-1024",
+      "config": {
+        "op": "decapsulate"
+      },
+      "unit": "ops/s",
+      "dependency": "oqs",
+      "status": "ok",
+      "note": "",
+      "metrics": {
+        "iters": 258,
+        "elapsed_s": 0.1505578,
+        "ops_per_s": 1713.6275902012385,
+        "n": 258,
+        "min_ns": 567500,
+        "p50_ns": 572100.0,
+        "p90_ns": 606830.0,
+        "p99_ns": 660095.0,
+        "max_ns": 806100,
+        "mean_ns": 582903.4883720931,
+        "stdev_ns": 23201.945158738083
+      }
+    },
+    {
+      "group": "hybrid_kem",
+      "name": "ECDH-P256+ML-KEM-768",
+      "config": {
+        "op": "full_two_party_handshake"
+      },
+      "unit": "handshakes/s",
+      "dependency": "cryptography+oqs",
+      "status": "ok",
+      "note": "ECDH P-256 + ML-KEM encaps/decaps + HKDF-SHA384 combine, both parties",
+      "metrics": {
+        "iters": 111,
+        "elapsed_s": 0.1508568,
+        "ops_per_s": 735.7971268116518,
+        "n": 111,
+        "min_ns": 1311400,
+        "p50_ns": 1362800.0,
+        "p90_ns": 1376700.0,
+        "p99_ns": 1536440.0000000005,
+        "max_ns": 1568800,
+        "mean_ns": 1357527.9279279278,
+        "stdev_ns": 37293.65854644177
+      }
+    },
+    {
+      "group": "hybrid_kem",
+      "name": "ECDH-P256+ML-KEM-1024",
+      "config": {
+        "op": "full_two_party_handshake"
+      },
+      "unit": "handshakes/s",
+      "dependency": "cryptography+oqs",
+      "status": "ok",
+      "note": "ECDH P-256 + ML-KEM encaps/decaps + HKDF-SHA384 combine, both parties",
+      "metrics": {
+        "iters": 84,
+        "elapsed_s": 0.1501635,
+        "ops_per_s": 559.3902646115733,
+        "n": 84,
+        "min_ns": 1732900,
+        "p50_ns": 1783550.0,
+        "p90_ns": 1820140.0,
+        "p99_ns": 1882112.0,
+        "max_ns": 1918300,
+        "mean_ns": 1786489.2857142857,
+        "stdev_ns": 27573.089096924537
+      }
+    },
+    {
+      "group": "handshake",
+      "name": "NIST-1 (ML-KEM-512 + ML-DSA-44)",
+      "config": {
+        "op": "full_authenticated_handshake"
+      },
+      "unit": "handshakes/s",
+      "dependency": "cryptography+oqs",
+      "status": "ok",
+      "note": "3 sign + 3 verify + ML-KEM + 2 ECDH + 2 HKDF, both parties; identities provisioned out-of-band (not timed); isolated from DDS transport",
+      "metrics": {
+        "iters": 21,
+        "elapsed_s": 0.1530834,
+        "ops_per_s": 137.18012534344024,
+        "n": 21,
+        "min_ns": 5802800,
+        "p50_ns": 7008500.0,
+        "p90_ns": 9051700.0,
+        "p99_ns": 10033380.0,
+        "max_ns": 10234400,
+        "mean_ns": 7288576.19047619,
+        "stdev_ns": 1224593.8261141593
+      }
+    },
+    {
+      "group": "handshake",
+      "name": "NIST-3 (ML-KEM-768 + ML-DSA-65)",
+      "config": {
+        "op": "full_authenticated_handshake"
+      },
+      "unit": "handshakes/s",
+      "dependency": "cryptography+oqs",
+      "status": "ok",
+      "note": "3 sign + 3 verify + ML-KEM + 2 ECDH + 2 HKDF, both parties; identities provisioned out-of-band (not timed); isolated from DDS transport",
+      "metrics": {
+        "iters": 20,
+        "elapsed_s": 0.226481,
+        "ops_per_s": 88.30762845448405,
+        "n": 20,
+        "min_ns": 7598900,
+        "p50_ns": 9982700.0,
+        "p90_ns": 14947470.000000002,
+        "p99_ns": 18479528.999999996,
+        "max_ns": 19148500,
+        "mean_ns": 11322865.0,
+        "stdev_ns": 3030455.883736802
+      }
+    },
+    {
+      "group": "handshake",
+      "name": "CNSA 2.0 / NIST-5 (ML-KEM-1024 + ML-DSA-87)",
+      "config": {
+        "op": "full_authenticated_handshake"
+      },
+      "unit": "handshakes/s",
+      "dependency": "cryptography+oqs",
+      "status": "ok",
+      "note": "3 sign + 3 verify + ML-KEM + 2 ECDH + 2 HKDF, both parties; identities provisioned out-of-band (not timed); isolated from DDS transport",
+      "metrics": {
+        "iters": 20,
+        "elapsed_s": 0.320543,
+        "ops_per_s": 62.394124969192895,
+        "n": 20,
+        "min_ns": 11738800,
+        "p50_ns": 15235000.0,
+        "p90_ns": 21449340.0,
+        "p99_ns": 21599010.0,
+        "max_ns": 21610600,
+        "mean_ns": 16025940.0,
+        "stdev_ns": 3098576.1441991385
+      }
+    },
+    {
+      "group": "handshake",
+      "name": "key agreement only, hybrid ECDH+ML-KEM rekey (no identity sig)",
+      "config": {
+        "note": "see hybrid_kem"
+      },
+      "unit": "",
+      "dependency": "cryptography+oqs",
+      "status": "ok",
+      "note": "the recurring/rekey cost is the hybrid_kem group: ~128 \u00b5s (ECDH+ML-KEM+HKDF, no signatures)",
+      "metrics": {}
+    },
+    {
+      "group": "sig",
+      "name": "Ed25519",
+      "config": {
+        "op": "keygen"
+      },
+      "unit": "ops/s",
+      "dependency": "cryptography",
+      "status": "ok",
+      "note": "",
+      "metrics": {
+        "iters": 3563,
+        "elapsed_s": 0.1500112,
+        "ops_per_s": 23751.559883528695,
+        "n": 3563,
+        "min_ns": 40700,
+        "p50_ns": 40900.0,
+        "p90_ns": 41200.0,
+        "p99_ns": 57800.0,
+        "max_ns": 74000,
+        "mean_ns": 41678.27673309009,
+        "stdev_ns": 3389.4836048065854
+      }
+    },
+    {
+      "group": "sig",
+      "name": "Ed25519",
+      "config": {
+        "op": "sign"
+      },
+      "unit": "ops/s",
+      "dependency": "cryptography",
+      "status": "ok",
+      "note": "",
+      "metrics": {
+        "iters": 3376,
+        "elapsed_s": 0.1500279,
+        "ops_per_s": 22502.48120516251,
+        "n": 3376,
+        "min_ns": 42900,
+        "p50_ns": 43100.0,
+        "p90_ns": 43800.0,
+        "p99_ns": 62325.0,
+        "max_ns": 171700,
+        "mean_ns": 44032.81990521327,
+        "stdev_ns": 4578.0586192315595
+      }
+    },
+    {
+      "group": "sig",
+      "name": "Ed25519",
+      "config": {
+        "op": "verify"
+      },
+      "unit": "ops/s",
+      "dependency": "cryptography",
+      "status": "ok",
+      "note": "",
+      "metrics": {
+        "iters": 1238,
+        "elapsed_s": 0.1500443,
+        "ops_per_s": 8250.896568546756,
+        "n": 1238,
+        "min_ns": 118000,
+        "p50_ns": 118400.0,
+        "p90_ns": 131730.0,
+        "p99_ns": 149088.99999999997,
+        "max_ns": 203900,
+        "mean_ns": 120767.20516962843,
+        "stdev_ns": 7044.357985395333
+      }
+    },
+    {
+      "group": "sig",
+      "name": "ECDSA-P256",
+      "config": {
+        "op": "sign"
+      },
+      "unit": "ops/s",
+      "dependency": "cryptography",
+      "status": "ok",
+      "note": "",
+      "metrics": {
+        "iters": 4619,
+        "elapsed_s": 0.1500102,
+        "ops_per_s": 30791.239529045357,
+        "n": 4000,
+        "min_ns": 30600,
+        "p50_ns": 30900.0,
+        "p90_ns": 31800.0,
+        "p99_ns": 53100.0,
+        "max_ns": 105100,
+        "mean_ns": 31951.675,
+        "stdev_ns": 4395.075903141492
+      }
+    },
+    {
+      "group": "sig",
+      "name": "ECDSA-P256",
+      "config": {
+        "op": "verify"
+      },
+      "unit": "ops/s",
+      "dependency": "cryptography",
+      "status": "ok",
+      "note": "",
+      "metrics": {
+        "iters": 1938,
+        "elapsed_s": 0.1500062,
+        "ops_per_s": 12919.465995405522,
+        "n": 1938,
+        "min_ns": 74700,
+        "p50_ns": 75200.0,
+        "p90_ns": 78900.0,
+        "p99_ns": 109125.99999999997,
+        "max_ns": 120800,
+        "mean_ns": 76936.27450980392,
+        "stdev_ns": 6327.756760919841
+      }
+    },
+    {
+      "group": "sig",
+      "name": "RSA-3072-PSS",
+      "config": {
+        "op": "sign"
+      },
+      "unit": "ops/s",
+      "dependency": "cryptography",
+      "status": "ok",
+      "note": "",
+      "metrics": {
+        "iters": 193,
+        "elapsed_s": 0.4000092,
+        "ops_per_s": 482.4889027552366,
+        "n": 193,
+        "min_ns": 2011800,
+        "p50_ns": 2042400.0,
+        "p90_ns": 2060620.0,
+        "p99_ns": 2866815.9999999995,
+        "max_ns": 2917400,
+        "mean_ns": 2071604.6632124353,
+        "stdev_ns": 143819.61870471094
+      }
+    },
+    {
+      "group": "sig",
+      "name": "RSA-3072-PSS",
+      "config": {
+        "op": "verify"
+      },
+      "unit": "ops/s",
+      "dependency": "cryptography",
+      "status": "ok",
+      "note": "",
+      "metrics": {
+        "iters": 2711,
+        "elapsed_s": 0.1500177,
+        "ops_per_s": 18071.2009316234,
+        "n": 2711,
+        "min_ns": 53000,
+        "p50_ns": 53500.0,
+        "p90_ns": 54200.0,
+        "p99_ns": 87190.00000000001,
+        "max_ns": 201700,
+        "mean_ns": 54896.016230173365,
+        "stdev_ns": 6707.877765346001
+      }
+    },
+    {
+      "group": "sig",
+      "name": "ML-DSA-44",
+      "config": {
+        "op": "keygen"
+      },
+      "unit": "ops/s",
+      "dependency": "oqs",
+      "status": "ok",
+      "note": "",
+      "metrics": {
+        "iters": 336,
+        "elapsed_s": 0.1500269,
+        "ops_per_s": 2239.5983653598123,
+        "n": 336,
+        "min_ns": 422300,
+        "p50_ns": 436850.0,
+        "p90_ns": 477250.0,
+        "p99_ns": 513939.99999999965,
+        "max_ns": 574300,
+        "mean_ns": 445862.20238095237,
+        "stdev_ns": 21305.076382715168
+      }
+    },
+    {
+      "group": "sig",
+      "name": "ML-DSA-44",
+      "config": {
+        "op": "sign"
+      },
+      "unit": "ops/s",
+      "dependency": "oqs",
+      "status": "ok",
+      "note": "",
+      "metrics": {
+        "iters": 103,
+        "elapsed_s": 0.1500672,
+        "ops_per_s": 686.3591777550323,
+        "n": 103,
+        "min_ns": 700900,
+        "p50_ns": 1173600.0,
+        "p90_ns": 2536300.0,
+        "p99_ns": 4106166.000000001,
+        "max_ns": 4333800,
+        "mean_ns": 1456171.8446601941,
+        "stdev_ns": 828597.1472967112
+      }
+    },
+    {
+      "group": "sig",
+      "name": "ML-DSA-44",
+      "config": {
+        "op": "verify"
+      },
+      "unit": "ops/s",
+      "dependency": "oqs",
+      "status": "ok",
+      "note": "",
+      "metrics": {
+        "iters": 293,
+        "elapsed_s": 0.1500872,
+        "ops_per_s": 1952.1984552979868,
+        "n": 293,
+        "min_ns": 494900,
+        "p50_ns": 501400.0,
+        "p90_ns": 537800.0,
+        "p99_ns": 579731.9999999991,
+        "max_ns": 759400,
+        "mean_ns": 511566.89419795224,
+        "stdev_ns": 25367.099225542104
+      }
+    },
+    {
+      "group": "sig",
+      "name": "ML-DSA-65",
+      "config": {
+        "op": "keygen"
+      },
+      "unit": "ops/s",
+      "dependency": "oqs",
+      "status": "ok",
+      "note": "",
+      "metrics": {
+        "iters": 191,
+        "elapsed_s": 0.1503676,
+        "ops_per_s": 1270.220446425959,
+        "n": 191,
+        "min_ns": 764700,
+        "p50_ns": 773800.0,
+        "p90_ns": 812700.0,
+        "p99_ns": 848469.9999999999,
+        "max_ns": 859700,
+        "mean_ns": 786465.9685863875,
+        "stdev_ns": 20693.860383449333
+      }
+    },
+    {
+      "group": "sig",
+      "name": "ML-DSA-65",
+      "config": {
+        "op": "sign"
+      },
+      "unit": "ops/s",
+      "dependency": "oqs",
+      "status": "ok",
+      "note": "",
+      "metrics": {
+        "iters": 58,
+        "elapsed_s": 0.1508627,
+        "ops_per_s": 384.4555347345633,
+        "n": 58,
+        "min_ns": 1077000,
+        "p50_ns": 2106300.0,
+        "p90_ns": 4792170.000000002,
+        "p99_ns": 7410399.0,
+        "max_ns": 7535400,
+        "mean_ns": 2600174.1379310344,
+        "stdev_ns": 1499419.8075118053
+      }
+    },
+    {
+      "group": "sig",
+      "name": "ML-DSA-65",
+      "config": {
+        "op": "verify"
+      },
+      "unit": "ops/s",
+      "dependency": "oqs",
+      "status": "ok",
+      "note": "",
+      "metrics": {
+        "iters": 182,
+        "elapsed_s": 0.1503233,
+        "ops_per_s": 1210.7238199267845,
+        "n": 182,
+        "min_ns": 796800,
+        "p50_ns": 809750.0,
+        "p90_ns": 848050.0,
+        "p99_ns": 988074.9999999997,
+        "max_ns": 1150200,
+        "mean_ns": 825176.3736263736,
+        "stdev_ns": 39656.746194280066
+      }
+    },
+    {
+      "group": "sig",
+      "name": "ML-DSA-87",
+      "config": {
+        "op": "keygen"
+      },
+      "unit": "ops/s",
+      "dependency": "oqs",
+      "status": "ok",
+      "note": "",
+      "metrics": {
+        "iters": 118,
+        "elapsed_s": 0.1511257,
+        "ops_per_s": 780.8069706211452,
+        "n": 118,
+        "min_ns": 1238800,
+        "p50_ns": 1284500.0,
+        "p90_ns": 1299320.0,
+        "p99_ns": 1336681.0,
+        "max_ns": 1399000,
+        "mean_ns": 1279858.4745762711,
+        "stdev_ns": 23036.262225762654
+      }
+    },
+    {
+      "group": "sig",
+      "name": "ML-DSA-87",
+      "config": {
+        "op": "sign"
+      },
+      "unit": "ops/s",
+      "dependency": "oqs",
+      "status": "ok",
+      "note": "",
+      "metrics": {
+        "iters": 50,
+        "elapsed_s": 0.1509685,
+        "ops_per_s": 331.19491814517596,
+        "n": 50,
+        "min_ns": 1706900,
+        "p50_ns": 2518350.0,
+        "p90_ns": 5263410.000000001,
+        "p99_ns": 7255003.999999997,
+        "max_ns": 7921600,
+        "mean_ns": 3018422.0,
+        "stdev_ns": 1510203.0538030309
+      }
+    },
+    {
+      "group": "sig",
+      "name": "ML-DSA-87",
+      "config": {
+        "op": "verify"
+      },
+      "unit": "ops/s",
+      "dependency": "oqs",
+      "status": "ok",
+      "note": "",
+      "metrics": {
+        "iters": 111,
+        "elapsed_s": 0.1503606,
+        "ops_per_s": 738.2253063635021,
+        "n": 111,
+        "min_ns": 1324600,
+        "p50_ns": 1361100.0,
+        "p90_ns": 1368300.0,
+        "p99_ns": 1408520.0,
+        "max_ns": 1413900,
+        "mean_ns": 1353743.2432432433,
+        "stdev_ns": 19287.75283181514
+      }
+    },
+    {
+      "group": "aead",
+      "name": "AES-256-GCM",
+      "config": {
+        "op": "encrypt",
+        "input_bytes": 64
+      },
+      "unit": "MB/s",
+      "dependency": "cryptography",
+      "status": "ok",
+      "note": "",
+      "metrics": {
+        "iters": 123710,
+        "elapsed_s": 0.150001,
+        "ops_per_s": 824727.8351477657,
+        "bytes": 7917440,
+        "mb_per_s": 52.782581449457005,
+        "mib_per_s": 50.33739228196812
+      }
+    },
+    {
+      "group": "aead",
+      "name": "AES-256-GCM",
+      "config": {
+        "op": "decrypt",
+        "input_bytes": 64
+      },
+      "unit": "MB/s",
+      "dependency": "cryptography",
+      "status": "ok",
+      "note": "",
+      "metrics": {
+        "iters": 121223,
+        "elapsed_s": 0.1500013,
+        "ops_per_s": 808146.3293984785,
+        "bytes": 7758272,
+        "mb_per_s": 51.721365081502626,
+        "mib_per_s": 49.325337487700104
+      }
+    },
+    {
+      "group": "aead",
+      "name": "AES-256-GCM",
+      "config": {
+        "op": "encrypt",
+        "input_bytes": 1024
+      },
+      "unit": "MB/s",
+      "dependency": "cryptography",
+      "status": "ok",
+      "note": "",
+      "metrics": {
+        "iters": 97215,
+        "elapsed_s": 0.1500013,
+        "ops_per_s": 648094.3831820124,
+        "bytes": 99548160,
+        "mb_per_s": 663.6486483783807,
+        "mib_per_s": 632.904671076184
+      }
+    },
+    {
+      "group": "aead",
+      "name": "AES-256-GCM",
+      "config": {
+        "op": "decrypt",
+        "input_bytes": 1024
+      },
+      "unit": "MB/s",
+      "dependency": "cryptography",
+      "status": "ok",
+      "note": "",
+      "metrics": {
+        "iters": 96729,
+        "elapsed_s": 0.1500005,
+        "ops_per_s": 644857.8504738318,
+        "bytes": 99050496,
+        "mb_per_s": 660.3344388852037,
+        "mib_per_s": 629.7439946033513
+      }
+    },
+    {
+      "group": "aead",
+      "name": "AES-256-GCM",
+      "config": {
+        "op": "encrypt",
+        "input_bytes": 65536
+      },
+      "unit": "MB/s",
+      "dependency": "cryptography",
+      "status": "ok",
+      "note": "",
+      "metrics": {
+        "iters": 7932,
+        "elapsed_s": 0.1500066,
+        "ops_per_s": 52877.67338237118,
+        "bytes": 519831552,
+        "mb_per_s": 3465.3912027870774,
+        "mib_per_s": 3304.8545863981985
+      }
+    },
+    {
+      "group": "aead",
+      "name": "AES-256-GCM",
+      "config": {
+        "op": "decrypt",
+        "input_bytes": 65536
+      },
+      "unit": "MB/s",
+      "dependency": "cryptography",
+      "status": "ok",
+      "note": "",
+      "metrics": {
+        "iters": 7957,
+        "elapsed_s": 0.1500168,
+        "ops_per_s": 53040.72610534287,
+        "bytes": 521469952,
+        "mb_per_s": 3476.0770260397503,
+        "mib_per_s": 3315.045381583929
+      }
+    },
+    {
+      "group": "aead",
+      "name": "AES-128-GCM",
+      "config": {
+        "op": "encrypt",
+        "input_bytes": 64
+      },
+      "unit": "MB/s",
+      "dependency": "cryptography",
+      "status": "ok",
+      "note": "",
+      "metrics": {
+        "iters": 124530,
+        "elapsed_s": 0.1500007,
+        "ops_per_s": 830196.1257514133,
+        "bytes": 7969920,
+        "mb_per_s": 53.132552048090446,
+        "mib_per_s": 50.67115025338216
+      }
+    },
+    {
+      "group": "aead",
+      "name": "AES-128-GCM",
+      "config": {
+        "op": "decrypt",
+        "input_bytes": 64
+      },
+      "unit": "MB/s",
+      "dependency": "cryptography",
+      "status": "ok",
+      "note": "",
+      "metrics": {
+        "iters": 120326,
+        "elapsed_s": 0.1500011,
+        "ops_per_s": 802167.4507720277,
+        "bytes": 7700864,
+        "mb_per_s": 51.33871684940977,
+        "mib_per_s": 48.960415696534895
+      }
+    },
+    {
+      "group": "aead",
+      "name": "AES-128-GCM",
+      "config": {
+        "op": "encrypt",
+        "input_bytes": 1024
+      },
+      "unit": "MB/s",
+      "dependency": "cryptography",
+      "status": "ok",
+      "note": "",
+      "metrics": {
+        "iters": 98704,
+        "elapsed_s": 0.1500015,
+        "ops_per_s": 658020.0864658019,
+        "bytes": 101072896,
+        "mb_per_s": 673.8125685409813,
+        "mib_per_s": 642.5977406892597
+      }
+    },
+    {
+      "group": "aead",
+      "name": "AES-128-GCM",
+      "config": {
+        "op": "decrypt",
+        "input_bytes": 1024
+      },
+      "unit": "MB/s",
+      "dependency": "cryptography",
+      "status": "ok",
+      "note": "",
+      "metrics": {
+        "iters": 97783,
+        "elapsed_s": 0.1500006,
+        "ops_per_s": 651884.0591304301,
+        "bytes": 100129792,
+        "mb_per_s": 667.5292765495603,
+        "mib_per_s": 636.6055264945606
+      }
+    },
+    {
+      "group": "aead",
+      "name": "AES-128-GCM",
+      "config": {
+        "op": "encrypt",
+        "input_bytes": 65536
+      },
+      "unit": "MB/s",
+      "dependency": "cryptography",
+      "status": "ok",
+      "note": "",
+      "metrics": {
+        "iters": 8457,
+        "elapsed_s": 0.1500193,
+        "ops_per_s": 56372.74670659042,
+        "bytes": 554237952,
+        "mb_per_s": 3694.4443281631093,
+        "mib_per_s": 3523.2966691619013
+      }
+    },
+    {
+      "group": "aead",
+      "name": "AES-128-GCM",
+      "config": {
+        "op": "decrypt",
+        "input_bytes": 65536
+      },
+      "unit": "MB/s",
+      "dependency": "cryptography",
+      "status": "ok",
+      "note": "",
+      "metrics": {
+        "iters": 8492,
+        "elapsed_s": 0.1500044,
+        "ops_per_s": 56611.67272426675,
+        "bytes": 556531712,
+        "mb_per_s": 3710.1025836575454,
+        "mib_per_s": 3538.2295452666717
+      }
+    },
+    {
+      "group": "aead",
+      "name": "ChaCha20-Poly1305",
+      "config": {
+        "op": "encrypt",
+        "input_bytes": 64
+      },
+      "unit": "MB/s",
+      "dependency": "cryptography",
+      "status": "ok",
+      "note": "",
+      "metrics": {
+        "iters": 107909,
+        "elapsed_s": 0.1500008,
+        "ops_per_s": 719389.4965893516,
+        "bytes": 6906176,
+        "mb_per_s": 46.0409277817185,
+        "mib_per_s": 43.908050328939915
+      }
+    },
+    {
+      "group": "aead",
+      "name": "ChaCha20-Poly1305",
+      "config": {
+        "op": "decrypt",
+        "input_bytes": 64
+      },
+      "unit": "MB/s",
+      "dependency": "cryptography",
+      "status": "ok",
+      "note": "",
+      "metrics": {
+        "iters": 107434,
+        "elapsed_s": 0.150001,
+        "ops_per_s": 716221.8918540543,
+        "bytes": 6875776,
+        "mb_per_s": 45.83820107865948,
+        "mib_per_s": 43.714715078982806
+      }
+    },
+    {
+      "group": "aead",
+      "name": "ChaCha20-Poly1305",
+      "config": {
+        "op": "encrypt",
+        "input_bytes": 1024
+      },
+      "unit": "MB/s",
+      "dependency": "cryptography",
+      "status": "ok",
+      "note": "",
+      "metrics": {
+        "iters": 80777,
+        "elapsed_s": 0.150001,
+        "ops_per_s": 538509.7432683782,
+        "bytes": 82715648,
+        "mb_per_s": 551.4339771068193,
+        "mib_per_s": 525.8884211605256
+      }
+    },
+    {
+      "group": "aead",
+      "name": "ChaCha20-Poly1305",
+      "config": {
+        "op": "decrypt",
+        "input_bytes": 1024
+      },
+      "unit": "MB/s",
+      "dependency": "cryptography",
+      "status": "ok",
+      "note": "",
+      "metrics": {
+        "iters": 80535,
+        "elapsed_s": 0.1500004,
+        "ops_per_s": 536898.5682704846,
+        "bytes": 82467840,
+        "mb_per_s": 549.7841339089762,
+        "mib_per_s": 524.3150080766451
+      }
+    },
+    {
+      "group": "aead",
+      "name": "ChaCha20-Poly1305",
+      "config": {
+        "op": "encrypt",
+        "input_bytes": 65536
+      },
+      "unit": "MB/s",
+      "dependency": "cryptography",
+      "status": "ok",
+      "note": "",
+      "metrics": {
+        "iters": 4613,
+        "elapsed_s": 0.1500316,
+        "ops_per_s": 30746.85599567025,
+        "bytes": 302317568,
+        "mb_per_s": 2015.0259545322454,
+        "mib_per_s": 1921.6784997293905
+      }
+    },
+    {
+      "group": "aead",
+      "name": "ChaCha20-Poly1305",
+      "config": {
+        "op": "decrypt",
+        "input_bytes": 65536
+      },
+      "unit": "MB/s",
+      "dependency": "cryptography",
+      "status": "ok",
+      "note": "",
+      "metrics": {
+        "iters": 4540,
+        "elapsed_s": 0.150032,
+        "ops_per_s": 30260.21115495361,
+        "bytes": 297533440,
+        "mb_per_s": 1983.1331982510396,
+        "mib_per_s": 1891.2631971846006
+      }
+    },
+    {
+      "group": "hash",
+      "name": "sha256",
+      "config": {
+        "input_bytes": 64
+      },
+      "unit": "MB/s",
+      "dependency": "hashlib",
+      "status": "ok",
+      "note": "",
+      "metrics": {
+        "iters": 131139,
+        "elapsed_s": 0.1500008,
+        "ops_per_s": 874255.3373048678,
+        "bytes": 8392896,
+        "mb_per_s": 55.95234158751154,
+        "mib_per_s": 53.36031111479906
+      }
+    },
+    {
+      "group": "hash",
+      "name": "sha256",
+      "config": {
+        "input_bytes": 1024
+      },
+      "unit": "MB/s",
+      "dependency": "hashlib",
+      "status": "ok",
+      "note": "",
+      "metrics": {
+        "iters": 86698,
+        "elapsed_s": 0.1500009,
+        "ops_per_s": 577983.198767474,
+        "bytes": 88778752,
+        "mb_per_s": 591.8547955378934,
+        "mib_per_s": 564.4367175463614
+      }
+    },
+    {
+      "group": "hash",
+      "name": "sha256",
+      "config": {
+        "input_bytes": 65536
+      },
+      "unit": "MB/s",
+      "dependency": "hashlib",
+      "status": "ok",
+      "note": "",
+      "metrics": {
+        "iters": 3525,
+        "elapsed_s": 0.1500031,
+        "ops_per_s": 23499.514343370236,
+        "bytes": 231014400,
+        "mb_per_s": 1540.064172007112,
+        "mib_per_s": 1468.7196464606398
+      }
+    },
+    {
+      "group": "hash",
+      "name": "sha384",
+      "config": {
+        "input_bytes": 64
+      },
+      "unit": "MB/s",
+      "dependency": "hashlib",
+      "status": "ok",
+      "note": "",
+      "metrics": {
+        "iters": 114464,
+        "elapsed_s": 0.1500005,
+        "ops_per_s": 763090.7896973676,
+        "bytes": 7325696,
+        "mb_per_s": 48.83781054063153,
+        "mib_per_s": 46.57536558211472
+      }
+    },
+    {
+      "group": "hash",
+      "name": "sha384",
+      "config": {
+        "input_bytes": 1024
+      },
+      "unit": "MB/s",
+      "dependency": "hashlib",
+      "status": "ok",
+      "note": "",
+      "metrics": {
+        "iters": 55590,
+        "elapsed_s": 0.150001,
+        "ops_per_s": 370597.52934980433,
+        "bytes": 56924160,
+        "mb_per_s": 379.49187005419964,
+        "mib_per_s": 361.9116497556683
+      }
+    },
+    {
+      "group": "hash",
+      "name": "sha384",
+      "config": {
+        "input_bytes": 65536
+      },
+      "unit": "MB/s",
+      "dependency": "hashlib",
+      "status": "ok",
+      "note": "",
+      "metrics": {
+        "iters": 1697,
+        "elapsed_s": 0.1500572,
+        "ops_per_s": 11309.020826724742,
+        "bytes": 111214592,
+        "mb_per_s": 741.1479889002327,
+        "mib_per_s": 706.8138016702964
+      }
+    },
+    {
+      "group": "hash",
+      "name": "sha512",
+      "config": {
+        "input_bytes": 64
+      },
+      "unit": "MB/s",
+      "dependency": "hashlib",
+      "status": "ok",
+      "note": "",
+      "metrics": {
+        "iters": 113874,
+        "elapsed_s": 0.1500009,
+        "ops_per_s": 759155.4450673297,
+        "bytes": 7287936,
+        "mb_per_s": 48.5859484843091,
+        "mib_per_s": 46.33517120772276
+      }
+    },
+    {
+      "group": "hash",
+      "name": "sha512",
+      "config": {
+        "input_bytes": 1024
+      },
+      "unit": "MB/s",
+      "dependency": "hashlib",
+      "status": "ok",
+      "note": "",
+      "metrics": {
+        "iters": 55976,
+        "elapsed_s": 0.1500023,
+        "ops_per_s": 373167.6114299581,
+        "bytes": 57319424,
+        "mb_per_s": 382.123634104277,
+        "mib_per_s": 364.42149553706844
+      }
+    },
+    {
+      "group": "hash",
+      "name": "sha512",
+      "config": {
+        "input_bytes": 65536
+      },
+      "unit": "MB/s",
+      "dependency": "hashlib",
+      "status": "ok",
+      "note": "",
+      "metrics": {
+        "iters": 1694,
+        "elapsed_s": 0.1500451,
+        "ops_per_s": 11289.938825059933,
+        "bytes": 111017984,
+        "mb_per_s": 739.8974308391278,
+        "mib_per_s": 705.6211765662458
+      }
+    },
+    {
+      "group": "hash",
+      "name": "sha3_256",
+      "config": {
+        "input_bytes": 64
+      },
+      "unit": "MB/s",
+      "dependency": "hashlib",
+      "status": "ok",
+      "note": "",
+      "metrics": {
+        "iters": 103944,
+        "elapsed_s": 0.1500005,
+        "ops_per_s": 692957.6901410328,
+        "bytes": 6652416,
+        "mb_per_s": 44.3492921690261,
+        "mib_per_s": 42.29478089239702
+      }
+    },
+    {
+      "group": "hash",
+      "name": "sha3_256",
+      "config": {
+        "input_bytes": 1024
+      },
+      "unit": "MB/s",
+      "dependency": "hashlib",
+      "status": "ok",
+      "note": "",
+      "metrics": {
+        "iters": 41537,
+        "elapsed_s": 0.1500027,
+        "ops_per_s": 276908.34898305166,
+        "bytes": 42533888,
+        "mb_per_s": 283.5541493586449,
+        "mib_per_s": 270.4183095537614
+      }
+    },
+    {
+      "group": "hash",
+      "name": "sha3_256",
+      "config": {
+        "input_bytes": 65536
+      },
+      "unit": "MB/s",
+      "dependency": "hashlib",
+      "status": "ok",
+      "note": "",
+      "metrics": {
+        "iters": 964,
+        "elapsed_s": 0.1500834,
+        "ops_per_s": 6423.095425610028,
+        "bytes": 63176704,
+        "mb_per_s": 420.94398181277876,
+        "mib_per_s": 401.4434641006267
+      }
+    },
+    {
+      "group": "hash",
+      "name": "sha3_512",
+      "config": {
+        "input_bytes": 64
+      },
+      "unit": "MB/s",
+      "dependency": "hashlib",
+      "status": "ok",
+      "note": "",
+      "metrics": {
+        "iters": 103530,
+        "elapsed_s": 0.1500006,
+        "ops_per_s": 690197.2392110431,
+        "bytes": 6625920,
+        "mb_per_s": 44.172623309506754,
+        "mib_per_s": 42.12629633856464
+      }
+    },
+    {
+      "group": "hash",
+      "name": "sha3_512",
+      "config": {
+        "input_bytes": 1024
+      },
+      "unit": "MB/s",
+      "dependency": "hashlib",
+      "status": "ok",
+      "note": "",
+      "metrics": {
+        "iters": 26247,
+        "elapsed_s": 0.1500009,
+        "ops_per_s": 174978.95012629926,
+        "bytes": 26876928,
+        "mb_per_s": 179.17844492933042,
+        "mib_per_s": 170.87788098271412
+      }
+    },
+    {
+      "group": "hash",
+      "name": "sha3_512",
+      "config": {
+        "input_bytes": 65536
+      },
+      "unit": "MB/s",
+      "dependency": "hashlib",
+      "status": "ok",
+      "note": "",
+      "metrics": {
+        "iters": 538,
+        "elapsed_s": 0.1500021,
+        "ops_per_s": 3586.61645403631,
+        "bytes": 35258368,
+        "mb_per_s": 235.0524959317236,
+        "mib_per_s": 224.1635283772694
+      }
+    },
+    {
+      "group": "hash",
+      "name": "blake2b",
+      "config": {
+        "input_bytes": 64
+      },
+      "unit": "MB/s",
+      "dependency": "hashlib",
+      "status": "ok",
+      "note": "",
+      "metrics": {
+        "iters": 163059,
+        "elapsed_s": 0.1500004,
+        "ops_per_s": 1087057.1011810636,
+        "bytes": 10435776,
+        "mb_per_s": 69.57165447558806,
+        "mib_per_s": 66.34870002325827
+      }
+    },
+    {
+      "group": "hash",
+      "name": "blake2b",
+      "config": {
+        "input_bytes": 1024
+      },
+      "unit": "MB/s",
+      "dependency": "hashlib",
+      "status": "ok",
+      "note": "",
+      "metrics": {
+        "iters": 61203,
+        "elapsed_s": 0.1500013,
+        "ops_per_s": 408016.4638573132,
+        "bytes": 62671872,
+        "mb_per_s": 417.80885898988873,
+        "mib_per_s": 398.45357798565743
+      }
+    },
+    {
+      "group": "hash",
+      "name": "blake2b",
+      "config": {
+        "input_bytes": 65536
+      },
+      "unit": "MB/s",
+      "dependency": "hashlib",
+      "status": "ok",
+      "note": "",
+      "metrics": {
+        "iters": 1342,
+        "elapsed_s": 0.1500917,
+        "ops_per_s": 8941.200612692108,
+        "bytes": 87949312,
+        "mb_per_s": 585.97052335339,
+        "mib_per_s": 558.8250382932567
+      }
+    },
+    {
+      "group": "hash",
+      "name": "blake2s",
+      "config": {
+        "input_bytes": 64
+      },
+      "unit": "MB/s",
+      "dependency": "hashlib",
+      "status": "ok",
+      "note": "",
+      "metrics": {
+        "iters": 182545,
+        "elapsed_s": 0.1500004,
+        "ops_per_s": 1216963.4214308762,
+        "bytes": 11682880,
+        "mb_per_s": 77.88565897157608,
+        "mib_per_s": 74.27755257756813
+      }
+    },
+    {
+      "group": "hash",
+      "name": "blake2s",
+      "config": {
+        "input_bytes": 1024
+      },
+      "unit": "MB/s",
+      "dependency": "hashlib",
+      "status": "ok",
+      "note": "",
+      "metrics": {
+        "iters": 42241,
+        "elapsed_s": 0.1500027,
+        "ops_per_s": 281601.59783790563,
+        "bytes": 43254784,
+        "mb_per_s": 288.36003618601535,
+        "mib_per_s": 275.0015603885797
+      }
+    },
+    {
+      "group": "hash",
+      "name": "blake2s",
+      "config": {
+        "input_bytes": 65536
+      },
+      "unit": "MB/s",
+      "dependency": "hashlib",
+      "status": "ok",
+      "note": "",
+      "metrics": {
+        "iters": 814,
+        "elapsed_s": 0.150132,
+        "ops_per_s": 5421.8953987157975,
+        "bytes": 53346304,
+        "mb_per_s": 355.3293368502385,
+        "mib_per_s": 338.86846241973734
+      }
+    },
+    {
+      "group": "hash",
+      "name": "blake3",
+      "config": {
+        "input_bytes": 64
+      },
+      "unit": "MB/s",
+      "dependency": "blake3",
+      "status": "ok",
+      "note": "",
+      "metrics": {
+        "iters": 191087,
+        "elapsed_s": 0.1500008,
+        "ops_per_s": 1273906.5391651245,
+        "bytes": 12229568,
+        "mb_per_s": 81.53001850656797,
+        "mib_per_s": 77.75308466584012
+      }
+    },
+    {
+      "group": "hash",
+      "name": "blake3",
+      "config": {
+        "input_bytes": 1024
+      },
+      "unit": "MB/s",
+      "dependency": "blake3",
+      "status": "ok",
+      "note": "",
+      "metrics": {
+        "iters": 80323,
+        "elapsed_s": 0.1500014,
+        "ops_per_s": 535481.6688377574,
+        "bytes": 82250752,
+        "mb_per_s": 548.3332288898637,
+        "mib_per_s": 522.9313172243725
+      }
+    },
+    {
+      "group": "hash",
+      "name": "blake3",
+      "config": {
+        "input_bytes": 65536
+      },
+      "unit": "MB/s",
+      "dependency": "blake3",
+      "status": "ok",
+      "note": "",
+      "metrics": {
+        "iters": 8799,
+        "elapsed_s": 0.1500041,
+        "ops_per_s": 58658.396670491005,
+        "bytes": 576651264,
+        "mb_per_s": 3844.2366841972985,
+        "mib_per_s": 3666.149791905688
+      }
+    },
+    {
+      "group": "mac",
+      "name": "HMAC-SHA256",
+      "config": {
+        "input_bytes": 64
+      },
+      "unit": "MB/s",
+      "dependency": "hmac",
+      "status": "ok",
+      "note": "",
+      "metrics": {
+        "iters": 52905,
+        "elapsed_s": 0.1500003,
+        "ops_per_s": 352699.2946014108,
+        "bytes": 3385920,
+        "mb_per_s": 22.57275485449029,
+        "mib_per_s": 21.52705655526189
+      }
+    },
+    {
+      "group": "mac",
+      "name": "HMAC-SHA256",
+      "config": {
+        "input_bytes": 1024
+      },
+      "unit": "MB/s",
+      "dependency": "hmac",
+      "status": "ok",
+      "note": "",
+      "metrics": {
+        "iters": 43784,
+        "elapsed_s": 0.1500012,
+        "ops_per_s": 291890.9982053477,
+        "bytes": 44834816,
+        "mb_per_s": 298.896382162276,
+        "mib_per_s": 285.04980293490985
+      }
+    },
+    {
+      "group": "mac",
+      "name": "HMAC-SHA256",
+      "config": {
+        "input_bytes": 65536
+      },
+      "unit": "MB/s",
+      "dependency": "hmac",
+      "status": "ok",
+      "note": "",
+      "metrics": {
+        "iters": 3281,
+        "elapsed_s": 0.1500364,
+        "ops_per_s": 21868.026692189364,
+        "bytes": 215023616,
+        "mb_per_s": 1433.1429972993221,
+        "mib_per_s": 1366.7516682618352
+      }
+    },
+    {
+      "group": "mac",
+      "name": "HMAC-SHA384",
+      "config": {
+        "input_bytes": 64
+      },
+      "unit": "MB/s",
+      "dependency": "hmac",
+      "status": "ok",
+      "note": "",
+      "metrics": {
+        "iters": 41538,
+        "elapsed_s": 0.1500012,
+        "ops_per_s": 276917.78465772275,
+        "bytes": 2658432,
+        "mb_per_s": 17.722738218094253,
+        "mib_per_s": 16.90172025498796
+      }
+    },
+    {
+      "group": "mac",
+      "name": "HMAC-SHA384",
+      "config": {
+        "input_bytes": 1024
+      },
+      "unit": "MB/s",
+      "dependency": "hmac",
+      "status": "ok",
+      "note": "",
+      "metrics": {
+        "iters": 30116,
+        "elapsed_s": 0.1500022,
+        "ops_per_s": 200770.3887009657,
+        "bytes": 30838784,
+        "mb_per_s": 205.5888780297889,
+        "mib_per_s": 196.06483271578682
+      }
+    },
+    {
+      "group": "mac",
+      "name": "HMAC-SHA384",
+      "config": {
+        "input_bytes": 65536
+      },
+      "unit": "MB/s",
+      "dependency": "hmac",
+      "status": "ok",
+      "note": "",
+      "metrics": {
+        "iters": 1619,
+        "elapsed_s": 0.150039,
+        "ops_per_s": 10790.527796106346,
+        "bytes": 106102784,
+        "mb_per_s": 707.1680296456254,
+        "mib_per_s": 674.4079872566466
+      }
+    },
+    {
+      "group": "mac",
+      "name": "HMAC-SHA512",
+      "config": {
+        "input_bytes": 64
+      },
+      "unit": "MB/s",
+      "dependency": "hmac",
+      "status": "ok",
+      "note": "",
+      "metrics": {
+        "iters": 41930,
+        "elapsed_s": 0.1500029,
+        "ops_per_s": 279527.9291267036,
+        "bytes": 2683520,
+        "mb_per_s": 17.88978746410903,
+        "mib_per_s": 17.06103083048728
+      }
+    },
+    {
+      "group": "mac",
+      "name": "HMAC-SHA512",
+      "config": {
+        "input_bytes": 1024
+      },
+      "unit": "MB/s",
+      "dependency": "hmac",
+      "status": "ok",
+      "note": "",
+      "metrics": {
+        "iters": 30292,
+        "elapsed_s": 0.1500092,
+        "ops_per_s": 201934.28136407633,
+        "bytes": 31019008,
+        "mb_per_s": 206.78070411681415,
+        "mib_per_s": 197.2014466446058
+      }
+    },
+    {
+      "group": "mac",
+      "name": "HMAC-SHA512",
+      "config": {
+        "input_bytes": 65536
+      },
+      "unit": "MB/s",
+      "dependency": "hmac",
+      "status": "ok",
+      "note": "",
+      "metrics": {
+        "iters": 1620,
+        "elapsed_s": 0.1500372,
+        "ops_per_s": 10797.322264078508,
+        "bytes": 106168320,
+        "mb_per_s": 707.613311898649,
+        "mib_per_s": 674.8326415049067
+      }
+    },
+    {
+      "group": "mac",
+      "name": "Poly1305",
+      "config": {
+        "input_bytes": 64
+      },
+      "unit": "MB/s",
+      "dependency": "cryptography",
+      "status": "ok",
+      "note": "",
+      "metrics": {
+        "iters": 27494,
+        "elapsed_s": 0.1500028,
+        "ops_per_s": 183289.91192164415,
+        "bytes": 1759616,
+        "mb_per_s": 11.730554362985226,
+        "mib_per_s": 11.187128413186288
+      }
+    },
+    {
+      "group": "mac",
+      "name": "Poly1305",
+      "config": {
+        "input_bytes": 1024
+      },
+      "unit": "MB/s",
+      "dependency": "cryptography",
+      "status": "ok",
+      "note": "",
+      "metrics": {
+        "iters": 26422,
+        "elapsed_s": 0.1500026,
+        "ops_per_s": 176143.61351069913,
+        "bytes": 27056128,
+        "mb_per_s": 180.3710602349559,
+        "mib_per_s": 172.01524756904212
+      }
+    },
+    {
+      "group": "mac",
+      "name": "Poly1305",
+      "config": {
+        "input_bytes": 65536
+      },
+      "unit": "MB/s",
+      "dependency": "cryptography",
+      "status": "ok",
+      "note": "",
+      "metrics": {
+        "iters": 9608,
+        "elapsed_s": 0.1500004,
+        "ops_per_s": 64053.16252489993,
+        "bytes": 629669888,
+        "mb_per_s": 4197.7880592318415,
+        "mib_per_s": 4003.322657806246
+      }
+    },
+    {
+      "group": "kdf",
+      "name": "PBKDF2-HMAC-SHA256",
+      "config": {
+        "iterations": 10000
+      },
+      "unit": "ops/s",
+      "dependency": "hashlib",
+      "status": "ok",
+      "note": "",
+      "metrics": {
+        "iters": 74,
+        "elapsed_s": 0.4015669,
+        "ops_per_s": 184.27813646991322,
+        "n": 74,
+        "min_ns": 4995000,
+        "p50_ns": 5033450.0,
+        "p90_ns": 5881810.000000001,
+        "p99_ns": 10378440.999999998,
+        "max_ns": 10574300,
+        "mean_ns": 5425660.810810811,
+        "stdev_ns": 1182796.7735491425
+      }
+    },
+    {
+      "group": "kdf",
+      "name": "PBKDF2-HMAC-SHA256",
+      "config": {
+        "iterations": 100000
+      },
+      "unit": "ops/s",
+      "dependency": "hashlib",
+      "status": "ok",
+      "note": "",
+      "metrics": {
+        "iters": 8,
+        "elapsed_s": 0.4009139,
+        "ops_per_s": 19.95440916366332,
+        "n": 8,
+        "min_ns": 49901000,
+        "p50_ns": 50024050.0,
+        "p90_ns": 50310870.0,
+        "p99_ns": 50749287.0,
+        "max_ns": 50798000,
+        "mean_ns": 50112587.5,
+        "stdev_ns": 265133.44487964927
+      }
+    },
+    {
+      "group": "kdf",
+      "name": "PBKDF2-HMAC-SHA256",
+      "config": {
+        "iterations": 600000
+      },
+      "unit": "ops/s",
+      "dependency": "hashlib",
+      "status": "ok",
+      "note": "",
+      "metrics": {
+        "iters": 3,
+        "elapsed_s": 0.9021837,
+        "ops_per_s": 3.325265131702113,
+        "n": 3,
+        "min_ns": 297567900,
+        "p50_ns": 297813500.0,
+        "p90_ns": 304989100.0,
+        "p99_ns": 306603610.0,
+        "max_ns": 306783000,
+        "mean_ns": 300721466.6666667,
+        "stdev_ns": 4287323.920841791
+      }
+    },
+    {
+      "group": "kdf",
+      "name": "HKDF-SHA256",
+      "config": {
+        "ikm_bytes": 64,
+        "out_bytes": 32
+      },
+      "unit": "ops/s",
+      "dependency": "cryptography",
+      "status": "ok",
+      "note": "",
+      "metrics": {
+        "iters": 25141,
+        "elapsed_s": 0.1500011,
+        "ops_per_s": 167605.43756012456,
+        "n": 4000,
+        "min_ns": 5400,
+        "p50_ns": 5500.0,
+        "p90_ns": 5600.0,
+        "p99_ns": 11600.999999999976,
+        "max_ns": 32500,
+        "mean_ns": 5643.825,
+        "stdev_ns": 1216.0435310362043
+      }
+    },
+    {
+      "group": "kdf",
+      "name": "HKDF-SHA384",
+      "config": {
+        "ikm_bytes": 64,
+        "out_bytes": 32
+      },
+      "unit": "ops/s",
+      "dependency": "cryptography",
+      "status": "ok",
+      "note": "",
+      "metrics": {
+        "iters": 20389,
+        "elapsed_s": 0.150006,
+        "ops_per_s": 135921.22981747397,
+        "n": 4000,
+        "min_ns": 6700,
+        "p50_ns": 6900.0,
+        "p90_ns": 6900.0,
+        "p99_ns": 14900.0,
+        "max_ns": 58700,
+        "mean_ns": 7028.1,
+        "stdev_ns": 1608.2274061835908
+      }
+    },
+    {
+      "group": "kdf",
+      "name": "Argon2id",
+      "config": {
+        "profile": "interactive",
+        "time_cost": 2,
+        "memory_cost": 65536,
+        "parallelism": 1
+      },
+      "unit": "ops/s",
+      "dependency": "argon2",
+      "status": "ok",
+      "note": "",
+      "metrics": {
+        "iters": 6,
+        "elapsed_s": 0.5775781,
+        "ops_per_s": 10.38820550848448,
+        "n": 6,
+        "min_ns": 95048200,
+        "p50_ns": 95762950.0,
+        "p90_ns": 97853000.0,
+        "p99_ns": 97937510.0,
+        "max_ns": 97946900,
+        "mean_ns": 96258400.0,
+        "stdev_ns": 1184254.752998695
+      }
+    },
+    {
+      "group": "kdf",
+      "name": "Argon2id",
+      "config": {
+        "profile": "moderate",
+        "time_cost": 3,
+        "memory_cost": 262144,
+        "parallelism": 4
+      },
+      "unit": "ops/s",
+      "dependency": "argon2",
+      "status": "ok",
+      "note": "",
+      "metrics": {
+        "iters": 3,
+        "elapsed_s": 0.6689142,
+        "ops_per_s": 4.484880123639175,
+        "n": 3,
+        "min_ns": 219995800,
+        "p50_ns": 220224700.0,
+        "p90_ns": 226987020.0,
+        "p99_ns": 228508542.0,
+        "max_ns": 228677600,
+        "mean_ns": 222966033.33333334,
+        "stdev_ns": 4039768.4870409206
+      }
+    },
+    {
+      "group": "dds_handshake",
+      "name": "CycloneDDS",
+      "config": {},
+      "unit": "",
+      "dependency": "cunit_security_core",
+      "status": "skipped",
+      "note": "CycloneDDS PQC test binary not built on this platform",
+      "metrics": {}
+    },
+    {
+      "group": "dds_handshake",
+      "name": "FastDDS",
+      "config": {},
+      "unit": "",
+      "dependency": "BuiltinPKIDH",
+      "status": "skipped",
+      "note": "Fast DDS PKI-DH test binary not built on this platform",
+      "metrics": {}
+    },
+    {
+      "group": "gpu",
+      "name": "swapover, Apple M5 (unified memory) (modeled)",
+      "config": {
+        "device": "Apple M5 (unified memory)",
+        "modeled": true,
+        "dispatch_us": 204.0
+      },
+      "unit": "ns",
+      "dependency": "analytical model",
+      "status": "ok",
+      "note": "projected dispatch+sync = 204 us. CALIBRATED: GPU saturates ~120 GB/s unified LPDDR5; numpy CPU ~17.5 GB/s effective -> reproduces the measured ~4 MiB crossover",
+      "metrics": {
+        "p50_ns": 204000.0,
+        "mean_ns": 204000.0
+      }
+    },
+    {
+      "group": "gpu",
+      "name": "crossover batch, Apple M5 (unified memory) (modeled)",
+      "config": {
+        "device": "Apple M5 (unified memory)",
+        "modeled": true
+      },
+      "unit": "bytes",
+      "dependency": "analytical model",
+      "status": "ok",
+      "note": "GPU overtakes CPU above ~4.0 MiB resident / 4.0 MiB cold (host<->device copy each batch); ~4,081 concurrent 1-KiB streams. Roofline projection, see GPGPU-Sim/Accel-Sim for cycle-accurate. CALIBRATED: GPU saturates ~120 GB/s unified LPDDR5; numpy CPU ~17.5 GB/s effective -> reproduces the measured ~4 MiB crossover",
+      "metrics": {
+        "crossover_bytes_resident": 4179512.1951219514,
+        "crossover_bytes_cold": 4179512.1951219514,
+        "gpu_GBps": 120.0,
+        "cpu_GBps": 17.5,
+        "link_GBps": null
+      }
+    },
+    {
+      "group": "gpu",
+      "name": "swapover, NVIDIA A100 80GB (PCIe4 x16) (modeled)",
+      "config": {
+        "device": "NVIDIA A100 80GB (PCIe4 x16)",
+        "modeled": true,
+        "dispatch_us": 8.0
+      },
+      "unit": "ns",
+      "dependency": "analytical model",
+      "status": "ok",
+      "note": "projected dispatch+sync = 8 us. PROJECTED: HBM2e 1.94 TB/s, PCIe4 x16 ~25 GB/s effective, ~8 us launch",
+      "metrics": {
+        "p50_ns": 8000.0,
+        "mean_ns": 8000.0
+      }
+    },
+    {
+      "group": "gpu",
+      "name": "crossover batch, NVIDIA A100 80GB (PCIe4 x16) (modeled)",
+      "config": {
+        "device": "NVIDIA A100 80GB (PCIe4 x16)",
+        "modeled": true
+      },
+      "unit": "bytes",
+      "dependency": "analytical model",
+      "status": "ok",
+      "note": "GPU overtakes CPU above ~319 KiB resident / never (per-byte slower) cold (host<->device copy each batch); ~319 concurrent 1-KiB streams. Roofline projection, see GPGPU-Sim/Accel-Sim for cycle-accurate. PROJECTED: HBM2e 1.94 TB/s, PCIe4 x16 ~25 GB/s effective, ~8 us launch",
+      "metrics": {
+        "crossover_bytes_resident": 326754.617414248,
+        "crossover_bytes_cold": null,
+        "gpu_GBps": 1935.0,
+        "cpu_GBps": 40.0,
+        "link_GBps": 25.0
+      }
+    },
+    {
+      "group": "gpu",
+      "name": "swapover, NVIDIA H100 (PCIe5 x16) (modeled)",
+      "config": {
+        "device": "NVIDIA H100 (PCIe5 x16)",
+        "modeled": true,
+        "dispatch_us": 6.0
+      },
+      "unit": "ns",
+      "dependency": "analytical model",
+      "status": "ok",
+      "note": "projected dispatch+sync = 6 us. PROJECTED: HBM3 3.35 TB/s, PCIe5 x16 ~55 GB/s effective, ~6 us launch",
+      "metrics": {
+        "p50_ns": 6000.0,
+        "mean_ns": 6000.0
+      }
+    },
+    {
+      "group": "gpu",
+      "name": "crossover batch, NVIDIA H100 (PCIe5 x16) (modeled)",
+      "config": {
+        "device": "NVIDIA H100 (PCIe5 x16)",
+        "modeled": true
+      },
+      "unit": "bytes",
+      "dependency": "analytical model",
+      "status": "ok",
+      "note": "GPU overtakes CPU above ~237 KiB resident / never (per-byte slower) cold (host<->device copy each batch); ~237 concurrent 1-KiB streams. Roofline projection, see GPGPU-Sim/Accel-Sim for cycle-accurate. PROJECTED: HBM3 3.35 TB/s, PCIe5 x16 ~55 GB/s effective, ~6 us launch",
+      "metrics": {
+        "crossover_bytes_resident": 242900.3021148036,
+        "crossover_bytes_cold": null,
+        "gpu_GBps": 3350.0,
+        "cpu_GBps": 40.0,
+        "link_GBps": 55.0
+      }
+    },
+    {
+      "group": "gpu",
+      "name": "swapover, NVIDIA H100 (NVLink) (modeled)",
+      "config": {
+        "device": "NVIDIA H100 (NVLink)",
+        "modeled": true,
+        "dispatch_us": 6.0
+      },
+      "unit": "ns",
+      "dependency": "analytical model",
+      "status": "ok",
+      "note": "projected dispatch+sync = 6 us. PROJECTED: HBM3 3.35 TB/s, NVLink ~450 GB/s effective, ~6 us launch",
+      "metrics": {
+        "p50_ns": 6000.0,
+        "mean_ns": 6000.0
+      }
+    },
+    {
+      "group": "gpu",
+      "name": "crossover batch, NVIDIA H100 (NVLink) (modeled)",
+      "config": {
+        "device": "NVIDIA H100 (NVLink)",
+        "modeled": true
+      },
+      "unit": "bytes",
+      "dependency": "analytical model",
+      "status": "ok",
+      "note": "GPU overtakes CPU above ~237 KiB resident / 289 KiB cold (host<->device copy each batch); ~237 concurrent 1-KiB streams. Roofline projection, see GPGPU-Sim/Accel-Sim for cycle-accurate. PROJECTED: HBM3 3.35 TB/s, NVLink ~450 GB/s effective, ~6 us launch",
+      "metrics": {
+        "crossover_bytes_resident": 242900.3021148036,
+        "crossover_bytes_cold": 296193.20507572655,
+        "gpu_GBps": 3350.0,
+        "cpu_GBps": 40.0,
+        "link_GBps": 450.0
+      }
+    },
+    {
+      "group": "gpu",
+      "name": "swapover, AMD MI250 (PCIe4 x16) (modeled)",
+      "config": {
+        "device": "AMD MI250 (PCIe4 x16)",
+        "modeled": true,
+        "dispatch_us": 8.0
+      },
+      "unit": "ns",
+      "dependency": "analytical model",
+      "status": "ok",
+      "note": "projected dispatch+sync = 8 us. PROJECTED: HBM2e ~3.2 TB/s (per-GCD aggregate), PCIe4 x16 ~25 GB/s, ~8 us launch",
+      "metrics": {
+        "p50_ns": 8000.0,
+        "mean_ns": 8000.0
+      }
+    },
+    {
+      "group": "gpu",
+      "name": "crossover batch, AMD MI250 (PCIe4 x16) (modeled)",
+      "config": {
+        "device": "AMD MI250 (PCIe4 x16)",
+        "modeled": true
+      },
+      "unit": "bytes",
+      "dependency": "analytical model",
+      "status": "ok",
+      "note": "GPU overtakes CPU above ~316 KiB resident / never (per-byte slower) cold (host<->device copy each batch); ~316 concurrent 1-KiB streams. Roofline projection, see GPGPU-Sim/Accel-Sim for cycle-accurate. PROJECTED: HBM2e ~3.2 TB/s (per-GCD aggregate), PCIe4 x16 ~25 GB/s, ~8 us launch",
+      "metrics": {
+        "crossover_bytes_resident": 324050.6329113924,
+        "crossover_bytes_cold": null,
+        "gpu_GBps": 3200.0,
+        "cpu_GBps": 40.0,
+        "link_GBps": 25.0
+      }
+    },
+    {
+      "group": "gpu",
+      "name": "swapover",
+      "config": {},
+      "unit": "",
+      "dependency": "mlx/cupy/torch",
+      "status": "skipped",
+      "note": "no GPU on this runner, the GPU swapover/crossover is measured on the Apple-Silicon host",
+      "metrics": {}
+    },
+    {
+      "group": "gpu",
+      "name": "throughput_crossover",
+      "config": {},
+      "unit": "",
+      "dependency": "mlx/cupy/torch",
+      "status": "skipped",
+      "note": "no GPU on this runner, the GPU swapover/crossover is measured on the Apple-Silicon host",
+      "metrics": {}
+    },
+    {
+      "group": "robobus",
+      "name": "determinism_probe",
+      "config": {},
+      "unit": "",
+      "dependency": "robobus",
+      "status": "skipped",
+      "note": "n/a here, needs the robobus package (private repo); the portable `bus` group measures the same ring on this platform",
+      "metrics": {}
+    },
+    {
+      "group": "robobus",
+      "name": "bus_latency",
+      "config": {},
+      "unit": "",
+      "dependency": "robobus",
+      "status": "skipped",
+      "note": "n/a here, needs the robobus package (private repo); the portable `bus` group measures the same ring on this platform",
+      "metrics": {}
+    }
+  ],
+  "note": "Measured on this host only. Numbers are platform/CPU/build-specific. Re-run the identical script on each target OS to compare. Skipped rows indicate a capability/dependency absent on THIS platform, not a failure."
 }

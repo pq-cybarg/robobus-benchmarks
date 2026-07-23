@@ -1,231 +1,231 @@
 {
- "schema": "robobus-bench/1",
- "generated_unix": 1783145588,
- "label": "emulated linux/s390x",
- "quick": false,
- "platform": {
-  "python_version": "3.13.5",
-  "python_impl": "CPython",
-  "system": "Linux",
-  "release": "6.12.76-linuxkit",
-  "version": "#1 SMP Fri May  1 14:35:41 UTC 2026",
-  "machine": "s390x",
-  "processor": "",
-  "platform": "Linux-6.12.76-linuxkit-s390x-with-glibc2.41",
-  "cpu_count_logical": 10,
-  "environment": {
-   "emulated": "linux/s390x",
-   "timing_representative": false,
-   "caveat_emulation": "QEMU emulation: NOT cycle-accurate, timing here would not reflect real hardware and is not measured. Purpose is PORTABILITY/CORRECTNESS across this ISA (endianness, word size).",
-   "virtualized": false,
-   "self_hosted": false
+  "schema": "robobus-bench/1",
+  "generated_unix": 1783145588,
+  "label": "emulated linux/s390x",
+  "quick": false,
+  "platform": {
+    "python_version": "3.13.5",
+    "python_impl": "CPython",
+    "system": "Linux",
+    "release": "6.12.76-linuxkit",
+    "version": "#1 SMP Fri May  1 14:35:41 UTC 2026",
+    "machine": "s390x",
+    "processor": "",
+    "platform": "Linux-6.12.76-linuxkit-s390x-with-glibc2.41",
+    "cpu_count_logical": 10,
+    "environment": {
+      "emulated": "linux/s390x",
+      "timing_representative": false,
+      "caveat_emulation": "QEMU emulation: NOT cycle-accurate, timing here would not reflect real hardware and is not measured. Purpose is PORTABILITY/CORRECTNESS across this ISA (endianness, word size).",
+      "virtualized": false,
+      "self_hosted": false
+    },
+    "measurement": {
+      "pinned_cpus": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        9
+      ],
+      "pinned": false,
+      "cpu_governor": null,
+      "turbo": null,
+      "smt_active": null,
+      "isolated_cpus": "",
+      "aslr": "full",
+      "pmu_perf_available": false,
+      "uncontrolled_noise": [
+        "no isolated cores (isolcpus=) -> scheduler + IRQ noise"
+      ],
+      "fidelity_tier": "2-baremetal-untuned (real hardware, default OS noise)"
+    },
+    "dependencies": {
+      "available": {
+        "cryptography": "43.0.0",
+        "oqs": "0.15.0"
+      },
+      "missing": {
+        "argon2": "ModuleNotFoundError: No module named 'argon2'",
+        "psutil": "ModuleNotFoundError: No module named 'psutil'"
+      }
+    }
   },
-  "measurement": {
-   "pinned_cpus": [
-    0,
-    1,
-    2,
-    3,
-    4,
-    5,
-    6,
-    7,
-    8,
-    9
-   ],
-   "pinned": false,
-   "cpu_governor": null,
-   "turbo": null,
-   "smt_active": null,
-   "isolated_cpus": "",
-   "aslr": "full",
-   "pmu_perf_available": false,
-   "uncontrolled_noise": [
-    "no isolated cores (isolcpus=) -> scheduler + IRQ noise"
-   ],
-   "fidelity_tier": "2-baremetal-untuned (real hardware, default OS noise)"
-  },
-  "dependencies": {
-   "available": {
-    "cryptography": "43.0.0",
-    "oqs": "0.15.0"
-   },
-   "missing": {
-    "argon2": "ModuleNotFoundError: No module named 'argon2'",
-    "psutil": "ModuleNotFoundError: No module named 'psutil'"
-   }
-  }
- },
- "results": [
-  {
-   "group": "correctness",
-   "name": "KAT sha256",
-   "config": {
-    "arch": "s390x"
-   },
-   "unit": "pass",
-   "dependency": "stdlib",
-   "status": "ok",
-   "note": "known-answer vector matches",
-   "metrics": {
-    "passed": true
-   }
-  },
-  {
-   "group": "correctness",
-   "name": "KAT sha384",
-   "config": {
-    "arch": "s390x"
-   },
-   "unit": "pass",
-   "dependency": "stdlib",
-   "status": "ok",
-   "note": "known-answer vector matches",
-   "metrics": {
-    "passed": true
-   }
-  },
-  {
-   "group": "correctness",
-   "name": "KAT sha512",
-   "config": {
-    "arch": "s390x"
-   },
-   "unit": "pass",
-   "dependency": "stdlib",
-   "status": "ok",
-   "note": "known-answer vector matches",
-   "metrics": {
-    "passed": true
-   }
-  },
-  {
-   "group": "correctness",
-   "name": "KAT sha3_256",
-   "config": {
-    "arch": "s390x"
-   },
-   "unit": "pass",
-   "dependency": "stdlib",
-   "status": "ok",
-   "note": "known-answer vector matches",
-   "metrics": {
-    "passed": true
-   }
-  },
-  {
-   "group": "correctness",
-   "name": "KAT sha3_512",
-   "config": {
-    "arch": "s390x"
-   },
-   "unit": "pass",
-   "dependency": "stdlib",
-   "status": "ok",
-   "note": "known-answer vector matches",
-   "metrics": {
-    "passed": true
-   }
-  },
-  {
-   "group": "correctness",
-   "name": "KAT HMAC-SHA256",
-   "config": {
-    "arch": "s390x"
-   },
-   "unit": "pass",
-   "dependency": "stdlib",
-   "status": "ok",
-   "note": "RFC vector",
-   "metrics": {
-    "passed": true
-   }
-  },
-  {
-   "group": "correctness",
-   "name": "struct pack/unpack (wire format)",
-   "config": {
-    "host_byteorder": "big",
-    "arch": "s390x"
-   },
-   "unit": "pass",
-   "dependency": "stdlib",
-   "status": "ok",
-   "note": "little+big-endian round-trip on a big-endian host",
-   "metrics": {
-    "passed": true
-   }
-  },
-  {
-   "group": "correctness",
-   "name": "AES-256-GCM seal/open round-trip",
-   "config": {
-    "arch": "s390x"
-   },
-   "unit": "pass",
-   "dependency": "stdlib",
-   "status": "ok",
-   "note": "encrypt then decrypt",
-   "metrics": {
-    "passed": true
-   }
-  },
-  {
-   "group": "correctness",
-   "name": "ECDH-P256 shared-secret agreement",
-   "config": {
-    "arch": "s390x"
-   },
-   "unit": "pass",
-   "dependency": "stdlib",
-   "status": "ok",
-   "note": "both parties derive the same key",
-   "metrics": {
-    "passed": true
-   }
-  },
-  {
-   "group": "correctness",
-   "name": "Ed25519 sign/verify",
-   "config": {
-    "arch": "s390x"
-   },
-   "unit": "pass",
-   "dependency": "stdlib",
-   "status": "ok",
-   "note": "signature verifies",
-   "metrics": {
-    "passed": true
-   }
-  },
-  {
-   "group": "correctness",
-   "name": "ML-KEM-768 encap/decap secret match",
-   "config": {
-    "arch": "s390x"
-   },
-   "unit": "pass",
-   "dependency": "stdlib",
-   "status": "ok",
-   "note": "FIPS 203 across this ISA",
-   "metrics": {
-    "passed": true
-   }
-  },
-  {
-   "group": "correctness",
-   "name": "ML-DSA-87 sign/verify",
-   "config": {
-    "arch": "s390x"
-   },
-   "unit": "pass",
-   "dependency": "stdlib",
-   "status": "ok",
-   "note": "FIPS 204 across this ISA",
-   "metrics": {
-    "passed": true
-   }
-  }
- ],
- "note": "Measured on this host only. Numbers are platform/CPU/build-specific. Re-run the identical script on each target OS to compare. Skipped rows indicate a capability/dependency absent on THIS platform, not a failure."
+  "results": [
+    {
+      "group": "correctness",
+      "name": "KAT sha256",
+      "config": {
+        "arch": "s390x"
+      },
+      "unit": "pass",
+      "dependency": "stdlib",
+      "status": "ok",
+      "note": "known-answer vector matches",
+      "metrics": {
+        "passed": true
+      }
+    },
+    {
+      "group": "correctness",
+      "name": "KAT sha384",
+      "config": {
+        "arch": "s390x"
+      },
+      "unit": "pass",
+      "dependency": "stdlib",
+      "status": "ok",
+      "note": "known-answer vector matches",
+      "metrics": {
+        "passed": true
+      }
+    },
+    {
+      "group": "correctness",
+      "name": "KAT sha512",
+      "config": {
+        "arch": "s390x"
+      },
+      "unit": "pass",
+      "dependency": "stdlib",
+      "status": "ok",
+      "note": "known-answer vector matches",
+      "metrics": {
+        "passed": true
+      }
+    },
+    {
+      "group": "correctness",
+      "name": "KAT sha3_256",
+      "config": {
+        "arch": "s390x"
+      },
+      "unit": "pass",
+      "dependency": "stdlib",
+      "status": "ok",
+      "note": "known-answer vector matches",
+      "metrics": {
+        "passed": true
+      }
+    },
+    {
+      "group": "correctness",
+      "name": "KAT sha3_512",
+      "config": {
+        "arch": "s390x"
+      },
+      "unit": "pass",
+      "dependency": "stdlib",
+      "status": "ok",
+      "note": "known-answer vector matches",
+      "metrics": {
+        "passed": true
+      }
+    },
+    {
+      "group": "correctness",
+      "name": "KAT HMAC-SHA256",
+      "config": {
+        "arch": "s390x"
+      },
+      "unit": "pass",
+      "dependency": "stdlib",
+      "status": "ok",
+      "note": "RFC vector",
+      "metrics": {
+        "passed": true
+      }
+    },
+    {
+      "group": "correctness",
+      "name": "struct pack/unpack (wire format)",
+      "config": {
+        "host_byteorder": "big",
+        "arch": "s390x"
+      },
+      "unit": "pass",
+      "dependency": "stdlib",
+      "status": "ok",
+      "note": "little+big-endian round-trip on a big-endian host",
+      "metrics": {
+        "passed": true
+      }
+    },
+    {
+      "group": "correctness",
+      "name": "AES-256-GCM seal/open round-trip",
+      "config": {
+        "arch": "s390x"
+      },
+      "unit": "pass",
+      "dependency": "stdlib",
+      "status": "ok",
+      "note": "encrypt then decrypt",
+      "metrics": {
+        "passed": true
+      }
+    },
+    {
+      "group": "correctness",
+      "name": "ECDH-P256 shared-secret agreement",
+      "config": {
+        "arch": "s390x"
+      },
+      "unit": "pass",
+      "dependency": "stdlib",
+      "status": "ok",
+      "note": "both parties derive the same key",
+      "metrics": {
+        "passed": true
+      }
+    },
+    {
+      "group": "correctness",
+      "name": "Ed25519 sign/verify",
+      "config": {
+        "arch": "s390x"
+      },
+      "unit": "pass",
+      "dependency": "stdlib",
+      "status": "ok",
+      "note": "signature verifies",
+      "metrics": {
+        "passed": true
+      }
+    },
+    {
+      "group": "correctness",
+      "name": "ML-KEM-768 encap/decap secret match",
+      "config": {
+        "arch": "s390x"
+      },
+      "unit": "pass",
+      "dependency": "stdlib",
+      "status": "ok",
+      "note": "FIPS 203 across this ISA",
+      "metrics": {
+        "passed": true
+      }
+    },
+    {
+      "group": "correctness",
+      "name": "ML-DSA-87 sign/verify",
+      "config": {
+        "arch": "s390x"
+      },
+      "unit": "pass",
+      "dependency": "stdlib",
+      "status": "ok",
+      "note": "FIPS 204 across this ISA",
+      "metrics": {
+        "passed": true
+      }
+    }
+  ],
+  "note": "Measured on this host only. Numbers are platform/CPU/build-specific. Re-run the identical script on each target OS to compare. Skipped rows indicate a capability/dependency absent on THIS platform, not a failure."
 }
