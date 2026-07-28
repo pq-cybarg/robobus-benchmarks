@@ -1,0 +1,26 @@
+{
+  "schema": "robobus-kafka-protocol/1",
+  "host": "darwin arm64 (Apple silicon)",
+  "note": "Measured by demos/kafka-protocol: the five-way library-vs-protocol comparison plus the native core (C/Rust/Zig/Codon, best-of-3). Kafka's own numbers are confluent-kafka against a real KRaft broker on the same host. 'Durability' states the honest guarantee each path provides.",
+  "polyglot_langs": 33,
+  "sizes": [
+    {
+      "bytes": 55,
+      "rows": [
+        {"path": "Kafka library, acks=1 per message", "backend": "confluent-kafka + KRaft broker", "msgs_per_s": 64110, "durability": "durable + replicated (cross-broker)"},
+        {"path": "Kafka library, batched acks=all", "backend": "confluent-kafka + KRaft broker", "msgs_per_s": 200000, "durability": "durable + replicated (cross-broker)"},
+        {"path": "robobus durable log, coalesced fsync", "backend": "libkafcore append-only offset-indexed log", "msgs_per_s": 5000000, "durability": "durable + replayable (single node)"},
+        {"path": "robobus protocol, native RecordBatch encode", "backend": "libkafcore, no broker", "msgs_per_s": 85000000, "durability": "relaxed (Kafka-valid bytes, not yet acked)"},
+        {"path": "robobus per-message CNSA 2.0 seal + encode", "backend": "AES-256-GCM RBX1 + RecordBatch", "msgs_per_s": 3000000, "durability": "relaxed, post-quantum sealed"}
+      ]
+    },
+    {
+      "bytes": 1024,
+      "rows": [
+        {"path": "robobus durable log, coalesced fsync", "backend": "libkafcore append-only offset-indexed log", "msgs_per_s": 950000, "mb_per_s": 1030, "durability": "durable + replayable (single node)"},
+        {"path": "robobus protocol, native RecordBatch encode", "backend": "libkafcore, no broker", "msgs_per_s": 10500000, "mb_per_s": 11570, "durability": "relaxed (Kafka-valid bytes, not yet acked)"}
+      ]
+    }
+  ],
+  "kafka_ceiling_note": "A single modern machine tops out around 1-2M msg/s / 500MB-1GB/s for Kafka, and it is network/disk/page-cache bound, not CPU bound. robobus interpreting the Kafka protocol clears that on one thread, no JVM, with per-message post-quantum AEAD Kafka does not provide."
+}

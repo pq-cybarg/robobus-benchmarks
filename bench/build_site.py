@@ -151,8 +151,12 @@ h2.title{font-size:clamp(24px,3.5vw,34px);margin:0 0 8px}
 .hrow .lname small{display:block;font:400 10.5px/1.3 'JetBrains Mono';color:var(--dim);letter-spacing:.02em}
 .htrack{height:19px;border-radius:5px;background:var(--panel2);overflow:hidden}
 .htrack>i{display:block;height:100%;border-radius:5px}
-.hrow .hval{font-family:'JetBrains Mono';font-size:12.5px;text-align:right;color:var(--fg);font-variant-numeric:tabular-nums}
+.hrow .hval{font-family:'JetBrains Mono';font-size:12.5px;text-align:right;color:var(--fg);font-variant-numeric:tabular-nums;white-space:nowrap}
 .hrow .hval small{color:var(--dim);font-size:11px}
+@media(max-width:560px){.hrow{display:flex;flex-wrap:wrap;align-items:baseline;column-gap:10px;row-gap:4px}
+.hrow .lname{order:1;flex:1 1 auto;min-width:0;font-size:12.5px}.hrow .lname small{font-size:9.5px}
+.hrow .hval{order:2;flex:0 0 auto;font-size:12px;white-space:nowrap}
+.hrow .htrack{order:3;flex:1 0 100%;height:14px}}
 .tier-n>i{background:linear-gradient(90deg,var(--signal),#6fe0d6)}
 .tier-j>i{background:linear-gradient(90deg,var(--hybrid),var(--signal))}
 .tier-i>i{background:linear-gradient(90deg,var(--violet),var(--hybrid))}
@@ -710,13 +714,17 @@ def _hbars(rows, tier_fn):
         return ""
     lo, hi = math.log10(min(vals)), math.log10(max(vals))
     span = (hi - lo) or 1
+
+    def _si(v):   # compact, readable magnitudes (raw 1314578678 overflows the value column)
+        return (f"{v/1e9:.2f}G" if v >= 1e9 else f"{v/1e6:.1f}M" if v >= 1e6
+                else f"{v/1e3:.0f}k" if v >= 1e3 else f"{v:.0f}")
     out = []
     for label, sub, val, unit in rows:
         w = 4 + 96 * (math.log10(val) - lo) / span if val else 0
         out.append(f"<div class='hrow'><div class='lname'>{html.escape(label)}"
                    f"<small>{html.escape(sub)}</small></div>"
                    f"<div class='htrack {tier_fn(val)}'><i style='width:{w:.1f}%'></i></div>"
-                   f"<div class='hval'>{val:.0f}<small> {unit}</small></div></div>")
+                   f"<div class='hval'>{_si(val)}<small> {unit}</small></div></div>")
     return "<div class='hbars'>" + "".join(out) + "</div>"
 
 
@@ -1413,6 +1421,61 @@ def _portability_section():
 </div></section>"""
 
 
+def _kafka_protocol_section():
+    """Kafka is a wire protocol, not just a library. The transport row measures robobus over a real
+    Kafka broker (durable, acks=1); this section surfaces the far larger picture from the five-way
+    demo + the native core: robobus interpreting the Kafka protocol itself, byte-identical, at native
+    speed, with per-message post-quantum AEAD Kafka does not provide."""
+    kp = _load("kafka-protocol.json")
+    if not kp:
+        return ""
+
+    def _o(v):
+        return f"{v/1e6:.1f}M" if v >= 1e6 else f"{v/1e3:.0f}k" if v >= 1e3 else f"{v:.0f}"
+
+    def is_robobus(path):
+        return path.lower().startswith("robobus")
+    tables = ""
+    for sz in kp.get("sizes", []):
+        rows = sorted(sz["rows"], key=lambda r: -(r.get("msgs_per_s") or 0))
+        has_mb = any(r.get("mb_per_s") for r in rows)
+        trs = ""
+        for r in rows:
+            cls = "krb" if is_robobus(r["path"]) else "klib"
+            mb = f"<td class='n'>{r['mb_per_s']:,.0f}</td>" if has_mb else ""
+            trs += (f"<tr class='{cls}'><td class='xn'>{html.escape(r['path'])}</td>"
+                    f"<td class='reg'>{html.escape(r['backend'])}</td>"
+                    f"<td class='n'>{_o(r['msgs_per_s'])}</td>{mb}"
+                    f"<td class='reg'>{html.escape(r['durability'])}</td></tr>")
+        mbh = "<th>MB/s</th>" if has_mb else ""
+        tables += (f"<div class='xcat'><h3 class='xcat-t'>{sz['bytes']}-byte messages</h3>"
+                   f"<div style='overflow-x:auto'><table class='ltab xtab'><thead><tr>"
+                   f"<th>path</th><th>backend</th><th>msg/s</th>{mbh}<th>durability</th></tr></thead>"
+                   f"<tbody>{trs}</tbody></table></div></div>")
+    css = ("<style>.ktab .krb .xn{color:var(--signal);font-weight:600}"
+           ".ktab .krb td{background:color-mix(in srgb,var(--signal) 7%,transparent)}"
+           ".ktab .klib .xn{font-weight:600}.ktab .reg{color:var(--muted);font:400 12px/1.5 'JetBrains Mono'}"
+           ".ktab .n{font-variant-numeric:tabular-nums;text-align:right}</style>")
+    return f"""<section><div class='wrap'>{css}<div class='ktab'>
+  <p class='sec-eyebrow'>kafka · protocol vs library</p>
+  <h2 class='title'>Kafka the protocol, not the library</h2>
+  <p class='sec-lede'>The Transports table above measures robobus moving a frame through a real Kafka
+  broker (durable, acks=1, cross-broker replicated), the honest cost of Kafka's strongest guarantee.
+  But Kafka is a <b>wire protocol</b>, and robobus speaks it directly. It emits and parses the exact
+  Kafka <code>RecordBatch</code> v2 bytes a standard client reads (CRC and all), so it can interpret
+  the protocol itself, skip the JVM and the client, and provide the durable, replayable feature far
+  faster, with <b>per-message post-quantum AES-256-GCM</b> that Kafka does not have. Measured on
+  {html.escape(kp.get('host',''))} by the <code>demos/kafka-protocol</code> five-way comparison and the
+  native core.</p>
+  {tables}
+  <p class='cfg-cap' style='color:var(--muted);margin-top:8px'>{html.escape(kp.get('kafka_ceiling_note',''))}
+  The same sealed <code>RecordBatch</code> is emitted <b>byte-identical across {kp.get('polyglot_langs','')}
+  language ecosystems</b> over the librobobus C ABI (demos/kafka-protocol/native/ffi), so any language can
+  join one post-quantum-sealed Kafka bus. Honest scope: the robobus durable log is single-node local
+  durability, not Kafka's cross-broker replication.</p>
+</div></div></section>"""
+
+
 def speed():
     lm = _load("lang-matrix.json")
     cl = _load("cross-lang.json")
@@ -1458,7 +1521,7 @@ def speed():
   {strip}
   <p class='cfg-cap' style='color:var(--muted);margin:-6px 0 4px'>Fastest: {top} … median {_o(_med)} dec/s,
   slowest {html.escape(oks[-1]['language'])} {_o(vals[-1])}. Expand for the full ranked bars.</p>
-  <details class='cgroup'><summary class='cgroup-t'><span>All {len(oks)} languages · full ranked bars</span></summary>
+  <details class='cgroup' open><summary class='cgroup-t'><span>All {len(oks)} languages &amp; runtime variants · full ranked bars</span></summary>
   {_hbars(rows, codec_tier)}
   {'<table class="ltab" style="margin-top:14px"><tbody>'+sk+'</tbody></table>' if sk else ''}
   </details>
@@ -1616,6 +1679,7 @@ def speed():
                ("regimes", "Compliance", tag(_compliance_regimes_section(), "regimes")),
                ("codec", "Codec", tag(sec1, "codec")),
                ("transports", "Transports", tag(sec3, "transports")),
+               ("kafka", "Kafka", tag(_kafka_protocol_section(), "kafka")),
                ("grid", "Transport × Language", tag(sec4, "grid")),
                ("crypto", "Crypto", tag(crypto, "crypto")),
                ("portability", "Portability", tag(_portability_section(), "portability")),
