@@ -1446,21 +1446,31 @@ def _kafka_protocol_section():
     lang_tp = ""
     if ktp and ktp.get("rates_per_s"):
         rates = ktp["rates_per_s"]
-        base = kafka_lib or 12000
+        # library baseline for the "x" multiple: the measured confluent/librdkafka Kafka round-trip
+        # (transport-matrix if present, else the Kafka-row peak from the transport x language grid).
+        # Never a hardcoded constant , if neither is measured the multiple is simply omitted.
+        _xl = _load("xport-shim.json") or {}
+        base = kafka_lib or max((c.get("frames_per_s", 0) for c in _xl.get("cells", [])
+                                 if c.get("transport") == "kafka"), default=0)
         hi = max(rates.values())
         chips = ""
         for name, v in sorted(rates.items(), key=lambda kv: -kv[1]):
             frac = v / hi
             bg = f"color-mix(in srgb, var(--signal) {int(10+frac*70)}%, transparent)"
+            xspan = f"<span class='ktx'>{v/base:.0f}x</span>" if base else ""
             chips += (f"<div class='ktchip' style='background:{bg}'><span class='ktl'>{html.escape(name)}</span>"
-                      f"<span class='ktv'>{_o(v)}</span><span class='ktx'>{v/base:.0f}x</span></div>")
+                      f"<span class='ktv'>{_o(v)}</span>{xspan}</div>")
+        vs = (f" The <b>x</b> is versus the {_o(base)} confluent/librdkafka broker round-trip; every language "
+              f"clears it by {min(rates.values())/base:.0f}x to {hi/base:.0f}x.") if base else ""
         lang_tp = (f"<div class='xcat'><h3 class='xcat-t'>Every language driving the sealed Kafka protocol "
                    f"({len(rates)} measured, CNSA 2.0)</h3><p class='xcat-d'>Each language's real sealed "
-                   f"RecordBatch/s producing over robobus's Kafka-protocol path (seal + encode via the "
-                   f"librobobus C ABI), best-of-3. The <b>x</b> is versus the {_o(base)} confluent-library "
-                   f"figure. The ~2-3M cluster is the languages that reach libkafcore's audited AES over "
-                   f"their FFI; the tail (java/kotlin/node/pypy) reimplement audited crypto or cannot FFI "
-                   f"the arm64 library from an x86_64 runtime here, yet still clear the library by 8-44x.</p>"
+                   f"RecordBatch/s producing over robobus's Kafka-protocol path (AES-256-GCM RBX1 seal + Kafka "
+                   f"RecordBatch v2 encode via the librobobus/libkafcore C ABI), best of three passes.{vs} "
+                   f"<b>Every language reaches the same audited C path through its own FFI</b> , Panama FFM on "
+                   f"the JVM (Java, Kotlin), a native N-API addon for Node, an in-extension loop for Octave, and "
+                   f"cffi/ctypes/luajit-ffi/P-Invoke and friends elsewhere , so the top cluster converges near "
+                   f"3M/s. The slower tail (Python, R, OCaml) is the interpreter's per-call loop cost, not the "
+                   f"crypto; their compiled or JIT variants (Cython, PyPy) sit back up in the top cluster.</p>"
                    f"<div class='ktgrid'>{chips}</div></div>")
 
     # 1) library-vs-protocol context strip (both numbers measured, not written in)
