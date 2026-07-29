@@ -1571,6 +1571,68 @@ def _kafka_protocol_section():
 </div></div></section>"""
 
 
+def _kafka_sizes_section():
+    """The message-size axis of the exhaustive grid: every language sealing (AES-256-GCM = CNSA 2.0) a
+    Kafka RecordBatch across payload sizes from 32 B to 64 KiB, machine-measured, no write-ins."""
+    d = _load("kafka-sizes.json")
+    if not d or not d.get("panels"):
+        return ""
+    import math
+    panels = sorted(d["panels"], key=lambda p: p["value_bytes"])
+    order = panels[0]["rates_per_s"]                      # order columns by the smallest-payload rate
+    langs = sorted(set().union(*[set(p["rates_per_s"]) for p in panels]),
+                   key=lambda l: -order.get(l, 0))
+    cells = sum(len(p["rates_per_s"]) for p in panels)
+
+    def _sz(n):
+        return f"{n // 1024} KiB" if n >= 1024 else f"{n} B"
+
+    def _o(v):
+        return f"{v/1e6:.2f}M" if v >= 1e6 else f"{v/1e3:.0f}k" if v >= 1e3 else f"{v:.0f}"
+    head = "".join(f"<th>{html.escape(l)}</th>" for l in langs)
+    body = ""
+    peaks = []
+    for p in panels:
+        r = p["rates_per_s"]
+        vals = [v for v in r.values() if v]
+        lo, hi = (math.log10(min(vals)), math.log10(max(vals))) if vals else (0, 1)
+        span = (hi - lo) or 1
+        peak = max(vals) if vals else 0
+        mbps = peak * p["value_bytes"] / 1e6
+        peaks.append((p["value_bytes"], mbps))
+        tds = ""
+        for l in langs:
+            v = r.get(l)
+            if v:
+                t = (math.log10(v) - lo) / span              # colour normalised WITHIN each size row
+                bg = f"color-mix(in srgb, var(--signal) {int(12+t*72)}%, transparent)"
+                tds += f"<td style='background:{bg}'>{_o(v)}</td>"
+            else:
+                tds += "<td class='na'>, </td>"
+        mbdisp = f"{mbps/1000:.1f} GB/s" if mbps >= 1000 else f"{mbps:.0f} MB/s"
+        body += f"<tr><td class='rl'>{_sz(p['value_bytes'])}<small> peak {mbdisp}</small></td>{tds}</tr>"
+    lo_mb = f"{peaks[0][1]:.0f} MB/s"
+    hi_mb = f"{peaks[-1][1]/1000:.1f} GB/s" if peaks[-1][1] >= 1000 else f"{peaks[-1][1]:.0f} MB/s"
+    return f"""<section><div class='wrap'>
+  <p class='sec-eyebrow'>kafka · message-size sweep · CNSA 2.0 (highest security)</p>
+  <h2 class='title'>Every language, every message size</h2>
+  <p class='sec-lede'>The size axis of the grid: each of <b>{len(langs)} languages</b> sealing a Kafka
+  RecordBatch across <b>{len(panels)} payload sizes</b> ({_sz(panels[0]['value_bytes'])} to
+  {_sz(panels[-1]['value_bytes'])}), <b>{cells} real cells</b>. Every cell is a full <b>AES-256-GCM</b>
+  seal (the CNSA 2.0 symmetric leg, the highest security setting) plus RecordBatch v2 encode over the
+  librobobus/libkafcore C ABI, best of three passes; the only variable is the payload, so no caller
+  changed and each cell is byte-identical across languages. Read <i>down</i> a column: sealed
+  RecordBatches/s falls as the payload grows (more bytes to encrypt per message), but the delivered
+  bandwidth <b>rises</b>, from a peak of {lo_mb} at {_sz(panels[0]['value_bytes'])} to {hi_mb} at
+  {_sz(panels[-1]['value_bytes'])} (the hardware AES-GCM ceiling, one core). Read <i>across</i> a row:
+  languages <b>converge</b> because the seal runs in shared C; the small spread at tiny payloads is each
+  runtime's per-call overhead, which vanishes once the payload dominates. Colour is log-scaled within each
+  row. Machine-measured locally; no hand-entered numbers.</p>
+  <div class='heatwrap'><table class='heat'><thead><tr><th>payload</th>{head}</tr></thead>
+  <tbody>{body}</tbody></table></div>
+</div></section>"""
+
+
 def speed():
     lm = _load("lang-matrix.json")
     cl = _load("cross-lang.json")
@@ -1811,6 +1873,7 @@ def speed():
                ("codec", "Codec", tag(sec1, "codec")),
                ("transports", "Transports", tag(sec3, "transports")),
                ("kafka", "Kafka", tag(_kafka_protocol_section(), "kafka")),
+               ("sizes", "Message sizes", tag(_kafka_sizes_section(), "sizes")),
                ("grid", "Transport × Language", tag(sec4, "grid")),
                ("crypto", "Crypto", tag(crypto, "crypto")),
                ("portability", "Portability", tag(_portability_section(), "portability")),
