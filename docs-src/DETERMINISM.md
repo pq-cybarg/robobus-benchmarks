@@ -98,10 +98,10 @@ acceptable.
 
 | platform | isolate core | cache lock | UMWAIT/WFE | SMI-free | realistic result |
 |---|---|---|---|---|---|
-| **Linux x86 (Intel) + PREEMPT_RT** | ✅ isolcpus | ✅ CAT pseudo-lock | ✅ UMWAIT | BIOS-dependent | **effectively 100 %**, hard ns bound |
-| **Linux ARM64 + PREEMPT_RT** | ✅ isolcpus | TCM (Cortex-R) / ✗ | ✅ WFE | usually clean | **effectively 100 %** |
-| **Windows** | affinity only | ✗ | ✅ (x86) | ✗ | soft real-time (best-effort) |
-| **macOS / Apple Silicon** | ✗ (no isolcpus) | ✗ | ✗ (no user WFE hook) | ✗ (SMC) | ~99.8 %, µs outliers remain |
+| **Linux x86 (Intel) + PREEMPT_RT** | yes isolcpus | yes CAT pseudo-lock | yes UMWAIT | BIOS-dependent | **effectively 100 %**, hard ns bound |
+| **Linux ARM64 + PREEMPT_RT** | yes isolcpus | TCM (Cortex-R) / no | yes WFE | usually clean | **effectively 100 %** |
+| **Windows** | affinity only | no | yes (x86) | no | soft real-time (best-effort) |
+| **macOS / Apple Silicon** | no (no isolcpus) | no | no (no user WFE hook) | no (SMC) | ~99.8 %, µs outliers remain |
 | **RTOS / bare-metal / FPGA** | N/A (no GP OS) | SRAM/TCM | native | no SMM | **provable 100 %** |
 
 **Bottom line:** a truly *guaranteed* 100 % is only reachable by removing the general-purpose

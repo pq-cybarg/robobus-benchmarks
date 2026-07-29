@@ -147,7 +147,7 @@ def primary_str(r: dict) -> str:
         return ", "
     if u == "pass":
         pv = r["metrics"].get("passed")
-        return "✓ pass" if pv else (", " if pv is None else "✗ FAIL")
+        return "pass" if pv else (", " if pv is None else "FAIL")
     if u == "ns":                 # p50 latency, ns-scaled
         return fmt_lat(v)
     if u == "ns/op":              # rate + amortized ns/op
@@ -286,7 +286,7 @@ def md_table(doc: dict, group: str) -> str:
             cells = [f"`{r['name']}`", cfg, class_cell(group, r["name"]), ", "]
             if has_lat:
                 cells += [", ", ", "]
-            cells += [f"○ _{r['status']}_, {r['note']}"]
+            cells += [f"_{r['status']}_, {r['note']}"]
             out.append("| " + " | ".join(cells) + " |")
             continue
         cells = [f"`{r['name']}`", cfg, class_cell(group, r["name"]), primary_str(r)]
@@ -308,7 +308,7 @@ def render_markdown(docs: list[dict]) -> str:
              "encryption, hashing, MACs, key-derivation, live DDS-Security handshakes, and "
              "the robobus bus, measured across all available modes, sizes and techniques by "
              "**one script** (`bench/run_benchmarks.py`).\n")
-    S.append("> ⚠️ **Platform caveat.** These figures were measured **on macOS only** so far. "
+    S.append("> **Platform caveat.** These figures were measured **on macOS only** so far. "
              "They are inherently CPU-, OS- and build-specific and are **not** portable claims. "
              "The value here is the *method*: the identical script is designed to run on "
              "macOS, Windows, every supported Linux, Android and iOS, skipping only what a "
@@ -498,7 +498,7 @@ def render_html(docs: list[dict]) -> str:
     P.append("<p class='sub'>Post-quantum &amp; classical key encapsulation, hybrid key "
              "agreement, signatures, AEAD, hashing, MACs, KDFs, live DDS-Security handshakes "
              "and the robobus bus, measured end to end by one portable script.</p>")
-    P.append("<div class='callout'>ℹ️ <b>Coverage &amp; fidelity.</b> These numbers are "
+    P.append("<div class='callout'><b>Coverage &amp; fidelity.</b> These numbers are "
              "CPU/OS/build-specific, the deliverable is the <i>method</i>: the identical "
              "<code>run_benchmarks.py</code> runs on macOS, Windows, all supported Linux (and "
              "five emulated ISAs), Android and iOS, each host measures what it has and records "

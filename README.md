@@ -4,7 +4,7 @@ Full-system benchmarks for **robobus** — a post-quantum, real-time robotics mi
 a sub-microsecond shared-memory bus + CNSA 2.0 post-quantum crypto (FIPS 203 ML-KEM,
 FIPS 204 ML-DSA) + PQC-hardened DDS-Security.
 
-### 📊 Live site: **https://pq-cybarg.github.io/robobus-benchmarks/**
+### Live site: **https://pq-cybarg.github.io/robobus-benchmarks/**
 
 One portable, **capability-detecting** script measures every layer and records whatever a given
 platform lacks as **SKIPPED** — so the *identical* script runs on macOS, Windows, every supported

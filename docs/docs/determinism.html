@@ -324,34 +324,34 @@ acceptable.</p>
 <tbody>
 <tr>
 <td><strong>Linux x86 (Intel) + PREEMPT_RT</strong></td>
-<td>✅ isolcpus</td>
-<td>✅ CAT pseudo-lock</td>
-<td>✅ UMWAIT</td>
+<td>yes isolcpus</td>
+<td>yes CAT pseudo-lock</td>
+<td>yes UMWAIT</td>
 <td>BIOS-dependent</td>
 <td><strong>effectively 100 %</strong>, hard ns bound</td>
 </tr>
 <tr>
 <td><strong>Linux ARM64 + PREEMPT_RT</strong></td>
-<td>✅ isolcpus</td>
-<td>TCM (Cortex-R) / ✗</td>
-<td>✅ WFE</td>
+<td>yes isolcpus</td>
+<td>TCM (Cortex-R) / no</td>
+<td>yes WFE</td>
 <td>usually clean</td>
 <td><strong>effectively 100 %</strong></td>
 </tr>
 <tr>
 <td><strong>Windows</strong></td>
 <td>affinity only</td>
-<td>✗</td>
-<td>✅ (x86)</td>
-<td>✗</td>
+<td>no</td>
+<td>yes (x86)</td>
+<td>no</td>
 <td>soft real-time (best-effort)</td>
 </tr>
 <tr>
 <td><strong>macOS / Apple Silicon</strong></td>
-<td>✗ (no isolcpus)</td>
-<td>✗</td>
-<td>✗ (no user WFE hook)</td>
-<td>✗ (SMC)</td>
+<td>no (no isolcpus)</td>
+<td>no</td>
+<td>no (no user WFE hook)</td>
+<td>no (SMC)</td>
 <td>~99.8 %, µs outliers remain</td>
 </tr>
 <tr>

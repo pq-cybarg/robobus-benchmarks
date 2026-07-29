@@ -2,7 +2,7 @@
 
 > **Scope.** Every capability of the stack, post-quantum and classical key encapsulation, hybrid key agreement, digital signatures, authenticated encryption, hashing, MACs, key-derivation, live DDS-Security handshakes, and the robobus bus, measured across all available modes, sizes and techniques by **one script** (`bench/run_benchmarks.py`).
 
-> ⚠️ **Platform caveat.** These figures were measured **on macOS only** so far. They are inherently CPU-, OS- and build-specific and are **not** portable claims. The value here is the *method*: the identical script is designed to run on macOS, Windows, every supported Linux, Android and iOS, skipping only what a given platform lacks. Re-run it on each target to populate that platform's column.
+> partial **Platform caveat.** These figures were measured **on macOS only** so far. They are inherently CPU-, OS- and build-specific and are **not** portable claims. The value here is the *method*: the identical script is designed to run on macOS, Windows, every supported Linux, Android and iOS, skipping only what a given platform lacks. Re-run it on each target to populate that platform's column.
 
 _Generated 2026-07-29 20:41 UTC from `bench/results/latest-*.json`._
 
@@ -889,8 +889,8 @@ Optional backends unlock more rows: `cryptography` (AEAD, ECDH, classical signat
 
 | Algorithm | Config | Class | Throughput / rate | Status |
 |---|---|---|---|---|
-| `CycloneDDS` | ,  | ,  | ,  | ○ _skipped_, PQC-DDS test binary not built in this environment, the handshake is built + measured on the dev machine |
-| `FastDDS` | ,  | ,  | ,  | ○ _skipped_, PQC-DDS test binary not built in this environment, the handshake is built + measured on the dev machine |
+| `CycloneDDS` | ,  | ,  | ,  | _skipped_, PQC-DDS test binary not built in this environment, the handshake is built + measured on the dev machine |
+| `FastDDS` | ,  | ,  | ,  | _skipped_, PQC-DDS test binary not built in this environment, the handshake is built + measured on the dev machine |
 
 **Darwin · Apple M5**
 
@@ -944,15 +944,15 @@ Optional backends unlock more rows: `cryptography` (AEAD, ECDH, classical signat
 
 | Algorithm | Config | Class | Throughput / rate | Status |
 |---|---|---|---|---|
-| `CycloneDDS` | ,  | ,  | ,  | ○ _skipped_, CycloneDDS PQC test binary not built on this platform |
-| `FastDDS` | ,  | ,  | ,  | ○ _skipped_, Fast DDS PKI-DH test binary not built on this platform |
+| `CycloneDDS` | ,  | ,  | ,  | _skipped_, CycloneDDS PQC test binary not built on this platform |
+| `FastDDS` | ,  | ,  | ,  | _skipped_, Fast DDS PKI-DH test binary not built on this platform |
 
 **Windows · AMD64**
 
 | Algorithm | Config | Class | Throughput / rate | Status |
 |---|---|---|---|---|
-| `CycloneDDS` | ,  | ,  | ,  | ○ _skipped_, CycloneDDS PQC test binary not built on this platform |
-| `FastDDS` | ,  | ,  | ,  | ○ _skipped_, Fast DDS PKI-DH test binary not built on this platform |
+| `CycloneDDS` | ,  | ,  | ,  | _skipped_, CycloneDDS PQC test binary not built on this platform |
+| `FastDDS` | ,  | ,  | ,  | _skipped_, Fast DDS PKI-DH test binary not built on this platform |
 
 ## GPU offload, swapover cost & throughput crossover (scalability, not latency)
 
@@ -983,8 +983,8 @@ Optional backends unlock more rows: `cryptography` (AEAD, ECDH, classical signat
 | `crossover batch — NVIDIA H100 (NVLink) (modeled)` | device=NVIDIA H100 (NVLink), modeled=True | ,  | ,  | ,  | ,  | ok · GPU overtakes CPU above ~237 KiB resident / 289 KiB cold (host<->device copy each batch); ~237 concurrent 1-KiB streams. Roofline projection — see GPGPU-Sim/Accel-Sim for cycle-accurate. PROJECTED: HBM3 3.35 TB/s, NVLink ~450 GB/s effective, ~6 us launch |
 | `swapover — AMD MI250 (PCIe4 x16) (modeled)` | device=AMD MI250 (PCIe4 x16), modeled=True, dispatch_us=8.0 | ,  | 8.00 µs | 8.00 µs | 0.0 ns | ok · projected dispatch+sync = 8 us. PROJECTED: HBM2e ~3.2 TB/s (per-GCD aggregate), PCIe4 x16 ~25 GB/s, ~8 us launch |
 | `crossover batch — AMD MI250 (PCIe4 x16) (modeled)` | device=AMD MI250 (PCIe4 x16), modeled=True | ,  | ,  | ,  | ,  | ok · GPU overtakes CPU above ~316 KiB resident / never (per-byte slower) cold (host<->device copy each batch); ~316 concurrent 1-KiB streams. Roofline projection — see GPGPU-Sim/Accel-Sim for cycle-accurate. PROJECTED: HBM2e ~3.2 TB/s (per-GCD aggregate), PCIe4 x16 ~25 GB/s, ~8 us launch |
-| `swapover` | ,  | ,  | ,  | ,  | ,  | ○ _skipped_, no GPU on this runner — the GPU swapover/crossover is measured on the Apple-Silicon host |
-| `throughput_crossover` | ,  | ,  | ,  | ,  | ,  | ○ _skipped_, no GPU on this runner — the GPU swapover/crossover is measured on the Apple-Silicon host |
+| `swapover` | ,  | ,  | ,  | ,  | ,  | _skipped_, no GPU on this runner — the GPU swapover/crossover is measured on the Apple-Silicon host |
+| `throughput_crossover` | ,  | ,  | ,  | ,  | ,  | _skipped_, no GPU on this runner — the GPU swapover/crossover is measured on the Apple-Silicon host |
 
 **Windows · AMD64**
 
@@ -1000,8 +1000,8 @@ Optional backends unlock more rows: `cryptography` (AEAD, ECDH, classical signat
 | `crossover batch, NVIDIA H100 (NVLink) (modeled)` | device=NVIDIA H100 (NVLink), modeled=True | ,  | ,  | ,  | ,  | ok · GPU overtakes CPU above ~237 KiB resident / 289 KiB cold (host<->device copy each batch); ~237 concurrent 1-KiB streams. Roofline projection, see GPGPU-Sim/Accel-Sim for cycle-accurate. PROJECTED: HBM3 3.35 TB/s, NVLink ~450 GB/s effective, ~6 us launch |
 | `swapover, AMD MI250 (PCIe4 x16) (modeled)` | device=AMD MI250 (PCIe4 x16), modeled=True, dispatch_us=8.0 | ,  | 8.00 µs | 8.00 µs | 0.0 ns | ok · projected dispatch+sync = 8 us. PROJECTED: HBM2e ~3.2 TB/s (per-GCD aggregate), PCIe4 x16 ~25 GB/s, ~8 us launch |
 | `crossover batch, AMD MI250 (PCIe4 x16) (modeled)` | device=AMD MI250 (PCIe4 x16), modeled=True | ,  | ,  | ,  | ,  | ok · GPU overtakes CPU above ~316 KiB resident / never (per-byte slower) cold (host<->device copy each batch); ~316 concurrent 1-KiB streams. Roofline projection, see GPGPU-Sim/Accel-Sim for cycle-accurate. PROJECTED: HBM2e ~3.2 TB/s (per-GCD aggregate), PCIe4 x16 ~25 GB/s, ~8 us launch |
-| `swapover` | ,  | ,  | ,  | ,  | ,  | ○ _skipped_, no GPU on this runner, the GPU swapover/crossover is measured on the Apple-Silicon host |
-| `throughput_crossover` | ,  | ,  | ,  | ,  | ,  | ○ _skipped_, no GPU on this runner, the GPU swapover/crossover is measured on the Apple-Silicon host |
+| `swapover` | ,  | ,  | ,  | ,  | ,  | _skipped_, no GPU on this runner, the GPU swapover/crossover is measured on the Apple-Silicon host |
+| `throughput_crossover` | ,  | ,  | ,  | ,  | ,  | _skipped_, no GPU on this runner, the GPU swapover/crossover is measured on the Apple-Silicon host |
 
 ## RTL / FPGA (cycle-exact simulation + formal proof, no hardware)
 
@@ -1019,8 +1019,8 @@ Optional backends unlock more rows: `cryptography` (AEAD, ECDH, classical signat
 
 | Algorithm | Config | Class | Throughput / rate | Status |
 |---|---|---|---|---|
-| `determinism_probe` | ,  | ,  | ,  | ○ _skipped_, n/a here, needs the robobus package (private repo); the portable `bus` group measures the same ring on this platform |
-| `bus_latency` | ,  | ,  | ,  | ○ _skipped_, n/a here, needs the robobus package (private repo); the portable `bus` group measures the same ring on this platform |
+| `determinism_probe` | ,  | ,  | ,  | _skipped_, n/a here, needs the robobus package (private repo); the portable `bus` group measures the same ring on this platform |
+| `bus_latency` | ,  | ,  | ,  | _skipped_, n/a here, needs the robobus package (private repo); the portable `bus` group measures the same ring on this platform |
 
 **Darwin · Apple M5**
 
@@ -1032,15 +1032,15 @@ Optional backends unlock more rows: `cryptography` (AEAD, ECDH, classical signat
 
 | Algorithm | Config | Class | Throughput / rate | Status |
 |---|---|---|---|---|
-| `determinism_probe` | ,  | ,  | ,  | ○ _skipped_, n/a here — needs the robobus package (private repo); the portable `bus` group measures the same ring on this platform |
-| `bus_latency` | ,  | ,  | ,  | ○ _skipped_, n/a here — needs the robobus package (private repo); the portable `bus` group measures the same ring on this platform |
+| `determinism_probe` | ,  | ,  | ,  | _skipped_, n/a here — needs the robobus package (private repo); the portable `bus` group measures the same ring on this platform |
+| `bus_latency` | ,  | ,  | ,  | _skipped_, n/a here — needs the robobus package (private repo); the portable `bus` group measures the same ring on this platform |
 
 **Windows · AMD64**
 
 | Algorithm | Config | Class | Throughput / rate | Status |
 |---|---|---|---|---|
-| `determinism_probe` | ,  | ,  | ,  | ○ _skipped_, n/a here, needs the robobus package (private repo); the portable `bus` group measures the same ring on this platform |
-| `bus_latency` | ,  | ,  | ,  | ○ _skipped_, n/a here, needs the robobus package (private repo); the portable `bus` group measures the same ring on this platform |
+| `determinism_probe` | ,  | ,  | ,  | _skipped_, n/a here, needs the robobus package (private repo); the portable `bus` group measures the same ring on this platform |
+| `bus_latency` | ,  | ,  | ,  | _skipped_, n/a here, needs the robobus package (private repo); the portable `bus` group measures the same ring on this platform |
 
 
 ---

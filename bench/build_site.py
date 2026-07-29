@@ -474,7 +474,7 @@ def home():
   <code>--security cnsa20 --keyfile</code>, so CNSA&nbsp;2.0 crypto wraps MQTT, Kafka, serial or
   CAN exactly as it wraps DDS, even where the wire protocol has no security of its own.</p>
   <div class='xgrid'>{xhtml}</div>
-  <div class='lock'>🔒&nbsp;<span><b>Post-quantum on any link.</b> One <code>--security</code> flag seals the
+  <div class='lock'><span><b>Post-quantum on any link.</b> One <code>--security</code> flag seals the
   payload the same way regardless of transport, ML-KEM key agreement, AES-256-GCM, ML-DSA identity.</span></div>
 </div></section>
 
@@ -1033,12 +1033,12 @@ function upd(){
   var weak=null,mn=99; if(qs) parts.forEach(function(p){ if(D.lvl[p[1]]<mn){mn=D.lvl[p[1]];weak=p;} });
   var el=$('cf-lvl'); el.className='cfg-lvl '+lvlClass(overall);
   el.textContent = overall===0? 'Classical' : ('NIST Level '+overall);
-  var q=$('cf-qs'); q.className='cfg-qs '+(qs?'yes':'no'); q.textContent = qs?'✓ quantum-safe':'⚠ classical KEM/sig';
+  var q=$('cf-qs'); q.className='cfg-qs '+(qs?'yes':'no'); q.textContent = qs?'quantum-safe':'classical KEM/sig';
   var notes=[];
   if(qs && weak && D.lvl[weak[1]]<5) notes.push('level capped by the '+weak[0]+' ('+weak[1]+' = NIST Cat '+D.lvl[weak[1]]+')');
   if(!qs) notes.push(kem==='X25519'||sig==='Ed25519'?'classical KEM/signature, NOT post-quantum':'');
   // NIST-5 hash requirement + SHA-2 length-extension caveat
-  if(hash==='SHA-256'||hash==='SHA-512') notes.push('⚠ '+hash+' (SHA-2) is length-extension-vulnerable; SHA-3 / BLAKE3 / truncated SHA-384 are immune');
+  if(hash==='SHA-256'||hash==='SHA-512') notes.push(hash+' (SHA-2) is length-extension-vulnerable; SHA-3 / BLAKE3 / truncated SHA-384 are immune');
   if(hash==='BLAKE3'||hash==='SHA-256'||hash==='SHA3-256') notes.push(hash+' has 128-bit collision resistance (NIST Cat 2), NIST-5 needs SHA-512 / SHA3-512 / SHAKE-256');
   $('cf-cap').innerHTML = notes.filter(Boolean).map(function(n){return '<div>'+n+'</div>';}).join('');
   // standards
@@ -1107,8 +1107,8 @@ preset('secure');
   <b>CNSA 2.0</b> is a separate NSA profile (same PQC primitives but SHA-384, not the Cat-5 SHA-512).</p>
   <script type='application/json' id='cfg-data'>{blob}</script>
   <div class='cfg-presets'>
-    <button class='hot' data-p='fast'>⚡ Fastest possible</button>
-    <button class='sec' data-p='secure'>🛡 Most secure + fast</button>
+    <button class='hot' data-p='fast'>Fastest possible</button>
+    <button class='sec' data-p='secure'>Most secure + fast</button>
     <button data-p='nist1'>NIST-1</button>
     <button data-p='nist3'>NIST-3</button>
     <button data-p='nist5'>NIST-5</button>
@@ -1345,10 +1345,10 @@ def _portability_section():
             return "<td class='pc-na'>·</td>"
         p, f = c.get("passed", 0), c.get("failed", 0)
         if f == 0 and p > 0:
-            return f"<td class='pc-ok'>{p}✓</td>"
+            return f"<td class='pc-ok'>{p}</td>"
         if p == 0 and f == 0:
             return "<td class='pc-na'>·</td>"
-        return f"<td class='pc-bad'>{p}✓/{f}✗</td>"
+        return f"<td class='pc-bad'>{p}/{f}</td>"
 
     head = "".join(f"<th>{h}</th>" for _, h in SUITE_COLS)
     body = ""
@@ -1363,7 +1363,7 @@ def _portability_section():
         if bo == "big":
             be.append(lbl)
         cv = a.get("crypto_verify") == "ok"
-        cvtag = "<td class='pc-ok'>✓</td>" if cv else "<td class='pc-bad'>✗</td>"
+        cvtag = "<td class='pc-ok'>ok</td>" if cv else "<td class='pc-bad'>no</td>"
         cells = "".join(cellhtml(s.get(k)) for k, _ in SUITE_COLS)
         body += (f"<tr><td class='pa'>{html.escape(lbl)}{botag}</td>{cvtag}{cells}</tr>")
         # collect any true failure for an honest caveat footnote (env-limited cells are not failures)

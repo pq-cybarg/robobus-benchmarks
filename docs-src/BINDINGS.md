@@ -102,18 +102,18 @@ language's FFI (near-zero overhead).
 
 | Language | AEAD path | full crypto suite | transports | struct codegen |
 |---|---|---|---|---|
-| C / C++ | native (OpenSSL EVP) | ✅ native + liboqs | ✅ all 12 | ✅ |
-| Rust | native (RustCrypto) | ✅ native + shim | ✅ all 12 | ✅ |
-| Go | native (`crypto/cipher`) | ✅ native + cgo shim | ✅ all 12 | ✅ |
-| Zig | native (`std.crypto`) | ✅ native + shim | ✅ all 12 | ✅ |
-| Swift | native (CryptoKit) | ✅ native + shim | ✅ all 12 | ✅ |
-| Nim / Crystal / Nelua | native/EVP FFI | ✅ | ✅ all 12 | (Crystal via codegen) |
-| Haskell / OCaml / LuaJIT / Julia | native/EVP FFI | ✅ | ✅ all 12 | ✅ Julia |
-| Java / Kotlin | native (JCE + BouncyCastle) | ✅ native + FFM shim | ✅ all 12 | ✅ |
-| C# / .NET | native (`System.Security.Cryptography`) | ✅ native + P/Invoke shim | ✅ all 12 | ✅ |
-| Python (CPython/PyPy/Cython) | native (`cryptography`) | ✅ native + cffi shim | ✅ all 12 | ✅ |
-| Ruby / Perl / Node.js / Lua / Mojo | native + shim | ✅ | ✅ all 12 | ✅ (TS/Ruby/Lua) |
-| Fortran / Pascal / COBOL / Octave | shim via C interop | ✅ | ✅ all 12 | ✅ (Octave) |
+| C / C++ | native (OpenSSL EVP) | yes native + liboqs | yes all 12 | yes |
+| Rust | native (RustCrypto) | yes native + shim | yes all 12 | yes |
+| Go | native (`crypto/cipher`) | yes native + cgo shim | yes all 12 | yes |
+| Zig | native (`std.crypto`) | yes native + shim | yes all 12 | yes |
+| Swift | native (CryptoKit) | yes native + shim | yes all 12 | yes |
+| Nim / Crystal / Nelua | native/EVP FFI | yes | yes all 12 | (Crystal via codegen) |
+| Haskell / OCaml / LuaJIT / Julia | native/EVP FFI | yes | yes all 12 | yes Julia |
+| Java / Kotlin | native (JCE + BouncyCastle) | yes native + FFM shim | yes all 12 | yes |
+| C# / .NET | native (`System.Security.Cryptography`) | yes native + P/Invoke shim | yes all 12 | yes |
+| Python (CPython/PyPy/Cython) | native (`cryptography`) | yes native + cffi shim | yes all 12 | yes |
+| Ruby / Perl / Node.js / Lua / Mojo | native + shim | yes | yes all 12 | yes (TS/Ruby/Lua) |
+| Fortran / Pascal / COBOL / Octave | shim via C interop | yes | yes all 12 | yes (Octave) |
 
 That's **33 configs** (the runtime/accelerator variants, PyPy, Cython, NumPy, PDL, vectorize,
 batch, share their base language's crypto). Every one has an AES-256-GCM path and a liboqs route,

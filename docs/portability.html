@@ -116,8 +116,12 @@ h2.title{font-size:clamp(24px,3.5vw,34px);margin:0 0 8px}
 .hrow .lname small{display:block;font:400 10.5px/1.3 'JetBrains Mono';color:var(--dim);letter-spacing:.02em}
 .htrack{height:19px;border-radius:5px;background:var(--panel2);overflow:hidden}
 .htrack>i{display:block;height:100%;border-radius:5px}
-.hrow .hval{font-family:'JetBrains Mono';font-size:12.5px;text-align:right;color:var(--fg);font-variant-numeric:tabular-nums}
+.hrow .hval{font-family:'JetBrains Mono';font-size:12.5px;text-align:right;color:var(--fg);font-variant-numeric:tabular-nums;white-space:nowrap}
 .hrow .hval small{color:var(--dim);font-size:11px}
+@media(max-width:560px){.hrow{display:flex;flex-wrap:wrap;align-items:baseline;column-gap:10px;row-gap:4px}
+.hrow .lname{order:1;flex:1 1 auto;min-width:0;font-size:12.5px}.hrow .lname small{font-size:9.5px}
+.hrow .hval{order:2;flex:0 0 auto;font-size:12px;white-space:nowrap}
+.hrow .htrack{order:3;flex:1 0 100%;height:14px}}
 .tier-n>i{background:linear-gradient(90deg,var(--signal),#6fe0d6)}
 .tier-j>i{background:linear-gradient(90deg,var(--hybrid),var(--signal))}
 .tier-i>i{background:linear-gradient(90deg,var(--violet),var(--hybrid))}
@@ -211,90 +215,90 @@ footer.site a{color:var(--muted)}
 <tbody>
 <tr>
 <td><strong>macOS</strong> (arm64/x64)</td>
-<td>✅ full</td>
-<td>✅ full</td>
-<td>✅</td>
-<td>✅</td>
+<td>yes full</td>
+<td>yes full</td>
+<td>yes</td>
+<td>yes</td>
 <td><code>scripts/install_macos.sh</code> (tested on M5/26.1)</td>
 </tr>
 <tr>
 <td><strong>Linux x86_64</strong> (Debian/Ubuntu/Fedora/Arch)</td>
-<td>✅ full</td>
-<td>✅ full</td>
-<td>✅</td>
-<td>✅ (<code>/dev/shm</code>)</td>
+<td>yes full</td>
+<td>yes full</td>
+<td>yes</td>
+<td>yes (<code>/dev/shm</code>)</td>
 <td><code>scripts/install_linux.sh</code></td>
 </tr>
 <tr>
 <td><strong>Linux aarch64</strong></td>
-<td>✅ full</td>
-<td>✅ full</td>
-<td>✅</td>
-<td>✅</td>
+<td>yes full</td>
+<td>yes full</td>
+<td>yes</td>
+<td>yes</td>
 <td><code>scripts/install_linux.sh</code></td>
 </tr>
 <tr>
 <td><strong>Privacy distros</strong> (Kali, Parrot, PureOS)</td>
-<td>✅</td>
-<td>✅</td>
-<td>✅</td>
-<td>✅</td>
+<td>yes</td>
+<td>yes</td>
+<td>yes</td>
+<td>yes</td>
 <td><code>scripts/install_linux.sh</code></td>
 </tr>
 <tr>
 <td><strong>Whonix / Kicksecure</strong></td>
-<td>✅¹</td>
-<td>✅¹</td>
-<td>✅</td>
-<td>✅</td>
+<td>yes¹</td>
+<td>yes¹</td>
+<td>yes</td>
+<td>yes</td>
 <td>install over Tor; bus is host-local</td>
 </tr>
 <tr>
 <td><strong>Tails</strong></td>
-<td>✅²</td>
-<td>✅²</td>
-<td>✅</td>
-<td>✅</td>
+<td>yes²</td>
+<td>yes²</td>
+<td>yes</td>
+<td>yes</td>
 <td>install to Persistent Storage (amnesic otherwise)</td>
 </tr>
 <tr>
 <td><strong>Qubes OS</strong></td>
-<td>✅³</td>
-<td>✅³</td>
-<td>✅</td>
-<td>✅</td>
+<td>yes³</td>
+<td>yes³</td>
+<td>yes</td>
+<td>yes</td>
 <td>per-AppVM/TemplateVM; bus stays in-qube</td>
 </tr>
 <tr>
 <td><strong>Windows 10/11</strong> (x64)</td>
-<td>✅</td>
-<td>✅</td>
-<td>✅</td>
-<td>✅ (<code>%TEMP%</code> mmap)</td>
+<td>yes</td>
+<td>yes</td>
+<td>yes</td>
+<td>yes (<code>%TEMP%</code> mmap)</td>
 <td><code>scripts\install_windows.ps1</code></td>
 </tr>
 <tr>
 <td><strong>Raspberry Pi</strong> (64-bit OS)</td>
-<td>✅⁴</td>
-<td>✅⁴</td>
-<td>✅</td>
-<td>✅ (<code>/dev/shm</code>)</td>
+<td>yes⁴</td>
+<td>yes⁴</td>
+<td>yes</td>
+<td>yes (<code>/dev/shm</code>)</td>
 <td><code>scripts/install_rpi.sh</code></td>
 </tr>
 <tr>
 <td><strong>Android / GrapheneOS</strong></td>
-<td>⚠️ via bridge</td>
-<td>⚠️ via bridge</td>
-<td>✅⁵</td>
-<td>✅ (Termux)</td>
+<td>partial via bridge</td>
+<td>partial via bridge</td>
+<td>yes⁵</td>
+<td>yes (Termux)</td>
 <td>see below</td>
 </tr>
 <tr>
 <td><strong>iOS / iPadOS</strong></td>
-<td>⚠️ via bridge</td>
-<td>⚠️ via bridge</td>
-<td>✅⁶</td>
-<td>✅ (a-Shell/embed)</td>
+<td>partial via bridge</td>
+<td>partial via bridge</td>
+<td>yes⁶</td>
+<td>yes (a-Shell/embed)</td>
 <td>see below</td>
 </tr>
 </tbody>
@@ -360,31 +364,31 @@ portability by running the suite on those substrates via <strong>Docker + QEMU</
 <td>Debian aarch64</td>
 <td>glibc / aarch64</td>
 <td>Raspberry Pi OS 64-bit, Kali, Parrot, Whonix, Tails, PureOS, Ubuntu, Mint</td>
-<td>✅ core + classical crypto</td>
+<td>yes core + classical crypto</td>
 </tr>
 <tr>
 <td>Alpine aarch64</td>
 <td>musl / aarch64</td>
 <td>containers, embedded, minimal images</td>
-<td>✅ core + classical crypto</td>
+<td>yes core + classical crypto</td>
 </tr>
 <tr>
 <td>Debian x86_64 (QEMU)</td>
 <td>glibc / x86_64</td>
 <td>desktops/servers, most distros</td>
-<td>✅ core</td>
+<td>yes core</td>
 </tr>
 <tr>
 <td>Debian armv7 (QEMU)</td>
 <td>glibc / armv7l</td>
 <td><strong>Raspberry Pi 32-bit</strong></td>
-<td>✅ core</td>
+<td>yes core</td>
 </tr>
 <tr>
 <td>macOS arm64 (native)</td>
 <td>native / arm64</td>
 <td>dev machine</td>
-<td>✅ full 135-test suite</td>
+<td>yes full 135-test suite</td>
 </tr>
 </tbody>
 </table>

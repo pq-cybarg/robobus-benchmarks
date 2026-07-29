@@ -116,8 +116,12 @@ h2.title{font-size:clamp(24px,3.5vw,34px);margin:0 0 8px}
 .hrow .lname small{display:block;font:400 10.5px/1.3 'JetBrains Mono';color:var(--dim);letter-spacing:.02em}
 .htrack{height:19px;border-radius:5px;background:var(--panel2);overflow:hidden}
 .htrack>i{display:block;height:100%;border-radius:5px}
-.hrow .hval{font-family:'JetBrains Mono';font-size:12.5px;text-align:right;color:var(--fg);font-variant-numeric:tabular-nums}
+.hrow .hval{font-family:'JetBrains Mono';font-size:12.5px;text-align:right;color:var(--fg);font-variant-numeric:tabular-nums;white-space:nowrap}
 .hrow .hval small{color:var(--dim);font-size:11px}
+@media(max-width:560px){.hrow{display:flex;flex-wrap:wrap;align-items:baseline;column-gap:10px;row-gap:4px}
+.hrow .lname{order:1;flex:1 1 auto;min-width:0;font-size:12.5px}.hrow .lname small{font-size:9.5px}
+.hrow .hval{order:2;flex:0 0 auto;font-size:12px;white-space:nowrap}
+.hrow .htrack{order:3;flex:1 0 100%;height:14px}}
 .tier-n>i{background:linear-gradient(90deg,var(--signal),#6fe0d6)}
 .tier-j>i{background:linear-gradient(90deg,var(--hybrid),var(--signal))}
 .tier-i>i{background:linear-gradient(90deg,var(--violet),var(--hybrid))}
@@ -320,34 +324,34 @@ acceptable.</p>
 <tbody>
 <tr>
 <td><strong>Linux x86 (Intel) + PREEMPT_RT</strong></td>
-<td>✅ isolcpus</td>
-<td>✅ CAT pseudo-lock</td>
-<td>✅ UMWAIT</td>
+<td>yes isolcpus</td>
+<td>yes CAT pseudo-lock</td>
+<td>yes UMWAIT</td>
 <td>BIOS-dependent</td>
 <td><strong>effectively 100 %</strong>, hard ns bound</td>
 </tr>
 <tr>
 <td><strong>Linux ARM64 + PREEMPT_RT</strong></td>
-<td>✅ isolcpus</td>
-<td>TCM (Cortex-R) / ✗</td>
-<td>✅ WFE</td>
+<td>yes isolcpus</td>
+<td>TCM (Cortex-R) / no</td>
+<td>yes WFE</td>
 <td>usually clean</td>
 <td><strong>effectively 100 %</strong></td>
 </tr>
 <tr>
 <td><strong>Windows</strong></td>
 <td>affinity only</td>
-<td>✗</td>
-<td>✅ (x86)</td>
-<td>✗</td>
+<td>no</td>
+<td>yes (x86)</td>
+<td>no</td>
 <td>soft real-time (best-effort)</td>
 </tr>
 <tr>
 <td><strong>macOS / Apple Silicon</strong></td>
-<td>✗ (no isolcpus)</td>
-<td>✗</td>
-<td>✗ (no user WFE hook)</td>
-<td>✗ (SMC)</td>
+<td>no (no isolcpus)</td>
+<td>no</td>
+<td>no (no user WFE hook)</td>
+<td>no (SMC)</td>
 <td>~99.8 %, µs outliers remain</td>
 </tr>
 <tr>

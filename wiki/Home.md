@@ -5,7 +5,7 @@ stack built around a **sub-microsecond shared-memory bus**, **CNSA 2.0 post-quan
 (FIPS 203 ML-KEM + FIPS 204 ML-DSA), and **PQC-hardened DDS-Security** for both Fast DDS and
 Eclipse Cyclone DDS.
 
-> ⚠️ Benchmarks were measured **on macOS (Apple M5)** so far. They are CPU/OS/build-specific and
+> partial Benchmarks were measured **on macOS (Apple M5)** so far. They are CPU/OS/build-specific and
 > are not portable claims — the value is the *method*: one script runs everywhere and each platform
 > reports what it can.
 

@@ -12,16 +12,16 @@
 
 | Standard | Algorithms used | Where | Status |
 |---|---|---|---|
-| **FIPS 203** (ML-KEM) | ML-KEM-512/768/1024 | KEM handshake | Approved-alg ✅ |
-| **FIPS 204** (ML-DSA) | ML-DSA-44/65/87 | handshake auth | Approved-alg ✅ |
-| **FIPS 205** (SLH-DSA) | SPHINCS+-SHA2 | handshake auth | Approved-alg ✅ |
-| **FIPS 197 / SP 800-38D** | AES-256-GCM | per-message AEAD | Approved-alg ✅ |
-| **FIPS 180-4** | SHA-256/384/512 | KDF/transcript | Approved-alg ✅ |
-| **FIPS 202** | SHA3-256/384/512, SHAKE | KDF/transcript | Approved-alg ✅ |
-| **FIPS 198-1** | HMAC (via HKDF) | key derivation | Approved-alg ✅ |
-| **SP 800-56C** | HKDF key derivation / KEM combiner | session keys | Approved-alg ✅ |
-| **SP 800-90A** | OS CSPRNG/DRBG (`os.urandom`/`secrets`) | nonces/keys | OS-provided ✅ |
-| **FIPS 186-5** | EdDSA (Ed25519) | classical auth | Approved-alg ✅ |
+| **FIPS 203** (ML-KEM) | ML-KEM-512/768/1024 | KEM handshake | Approved-alg yes |
+| **FIPS 204** (ML-DSA) | ML-DSA-44/65/87 | handshake auth | Approved-alg yes |
+| **FIPS 205** (SLH-DSA) | SPHINCS+-SHA2 | handshake auth | Approved-alg yes |
+| **FIPS 197 / SP 800-38D** | AES-256-GCM | per-message AEAD | Approved-alg yes |
+| **FIPS 180-4** | SHA-256/384/512 | KDF/transcript | Approved-alg yes |
+| **FIPS 202** | SHA3-256/384/512, SHAKE | KDF/transcript | Approved-alg yes |
+| **FIPS 198-1** | HMAC (via HKDF) | key derivation | Approved-alg yes |
+| **SP 800-56C** | HKDF key derivation / KEM combiner | session keys | Approved-alg yes |
+| **SP 800-90A** | OS CSPRNG/DRBG (`os.urandom`/`secrets`) | nonces/keys | OS-provided yes |
+| **FIPS 186-5** | EdDSA (Ed25519) | classical auth | Approved-alg yes |
 | ChaCha20-Poly1305, X25519/X448 | n/a | optional non-FIPS | **Not FIPS** (flagged) |
 
 `robobus crypto compliance` runs **power-on self-tests** (KATs for AES-256-GCM, SHA-2,

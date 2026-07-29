@@ -10,17 +10,17 @@ Two layers, very different reach:
 
 | Platform | ROS 2 | ROS 1 | LSL | robobus bus + PQC | How |
 |---|---|---|---|---|---|
-| **macOS** (arm64/x64) | ✅ full | ✅ full | ✅ | ✅ | `scripts/install_macos.sh` (tested on M5/26.1) |
-| **Linux x86_64** (Debian/Ubuntu/Fedora/Arch) | ✅ full | ✅ full | ✅ | ✅ (`/dev/shm`) | `scripts/install_linux.sh` |
-| **Linux aarch64** | ✅ full | ✅ full | ✅ | ✅ | `scripts/install_linux.sh` |
-| **Privacy distros** (Kali, Parrot, PureOS) | ✅ | ✅ | ✅ | ✅ | `scripts/install_linux.sh` |
-| **Whonix / Kicksecure** | ✅¹ | ✅¹ | ✅ | ✅ | install over Tor; bus is host-local |
-| **Tails** | ✅² | ✅² | ✅ | ✅ | install to Persistent Storage (amnesic otherwise) |
-| **Qubes OS** | ✅³ | ✅³ | ✅ | ✅ | per-AppVM/TemplateVM; bus stays in-qube |
-| **Windows 10/11** (x64) | ✅ | ✅ | ✅ | ✅ (`%TEMP%` mmap) | `scripts\install_windows.ps1` |
-| **Raspberry Pi** (64-bit OS) | ✅⁴ | ✅⁴ | ✅ | ✅ (`/dev/shm`) | `scripts/install_rpi.sh` |
-| **Android / GrapheneOS** | ⚠️ via bridge | ⚠️ via bridge | ✅⁵ | ✅ (Termux) | see below |
-| **iOS / iPadOS** | ⚠️ via bridge | ⚠️ via bridge | ✅⁶ | ✅ (a-Shell/embed) | see below |
+| **macOS** (arm64/x64) | yes full | yes full | yes | yes | `scripts/install_macos.sh` (tested on M5/26.1) |
+| **Linux x86_64** (Debian/Ubuntu/Fedora/Arch) | yes full | yes full | yes | yes (`/dev/shm`) | `scripts/install_linux.sh` |
+| **Linux aarch64** | yes full | yes full | yes | yes | `scripts/install_linux.sh` |
+| **Privacy distros** (Kali, Parrot, PureOS) | yes | yes | yes | yes | `scripts/install_linux.sh` |
+| **Whonix / Kicksecure** | yes¹ | yes¹ | yes | yes | install over Tor; bus is host-local |
+| **Tails** | yes² | yes² | yes | yes | install to Persistent Storage (amnesic otherwise) |
+| **Qubes OS** | yes³ | yes³ | yes | yes | per-AppVM/TemplateVM; bus stays in-qube |
+| **Windows 10/11** (x64) | yes | yes | yes | yes (`%TEMP%` mmap) | `scripts\install_windows.ps1` |
+| **Raspberry Pi** (64-bit OS) | yes⁴ | yes⁴ | yes | yes (`/dev/shm`) | `scripts/install_rpi.sh` |
+| **Android / GrapheneOS** | partial via bridge | partial via bridge | yes⁵ | yes (Termux) | see below |
+| **iOS / iPadOS** | partial via bridge | partial via bridge | yes⁶ | yes (a-Shell/embed) | see below |
 
 ¹ on Tor-routed distros conda solves are slow (network-bound), but the bus itself needs no network.
 ² Tails is amnesic; point `ROBOTICS_STACK` at a `/live/persistence` path.
@@ -81,11 +81,11 @@ portability by running the suite on those substrates via **Docker + QEMU**
 
 | Substrate | libc / arch | Covers | Result |
 |---|---|---|---|
-| Debian aarch64 | glibc / aarch64 | Raspberry Pi OS 64-bit, Kali, Parrot, Whonix, Tails, PureOS, Ubuntu, Mint | ✅ core + classical crypto |
-| Alpine aarch64 | musl / aarch64 | containers, embedded, minimal images | ✅ core + classical crypto |
-| Debian x86_64 (QEMU) | glibc / x86_64 | desktops/servers, most distros | ✅ core |
-| Debian armv7 (QEMU) | glibc / armv7l | **Raspberry Pi 32-bit** | ✅ core |
-| macOS arm64 (native) | native / arm64 | dev machine | ✅ full 135-test suite |
+| Debian aarch64 | glibc / aarch64 | Raspberry Pi OS 64-bit, Kali, Parrot, Whonix, Tails, PureOS, Ubuntu, Mint | yes core + classical crypto |
+| Alpine aarch64 | musl / aarch64 | containers, embedded, minimal images | yes core + classical crypto |
+| Debian x86_64 (QEMU) | glibc / x86_64 | desktops/servers, most distros | yes core |
+| Debian armv7 (QEMU) | glibc / armv7l | **Raspberry Pi 32-bit** | yes core |
+| macOS arm64 (native) | native / arm64 | dev machine | yes full 135-test suite |
 
 The pure-stdlib **core** (ring, codec, bus, schema) and the **classical crypto**
 (AES-256-GCM, SHA-2/3, HKDF, KMAC-via-OpenSSL, Argon2id) pass on all of the above; the

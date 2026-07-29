@@ -7,8 +7,8 @@ via each project's own handshake unit test.
 | | Fast DDS v3.1.0 | Cyclone DDS 0.10.5 |
 |---|---|---|
 | Pinned commit | `e2afc15…` | `2cdd114…` |
-| Hybrid key agreement | ✅ ECDH+ML-KEM-768/1024 | ✅ ECDH+ML-KEM-768/1024 |
-| ML-DSA-87 identity signatures | ✅ | ✅ |
+| Hybrid key agreement | yes ECDH+ML-KEM-768/1024 | yes ECDH+ML-KEM-768/1024 |
+| ML-DSA-87 identity signatures | yes | yes |
 | Verified by | `BuiltinPKIDH` gtest | `ddssec_handshake` CUnit (2-peer) |
 
 ## Two layers, both post-quantum
