@@ -1,0 +1,117 @@
+{
+  "schema": "robobus-kafka-web/1",
+  "host": "darwin arm64",
+  "platform": "Web (WebCrypto SubtleCrypto AES-256-GCM)",
+  "security": "CNSA 2.0 (AES-256-GCM RBX1 per message)",
+  "note": "The Web platform sealing a Kafka RecordBatch with the browser's own audited crypto (WebCrypto -> BoringSSL/NSS). The identical seal.mjs module is proven byte-identical in a real headless browser by verify_browser.sh; throughput here is on the same SubtleCrypto API (async), best-of-3. Machine-measured; no hand-entered numbers.",
+  "panels": [
+    {
+      "value_bytes": 32,
+      "reps": 150000,
+      "methods": {
+        "webcrypto": {
+          "ops": 77077,
+          "mbps": 2.5
+        },
+        "webcrypto_pipelined": {
+          "ops": 98457,
+          "mbps": 3.2
+        },
+        "wasm": {
+          "ops": 637287,
+          "mbps": 20.4
+        }
+      }
+    },
+    {
+      "value_bytes": 256,
+      "reps": 120000,
+      "methods": {
+        "webcrypto": {
+          "ops": 67675,
+          "mbps": 17.3
+        },
+        "webcrypto_pipelined": {
+          "ops": 118535,
+          "mbps": 30.3
+        },
+        "wasm": {
+          "ops": 126306,
+          "mbps": 32.3
+        }
+      }
+    },
+    {
+      "value_bytes": 1024,
+      "reps": 80000,
+      "methods": {
+        "webcrypto": {
+          "ops": 50159,
+          "mbps": 51.4
+        },
+        "webcrypto_pipelined": {
+          "ops": 89609,
+          "mbps": 91.8
+        },
+        "wasm": {
+          "ops": 36423,
+          "mbps": 37.3
+        }
+      }
+    },
+    {
+      "value_bytes": 4096,
+      "reps": 30000,
+      "methods": {
+        "webcrypto": {
+          "ops": 24412,
+          "mbps": 100.0
+        },
+        "webcrypto_pipelined": {
+          "ops": 33877,
+          "mbps": 138.8
+        },
+        "wasm": {
+          "ops": 8921,
+          "mbps": 36.5
+        }
+      }
+    },
+    {
+      "value_bytes": 16384,
+      "reps": 12000,
+      "methods": {
+        "webcrypto": {
+          "ops": 7769,
+          "mbps": 127.3
+        },
+        "webcrypto_pipelined": {
+          "ops": 7664,
+          "mbps": 125.6
+        },
+        "wasm": {
+          "ops": 2195,
+          "mbps": 36.0
+        }
+      }
+    },
+    {
+      "value_bytes": 65536,
+      "reps": 4000,
+      "methods": {
+        "webcrypto": {
+          "ops": 2355,
+          "mbps": 154.3
+        },
+        "webcrypto_pipelined": {
+          "ops": 2457,
+          "mbps": 161.0
+        },
+        "wasm": {
+          "ops": 606,
+          "mbps": 39.7
+        }
+      }
+    }
+  ]
+}

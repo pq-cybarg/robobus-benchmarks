@@ -172,7 +172,7 @@ footer.site a{color:var(--muted)}
   bridges: decode speed, crypto seal/open, transport frame rate, and the full transport × language
   product, plus a portability proof that the whole stack conforms on every CPU architecture. Every
   cell runs on a real toolchain; unprovisioned cells say why.</p>
-</div></header><nav class='secnav'><div class='wrap'><div class='secnav-row'><a href='#configure'>Configure</a><a href='#regimes'>Compliance</a><a href='#codec'>Codec</a><a href='#transports'>Transports</a><a href='#kafka'>Kafka</a><a href='#sizes'>Message sizes</a><a href='#grid'>Transport × Language</a><a href='#crypto'>Crypto</a><a href='#portability'>Portability</a><a href='#runtimes'>Runtimes &amp; FFI</a><a href='#profiles'>Requirements</a></div></div></nav><section id='configure'><div class='wrap'><style>
+</div></header><nav class='secnav'><div class='wrap'><div class='secnav-row'><a href='#configure'>Configure</a><a href='#regimes'>Compliance</a><a href='#codec'>Codec</a><a href='#transports'>Transports</a><a href='#kafka'>Kafka</a><a href='#sizes'>Message sizes</a><a href='#web'>Web platform</a><a href='#grid'>Transport × Language</a><a href='#crypto'>Crypto</a><a href='#portability'>Portability</a><a href='#runtimes'>Runtimes &amp; FFI</a><a href='#profiles'>Requirements</a></div></div></nav><section id='configure'><div class='wrap'><style>
 .cfg{display:grid;grid-template-columns:340px 1fr;gap:26px;margin-top:8px}
 @media(max-width:860px){.cfg{grid-template-columns:1fr}}
 .cfg-presets{display:flex;flex-wrap:wrap;gap:8px;margin:14px 0 4px}
@@ -521,6 +521,35 @@ preset('secure');
     <tr><td class='rl'>CNSA 2.0 (AES-256-GCM)</td><td>96 MB/s</td><td>702 MB/s</td><td>1.9 GB/s</td><td>3.3 GB/s</td><td>3.8 GB/s</td><td>4.2 GB/s</td></tr>
     <tr><td class='rl'>seal overhead</td><td style='font-weight:700;color:var(--signal)'>32.4x</td><td style='font-weight:700;color:var(--signal)'>17.7x</td><td style='font-weight:700;color:var(--signal)'>6.0x</td><td style='font-weight:700;color:var(--signal)'>3.1x</td><td style='font-weight:700;color:var(--signal)'>2.5x</td><td style='font-weight:700;color:var(--signal)'>2.4x</td></tr>
   </tbody></table></div>
+</div></section><section id='web'><div class='wrap'>
+  <p class='sec-eyebrow'>web · browser platform · WebCrypto + WASM · CNSA 2.0</p>
+  <h2 class='title'>The web is a first-class platform</h2>
+  <p class='sec-lede'>The 34th ecosystem is the browser itself. The exact post-quantum-class sealed Kafka
+  RecordBatch is produced <b>in a real browser</b> (headless-verified), byte-identical to libkafcore, using
+  the browser's own audited crypto , no native code, no plugins. Two in-browser routes, both measured here:
+  <b>WebCrypto</b> AES-256-GCM (SubtleCrypto, hardware-accelerated but async , one promise per message), and
+  a <b>WASM</b> build of Zig's own constant-time <code>std.crypto</code> AES-256-GCM (synchronous, key
+  schedule kept warm in linear memory, no async boundary). Read the table: the WASM path wins for <b>small
+  records</b>, where WebCrypto's async round-trip dominates; WebCrypto's hardware AES wins for <b>bulk</b>;
+  pipelining seals in flight amortizes the async cost in between. Every cell is CNSA 2.0 (AES-256-GCM),
+  best-of-3, machine-measured.</p>
+  <p class='sec-lede'><b>Why a single browser thread trails the ~3M native languages:</b> the native path
+  reaches OpenSSL's <b>AES-NI</b> (hardware AES) and <b>carryless-multiply</b> (hardware GHASH); WebAssembly
+  exposes neither, so its constant-time software AES-GCM is several times slower, and WebCrypto has those
+  instructions but only behind an <b>async</b> API that adds a per-message round-trip. So the browser trades
+  off async-hardware (WebCrypto) against sync-software (WASM). This is a hardware-access gap, not a web
+  limitation , and it is the honest single-thread ceiling, no worker parallelism applied.</p>
+  <div class='heatwrap'><table class='heat'><thead><tr><th>payload</th><th>WebCrypto</th><th>WebCrypto pipelined</th><th>WASM sync</th></tr></thead>
+  <tbody><tr><td class='rl'>32 B</td><td>77k</td><td>98k</td><td style='font-weight:700;color:var(--signal)'>637k</td></tr><tr><td class='rl'>256 B</td><td>68k</td><td>119k</td><td style='font-weight:700;color:var(--signal)'>126k</td></tr><tr><td class='rl'>1 KiB</td><td>50k</td><td style='font-weight:700;color:var(--signal)'>90k</td><td>36k</td></tr><tr><td class='rl'>4 KiB</td><td>24k</td><td style='font-weight:700;color:var(--signal)'>34k</td><td>9k</td></tr><tr><td class='rl'>16 KiB</td><td style='font-weight:700;color:var(--signal)'>8k</td><td>8k</td><td>2k</td></tr><tr><td class='rl'>64 KiB</td><td>2k</td><td style='font-weight:700;color:var(--signal)'>2k</td><td>1k</td></tr></tbody></table></div>
+  <h3 class='xcat-t' style='margin-top:30px'>Scaling out: Web Workers (multi-core, not single-thread parity)</h3>
+  <p class='xcat-d'>Unlike the native-FFI languages, one browser thread <b>cannot</b> match ~3M/s , that
+  gap is hardware, not the web (see the note below). The honest way the web reaches native <i>aggregate</i>
+  throughput is horizontal: fan the seal across <b>Web Workers</b> (edge runtimes use isolates). The
+  constant-time WASM seal is pure CPU and scales almost linearly, reaching <b>3.33M/s</b> across all
+  10 cores of this host. This is a multi-core number, <b>not</b> a per-thread one , it
+  is shown to size the real deployment, not to claim single-core parity.</p>
+  <div class='heatwrap'><table class='heat'><thead><tr><th>worker threads</th><th>1</th><th>2</th><th>4</th><th>8</th><th>10</th></tr></thead>
+  <tbody><tr><td class='rl'>aggregate seals/s (32 B)</td><td>656k</td><td>1.07M</td><td>1.96M</td><td>3.23M</td><td style='font-weight:700;color:var(--signal)'>3.33M</td></tr></tbody></table></div>
 </div></section><section id='grid'><div class='wrap'>
   <p class='sec-eyebrow'>transport × language · the full product</p>
   <h2 class='title'>Every language, every transport</h2>

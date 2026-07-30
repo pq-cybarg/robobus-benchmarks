@@ -1,0 +1,30 @@
+{
+  "schema": "robobus-kafka-web-parallel/1",
+  "host": "darwin arm64",
+  "cores": 10,
+  "value_bytes": 32,
+  "security": "CNSA 2.0 (AES-256-GCM RBX1 per message)",
+  "note": "The synchronous WASM seal (Zig std.crypto AES-256-GCM, constant-time) fanned across worker threads (Web Workers). Aggregate sealed RecordBatches/s per worker count, best-of-3 per worker. Machine-measured; no hand-entered numbers.",
+  "scaling": [
+    {
+      "workers": 1,
+      "aggregate_ops": 656400
+    },
+    {
+      "workers": 2,
+      "aggregate_ops": 1069429
+    },
+    {
+      "workers": 4,
+      "aggregate_ops": 1958039
+    },
+    {
+      "workers": 8,
+      "aggregate_ops": 3229581
+    },
+    {
+      "workers": 10,
+      "aggregate_ops": 3330596
+    }
+  ]
+}

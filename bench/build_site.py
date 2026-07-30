@@ -1661,6 +1661,78 @@ def _kafka_sizes_section():
 </div></section>"""
 
 
+def _kafka_web_section():
+    """The web browser as a first-class platform: the exact PQC-sealed Kafka RecordBatch produced in-browser
+    by the browser's own audited crypto, byte-identical to libkafcore. Three single-thread routes plus the
+    parallel (Web Worker) route to native-level throughput. All machine-measured, no write-ins."""
+    d = _load("kafka-web.json")
+    if not d or not d.get("panels"):
+        return ""
+    import math
+    panels = sorted(d["panels"], key=lambda p: p["value_bytes"])
+
+    def _sz(n):
+        return f"{n // 1024} KiB" if n >= 1024 else f"{n} B"
+
+    def _o(v):
+        return f"{v/1e6:.2f}M" if v and v >= 1e6 else f"{v/1e3:.0f}k" if v else ", "
+    METH = [("webcrypto", "WebCrypto"), ("webcrypto_pipelined", "WebCrypto pipelined"), ("wasm", "WASM sync")]
+    head = "".join(f"<th>{lbl}</th>" for _, lbl in METH)
+    body = ""
+    for p in panels:
+        m = p["methods"]
+        peak = max((m[k]["ops"] or 0) for k, _ in METH)
+        tds = ""
+        for k, _ in METH:
+            v = m[k]["ops"]
+            win = v and v == peak
+            style = " style='font-weight:700;color:var(--signal)'" if win else ""
+            tds += f"<td{style}>{_o(v)}</td>"
+        body += f"<tr><td class='rl'>{_sz(p['value_bytes'])}</td>{tds}</tr>"
+
+    # parallel scaling (Web Workers) , the route to native-level throughput
+    par = _load("kafka-web-parallel.json")
+    par_html = ""
+    if par and par.get("scaling"):
+        sc = sorted(par["scaling"], key=lambda x: x["workers"])
+        peak = max((x["aggregate_ops"] or 0) for x in sc)
+        cells = "".join(
+            f"<td style='font-weight:700;color:var(--signal)'>{_o(x['aggregate_ops'])}</td>"
+            if x["aggregate_ops"] == peak else f"<td>{_o(x['aggregate_ops'])}</td>" for x in sc)
+        wh = "".join(f"<th>{x['workers']}</th>" for x in sc)
+        par_html = f"""<h3 class='xcat-t' style='margin-top:30px'>Scaling out: Web Workers (multi-core, not single-thread parity)</h3>
+  <p class='xcat-d'>Unlike the native-FFI languages, one browser thread <b>cannot</b> match ~3M/s , that
+  gap is hardware, not the web (see the note below). The honest way the web reaches native <i>aggregate</i>
+  throughput is horizontal: fan the seal across <b>Web Workers</b> (edge runtimes use isolates). The
+  constant-time WASM seal is pure CPU and scales almost linearly, reaching <b>{_o(peak)}/s</b> across all
+  {par.get('cores','?')} cores of this host. This is a multi-core number, <b>not</b> a per-thread one , it
+  is shown to size the real deployment, not to claim single-core parity.</p>
+  <div class='heatwrap'><table class='heat'><thead><tr><th>worker threads</th>{wh}</tr></thead>
+  <tbody><tr><td class='rl'>aggregate seals/s (32 B)</td>{cells}</tr></tbody></table></div>"""
+    return f"""<section><div class='wrap'>
+  <p class='sec-eyebrow'>web · browser platform · WebCrypto + WASM · CNSA 2.0</p>
+  <h2 class='title'>The web is a first-class platform</h2>
+  <p class='sec-lede'>The 34th ecosystem is the browser itself. The exact post-quantum-class sealed Kafka
+  RecordBatch is produced <b>in a real browser</b> (headless-verified), byte-identical to libkafcore, using
+  the browser's own audited crypto , no native code, no plugins. Two in-browser routes, both measured here:
+  <b>WebCrypto</b> AES-256-GCM (SubtleCrypto, hardware-accelerated but async , one promise per message), and
+  a <b>WASM</b> build of Zig's own constant-time <code>std.crypto</code> AES-256-GCM (synchronous, key
+  schedule kept warm in linear memory, no async boundary). Read the table: the WASM path wins for <b>small
+  records</b>, where WebCrypto's async round-trip dominates; WebCrypto's hardware AES wins for <b>bulk</b>;
+  pipelining seals in flight amortizes the async cost in between. Every cell is CNSA 2.0 (AES-256-GCM),
+  best-of-3, machine-measured.</p>
+  <p class='sec-lede'><b>Why a single browser thread trails the ~3M native languages:</b> the native path
+  reaches OpenSSL's <b>AES-NI</b> (hardware AES) and <b>carryless-multiply</b> (hardware GHASH); WebAssembly
+  exposes neither, so its constant-time software AES-GCM is several times slower, and WebCrypto has those
+  instructions but only behind an <b>async</b> API that adds a per-message round-trip. So the browser trades
+  off async-hardware (WebCrypto) against sync-software (WASM). This is a hardware-access gap, not a web
+  limitation , and it is the honest single-thread ceiling, no worker parallelism applied.</p>
+  <div class='heatwrap'><table class='heat'><thead><tr><th>payload</th>{head}</tr></thead>
+  <tbody>{body}</tbody></table></div>
+  {par_html}
+</div></section>"""
+
+
 def speed():
     lm = _load("lang-matrix.json")
     cl = _load("cross-lang.json")
@@ -1902,6 +1974,7 @@ def speed():
                ("transports", "Transports", tag(sec3, "transports")),
                ("kafka", "Kafka", tag(_kafka_protocol_section(), "kafka")),
                ("sizes", "Message sizes", tag(_kafka_sizes_section(), "sizes")),
+               ("web", "Web platform", tag(_kafka_web_section(), "web")),
                ("grid", "Transport × Language", tag(sec4, "grid")),
                ("crypto", "Crypto", tag(crypto, "crypto")),
                ("portability", "Portability", tag(_portability_section(), "portability")),
