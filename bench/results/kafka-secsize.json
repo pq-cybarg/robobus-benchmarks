@@ -1,0 +1,13 @@
+{
+  "schema": "robobus-kafka-secsize/1",
+  "security_axis": ["none (plaintext RecordBatch)", "CNSA 2.0 (AES-256-GCM RBX1 per message)"],
+  "note": "Native-C core: plaintext Kafka RecordBatch encode vs AES-256-GCM sealed encode across payload sizes, best-of-3. The seal is shared C, so this security cost is language-independent. Machine-measured; no hand-entered numbers.",
+  "sizes": [
+    {"value_bytes": 32, "reps": 4000000, "plaintext_ops": 97080310, "sealed_ops": 2995530, "plaintext_mbps": 3106.6, "sealed_mbps": 95.9, "seal_overhead": 32.41},
+    {"value_bytes": 256, "reps": 3000000, "plaintext_ops": 48542904, "sealed_ops": 2743587, "plaintext_mbps": 12427.0, "sealed_mbps": 702.4, "seal_overhead": 17.69},
+    {"value_bytes": 1024, "reps": 1500000, "plaintext_ops": 10808630, "sealed_ops": 1815934, "plaintext_mbps": 11068.0, "sealed_mbps": 1859.5, "seal_overhead": 5.95},
+    {"value_bytes": 4096, "reps": 600000, "plaintext_ops": 2476208, "sealed_ops": 808548, "plaintext_mbps": 10142.5, "sealed_mbps": 3311.8, "seal_overhead": 3.06},
+    {"value_bytes": 16384, "reps": 180000, "plaintext_ops": 564327, "sealed_ops": 230603, "plaintext_mbps": 9245.9, "sealed_mbps": 3778.2, "seal_overhead": 2.45},
+    {"value_bytes": 65536, "reps": 60000, "plaintext_ops": 153670, "sealed_ops": 64746, "plaintext_mbps": 10070.9, "sealed_mbps": 4243.2, "seal_overhead": 2.37}
+  ]
+}

@@ -1613,6 +1613,33 @@ def _kafka_sizes_section():
         body += f"<tr><td class='rl'>{_sz(p['value_bytes'])}<small> peak {mbdisp}</small></td>{tds}</tr>"
     lo_mb = f"{peaks[0][1]:.0f} MB/s"
     hi_mb = f"{peaks[-1][1]/1000:.1f} GB/s" if peaks[-1][1] >= 1000 else f"{peaks[-1][1]:.0f} MB/s"
+
+    # security axis: plaintext (none) vs AES-256-GCM (CNSA 2.0) across sizes, measured in shared C
+    sec = _load("kafka-secsize.json")
+    sec_html = ""
+    if sec and sec.get("sizes"):
+        srows = sorted(sec["sizes"], key=lambda s: s["value_bytes"])
+
+        def _mb(v):
+            return f"{v/1000:.1f} GB/s" if v >= 1000 else f"{v:.0f} MB/s"
+        shdr = "".join(f"<th>{_sz(r['value_bytes'])}</th>" for r in srows)
+        r_plain = "".join(f"<td>{_mb(r['plaintext_mbps'])}</td>" for r in srows)
+        r_seal = "".join(f"<td>{_mb(r['sealed_mbps'])}</td>" for r in srows)
+        r_over = "".join(f"<td style='font-weight:700;color:var(--signal)'>{r['seal_overhead']:.1f}x</td>"
+                         for r in srows)
+        hi_ov, lo_ov = srows[0]["seal_overhead"], srows[-1]["seal_overhead"]
+        sec_html = f"""<h3 class='xcat-t' style='margin-top:30px'>The cost of CNSA 2.0 security, per message size</h3>
+  <p class='xcat-d'>The security axis, measured in shared C so it is language-independent: plaintext Kafka
+  RecordBatch encode (security <b>none</b>) versus the same encode with a per-message <b>AES-256-GCM</b>
+  seal (CNSA 2.0). The seal costs about {hi_ov:.0f}x at {_sz(srows[0]['value_bytes'])}, where the crypto
+  dominates a tiny record, but only {lo_ov:.1f}x by {_sz(srows[-1]['value_bytes'])}, where both sides
+  saturate memory bandwidth, so the highest-security setting is nearly free at realistic payload sizes.</p>
+  <div class='heatwrap'><table class='heat'><thead><tr><th>security / payload</th>{shdr}</tr></thead>
+  <tbody>
+    <tr><td class='rl'>none (plaintext)</td>{r_plain}</tr>
+    <tr><td class='rl'>CNSA 2.0 (AES-256-GCM)</td>{r_seal}</tr>
+    <tr><td class='rl'>seal overhead</td>{r_over}</tr>
+  </tbody></table></div>"""
     return f"""<section><div class='wrap'>
   <p class='sec-eyebrow'>kafka · message-size sweep · CNSA 2.0 (highest security)</p>
   <h2 class='title'>Every language, every message size</h2>
@@ -1630,6 +1657,7 @@ def _kafka_sizes_section():
   row. Machine-measured locally; no hand-entered numbers.</p>
   <div class='heatwrap'><table class='heat'><thead><tr><th>payload</th>{head}</tr></thead>
   <tbody>{body}</tbody></table></div>
+  {sec_html}
 </div></section>"""
 
 
