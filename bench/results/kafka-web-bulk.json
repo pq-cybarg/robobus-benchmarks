@@ -1,0 +1,14 @@
+{
+  "schema": "robobus-kafka-web-bulk/1",
+  "host": "darwin arm64",
+  "engine": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/150.0.0.0 Safari/537.36",
+  "security": "AES-256-GCM (RBX1 seal AAD + RecordBatch framing negligible at these sizes)",
+  "note": "Browser WebCrypto AES-256-GCM bulk bandwidth, measured in a real headless browser (best-of-3, ~256 MB per size). The hardware-AES path to GB/s bandwidth in a browser, vs the software-WASM path's small-message rate. Machine-measured; no hand-entered numbers.",
+  "bandwidth_MBps": {
+    "4096": 1486,
+    "65536": 3211,
+    "262144": 3775,
+    "1048576": 2283,
+    "4194304": 2495
+  }
+}

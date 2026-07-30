@@ -10,16 +10,16 @@
       "reps": 150000,
       "methods": {
         "webcrypto": {
-          "ops": 77077,
-          "mbps": 2.5
+          "ops": 91995,
+          "mbps": 2.9
         },
         "webcrypto_pipelined": {
-          "ops": 98457,
-          "mbps": 3.2
+          "ops": 149400,
+          "mbps": 4.8
         },
         "wasm": {
-          "ops": 637287,
-          "mbps": 20.4
+          "ops": 1210745,
+          "mbps": 38.7
         }
       }
     },
@@ -28,16 +28,16 @@
       "reps": 120000,
       "methods": {
         "webcrypto": {
-          "ops": 67675,
-          "mbps": 17.3
+          "ops": 83793,
+          "mbps": 21.5
         },
         "webcrypto_pipelined": {
-          "ops": 118535,
-          "mbps": 30.3
+          "ops": 136242,
+          "mbps": 34.9
         },
         "wasm": {
-          "ops": 126306,
-          "mbps": 32.3
+          "ops": 341212,
+          "mbps": 87.4
         }
       }
     },
@@ -46,16 +46,16 @@
       "reps": 80000,
       "methods": {
         "webcrypto": {
-          "ops": 50159,
-          "mbps": 51.4
+          "ops": 61840,
+          "mbps": 63.3
         },
         "webcrypto_pipelined": {
-          "ops": 89609,
-          "mbps": 91.8
+          "ops": 99779,
+          "mbps": 102.2
         },
         "wasm": {
-          "ops": 36423,
-          "mbps": 37.3
+          "ops": 107768,
+          "mbps": 110.4
         }
       }
     },
@@ -64,16 +64,16 @@
       "reps": 30000,
       "methods": {
         "webcrypto": {
-          "ops": 24412,
-          "mbps": 100.0
+          "ops": 29675,
+          "mbps": 121.5
         },
         "webcrypto_pipelined": {
-          "ops": 33877,
-          "mbps": 138.8
+          "ops": 37198,
+          "mbps": 152.4
         },
         "wasm": {
-          "ops": 8921,
-          "mbps": 36.5
+          "ops": 28582,
+          "mbps": 117.1
         }
       }
     },
@@ -82,16 +82,16 @@
       "reps": 12000,
       "methods": {
         "webcrypto": {
-          "ops": 7769,
-          "mbps": 127.3
+          "ops": 8103,
+          "mbps": 132.8
         },
         "webcrypto_pipelined": {
-          "ops": 7664,
-          "mbps": 125.6
+          "ops": 8877,
+          "mbps": 145.4
         },
         "wasm": {
-          "ops": 2195,
-          "mbps": 36.0
+          "ops": 7078,
+          "mbps": 116.0
         }
       }
     },
@@ -100,16 +100,16 @@
       "reps": 4000,
       "methods": {
         "webcrypto": {
-          "ops": 2355,
-          "mbps": 154.3
+          "ops": 2370,
+          "mbps": 155.3
         },
         "webcrypto_pipelined": {
-          "ops": 2457,
-          "mbps": 161.0
+          "ops": 2508,
+          "mbps": 164.4
         },
         "wasm": {
-          "ops": 606,
-          "mbps": 39.7
+          "ops": 1719,
+          "mbps": 112.7
         }
       }
     }

@@ -524,32 +524,39 @@ preset('secure');
 </div></section><section id='web'><div class='wrap'>
   <p class='sec-eyebrow'>web · browser platform · WebCrypto + WASM · CNSA 2.0</p>
   <h2 class='title'>The web is a first-class platform</h2>
-  <p class='sec-lede'>The 34th ecosystem is the browser itself. The exact post-quantum-class sealed Kafka
-  RecordBatch is produced <b>in a real browser</b> (headless-verified), byte-identical to libkafcore, using
-  the browser's own audited crypto , no native code, no plugins. Two in-browser routes, both measured here:
-  <b>WebCrypto</b> AES-256-GCM (SubtleCrypto, hardware-accelerated but async , one promise per message), and
-  a <b>WASM</b> build of Zig's own constant-time <code>std.crypto</code> AES-256-GCM (synchronous, key
-  schedule kept warm in linear memory, no async boundary). Read the table: the WASM path wins for <b>small
-  records</b>, where WebCrypto's async round-trip dominates; WebCrypto's hardware AES wins for <b>bulk</b>;
-  pipelining seals in flight amortizes the async cost in between. Every cell is CNSA 2.0 (AES-256-GCM),
-  best-of-3, machine-measured.</p>
-  <p class='sec-lede'><b>Why a single browser thread trails the ~3M native languages:</b> the native path
-  reaches OpenSSL's <b>AES-NI</b> (hardware AES) and <b>carryless-multiply</b> (hardware GHASH); WebAssembly
-  exposes neither, so its constant-time software AES-GCM is several times slower, and WebCrypto has those
-  instructions but only behind an <b>async</b> API that adds a per-message round-trip. So the browser trades
-  off async-hardware (WebCrypto) against sync-software (WASM). This is a hardware-access gap, not a web
-  limitation , and it is the honest single-thread ceiling, no worker parallelism applied.</p>
+  <p class='sec-lede'>The 34th ecosystem is the browser itself , and it is <b>local-first</b>: the case where
+  you cannot defer to a server's AES-NI, so maximum in-browser capability is the whole point. The exact
+  post-quantum-class sealed Kafka RecordBatch is produced <b>in a real browser</b> (headless-verified),
+  byte-identical to libkafcore. Two routes: <b>WebCrypto</b> AES-256-GCM (SubtleCrypto, real hardware AES-NI,
+  but async , one promise per call), and a <b>WASM</b> build carrying an <b>audited software AES</b> (AWS-LC
+  <code>aes_nohw</code>, unmodified, ISC / FIPS-lineage, constant-time bitsliced , the same audited-COTS rule
+  as the rest of the stack), synchronous with no async boundary. The key insight is <b>two regimes</b>: small
+  messages are a <i>rate</i> game, bulk is a <i>bandwidth</i> game, and each route wins one.</p>
+  <p class='sec-lede'><b>Small, high-rate messages , the WASM path wins.</b> WebCrypto's async round-trip
+  dominates a tiny record, so the synchronous audited software AES pulls ahead: <b>~1.2M seals/s at 32&nbsp;B,
+  single-thread</b> (the two routes cross near 4&nbsp;KB, where WebCrypto's hardware AES starts to matter more
+  than its async cost). WebAssembly has no AES-NI, so this is software AES , excellent for message <i>rate</i>,
+  but it caps ~113&nbsp;MB/s of <i>bandwidth</i>. Best-of-3, machine-measured.</p>
   <div class='heatwrap'><table class='heat'><thead><tr><th>payload</th><th>WebCrypto</th><th>WebCrypto pipelined</th><th>WASM sync</th></tr></thead>
-  <tbody><tr><td class='rl'>32 B</td><td>77k</td><td>98k</td><td style='font-weight:700;color:var(--signal)'>637k</td></tr><tr><td class='rl'>256 B</td><td>68k</td><td>119k</td><td style='font-weight:700;color:var(--signal)'>126k</td></tr><tr><td class='rl'>1 KiB</td><td>50k</td><td style='font-weight:700;color:var(--signal)'>90k</td><td>36k</td></tr><tr><td class='rl'>4 KiB</td><td>24k</td><td style='font-weight:700;color:var(--signal)'>34k</td><td>9k</td></tr><tr><td class='rl'>16 KiB</td><td style='font-weight:700;color:var(--signal)'>8k</td><td>8k</td><td>2k</td></tr><tr><td class='rl'>64 KiB</td><td>2k</td><td style='font-weight:700;color:var(--signal)'>2k</td><td>1k</td></tr></tbody></table></div>
+  <tbody><tr><td class='rl'>32 B</td><td>92k</td><td>149k</td><td style='font-weight:700;color:var(--signal)'>1.21M</td></tr><tr><td class='rl'>256 B</td><td>84k</td><td>136k</td><td style='font-weight:700;color:var(--signal)'>341k</td></tr><tr><td class='rl'>1 KiB</td><td>62k</td><td>100k</td><td style='font-weight:700;color:var(--signal)'>108k</td></tr><tr><td class='rl'>4 KiB</td><td>30k</td><td style='font-weight:700;color:var(--signal)'>37k</td><td>29k</td></tr><tr><td class='rl'>16 KiB</td><td>8k</td><td style='font-weight:700;color:var(--signal)'>9k</td><td>7k</td></tr><tr><td class='rl'>64 KiB</td><td>2k</td><td style='font-weight:700;color:var(--signal)'>3k</td><td>2k</td></tr></tbody></table></div>
+  <h3 class='xcat-t' style='margin-top:30px'>Bulk, high-bandwidth , WebCrypto hardware AES wins (the route to GB/s)</h3>
+  <p class='xcat-d'>Bulk is a <i>bandwidth</i> game, and it belongs to <b>WebCrypto</b>: its async per-call
+  cost , fatal for tiny records , vanishes against a large buffer, exposing the browser's real
+  <b>hardware AES-NI</b>. Measured in a real browser (AES-256-GCM, best-of-3): <b>3.77 GB/s</b> at
+  256 KiB, about <b>94%</b> of the 4&nbsp;GB/s target , single-thread, local-only, no server.
+  Software AES (the WASM path) caps ~113&nbsp;MB/s here, so bulk is where you switch engines. <b>Two regimes,
+  two routes: WASM for small high-rate messages, WebCrypto for bulk bandwidth.</b></p>
+  <div class='heatwrap'><table class='heat'><thead><tr><th>payload</th><th>4 KiB</th><th>64 KiB</th><th>256 KiB</th><th>1024 KiB</th><th>4096 KiB</th></tr></thead>
+  <tbody><tr><td class='rl'>WebCrypto AES-256-GCM</td><td>1.49 GB/s</td><td>3.21 GB/s</td><td style='font-weight:700;color:var(--signal)'>3.77 GB/s</td><td>2.28 GB/s</td><td>2.50 GB/s</td></tr></tbody></table></div>
   <h3 class='xcat-t' style='margin-top:30px'>Scaling out: Web Workers (multi-core, not single-thread parity)</h3>
   <p class='xcat-d'>Unlike the native-FFI languages, one browser thread <b>cannot</b> match ~3M/s , that
   gap is hardware, not the web (see the note below). The honest way the web reaches native <i>aggregate</i>
   throughput is horizontal: fan the seal across <b>Web Workers</b> (edge runtimes use isolates). The
-  constant-time WASM seal is pure CPU and scales almost linearly, reaching <b>3.33M/s</b> across all
+  constant-time WASM seal is pure CPU and scales almost linearly, reaching <b>5.91M/s</b> across all
   10 cores of this host. This is a multi-core number, <b>not</b> a per-thread one , it
   is shown to size the real deployment, not to claim single-core parity.</p>
   <div class='heatwrap'><table class='heat'><thead><tr><th>worker threads</th><th>1</th><th>2</th><th>4</th><th>8</th><th>10</th></tr></thead>
-  <tbody><tr><td class='rl'>aggregate seals/s (32 B)</td><td>656k</td><td>1.07M</td><td>1.96M</td><td>3.23M</td><td style='font-weight:700;color:var(--signal)'>3.33M</td></tr></tbody></table></div>
+  <tbody><tr><td class='rl'>aggregate seals/s (32 B)</td><td>1.22M</td><td>2.36M</td><td>4.08M</td><td>5.65M</td><td style='font-weight:700;color:var(--signal)'>5.91M</td></tr></tbody></table></div>
 </div></section><section id='grid'><div class='wrap'>
   <p class='sec-eyebrow'>transport × language · the full product</p>
   <h2 class='title'>Every language, every transport</h2>

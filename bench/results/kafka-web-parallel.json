@@ -8,23 +8,23 @@
   "scaling": [
     {
       "workers": 1,
-      "aggregate_ops": 656400
+      "aggregate_ops": 1219229
     },
     {
       "workers": 2,
-      "aggregate_ops": 1069429
+      "aggregate_ops": 2362303
     },
     {
       "workers": 4,
-      "aggregate_ops": 1958039
+      "aggregate_ops": 4076027
     },
     {
       "workers": 8,
-      "aggregate_ops": 3229581
+      "aggregate_ops": 5649057
     },
     {
       "workers": 10,
-      "aggregate_ops": 3330596
+      "aggregate_ops": 5913741
     }
   ]
 }
