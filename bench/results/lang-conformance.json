@@ -1,0 +1,110 @@
+{
+  "schema": "robobus-lang-conformance/2",
+  "codec": "nmea2000",
+  "abi": "librbcodec (C ABI)",
+  "roster_size": 34,
+  "results": {
+    "python": {
+      "status": "pass"
+    },
+    "pypy": {
+      "status": "pass"
+    },
+    "cython": {
+      "status": "pass"
+    },
+    "ruby": {
+      "status": "pass"
+    },
+    "perl": {
+      "status": "pass"
+    },
+    "php": {
+      "status": "pass"
+    },
+    "lua": {
+      "status": "pass"
+    },
+    "luajit": {
+      "status": "pass"
+    },
+    "julia": {
+      "status": "pass"
+    },
+    "r": {
+      "status": "pass"
+    },
+    "tcl": {
+      "status": "pass"
+    },
+    "swift": {
+      "status": "pass"
+    },
+    "node": {
+      "status": "pass"
+    },
+    "bun": {
+      "status": "pass"
+    },
+    "typescript": {
+      "status": "pass"
+    },
+    "web": {
+      "status": "pass"
+    },
+    "c": {
+      "status": "pass"
+    },
+    "cpp": {
+      "status": "pass"
+    },
+    "zig": {
+      "status": "pass"
+    },
+    "rust": {
+      "status": "pass"
+    },
+    "go": {
+      "status": "pass"
+    },
+    "nim": {
+      "status": "pass"
+    },
+    "crystal": {
+      "status": "pass"
+    },
+    "pascal": {
+      "status": "pass"
+    },
+    "fortran": {
+      "status": "pass"
+    },
+    "cobol": {
+      "status": "pass"
+    },
+    "haskell": {
+      "status": "pass"
+    },
+    "mojo": {
+      "status": "pass"
+    },
+    "csharp": {
+      "status": "pass"
+    },
+    "ocaml": {
+      "status": "pass"
+    },
+    "octave": {
+      "status": "pass"
+    },
+    "java": {
+      "status": "pass"
+    },
+    "kotlin": {
+      "status": "pass"
+    },
+    "nelua": {
+      "status": "pass"
+    }
+  }
+}

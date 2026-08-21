@@ -1,244 +1,304 @@
 {
- "schema": "robobus-transport/1",
- "generated_unix": 1784656152,
- "frame_bytes": 75,
- "host": {
-  "system": "Darwin",
-  "machine": "arm64",
-  "processor": "arm"
- },
- "note": "Loopback on one host: sender and receiver share the machine, so these are the transport's software ceiling, not a NIC/wire limit. Broker/runtime transports are measured in Linux CI.",
- "results": [
-  {
-   "group": "transport",
-   "name": "Shared-memory bus",
-   "config": {
-    "frame_bytes": 75
-   },
-   "unit": "frames/s + MB/s + one-way ns",
-   "dependency": "robobus (native)",
-   "status": "ok",
-   "note": "seqlock ring, put+get on 150,000 frames",
-   "metrics": {
-    "ops_per_s": 435006.3633600845,
-    "mb_per_s": 32.625477252006334
-   }
+  "schema": "robobus-transport/1",
+  "generated_unix": 1787270054,
+  "frame_bytes": 75,
+  "host": {
+    "system": "Darwin",
+    "machine": "arm64",
+    "processor": "arm"
   },
-  {
-   "group": "transport",
-   "name": "UDP",
-   "config": {
-    "frame_bytes": 75
-   },
-   "unit": "frames/s + MB/s + one-way ns",
-   "dependency": "socket (stdlib)",
-   "status": "ok",
-   "note": "loopback; 150,000/150,000 rx (loss 0.00%)",
-   "metrics": {
-    "ops_per_s": 66854.57630995831,
-    "mb_per_s": 5.014093223246873,
-    "p50_ns": 20000.0,
-    "p99_ns": 113729.0
-   }
-  },
-  {
-   "group": "transport",
-   "name": "TCP",
-   "config": {
-    "frame_bytes": 75
-   },
-   "unit": "frames/s + MB/s + one-way ns",
-   "dependency": "socket (stdlib)",
-   "status": "ok",
-   "note": "loopback, length-prefixed, TCP_NODELAY; 150,000 frames",
-   "metrics": {
-    "ops_per_s": 156781.5261192143,
-    "mb_per_s": 11.758614458941071,
-    "p50_ns": 16083.5,
-    "p99_ns": 40479.5
-   }
-  },
-  {
-   "group": "transport",
-   "name": "Serial",
-   "config": {
-    "frame_bytes": 75
-   },
-   "unit": "frames/s + MB/s + one-way ns",
-   "dependency": "pyserial (loop://)",
-   "status": "ok",
-   "note": "in-memory loopback, framed; 150,000 frames",
-   "metrics": {
-    "ops_per_s": 7801.191877796877,
-    "mb_per_s": 0.5850893908347657
-   }
-  },
-  {
-   "group": "transport",
-   "name": "CAN",
-   "config": {
-    "frame_bytes": 75,
-    "can_mtu": 8,
-    "frags_per_frame": 10
-   },
-   "unit": "frames/s + MB/s + one-way ns",
-   "dependency": "python-can",
-   "status": "ok",
-   "note": "virtual bus; 177,390 CAN frames/s ÷ 10 frags/robobus-frame",
-   "metrics": {
-    "ops_per_s": 17739.006616516424,
-    "mb_per_s": 1.3304254962387319
-   }
-  },
-  {
-   "group": "transport",
-   "name": "Zenoh",
-   "config": {
-    "frame_bytes": 75
-   },
-   "unit": "frames/s + MB/s + one-way ns",
-   "dependency": "zenoh",
-   "status": "ok",
-   "note": "peer-to-peer, 100,000/100,000 delivered",
-   "metrics": {
-    "ops_per_s": 412576.9256898045,
-    "mb_per_s": 30.943269426735338
-   }
-  },
-  {
-   "group": "transport",
-   "name": "MQTT",
-   "config": {
-    "frame_bytes": 75
-   },
-   "unit": "frames/s + MB/s + one-way ns",
-   "dependency": "paho-mqtt + mosquitto",
-   "status": "ok",
-   "note": "QoS 0, local broker; 100,000/100,000 delivered",
-   "metrics": {
-    "ops_per_s": 18909.76997612145,
-    "mb_per_s": 1.4182327482091088
-   }
-  },
-  {
-   "group": "transport",
-   "name": "LSL",
-   "config": {
-    "frame_bytes": 75
-   },
-   "unit": "frames/s + MB/s + one-way ns",
-   "dependency": "pylsl + liblsl",
-   "status": "ok",
-   "note": "outlet→inlet, string channel; 42,653/60,000 delivered",
-   "metrics": {
-    "ops_per_s": 10864.244061331221,
-    "mb_per_s": 0.8148183045998416
-   }
-  },
-  {
-   "group": "transport",
-   "name": "AMQP",
-   "config": {
-    "frame_bytes": 75
-   },
-   "unit": "frames/s + MB/s + one-way ns",
-   "dependency": "pika + RabbitMQ",
-   "status": "ok",
-   "note": "transient delivery, local broker; 100,000/100,000 delivered",
-   "metrics": {
-    "ops_per_s": 7620.3570379157645,
-    "mb_per_s": 0.5715267778436823
-   }
-  },
-  {
-   "group": "transport",
-   "name": "Kafka",
-   "config": {
-    "frame_bytes": 75
-   },
-   "unit": "frames/s + MB/s + one-way ns",
-   "dependency": "confluent-kafka + Apache Kafka (KRaft, :9092)",
-   "status": "ok",
-   "note": "acks=1, local broker; 100,000/100,000 delivered",
-   "metrics": {
-    "ops_per_s": 64110.49744785149,
-    "mb_per_s": 4.808287308588861
-   }
-  },
-  {
-   "group": "transport",
-   "name": "DDS",
-   "config": {
-    "frame_bytes": 75
-   },
-   "unit": "frames/s + MB/s + one-way ns",
-   "dependency": "cyclonedds (stock, throughput)",
-   "status": "ok",
-   "note": "stock CycloneDDS data-plane throughput; loopback, RELIABLE+KEEP_ALL; 100,000/100,000 delivered (measured under CPython 3.12, the cyclonedds pip binding doesn't import on 3.14). robobus’s PQC-DDS patches (CNSA-2.0 hybrid ECDH+ML-KEM) for BOTH Fast DDS and CycloneDDS secure the session handshake, measured separately, they don’t change this per-sample rate.",
-   "metrics": {
-    "ops_per_s": 183700.0,
-    "mb_per_s": 13.7775
-   }
-  },
-  {
-   "group": "transport",
-   "name": "ROS 2",
-   "config": {
-    "frame_bytes": 75
-   },
-   "unit": "frames/s + MB/s + one-way ns",
-   "dependency": "rclpy take-loop (rmw_cyclonedds_cpp)",
-   "status": "ok",
-   "note": "RoboStack ros2_kilted; loopback pub->sub, RELIABLE keep_all, rmw_cyclonedds_cpp; 50,000/50,000 delivered (lossless). Fastest lossless rclpy path: raw sub.handle.take_message() loop (executor bypass), median 202,350 fps. The classic executor-callback path caps at ~20k (raw=True callbacks only ~+5%), the cap is Python executor dispatch, not just rosidl. The rclcpp C++ node (see 'ROS 2 (C++)') reaches ~370k fps; a pybind11 C++ receiver handing Python batches also hits ~370k (Python still counts every frame), and talking Zenoh directly from Python reaches ~677k.",
-   "metrics": {
-    "ops_per_s": 351205.4,
-    "mb_per_s": 26.340405
-   }
-  },
-  {
-   "group": "transport",
-   "name": "ROS 2 (C++)",
-   "config": {
-    "frame_bytes": 75
-   },
-   "unit": "frames/s + MB/s + one-way ns",
-   "dependency": "rclcpp",
-   "status": "ok",
-   "note": "RoboStack ros2_kilted; rclcpp loopback pub->sub, SingleThreadedExecutor, RELIABLE keep_all, rmw_cyclonedds_cpp; 50,000/50,000 delivered (lossless). ROS 2's true ceiling for the 75-byte frame, ~15-18x the rclpy executor-callback baseline, no Python in the receive path.",
-   "metrics": {
-    "ops_per_s": 268140.9,
-    "mb_per_s": 20.1105675
-   }
-  },
-  {
-   "group": "transport",
-   "name": "ROS 1",
-   "config": {
-    "frame_bytes": 75
-   },
-   "unit": "frames/s + MB/s + one-way ns",
-   "dependency": "rospy (TCPROS)",
-   "status": "ok",
-   "note": "RoboStack ros1_noetic; private rosmaster, TCPROS pub->sub; 50,000/50,000 delivered",
-   "metrics": {
-    "ops_per_s": 55812.9,
-    "mb_per_s": 4.1859675
-   }
-  },
-  {
-   "group": "transport",
-   "name": "ZeroCM",
-   "config": {
-    "frame_bytes": 75
-   },
-   "unit": "frames/s + MB/s + one-way ns",
-   "dependency": "zerocm",
-   "status": "ok",
-   "note": "block-inproc lock-free deque, raw channel; 150,000/150,000 delivered (inproc:// is ZeroMQ PUB/SUB and silently drops under flood)",
-   "metrics": {
-    "ops_per_s": 167095.7081049634,
-    "mb_per_s": 12.532178107872255
-   }
-  }
- ]
+  "note": "Loopback on one host. Two row kinds: MAXIMIZED native routes (shm-bus/ZeroCM block-inproc/ROS2 take_message/Zenoh) are robobus optimized paths; BROKER-CLIENT rows (Kafka/MQTT/AMQP/Redis/NNG) use the stock client vs a stock broker = the keep-your-existing-broker baseline. robobus native Kafka-protocol broker reaches ~3.1M msgs/s across 33 langs (demos/kafka-protocol/native/ffi/kafka-throughput.json).",
+  "results": [
+    {
+      "group": "transport",
+      "name": "Shared-memory bus",
+      "config": {
+        "frame_bytes": 75
+      },
+      "unit": "frames/s + MB/s + one-way ns",
+      "dependency": "robobus (native)",
+      "status": "ok",
+      "note": "seqlock ring, put+get on 200,000 frames",
+      "metrics": {
+        "ops_per_s": 470191.9365096819,
+        "mb_per_s": 35.26439523822614
+      }
+    },
+    {
+      "group": "transport",
+      "name": "UDP",
+      "config": {
+        "frame_bytes": 75
+      },
+      "unit": "frames/s + MB/s + one-way ns",
+      "dependency": "socket (stdlib)",
+      "status": "ok",
+      "note": "loopback; 200,000/200,000 rx (loss 0.00%)",
+      "metrics": {
+        "ops_per_s": 120232.05385148966,
+        "mb_per_s": 9.017404038861725,
+        "p50_ns": 6625.0,
+        "p99_ns": 29666.5
+      }
+    },
+    {
+      "group": "transport",
+      "name": "TCP",
+      "config": {
+        "frame_bytes": 75
+      },
+      "unit": "frames/s + MB/s + one-way ns",
+      "dependency": "socket (stdlib)",
+      "status": "ok",
+      "note": "loopback, length-prefixed, TCP_NODELAY; 200,000 frames",
+      "metrics": {
+        "ops_per_s": 110490.79986228581,
+        "mb_per_s": 8.286809989671436,
+        "p50_ns": 9458.0,
+        "p99_ns": 58125.0
+      }
+    },
+    {
+      "group": "transport",
+      "name": "Serial",
+      "config": {
+        "frame_bytes": 75
+      },
+      "unit": "frames/s + MB/s + one-way ns",
+      "dependency": "pyserial (loop://)",
+      "status": "ok",
+      "note": "in-memory loopback, framed; 200,000 frames",
+      "metrics": {
+        "ops_per_s": 13767.119276267424,
+        "mb_per_s": 1.0325339457200569
+      }
+    },
+    {
+      "group": "transport",
+      "name": "CAN",
+      "config": {
+        "frame_bytes": 75,
+        "can_mtu": 8,
+        "frags_per_frame": 10
+      },
+      "unit": "frames/s + MB/s + one-way ns",
+      "dependency": "python-can",
+      "status": "ok",
+      "note": "virtual bus; 279,503 CAN frames/s \u00f7 10 frags/robobus-frame",
+      "metrics": {
+        "ops_per_s": 27950.28538638894,
+        "mb_per_s": 2.0962714039791703
+      }
+    },
+    {
+      "group": "transport",
+      "name": "Zenoh",
+      "config": {
+        "frame_bytes": 75
+      },
+      "unit": "frames/s + MB/s + one-way ns",
+      "dependency": "zenoh",
+      "status": "ok",
+      "note": "peer-to-peer, 100,000/100,000 delivered",
+      "metrics": {
+        "ops_per_s": 814444.9964571643,
+        "mb_per_s": 61.08337473428732
+      }
+    },
+    {
+      "group": "transport",
+      "name": "MQTT",
+      "config": {
+        "frame_bytes": 75
+      },
+      "unit": "frames/s + MB/s + one-way ns",
+      "dependency": "paho-mqtt + mosquitto",
+      "status": "ok",
+      "note": "QoS 0, local broker; 100,000/100,000 delivered",
+      "metrics": {
+        "ops_per_s": 32919.87118541314,
+        "mb_per_s": 2.4689903389059853
+      }
+    },
+    {
+      "group": "transport",
+      "name": "LSL",
+      "config": {
+        "frame_bytes": 75
+      },
+      "unit": "frames/s + MB/s + one-way ns",
+      "dependency": "pylsl + liblsl",
+      "status": "ok",
+      "note": "outlet\u2192inlet, string channel; 43,986/60,000 delivered",
+      "metrics": {
+        "ops_per_s": 14809.25500772386,
+        "mb_per_s": 1.1106941255792895
+      }
+    },
+    {
+      "group": "transport",
+      "name": "AMQP",
+      "config": {
+        "frame_bytes": 75
+      },
+      "unit": "frames/s + MB/s + one-way ns",
+      "dependency": "pika + RabbitMQ",
+      "status": "ok",
+      "note": "transient delivery, local broker; 100,000/100,000 delivered",
+      "metrics": {
+        "ops_per_s": 17312.787595255697,
+        "mb_per_s": 1.2984590696441773
+      }
+    },
+    {
+      "group": "transport",
+      "name": "Kafka",
+      "config": {
+        "frame_bytes": 75
+      },
+      "unit": "frames/s + MB/s + one-way ns",
+      "dependency": "confluent-kafka + Apache Kafka (KRaft, :9092)",
+      "status": "ok",
+      "note": "STOCK confluent-kafka client vs stock broker (baseline, NOT maximized); native robobus Kafka broker ~3.1M/s, see demos/kafka-protocol.",
+      "metrics": {
+        "ops_per_s": 487270.5656696223,
+        "mb_per_s": 36.54529242522167
+      }
+    },
+    {
+      "group": "transport",
+      "name": "DDS",
+      "config": {
+        "frame_bytes": 75
+      },
+      "unit": "frames/s + MB/s + one-way ns",
+      "dependency": "cyclonedds (stock, throughput)",
+      "status": "skipped",
+      "note": "no cyclonedds binding: Member TRY_CONSTRUCT1 is not defined.",
+      "metrics": {}
+    },
+    {
+      "group": "transport",
+      "name": "ROS 2",
+      "config": {
+        "frame_bytes": 75
+      },
+      "unit": "frames/s + MB/s + one-way ns",
+      "dependency": "rclpy take-loop (rmw_cyclonedds_cpp)",
+      "status": "ok",
+      "note": "RoboStack ros2_kilted; loopback pub->sub, RELIABLE keep_all, rmw_cyclonedds_cpp; 50,000/50,000 delivered (lossless). Fastest lossless rclpy path: raw sub.handle.take_message() loop (executor bypass), median 477,888 fps. The classic executor-callback path caps at ~20k (raw=True callbacks only ~+5%) \u2014 the cap is Python executor dispatch, not just rosidl. The rclcpp C++ node (see 'ROS 2 (C++)') reaches ~370k fps; a pybind11 C++ receiver handing Python batches also hits ~370k (Python still counts every frame), and talking Zenoh directly from Python reaches ~677k.",
+      "metrics": {
+        "ops_per_s": 553009.3,
+        "mb_per_s": 41.4756975
+      }
+    },
+    {
+      "group": "transport",
+      "name": "ROS 2 (C++)",
+      "config": {
+        "frame_bytes": 75
+      },
+      "unit": "frames/s + MB/s + one-way ns",
+      "dependency": "rclcpp",
+      "status": "skipped",
+      "note": "prebuilt ros2_flood_cpp not found \u2014 build with `bash bench/build_ros2_flood_cpp.sh` on a RoboStack host",
+      "metrics": {}
+    },
+    {
+      "group": "transport",
+      "name": "ROS 1",
+      "config": {
+        "frame_bytes": 75
+      },
+      "unit": "frames/s + MB/s + one-way ns",
+      "dependency": "rospy (TCPROS)",
+      "status": "ok",
+      "note": "RoboStack ros1_noetic; private rosmaster, TCPROS pub->sub; 50,000/50,000 delivered",
+      "metrics": {
+        "ops_per_s": 66770.8,
+        "mb_per_s": 5.00781
+      }
+    },
+    {
+      "group": "transport",
+      "name": "ZeroCM",
+      "config": {
+        "frame_bytes": 75
+      },
+      "unit": "frames/s + MB/s + one-way ns",
+      "dependency": "zerocm",
+      "status": "ok",
+      "note": "block-inproc lock-free deque, raw channel; 200,000/200,000 delivered (inproc:// is ZeroMQ PUB/SUB and silently drops under flood)",
+      "metrics": {
+        "ops_per_s": 320161.23319703806,
+        "mb_per_s": 24.012092489777856
+      }
+    },
+    {
+      "group": "transport",
+      "name": "NNG",
+      "config": {
+        "frame_bytes": 75
+      },
+      "unit": "frames/s + MB/s + one-way ns",
+      "dependency": "pynng (nanomsg)",
+      "status": "ok",
+      "note": "inproc PUSH/PULL, 100,000/100,000",
+      "metrics": {
+        "ops_per_s": 58339.254981624574,
+        "mb_per_s": 4.375444123621842
+      }
+    },
+    {
+      "group": "transport",
+      "name": "Redis",
+      "config": {
+        "frame_bytes": 75
+      },
+      "unit": "frames/s + MB/s + one-way ns",
+      "dependency": "redis + redis-server",
+      "status": "ok",
+      "note": "PUB/SUB loopback, 30,000/30,000",
+      "metrics": {
+        "ops_per_s": 9979.124088204313,
+        "mb_per_s": 0.7484343066153235
+      }
+    },
+    {
+      "group": "transport",
+      "name": "gRPC",
+      "config": {
+        "frame_bytes": 75
+      },
+      "unit": "frames/s + MB/s + one-way ns",
+      "dependency": "grpcio",
+      "status": "skipped",
+      "note": "grpcio not installed in the measurement python (PEP-668 locked); sealed round-trip proven in bench/seal_over_transports.py",
+      "metrics": {}
+    },
+    {
+      "group": "transport",
+      "name": "WebSocket",
+      "config": {
+        "frame_bytes": 75
+      },
+      "unit": "frames/s + MB/s + one-way ns",
+      "dependency": "websockets",
+      "status": "skipped",
+      "note": "websockets not installed here; sealed round-trip proven in bench/seal_over_transports.py",
+      "metrics": {}
+    },
+    {
+      "group": "transport",
+      "name": "NATS",
+      "config": {
+        "frame_bytes": 75
+      },
+      "unit": "frames/s + MB/s + one-way ns",
+      "dependency": "nats-server",
+      "status": "skipped",
+      "note": "nats-server binary absent; sealed round-trip proven in bench/seal_over_transports.py",
+      "metrics": {}
+    }
+  ]
 }

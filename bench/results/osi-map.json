@@ -1,0 +1,927 @@
+{
+  "schema": "osi-map/1",
+  "layers": {
+    "1": "physical",
+    "2": "data-link",
+    "3": "network",
+    "4": "transport",
+    "5": "session",
+    "6": "presentation",
+    "7": "application"
+  },
+  "robobus_layers": {
+    "shm_ring bus": {
+      "layer": 4,
+      "also": [
+        2
+      ],
+      "role": "host-local single-producer/multi-consumer ring transport"
+    },
+    "robobus.codec": {
+      "layer": 6,
+      "also": [],
+      "role": "self-describing frame [type][stamp_ns][payload] , presentation"
+    },
+    "crypto handshake": {
+      "layer": 5,
+      "also": [],
+      "role": "per-session PQC/hybrid key agreement (secure_session)"
+    },
+    "crypto per-message seal": {
+      "layer": 6,
+      "also": [],
+      "role": "AEAD encrypt/authenticate the codec output , presentation"
+    },
+    "ROS 1 adapter (rospy)": {
+      "layer": 7,
+      "also": [],
+      "role": "ROS 1 topics <-> bus (TCPROS runtime)"
+    },
+    "ROS 2 adapter (rclpy)": {
+      "layer": 7,
+      "also": [],
+      "role": "ROS 2 topics <-> bus (DDS/RTPS runtime)"
+    },
+    "LSL adapter (pylsl)": {
+      "layer": 7,
+      "also": [],
+      "role": "LabStreamingLayer inlets/outlets <-> bus"
+    }
+  },
+  "mobile_layers": {
+    "SS7 MAP": {
+      "layer": 7,
+      "also": [],
+      "role": "GSM/UMTS Mobile Application Part (over TCAP)"
+    },
+    "SS7 TCAP": {
+      "layer": 7,
+      "also": [],
+      "role": "Transaction Capabilities Application Part (over SCCP)"
+    },
+    "SS7 SCCP": {
+      "layer": 3,
+      "also": [
+        4
+      ],
+      "role": "Signalling Connection Control Part (network + connection-oriented)"
+    },
+    "SS7 MTP3": {
+      "layer": 3,
+      "also": [],
+      "role": "Message Transfer Part level 3 (signalling network layer)"
+    },
+    "SIGTRAN M3UA/SCTP": {
+      "layer": 4,
+      "also": [
+        3
+      ],
+      "role": "MTP3 user adaptation over SCTP (SS7-over-IP transport)"
+    },
+    "Diameter": {
+      "layer": 7,
+      "also": [],
+      "role": "3GPP AAA (S6a/S6d/Gx/...) over SCTP/TCP"
+    },
+    "5G SBI (HTTP/2)": {
+      "layer": 7,
+      "also": [
+        6
+      ],
+      "role": "Service-Based Interface: REST/JSON over HTTP/2 (Open5GS-style NFs)"
+    }
+  },
+  "transports": {
+    "udp": {
+      "layer": 4,
+      "also": []
+    },
+    "tcp": {
+      "layer": 4,
+      "also": []
+    },
+    "serial": {
+      "layer": 1,
+      "also": [
+        2
+      ]
+    },
+    "can": {
+      "layer": 2,
+      "also": [
+        1
+      ]
+    },
+    "mqtt": {
+      "layer": 7,
+      "also": []
+    },
+    "amqp": {
+      "layer": 7,
+      "also": []
+    },
+    "kafka": {
+      "layer": 7,
+      "also": []
+    },
+    "nats": {
+      "layer": 7,
+      "also": []
+    },
+    "redis": {
+      "layer": 7,
+      "also": []
+    },
+    "zenoh": {
+      "layer": 7,
+      "also": [
+        5
+      ]
+    },
+    "ws": {
+      "layer": 7,
+      "also": [
+        6
+      ]
+    },
+    "grpc": {
+      "layer": 7,
+      "also": [
+        6
+      ]
+    },
+    "nng": {
+      "layer": 5,
+      "also": []
+    },
+    "zmq": {
+      "layer": 5,
+      "also": [
+        6
+      ]
+    },
+    "zcm": {
+      "layer": 6,
+      "also": [
+        7
+      ]
+    },
+    "dds": {
+      "layer": 6,
+      "also": [
+        4
+      ]
+    }
+  },
+  "protocols": {
+    "abtag": {
+      "layer": 7,
+      "also": []
+    },
+    "ach": {
+      "layer": 7,
+      "also": []
+    },
+    "ads": {
+      "layer": 7,
+      "also": []
+    },
+    "arinc429": {
+      "layer": 2,
+      "also": [
+        1
+      ]
+    },
+    "arinc615a": {
+      "layer": 7,
+      "also": [
+        4
+      ]
+    },
+    "arinc629": {
+      "layer": 2,
+      "also": [
+        1
+      ]
+    },
+    "arinc653": {
+      "layer": 7,
+      "also": []
+    },
+    "arinc664": {
+      "layer": 2,
+      "also": []
+    },
+    "arinc708": {
+      "layer": 2,
+      "also": [
+        1
+      ]
+    },
+    "arinc717": {
+      "layer": 2,
+      "also": [
+        1
+      ]
+    },
+    "arinc818": {
+      "layer": 2,
+      "also": [
+        1
+      ]
+    },
+    "arinc825": {
+      "layer": 7,
+      "also": [
+        2
+      ]
+    },
+    "arrowflight": {
+      "layer": 7,
+      "also": [
+        6
+      ]
+    },
+    "bacnet": {
+      "layer": 7,
+      "also": []
+    },
+    "bacnet_mstp": {
+      "layer": 2,
+      "also": []
+    },
+    "bfd": {
+      "layer": 3,
+      "also": [
+        4
+      ]
+    },
+    "bgp": {
+      "layer": 7,
+      "also": [
+        3
+      ]
+    },
+    "canaerospace": {
+      "layer": 7,
+      "also": [
+        2
+      ]
+    },
+    "canopen": {
+      "layer": 7,
+      "also": [
+        2
+      ]
+    },
+    "ccsds": {
+      "layer": 3,
+      "also": [
+        4
+      ]
+    },
+    "cfs": {
+      "layer": 7,
+      "also": []
+    },
+    "cot": {
+      "layer": 7,
+      "also": []
+    },
+    "dhcp": {
+      "layer": 7,
+      "also": []
+    },
+    "dnp3": {
+      "layer": 7,
+      "also": [
+        2
+      ]
+    },
+    "dns": {
+      "layer": 7,
+      "also": []
+    },
+    "doip": {
+      "layer": 7,
+      "also": []
+    },
+    "dtls": {
+      "layer": 5,
+      "also": [
+        6
+      ]
+    },
+    "dtn": {
+      "layer": 3,
+      "also": [
+        4,
+        7
+      ]
+    },
+    "dvbs2x": {
+      "layer": 2,
+      "also": [
+        1
+      ]
+    },
+    "eapol": {
+      "layer": 2,
+      "also": []
+    },
+    "ecpri": {
+      "layer": 2,
+      "also": [
+        7
+      ]
+    },
+    "ethernetip": {
+      "layer": 7,
+      "also": []
+    },
+    "fins": {
+      "layer": 7,
+      "also": []
+    },
+    "fix": {
+      "layer": 7,
+      "also": [
+        5
+      ]
+    },
+    "geneve": {
+      "layer": 2,
+      "also": [
+        4
+      ]
+    },
+    "gmsec": {
+      "layer": 7,
+      "also": []
+    },
+    "goose": {
+      "layer": 2,
+      "also": []
+    },
+    "gre": {
+      "layer": 3,
+      "also": []
+    },
+    "hartip": {
+      "layer": 7,
+      "also": []
+    },
+    "iec60870": {
+      "layer": 7,
+      "also": []
+    },
+    "ipfix": {
+      "layer": 7,
+      "also": []
+    },
+    "ipsec": {
+      "layer": 3,
+      "also": [
+        5
+      ]
+    },
+    "irig106": {
+      "layer": 6,
+      "also": [
+        2,
+        7
+      ]
+    },
+    "iscsi": {
+      "layer": 5,
+      "also": [
+        7
+      ]
+    },
+    "isis": {
+      "layer": 2,
+      "also": [
+        3
+      ]
+    },
+    "iso20022": {
+      "layer": 7,
+      "also": []
+    },
+    "iso7816": {
+      "layer": 7,
+      "also": [
+        6
+      ]
+    },
+    "iso8583": {
+      "layer": 7,
+      "also": []
+    },
+    "isotp": {
+      "layer": 4,
+      "also": [
+        2
+      ]
+    },
+    "j1939": {
+      "layer": 7,
+      "also": [
+        2
+      ]
+    },
+    "klv": {
+      "layer": 6,
+      "also": []
+    },
+    "lldp": {
+      "layer": 2,
+      "also": []
+    },
+    "macsec": {
+      "layer": 2,
+      "also": []
+    },
+    "meshcore": {
+      "layer": 7,
+      "also": [
+        3,
+        1
+      ]
+    },
+    "meshtastic": {
+      "layer": 7,
+      "also": [
+        3,
+        1
+      ]
+    },
+    "mil1553": {
+      "layer": 2,
+      "also": [
+        1
+      ]
+    },
+    "modbus": {
+      "layer": 7,
+      "also": []
+    },
+    "momal": {
+      "layer": 7,
+      "also": []
+    },
+    "netconf": {
+      "layer": 7,
+      "also": []
+    },
+    "nmea0183": {
+      "layer": 7,
+      "also": []
+    },
+    "nmea2000": {
+      "layer": 7,
+      "also": [
+        2
+      ]
+    },
+    "ntp": {
+      "layer": 7,
+      "also": []
+    },
+    "obd2": {
+      "layer": 7,
+      "also": [
+        4
+      ]
+    },
+    "omci": {
+      "layer": 7,
+      "also": []
+    },
+    "opcua": {
+      "layer": 7,
+      "also": []
+    },
+    "openc2": {
+      "layer": 7,
+      "also": []
+    },
+    "openplc": {
+      "layer": 7,
+      "also": []
+    },
+    "ospf": {
+      "layer": 3,
+      "also": []
+    },
+    "palantir": {
+      "layer": 7,
+      "also": []
+    },
+    "pim": {
+      "layer": 3,
+      "also": []
+    },
+    "profinet": {
+      "layer": 2,
+      "also": [
+        7
+      ]
+    },
+    "ptp": {
+      "layer": 2,
+      "also": [
+        3,
+        7
+      ]
+    },
+    "pus": {
+      "layer": 7,
+      "also": []
+    },
+    "qkd": {
+      "layer": 7,
+      "also": [
+        1
+      ]
+    },
+    "qrl": {
+      "layer": 7,
+      "also": []
+    },
+    "quic": {
+      "layer": 4,
+      "also": [
+        5,
+        6
+      ]
+    },
+    "radius": {
+      "layer": 7,
+      "also": []
+    },
+    "rtp": {
+      "layer": 5,
+      "also": [
+        4
+      ]
+    },
+    "rtsp": {
+      "layer": 7,
+      "also": []
+    },
+    "s7comm": {
+      "layer": 7,
+      "also": []
+    },
+    "sdls": {
+      "layer": 2,
+      "also": []
+    },
+    "securertp": {
+      "layer": 5,
+      "also": [
+        6
+      ]
+    },
+    "sff_dom": {
+      "layer": 1,
+      "also": []
+    },
+    "sip": {
+      "layer": 7,
+      "also": [
+        5
+      ]
+    },
+    "sle": {
+      "layer": 7,
+      "also": []
+    },
+    "slmp": {
+      "layer": 7,
+      "also": []
+    },
+    "snmp": {
+      "layer": 7,
+      "also": []
+    },
+    "someip": {
+      "layer": 7,
+      "also": []
+    },
+    "spacefibre": {
+      "layer": 2,
+      "also": [
+        1
+      ]
+    },
+    "spacewire": {
+      "layer": 2,
+      "also": [
+        1
+      ]
+    },
+    "sphinx": {
+      "layer": 5,
+      "also": [
+        7
+      ]
+    },
+    "srtp": {
+      "layer": 5,
+      "also": [
+        6
+      ]
+    },
+    "ssh": {
+      "layer": 5,
+      "also": [
+        6
+      ]
+    },
+    "stanag4609": {
+      "layer": 7,
+      "also": [
+        6
+      ]
+    },
+    "stix": {
+      "layer": 7,
+      "also": []
+    },
+    "sunspec": {
+      "layer": 7,
+      "also": []
+    },
+    "swift_mt": {
+      "layer": 7,
+      "also": []
+    },
+    "syslog": {
+      "layer": 7,
+      "also": []
+    },
+    "tdl": {
+      "layer": 7,
+      "also": [
+        2
+      ]
+    },
+    "tls": {
+      "layer": 5,
+      "also": [
+        6
+      ]
+    },
+    "tmtc": {
+      "layer": 7,
+      "also": []
+    },
+    "tor": {
+      "layer": 5,
+      "also": [
+        7
+      ]
+    },
+    "tpm2": {
+      "layer": 7,
+      "also": []
+    },
+    "uds": {
+      "layer": 7,
+      "also": [
+        4
+      ]
+    },
+    "vrrp": {
+      "layer": 3,
+      "also": []
+    },
+    "vxlan": {
+      "layer": 2,
+      "also": [
+        4
+      ]
+    },
+    "wireguard": {
+      "layer": 3,
+      "also": []
+    },
+    "xcp": {
+      "layer": 7,
+      "also": []
+    }
+  },
+  "by_layer": {
+    "1": {
+      "count_protocols": 1,
+      "protocols": [
+        "sff_dom"
+      ],
+      "transports": [
+        "serial"
+      ],
+      "robobus": [],
+      "mobile": []
+    },
+    "2": {
+      "count_protocols": 22,
+      "protocols": [
+        "arinc429",
+        "arinc629",
+        "arinc664",
+        "arinc708",
+        "arinc717",
+        "arinc818",
+        "bacnet_mstp",
+        "dvbs2x",
+        "eapol",
+        "ecpri",
+        "geneve",
+        "goose",
+        "isis",
+        "lldp",
+        "macsec",
+        "mil1553",
+        "profinet",
+        "ptp",
+        "sdls",
+        "spacefibre",
+        "spacewire",
+        "vxlan"
+      ],
+      "transports": [
+        "can"
+      ],
+      "robobus": [],
+      "mobile": []
+    },
+    "3": {
+      "count_protocols": 9,
+      "protocols": [
+        "bfd",
+        "ccsds",
+        "dtn",
+        "gre",
+        "ipsec",
+        "ospf",
+        "pim",
+        "vrrp",
+        "wireguard"
+      ],
+      "transports": [],
+      "robobus": [],
+      "mobile": [
+        "SS7 MTP3",
+        "SS7 SCCP"
+      ]
+    },
+    "4": {
+      "count_protocols": 2,
+      "protocols": [
+        "isotp",
+        "quic"
+      ],
+      "transports": [
+        "tcp",
+        "udp"
+      ],
+      "robobus": [
+        "shm_ring bus"
+      ],
+      "mobile": [
+        "SIGTRAN M3UA/SCTP"
+      ]
+    },
+    "5": {
+      "count_protocols": 9,
+      "protocols": [
+        "dtls",
+        "iscsi",
+        "rtp",
+        "securertp",
+        "sphinx",
+        "srtp",
+        "ssh",
+        "tls",
+        "tor"
+      ],
+      "transports": [
+        "nng",
+        "zmq"
+      ],
+      "robobus": [
+        "crypto handshake"
+      ],
+      "mobile": []
+    },
+    "6": {
+      "count_protocols": 2,
+      "protocols": [
+        "irig106",
+        "klv"
+      ],
+      "transports": [
+        "dds",
+        "zcm"
+      ],
+      "robobus": [
+        "crypto per-message seal",
+        "robobus.codec"
+      ],
+      "mobile": []
+    },
+    "7": {
+      "count_protocols": 63,
+      "protocols": [
+        "abtag",
+        "ach",
+        "ads",
+        "arinc615a",
+        "arinc653",
+        "arinc825",
+        "arrowflight",
+        "bacnet",
+        "bgp",
+        "canaerospace",
+        "canopen",
+        "cfs",
+        "cot",
+        "dhcp",
+        "dnp3",
+        "dns",
+        "doip",
+        "ethernetip",
+        "fins",
+        "fix",
+        "gmsec",
+        "hartip",
+        "iec60870",
+        "ipfix",
+        "iso20022",
+        "iso7816",
+        "iso8583",
+        "j1939",
+        "meshcore",
+        "meshtastic",
+        "modbus",
+        "momal",
+        "netconf",
+        "nmea0183",
+        "nmea2000",
+        "ntp",
+        "obd2",
+        "omci",
+        "opcua",
+        "openc2",
+        "openplc",
+        "palantir",
+        "pus",
+        "qkd",
+        "qrl",
+        "radius",
+        "rtsp",
+        "s7comm",
+        "sip",
+        "sle",
+        "slmp",
+        "snmp",
+        "someip",
+        "stanag4609",
+        "stix",
+        "sunspec",
+        "swift_mt",
+        "syslog",
+        "tdl",
+        "tmtc",
+        "tpm2",
+        "uds",
+        "xcp"
+      ],
+      "transports": [
+        "amqp",
+        "grpc",
+        "kafka",
+        "mqtt",
+        "nats",
+        "redis",
+        "ws",
+        "zenoh"
+      ],
+      "robobus": [
+        "LSL adapter (pylsl)",
+        "ROS 1 adapter (rospy)",
+        "ROS 2 adapter (rclpy)"
+      ],
+      "mobile": [
+        "5G SBI (HTTP/2)",
+        "Diameter",
+        "SS7 MAP",
+        "SS7 TCAP"
+      ]
+    }
+  },
+  "unclassified": [],
+  "stale": []
+}

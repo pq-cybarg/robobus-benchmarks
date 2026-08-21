@@ -1,0 +1,33 @@
+{
+  "schema": "robobus-loopback-ceiling/1",
+  "frame_bytes": 77,
+  "seconds": 2.0,
+  "reps": 4,
+  "note": "NO physical PHY (memory/kernel bandwidth, not a wire rate). Real device wire rates: bench/serial_max.py. The cap tracks the implementation, not the hardware.",
+  "impls": {
+    "pyserial loop://": {
+      "mode": "queue",
+      "gb_per_s": 0.001
+    },
+    "CPython os.pipe": {
+      "mode": "pipe",
+      "gb_per_s": 1.43
+    },
+    "C pipe": {
+      "mode": "pipe",
+      "gb_per_s": 6.678
+    },
+    "C memcpy (SHM-class)": {
+      "mode": "memcpy",
+      "gb_per_s": 42.04
+    },
+    "Codon pipe": {
+      "mode": "pipe",
+      "gb_per_s": 7.012
+    },
+    "Codon memcpy (SHM-class)": {
+      "mode": "memcpy",
+      "gb_per_s": 41.566
+    }
+  }
+}

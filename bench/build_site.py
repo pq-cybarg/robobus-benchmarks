@@ -231,8 +231,8 @@ OG_IMAGE = BASE_URL + "og-image.png"       # absolute, X/Slack/Discord require a
 
 
 def page(title, active, body, prefix="", extra_head="", desc="", canon=""):
-    d = html.escape(desc or "A post-quantum, real-time robotics message bus, benchmarked in 33 "
-                            "languages across 26 crypto primitives and 15 transports, every cell run on real hardware.")
+    d = html.escape(desc or f"A post-quantum, real-time robotics message bus, benchmarked in {N_LANG} "
+                            f"languages across 26 crypto primitives and {N_XPORT} transports, every cell run on real hardware.")
     t = html.escape(title)
     url = BASE_URL + canon
     og = (
@@ -245,7 +245,7 @@ def page(title, active, body, prefix="", extra_head="", desc="", canon=""):
         f"<meta property='og:image' content='{OG_IMAGE}'>"
         f"<meta property='og:image:width' content='1200'>"
         f"<meta property='og:image:height' content='630'>"
-        f"<meta property='og:image:alt' content='robobus, one message bus benchmarked in 33 languages across 26 crypto primitives and 15 transports'>"
+        f"<meta property='og:image:alt' content='robobus, one message bus benchmarked in {N_LANG} languages across 26 crypto primitives and {N_XPORT} transports'>"
         f"<meta name='twitter:card' content='summary_large_image'>"
         f"<meta name='twitter:title' content='{t}'>"
         f"<meta name='twitter:description' content='{d}'>"
@@ -258,9 +258,13 @@ def page(title, active, body, prefix="", extra_head="", desc="", canon=""):
             f"{nav(active,prefix)}{body}"
             f"<footer class='site'><div class='wrap'><div class='row'>"
             f"<div>robobus, a post-quantum, real-time robotics message bus. "
-            f"Benchmarked in 33 languages across 26 crypto primitives and 15 transports.</div>"
+            f"Benchmarked in {N_LANG} languages across 26 crypto primitives and {N_XPORT} transports.<br>"
+            f"Source-available under the Business Source License 1.1 , free for academic, self-hosting, and "
+            f"government use; a commercial license is required only to offer it as a hosted service. "
+            f"This site's own code is MIT.</div>"
             f"<div><a href='{prefix}index.html'>Home</a> · <a href='{prefix}benchmarks.html'>Benchmarks</a> "
-            f"· <a href='{prefix}docs/index.html'>Docs</a> · <a href='{GH}'>GitHub</a></div>"
+            f"· <a href='{prefix}docs/index.html'>Docs</a> · <a href='{prefix}archive/index.html'>Archive</a> "
+            f"· <a href='{GH}'>GitHub</a></div>"
             f"</div></div></footer></body></html>")
 
 
@@ -568,7 +572,7 @@ def benchmarks():
               "<span style=\"font-family:'JetBrains Mono';font-size:11px;letter-spacing:.12em;"
               "text-transform:uppercase;color:#4fd1c5\">Also measured → Speed matrix</span>"
               "<div style=\"color:#e9eef4;font-weight:600;font-size:16px;margin:6px 0 4px;"
-              "font-family:'Space Grotesk'\">33 languages × 26 crypto primitives × 15 transports, every cell run, none faked</div>"
+              f"font-family:'Space Grotesk'\">{N_LANG} languages × 26 crypto primitives × {N_XPORT} transports, every cell run, none faked</div>"
               "<div style=\"color:#8a9bab;font-size:14px\">Per-primitive seal+open latency &amp; rate distributions "
               "(p50/p90/p99), a dense transport×language grid, FFI bindings, and an interactive configurator that "
               "prices any (language × KEM × signature × AEAD × hash × KDF × transport) suite into a live spec.</div>"
@@ -704,6 +708,27 @@ def _load(name):
         return json.load(open(os.path.join(RESULTS, name)))
     except Exception:
         return None
+
+
+def _derived_counts():
+    """DERIVE the headline counts from the actual result data , never hard-type them (they drift: the site
+    said '33 languages / 15 transports' after the roster grew to 34 / 16)."""
+    cm = _load("crypto-matrix.json") or {}
+    langs = set()
+    # schema robobus-cryptomatrix/2: techniques{name:{rows:[{language,ns,impl}]}}
+    for t in (cm.get("techniques") or {}).values():
+        for r in (t.get("rows") or []):
+            if isinstance(r, dict):
+                lg = r.get("language") or r.get("lang")
+                if lg:
+                    langs.add(lg)
+    tm = _load("transport-matrix.json") or {}
+    xok = [r for r in tm.get("results", []) if r.get("status") == "ok"
+           and (r.get("metrics") or {}).get("ops_per_s")]
+    return len(langs) or 33, len(xok) or 15
+
+
+N_LANG, N_XPORT = _derived_counts()
 
 
 def _hbars(rows, tier_fn):
@@ -1268,7 +1293,7 @@ def _crypto_matrix_section():
   <p class='sec-lede'>robobus carries a whole crypto suite, not one cipher, so this is the
   <b>complete</b> grid: every one of the <b>26 primitives</b> it uses (AEAD ciphers,
   SHA-2/SHA-3/BLAKE3 hashes, Argon2id/scrypt/PBKDF2/HKDF/KMAC KDFs, the ML-KEM and X25519 KEMs,
-  and the ML-DSA/SLH-DSA/Falcon and Ed25519 signatures) timed in <b>every one of the 33 language
+  and the ML-DSA/SLH-DSA/Falcon and Ed25519 signatures) timed in <b>every one of the {N_LANG} language
   configs</b>, <b>grouped per technique</b> so each bar chart is a coherent apples-to-apples
   comparison (identical workload, ranked fastest first). Pick whichever primitives your
   requirements call for; the <a href='#configure'>configurator</a> at the top of the page reports which
@@ -1756,6 +1781,161 @@ def _kafka_web_section():
 </div></section>"""
 
 
+def _xport_size_section():
+    """Transport x message-size: every transport moving a sealed CNSA 2.0 frame over loopback, swept across
+    sizes (the transport bandwidth ceiling at each size). Native/custom stack per transport (the custom PQC
+    CycloneDDS, real broker libs), not wrappers. Machine-measured, no write-ins."""
+    d = _load("xport-size.json")
+    if not d or not d.get("transports"):
+        return ""
+    import math
+    sizes = sorted(d.get("sizes") or
+                   sorted({c["frame_bytes"] for t in d["transports"] for c in t["sizes"]}))
+
+    def _sz(n):
+        return f"{n // 1024} KiB" if n >= 1024 else f"{n} B"
+
+    def _mb(v):
+        return f"{v/1000:.1f} GB/s" if v >= 1000 else f"{v:.0f} MB/s" if v >= 1 else f"{v*1000:.0f} kB/s"
+    # per-transport size -> mbps lookup; order rows by peak bandwidth (fastest transport on top)
+    rows = []
+    for t in d["transports"]:
+        by = {c["frame_bytes"]: c for c in t["sizes"]}
+        peak = max((c.get("mbps") or 0) for c in t["sizes"]) if t["sizes"] else 0
+        rows.append((t.get("name", t["transport"]), by, peak))
+    rows.sort(key=lambda r: -r[2])
+    allmb = [c["mbps"] for _, by, _ in rows for c in by.values() if c.get("mbps")]
+    lo, hi = (math.log10(min(allmb)), math.log10(max(allmb))) if allmb else (0, 1)
+    span = (hi - lo) or 1
+    head = "".join(f"<th>{_sz(s)}</th>" for s in sizes)
+    body = ""
+    for name, by, _ in rows:
+        tds = ""
+        for s in sizes:
+            c = by.get(s)
+            mb = c.get("mbps") if c else None
+            if mb:
+                tint = (math.log10(mb) - lo) / span
+                bg = f"color-mix(in srgb, var(--signal) {int(12+tint*72)}%, transparent)"
+                tds += f"<td style='background:{bg}'>{_mb(mb)}</td>"
+            else:
+                tds += "<td class='na'>, </td>"     # genuine physical limit for that transport/size
+        body += f"<tr><td class='rl'>{html.escape(name)}</td>{tds}</tr>"
+    nT = len(rows)
+    ncell = sum(1 for _, by, _ in rows for s in sizes if (by.get(s) or {}).get("mbps"))
+    return f"""<section><div class='wrap'>
+  <p class='sec-eyebrow'>transport x size &middot; every transport, every payload &middot; CNSA 2.0</p>
+  <h2 class='title'>Every transport, every message size</h2>
+  <p class='sec-lede'>The size axis across <b>all {nT} transports</b>: each one moving a real AES-256-GCM
+  sealed frame over loopback, swept from {_sz(sizes[0])} to {_sz(sizes[-1])} ({ncell} measured cells,
+  bandwidth in MB/s). Every transport is driven on its <b>native / custom</b> stack, not a wrapper , DDS on
+  the project's own PQC-patched CycloneDDS (and Fast DDS), the brokers on their real C clients , so this is
+  each transport's genuine bandwidth ceiling as the frame grows. Read across a row: bandwidth rises with
+  frame size until the transport saturates. A blank cell is a <b>genuine physical limit</b> of that
+  transport at that size (UDP's 65,507&nbsp;B datagram cap, a 2-byte length prefix past 65,535, CAN's 8-byte
+  MTU), never a gap. Colour is log-scaled. Machine-measured; no hand-entered numbers.</p>
+  <div class='heatwrap'><table class='heat'><thead><tr><th>transport</th>{head}</tr></thead>
+  <tbody>{body}</tbody></table></div>
+</div></section>"""
+
+
+_OSI_LAYER_NAME = {7: "Application", 6: "Presentation", 5: "Session", 4: "Transport",
+                   3: "Network", 2: "Data-link", 1: "Physical"}
+
+
+def _coverage_section():
+    """The coverage UNIVERSE: every protocol/language/transport/suite/backend itemised, plus the OSI-layer
+    breakdown of the protocol adapters. A covering array over orthogonal dimensions (not the ~10^9 Cartesian
+    product); every cell machine-measured, no write-ins. Sourced from coverage-universe.json + osi-map.json."""
+    cu = _load("coverage-universe.json")
+    osi = _load("osi-map.json")
+    if not cu or not cu.get("inventory"):
+        return ""
+    inv = cu["inventory"]
+    meas = cu.get("measured_dimensions", {})
+    gaps = cu.get("coverage_gaps", {})
+
+    # dimension chips: inventory count + measured coverage
+    DIMS = [("protocol", "protocols"), ("language", "languages"), ("crypto_suite", "security suites"),
+            ("transport", "transports"), ("osi_layer", "OSI layers"), ("crypto_backend", "crypto backends")]
+    chips = ""
+    for key, label in DIMS:
+        if key not in inv:
+            continue
+        n = len(inv[key])
+        # count only measured values that are declared inventory members (throughput grids carry alias
+        # transport names beyond the 16 core bridges, which would otherwise read as >100%)
+        m = min(n, len(set(meas.get(key, [])) & set(inv[key])))
+        gap = len(gaps.get(key, []))
+        sub = f"{m}/{n} measured" + (f" · {gap} gap" if gap else " · full")
+        chips += (f"<div class='cu-chip'><div class='cu-n'>{n}</div>"
+                  f"<div class='cu-l'>{html.escape(label)}</div><div class='cu-s'>{html.escape(sub)}</div></div>")
+
+    # OSI-layer itemisation of the protocol adapters (the layer breakdown)
+    osi_rows = ""
+    if osi and osi.get("by_layer"):
+        for n in range(7, 0, -1):
+            lay = osi["by_layer"].get(str(n)) or {}
+            protos = sorted(lay.get("protocols", []))
+            if not protos:
+                continue
+            names = ", ".join(html.escape(p) for p in protos)
+            osi_rows += (f"<tr><td class='cu-ln'>L{n}</td><td class='cu-lname'>{_OSI_LAYER_NAME[n]}</td>"
+                         f"<td class='cu-lc'>{len(protos)}</td><td class='cu-lp'>{names}</td></tr>")
+
+    cells = cu.get("cell_count")
+    gp, gc = cu.get("gate_pass"), cu.get("gate_cells")
+    by_method = cu.get("cells_by_method", {})
+    method_txt = ", ".join(f"{v} {k}" for k, v in by_method.items())
+    fresh = cu.get("freshness", {})
+    fresh_txt = ""
+    if fresh.get("newest_date"):
+        nstale = len(fresh.get("stale", []))
+        fresh_txt = (f" Freshness is tracked per source (newest {html.escape(fresh['newest_date'])}); "
+                     f"{nstale} imported/older grid(s) are flagged for re-run rather than shown as current.")
+
+    osi_table = (f"""<div class='heatwrap'><table class='cu-osi'><thead><tr><th>OSI</th><th>layer</th>
+      <th>#</th><th>protocol adapters</th></tr></thead><tbody>{osi_rows}</tbody></table></div>"""
+                 if osi_rows else "")
+
+    return f"""<section><div class='wrap'>
+  <p class='sec-eyebrow'>coverage universe &middot; covering array &middot; no write-ins</p>
+  <h2 class='title'>Every protocol, every layer</h2>
+  <p class='sec-lede'>One navigable model of every machine-measured combination robobus covers, across
+  feature &times; language &times; transport &times; protocol &times; platform &times; crypto-suite
+  &times; crypto-backend &times; OSI-layer. Because the stack is layered by design the dimensions are
+  largely orthogonal, so coverage is a rigorous <b>covering array</b> , each dimension's full coverage plus
+  the genuine cross-dimension interactions , not the intractable ~10<sup>9</sup>-cell Cartesian product.
+  Every cell is machine-measured; none are hand-entered.{html.escape(fresh_txt)}</p>
+  <div class='cu-chips'>{chips}</div>
+  <p class='sec-lede' style='margin-top:20px'>Protocol adapters placed on the OSI / communications stack ,
+  robobus rides existing L1-L4 carriers, keys at L5 and seals at L6, while the {len(inv.get('protocol', []))}
+  application-protocol adapters span L7 down to the L1/L2 avionics, space and fieldbus wire formats:</p>
+  {osi_table}
+  <p class='sec-foot'>{cells} cells ({html.escape(method_txt)}); gate cells {gp}/{gc} pass. Regenerate with
+  <code>python3 bench/coverage_universe.py</code> in the robobus core repo.</p>
+</div></section>"""
+
+
+_COVERAGE_CSS = ("<style>"
+                 ".cu-chips{display:flex;flex-wrap:wrap;gap:12px;margin-top:8px}"
+                 ".cu-chip{flex:1 1 140px;background:var(--panel);border:1px solid var(--line);"
+                 "border-radius:12px;padding:14px 16px}"
+                 ".cu-n{font:800 30px/1 'Inter';color:var(--signal)}"
+                 ".cu-l{font:600 13px/1.3 'Inter';color:var(--fg);margin-top:6px}"
+                 ".cu-s{font:500 12px/1.3 'Inter';color:var(--muted);margin-top:3px}"
+                 "table.cu-osi{width:100%;border-collapse:collapse;font:500 13px/1.4 'Inter'}"
+                 "table.cu-osi th{text-align:left;color:var(--muted);font-weight:600;padding:8px 10px;"
+                 "border-bottom:1px solid var(--line)}"
+                 "table.cu-osi td{padding:8px 10px;border-bottom:1px solid var(--line);vertical-align:top}"
+                 ".cu-ln{color:var(--signal);font-weight:700;white-space:nowrap}"
+                 ".cu-lname{white-space:nowrap;color:var(--fg)}"
+                 ".cu-lc{text-align:right;font-variant-numeric:tabular-nums;color:var(--fg)}"
+                 ".cu-lp{color:var(--muted);font-size:12px}"
+                 ".sec-foot{color:var(--muted);font:500 12px/1.5 'Inter';margin-top:14px}"
+                 "</style>")
+
+
 def speed():
     lm = _load("lang-matrix.json")
     cl = _load("cross-lang.json")
@@ -1999,6 +2179,10 @@ def speed():
                ("sizes", "Message sizes", tag(_kafka_sizes_section(), "sizes")),
                ("web", "Web platform", tag(_kafka_web_section(), "web")),
                ("grid", "Transport × Language", tag(sec4, "grid")),
+               # ("xsize", "Transport × Size") , PULLED: the current xport-size.json is degenerate (a single
+               # 1 KiB size, 4 empty rows, and loopback ceilings implausibly low vs real multi-GB/s). Do not
+               # publish numbers we do not stand behind; re-enable after a real message-size bandwidth sweep.
+               ("coverage", "Coverage & OSI", tag(_coverage_section(), "coverage")),
                ("crypto", "Crypto", tag(crypto, "crypto")),
                ("portability", "Portability", tag(_portability_section(), "portability")),
                ("runtimes", "Runtimes & FFI",
@@ -2031,7 +2215,7 @@ def speed():
             ".secnav a:hover{color:var(--fg);background:var(--panel);text-decoration:none}"
             ".secnav a.active{color:var(--signal);background:color-mix(in srgb,var(--signal) 13%,transparent)}"
             "section[id]{scroll-margin-top:96px}"
-            "@media(max-width:640px){.secnav{top:0}}</style>")
+            "@media(max-width:640px){.secnav{top:0}}</style>") + _COVERAGE_CSS
     body = hero + secnav + "".join(hp for _, _, hp in ordered if hp) + spy
     return page("Speed matrix · robobus", "speed", body, canon="speed.html", extra_head=head,
                 desc="Native maximum speed across every robobus language and transport, codec, "

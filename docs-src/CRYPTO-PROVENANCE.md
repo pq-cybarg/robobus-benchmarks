@@ -11,7 +11,7 @@ integration, and integration is what should be reviewed, not primitives.**
 
 **Measured across every language.** The [Speed matrix](../speed.html) exercises all **26 of these
 primitives** (4 AEADs, 6 hashes, 5 KDF/MACs, 3 ML-KEM + X25519, 3 ML-DSA + SLH-DSA + 2 Falcon +
-Ed25519) in **33 language configs**, and every cell resolves to one of these audited providers, 
+Ed25519) in **34 language configs**, and every cell resolves to one of these audited providers, 
 each language uses its native stack where it has one (OpenSSL/CryptoKit/JCE/RustCrypto…), otherwise
 it reaches the *same* audited C through one labeled shim, `librbcrypto`, over **OpenSSL 3.6.3 +
 liboqs + libblake3**. Argon2id is known-answer-verified (byte-for-byte vs the PHC reference) in

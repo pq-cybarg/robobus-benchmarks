@@ -1,0 +1,180 @@
+{
+  "schema": "robobus-xport-size/1",
+  "generated_unix": 1785448492,
+  "host": {
+    "system": "Darwin",
+    "machine": "arm64"
+  },
+  "security": "CNSA 2.0 (AES-256-GCM sealed frame)",
+  "sizes": [
+    1024
+  ],
+  "note": "Every transport moving a real sealed frame over loopback, swept across message sizes (C-native / real middleware, each in an isolated subprocess). A null cell = the transport genuinely cannot carry that frame size (e.g. UDP >65507, a 2-byte length prefix >65535, CAN's 8-byte MTU). Machine-measured; no hand-entered numbers.",
+  "transports": [
+    {
+      "transport": "bus",
+      "name": "Shared-memory bus",
+      "sizes": [
+        {
+          "frame_bytes": 1024,
+          "frames_per_s": null,
+          "mbps": null
+        }
+      ]
+    },
+    {
+      "transport": "udp",
+      "name": "UDP",
+      "sizes": [
+        {
+          "frame_bytes": 1024,
+          "frames_per_s": 181819.29256876916,
+          "mbps": 186.18295559041962
+        }
+      ]
+    },
+    {
+      "transport": "tcp",
+      "name": "TCP",
+      "sizes": [
+        {
+          "frame_bytes": 1024,
+          "frames_per_s": 318571.1294786482,
+          "mbps": 326.21683658613574
+        }
+      ]
+    },
+    {
+      "transport": "serial",
+      "name": "Serial",
+      "sizes": [
+        {
+          "frame_bytes": 1024,
+          "frames_per_s": 1186.6561465643754,
+          "mbps": 1.2151358940819204
+        }
+      ]
+    },
+    {
+      "transport": "can",
+      "name": "CAN",
+      "sizes": [
+        {
+          "frame_bytes": 1024,
+          "frames_per_s": 2606.9414082035114,
+          "mbps": 2.669508002000396
+        }
+      ]
+    },
+    {
+      "transport": "zenoh",
+      "name": "Zenoh",
+      "sizes": [
+        {
+          "frame_bytes": 1024,
+          "frames_per_s": 762388.9732938192,
+          "mbps": 780.6863086528709
+        }
+      ]
+    },
+    {
+      "transport": "mqtt",
+      "name": "MQTT",
+      "sizes": [
+        {
+          "frame_bytes": 1024,
+          "frames_per_s": 47800.995507356514,
+          "mbps": 48.94821939953307
+        }
+      ]
+    },
+    {
+      "transport": "lsl",
+      "name": "LSL",
+      "sizes": [
+        {
+          "frame_bytes": 1024,
+          "frames_per_s": 0,
+          "mbps": null
+        }
+      ]
+    },
+    {
+      "transport": "amqp",
+      "name": "AMQP",
+      "sizes": [
+        {
+          "frame_bytes": 1024,
+          "frames_per_s": 22125.150239726445,
+          "mbps": 22.656153845479878
+        }
+      ]
+    },
+    {
+      "transport": "kafka",
+      "name": "Kafka",
+      "sizes": [
+        {
+          "frame_bytes": 1024,
+          "frames_per_s": 17746.806398300123,
+          "mbps": 18.172729751859325
+        }
+      ]
+    },
+    {
+      "transport": "dds",
+      "name": "DDS",
+      "sizes": [
+        {
+          "frame_bytes": 1024,
+          "frames_per_s": null,
+          "mbps": null
+        }
+      ]
+    },
+    {
+      "transport": "ros2",
+      "name": "ROS 2",
+      "sizes": [
+        {
+          "frame_bytes": 1024,
+          "frames_per_s": 538451.8,
+          "mbps": 551.3746432
+        }
+      ]
+    },
+    {
+      "transport": "ros2_cpp",
+      "name": "ROS 2 (C++)",
+      "sizes": [
+        {
+          "frame_bytes": 1024,
+          "frames_per_s": 348574.0,
+          "mbps": 356.939776
+        }
+      ]
+    },
+    {
+      "transport": "ros1",
+      "name": "ROS 1",
+      "sizes": [
+        {
+          "frame_bytes": 1024,
+          "frames_per_s": 54966.6,
+          "mbps": 56.2857984
+        }
+      ]
+    },
+    {
+      "transport": "zerocm",
+      "name": "ZeroCM",
+      "sizes": [
+        {
+          "frame_bytes": 1024,
+          "frames_per_s": null,
+          "mbps": null
+        }
+      ]
+    }
+  ]
+}

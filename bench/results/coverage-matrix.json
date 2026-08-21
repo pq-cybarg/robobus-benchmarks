@@ -1,0 +1,842 @@
+{
+ "schema": "robobus-coverage-matrix/1",
+ "adapters_registered": 108,
+ "arches": [
+  "arm64",
+  "x86_64",
+  "aarch64",
+  "riscv64",
+  "ppc64le",
+  "s390x(BE)",
+  "wasm32"
+ ],
+ "arch_count": 7,
+ "languages_total": 34,
+ "languages_passing": 34,
+ "c_ported": [
+  "abtag",
+  "ads",
+  "arinc429",
+  "arinc615a",
+  "arinc629",
+  "arinc653",
+  "arinc664",
+  "arinc708",
+  "arinc717",
+  "arinc818",
+  "arinc825",
+  "bacnet",
+  "bacnet_mstp",
+  "bgp",
+  "canaerospace",
+  "canopen",
+  "ccsds",
+  "cfs",
+  "cot",
+  "dnp3",
+  "doip",
+  "dtn",
+  "dvbs2x",
+  "ecpri",
+  "ethernetip",
+  "fins",
+  "gmsec",
+  "goose",
+  "hartip",
+  "iec60870",
+  "irig106",
+  "iso7816",
+  "isotp",
+  "j1939",
+  "klv",
+  "meshcore",
+  "meshtastic",
+  "mil1553",
+  "modbus",
+  "momal",
+  "nmea0183",
+  "nmea2000",
+  "obd2",
+  "omci",
+  "openc2",
+  "openplc",
+  "profinet",
+  "pus",
+  "s7comm",
+  "sdls",
+  "sff_dom",
+  "sle",
+  "slmp",
+  "someip",
+  "spacefibre",
+  "spacewire",
+  "srtp",
+  "stanag4609",
+  "stix",
+  "sunspec",
+  "tdl",
+  "tmtc",
+  "tpm2",
+  "uds"
+ ],
+ "c_ported_count": 64,
+ "cross_arch_adapters": 61,
+ "rows": [
+  {
+   "adapter": "abtag",
+   "py_ref": true,
+   "cross_arch": true,
+   "c_ported": true,
+   "cross_lang": "34/34"
+  },
+  {
+   "adapter": "ach",
+   "py_ref": true,
+   "cross_arch": false,
+   "c_ported": false,
+   "cross_lang": "1 (py-ref)"
+  },
+  {
+   "adapter": "ads",
+   "py_ref": true,
+   "cross_arch": true,
+   "c_ported": true,
+   "cross_lang": "34/34"
+  },
+  {
+   "adapter": "arinc429",
+   "py_ref": true,
+   "cross_arch": true,
+   "c_ported": true,
+   "cross_lang": "34/34"
+  },
+  {
+   "adapter": "arinc615a",
+   "py_ref": true,
+   "cross_arch": false,
+   "c_ported": true,
+   "cross_lang": "34/34"
+  },
+  {
+   "adapter": "arinc629",
+   "py_ref": true,
+   "cross_arch": false,
+   "c_ported": true,
+   "cross_lang": "34/34"
+  },
+  {
+   "adapter": "arinc653",
+   "py_ref": true,
+   "cross_arch": false,
+   "c_ported": true,
+   "cross_lang": "34/34"
+  },
+  {
+   "adapter": "arinc664",
+   "py_ref": true,
+   "cross_arch": true,
+   "c_ported": true,
+   "cross_lang": "34/34"
+  },
+  {
+   "adapter": "arinc708",
+   "py_ref": true,
+   "cross_arch": false,
+   "c_ported": true,
+   "cross_lang": "34/34"
+  },
+  {
+   "adapter": "arinc717",
+   "py_ref": true,
+   "cross_arch": true,
+   "c_ported": true,
+   "cross_lang": "34/34"
+  },
+  {
+   "adapter": "arinc818",
+   "py_ref": true,
+   "cross_arch": true,
+   "c_ported": true,
+   "cross_lang": "34/34"
+  },
+  {
+   "adapter": "arinc825",
+   "py_ref": true,
+   "cross_arch": true,
+   "c_ported": true,
+   "cross_lang": "34/34"
+  },
+  {
+   "adapter": "arrowflight",
+   "py_ref": true,
+   "cross_arch": false,
+   "c_ported": false,
+   "cross_lang": "1 (py-ref)"
+  },
+  {
+   "adapter": "bacnet",
+   "py_ref": true,
+   "cross_arch": true,
+   "c_ported": true,
+   "cross_lang": "34/34"
+  },
+  {
+   "adapter": "bacnet_mstp",
+   "py_ref": true,
+   "cross_arch": true,
+   "c_ported": true,
+   "cross_lang": "34/34"
+  },
+  {
+   "adapter": "bfd",
+   "py_ref": true,
+   "cross_arch": false,
+   "c_ported": false,
+   "cross_lang": "1 (py-ref)"
+  },
+  {
+   "adapter": "bgp",
+   "py_ref": true,
+   "cross_arch": false,
+   "c_ported": true,
+   "cross_lang": "34/34"
+  },
+  {
+   "adapter": "canaerospace",
+   "py_ref": true,
+   "cross_arch": true,
+   "c_ported": true,
+   "cross_lang": "34/34"
+  },
+  {
+   "adapter": "canopen",
+   "py_ref": true,
+   "cross_arch": true,
+   "c_ported": true,
+   "cross_lang": "34/34"
+  },
+  {
+   "adapter": "ccsds",
+   "py_ref": true,
+   "cross_arch": true,
+   "c_ported": true,
+   "cross_lang": "34/34"
+  },
+  {
+   "adapter": "cfs",
+   "py_ref": true,
+   "cross_arch": true,
+   "c_ported": true,
+   "cross_lang": "34/34"
+  },
+  {
+   "adapter": "cot",
+   "py_ref": true,
+   "cross_arch": true,
+   "c_ported": true,
+   "cross_lang": "34/34"
+  },
+  {
+   "adapter": "dhcp",
+   "py_ref": true,
+   "cross_arch": false,
+   "c_ported": false,
+   "cross_lang": "1 (py-ref)"
+  },
+  {
+   "adapter": "dnp3",
+   "py_ref": true,
+   "cross_arch": true,
+   "c_ported": true,
+   "cross_lang": "34/34"
+  },
+  {
+   "adapter": "dns",
+   "py_ref": true,
+   "cross_arch": false,
+   "c_ported": false,
+   "cross_lang": "1 (py-ref)"
+  },
+  {
+   "adapter": "doip",
+   "py_ref": true,
+   "cross_arch": false,
+   "c_ported": true,
+   "cross_lang": "34/34"
+  },
+  {
+   "adapter": "dtls",
+   "py_ref": true,
+   "cross_arch": false,
+   "c_ported": false,
+   "cross_lang": "1 (py-ref)"
+  },
+  {
+   "adapter": "dtn",
+   "py_ref": true,
+   "cross_arch": true,
+   "c_ported": true,
+   "cross_lang": "34/34"
+  },
+  {
+   "adapter": "dvbs2x",
+   "py_ref": true,
+   "cross_arch": false,
+   "c_ported": true,
+   "cross_lang": "34/34"
+  },
+  {
+   "adapter": "eapol",
+   "py_ref": true,
+   "cross_arch": false,
+   "c_ported": false,
+   "cross_lang": "1 (py-ref)"
+  },
+  {
+   "adapter": "ecpri",
+   "py_ref": true,
+   "cross_arch": true,
+   "c_ported": true,
+   "cross_lang": "34/34"
+  },
+  {
+   "adapter": "ethernetip",
+   "py_ref": true,
+   "cross_arch": true,
+   "c_ported": true,
+   "cross_lang": "34/34"
+  },
+  {
+   "adapter": "fins",
+   "py_ref": true,
+   "cross_arch": true,
+   "c_ported": true,
+   "cross_lang": "34/34"
+  },
+  {
+   "adapter": "fix",
+   "py_ref": true,
+   "cross_arch": false,
+   "c_ported": false,
+   "cross_lang": "1 (py-ref)"
+  },
+  {
+   "adapter": "geneve",
+   "py_ref": true,
+   "cross_arch": false,
+   "c_ported": false,
+   "cross_lang": "1 (py-ref)"
+  },
+  {
+   "adapter": "gmsec",
+   "py_ref": true,
+   "cross_arch": true,
+   "c_ported": true,
+   "cross_lang": "34/34"
+  },
+  {
+   "adapter": "goose",
+   "py_ref": true,
+   "cross_arch": true,
+   "c_ported": true,
+   "cross_lang": "34/34"
+  },
+  {
+   "adapter": "gre",
+   "py_ref": true,
+   "cross_arch": false,
+   "c_ported": false,
+   "cross_lang": "1 (py-ref)"
+  },
+  {
+   "adapter": "hartip",
+   "py_ref": true,
+   "cross_arch": true,
+   "c_ported": true,
+   "cross_lang": "34/34"
+  },
+  {
+   "adapter": "iec60870",
+   "py_ref": true,
+   "cross_arch": true,
+   "c_ported": true,
+   "cross_lang": "34/34"
+  },
+  {
+   "adapter": "ipfix",
+   "py_ref": true,
+   "cross_arch": false,
+   "c_ported": false,
+   "cross_lang": "1 (py-ref)"
+  },
+  {
+   "adapter": "ipsec",
+   "py_ref": true,
+   "cross_arch": false,
+   "c_ported": false,
+   "cross_lang": "1 (py-ref)"
+  },
+  {
+   "adapter": "irig106",
+   "py_ref": true,
+   "cross_arch": true,
+   "c_ported": true,
+   "cross_lang": "34/34"
+  },
+  {
+   "adapter": "iscsi",
+   "py_ref": true,
+   "cross_arch": false,
+   "c_ported": false,
+   "cross_lang": "1 (py-ref)"
+  },
+  {
+   "adapter": "isis",
+   "py_ref": true,
+   "cross_arch": false,
+   "c_ported": false,
+   "cross_lang": "1 (py-ref)"
+  },
+  {
+   "adapter": "iso20022",
+   "py_ref": true,
+   "cross_arch": false,
+   "c_ported": false,
+   "cross_lang": "1 (py-ref)"
+  },
+  {
+   "adapter": "iso7816",
+   "py_ref": true,
+   "cross_arch": true,
+   "c_ported": true,
+   "cross_lang": "34/34"
+  },
+  {
+   "adapter": "iso8583",
+   "py_ref": true,
+   "cross_arch": false,
+   "c_ported": false,
+   "cross_lang": "1 (py-ref)"
+  },
+  {
+   "adapter": "isotp",
+   "py_ref": true,
+   "cross_arch": true,
+   "c_ported": true,
+   "cross_lang": "34/34"
+  },
+  {
+   "adapter": "j1939",
+   "py_ref": true,
+   "cross_arch": true,
+   "c_ported": true,
+   "cross_lang": "34/34"
+  },
+  {
+   "adapter": "klv",
+   "py_ref": true,
+   "cross_arch": true,
+   "c_ported": true,
+   "cross_lang": "34/34"
+  },
+  {
+   "adapter": "lldp",
+   "py_ref": true,
+   "cross_arch": false,
+   "c_ported": false,
+   "cross_lang": "1 (py-ref)"
+  },
+  {
+   "adapter": "macsec",
+   "py_ref": true,
+   "cross_arch": false,
+   "c_ported": false,
+   "cross_lang": "1 (py-ref)"
+  },
+  {
+   "adapter": "meshcore",
+   "py_ref": true,
+   "cross_arch": true,
+   "c_ported": true,
+   "cross_lang": "34/34"
+  },
+  {
+   "adapter": "meshtastic",
+   "py_ref": true,
+   "cross_arch": true,
+   "c_ported": true,
+   "cross_lang": "34/34"
+  },
+  {
+   "adapter": "mil1553",
+   "py_ref": true,
+   "cross_arch": true,
+   "c_ported": true,
+   "cross_lang": "34/34"
+  },
+  {
+   "adapter": "modbus",
+   "py_ref": true,
+   "cross_arch": true,
+   "c_ported": true,
+   "cross_lang": "34/34"
+  },
+  {
+   "adapter": "momal",
+   "py_ref": true,
+   "cross_arch": true,
+   "c_ported": true,
+   "cross_lang": "34/34"
+  },
+  {
+   "adapter": "netconf",
+   "py_ref": true,
+   "cross_arch": false,
+   "c_ported": false,
+   "cross_lang": "1 (py-ref)"
+  },
+  {
+   "adapter": "nmea0183",
+   "py_ref": true,
+   "cross_arch": true,
+   "c_ported": true,
+   "cross_lang": "34/34"
+  },
+  {
+   "adapter": "nmea2000",
+   "py_ref": true,
+   "cross_arch": true,
+   "c_ported": true,
+   "cross_lang": "34/34"
+  },
+  {
+   "adapter": "ntp",
+   "py_ref": true,
+   "cross_arch": false,
+   "c_ported": false,
+   "cross_lang": "1 (py-ref)"
+  },
+  {
+   "adapter": "obd2",
+   "py_ref": true,
+   "cross_arch": true,
+   "c_ported": true,
+   "cross_lang": "34/34"
+  },
+  {
+   "adapter": "omci",
+   "py_ref": true,
+   "cross_arch": true,
+   "c_ported": true,
+   "cross_lang": "34/34"
+  },
+  {
+   "adapter": "opcua",
+   "py_ref": true,
+   "cross_arch": true,
+   "c_ported": false,
+   "cross_lang": "1 (py-ref)"
+  },
+  {
+   "adapter": "openc2",
+   "py_ref": true,
+   "cross_arch": true,
+   "c_ported": true,
+   "cross_lang": "34/34"
+  },
+  {
+   "adapter": "openplc",
+   "py_ref": true,
+   "cross_arch": false,
+   "c_ported": true,
+   "cross_lang": "34/34"
+  },
+  {
+   "adapter": "ospf",
+   "py_ref": true,
+   "cross_arch": false,
+   "c_ported": false,
+   "cross_lang": "1 (py-ref)"
+  },
+  {
+   "adapter": "palantir",
+   "py_ref": true,
+   "cross_arch": false,
+   "c_ported": false,
+   "cross_lang": "1 (py-ref)"
+  },
+  {
+   "adapter": "pim",
+   "py_ref": true,
+   "cross_arch": false,
+   "c_ported": false,
+   "cross_lang": "1 (py-ref)"
+  },
+  {
+   "adapter": "profinet",
+   "py_ref": true,
+   "cross_arch": true,
+   "c_ported": true,
+   "cross_lang": "34/34"
+  },
+  {
+   "adapter": "ptp",
+   "py_ref": true,
+   "cross_arch": false,
+   "c_ported": false,
+   "cross_lang": "1 (py-ref)"
+  },
+  {
+   "adapter": "pus",
+   "py_ref": true,
+   "cross_arch": true,
+   "c_ported": true,
+   "cross_lang": "34/34"
+  },
+  {
+   "adapter": "qkd",
+   "py_ref": true,
+   "cross_arch": true,
+   "c_ported": false,
+   "cross_lang": "1 (py-ref)"
+  },
+  {
+   "adapter": "qrl",
+   "py_ref": true,
+   "cross_arch": false,
+   "c_ported": false,
+   "cross_lang": "1 (py-ref)"
+  },
+  {
+   "adapter": "quic",
+   "py_ref": true,
+   "cross_arch": false,
+   "c_ported": false,
+   "cross_lang": "1 (py-ref)"
+  },
+  {
+   "adapter": "radius",
+   "py_ref": true,
+   "cross_arch": false,
+   "c_ported": false,
+   "cross_lang": "1 (py-ref)"
+  },
+  {
+   "adapter": "rtp",
+   "py_ref": true,
+   "cross_arch": true,
+   "c_ported": false,
+   "cross_lang": "1 (py-ref)"
+  },
+  {
+   "adapter": "rtsp",
+   "py_ref": true,
+   "cross_arch": true,
+   "c_ported": false,
+   "cross_lang": "1 (py-ref)"
+  },
+  {
+   "adapter": "s7comm",
+   "py_ref": true,
+   "cross_arch": true,
+   "c_ported": true,
+   "cross_lang": "34/34"
+  },
+  {
+   "adapter": "sdls",
+   "py_ref": true,
+   "cross_arch": true,
+   "c_ported": true,
+   "cross_lang": "34/34"
+  },
+  {
+   "adapter": "securertp",
+   "py_ref": true,
+   "cross_arch": false,
+   "c_ported": false,
+   "cross_lang": "1 (py-ref)"
+  },
+  {
+   "adapter": "sff_dom",
+   "py_ref": true,
+   "cross_arch": true,
+   "c_ported": true,
+   "cross_lang": "34/34"
+  },
+  {
+   "adapter": "sip",
+   "py_ref": true,
+   "cross_arch": true,
+   "c_ported": false,
+   "cross_lang": "1 (py-ref)"
+  },
+  {
+   "adapter": "sle",
+   "py_ref": true,
+   "cross_arch": true,
+   "c_ported": true,
+   "cross_lang": "34/34"
+  },
+  {
+   "adapter": "slmp",
+   "py_ref": true,
+   "cross_arch": true,
+   "c_ported": true,
+   "cross_lang": "34/34"
+  },
+  {
+   "adapter": "snmp",
+   "py_ref": true,
+   "cross_arch": false,
+   "c_ported": false,
+   "cross_lang": "1 (py-ref)"
+  },
+  {
+   "adapter": "someip",
+   "py_ref": true,
+   "cross_arch": true,
+   "c_ported": true,
+   "cross_lang": "34/34"
+  },
+  {
+   "adapter": "spacefibre",
+   "py_ref": true,
+   "cross_arch": true,
+   "c_ported": true,
+   "cross_lang": "34/34"
+  },
+  {
+   "adapter": "spacewire",
+   "py_ref": true,
+   "cross_arch": true,
+   "c_ported": true,
+   "cross_lang": "34/34"
+  },
+  {
+   "adapter": "sphinx",
+   "py_ref": true,
+   "cross_arch": false,
+   "c_ported": false,
+   "cross_lang": "1 (py-ref)"
+  },
+  {
+   "adapter": "srtp",
+   "py_ref": true,
+   "cross_arch": true,
+   "c_ported": true,
+   "cross_lang": "34/34"
+  },
+  {
+   "adapter": "ssh",
+   "py_ref": true,
+   "cross_arch": false,
+   "c_ported": false,
+   "cross_lang": "1 (py-ref)"
+  },
+  {
+   "adapter": "stanag4609",
+   "py_ref": true,
+   "cross_arch": true,
+   "c_ported": true,
+   "cross_lang": "34/34"
+  },
+  {
+   "adapter": "stix",
+   "py_ref": true,
+   "cross_arch": true,
+   "c_ported": true,
+   "cross_lang": "34/34"
+  },
+  {
+   "adapter": "sunspec",
+   "py_ref": true,
+   "cross_arch": true,
+   "c_ported": true,
+   "cross_lang": "34/34"
+  },
+  {
+   "adapter": "swift_mt",
+   "py_ref": true,
+   "cross_arch": false,
+   "c_ported": false,
+   "cross_lang": "1 (py-ref)"
+  },
+  {
+   "adapter": "syslog",
+   "py_ref": true,
+   "cross_arch": false,
+   "c_ported": false,
+   "cross_lang": "1 (py-ref)"
+  },
+  {
+   "adapter": "tdl",
+   "py_ref": true,
+   "cross_arch": true,
+   "c_ported": true,
+   "cross_lang": "34/34"
+  },
+  {
+   "adapter": "tls",
+   "py_ref": true,
+   "cross_arch": false,
+   "c_ported": false,
+   "cross_lang": "1 (py-ref)"
+  },
+  {
+   "adapter": "tmtc",
+   "py_ref": true,
+   "cross_arch": true,
+   "c_ported": true,
+   "cross_lang": "34/34"
+  },
+  {
+   "adapter": "tor",
+   "py_ref": true,
+   "cross_arch": false,
+   "c_ported": false,
+   "cross_lang": "1 (py-ref)"
+  },
+  {
+   "adapter": "tpm2",
+   "py_ref": true,
+   "cross_arch": true,
+   "c_ported": true,
+   "cross_lang": "34/34"
+  },
+  {
+   "adapter": "uds",
+   "py_ref": true,
+   "cross_arch": true,
+   "c_ported": true,
+   "cross_lang": "34/34"
+  },
+  {
+   "adapter": "vrrp",
+   "py_ref": true,
+   "cross_arch": false,
+   "c_ported": false,
+   "cross_lang": "1 (py-ref)"
+  },
+  {
+   "adapter": "vxlan",
+   "py_ref": true,
+   "cross_arch": false,
+   "c_ported": false,
+   "cross_lang": "1 (py-ref)"
+  },
+  {
+   "adapter": "wireguard",
+   "py_ref": true,
+   "cross_arch": false,
+   "c_ported": false,
+   "cross_lang": "1 (py-ref)"
+  },
+  {
+   "adapter": "xcp",
+   "py_ref": true,
+   "cross_arch": false,
+   "c_ported": false,
+   "cross_lang": "1 (py-ref)"
+  }
+ ]
+}

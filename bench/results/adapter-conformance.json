@@ -1,0 +1,1230 @@
+{
+  "schema": "robobus-adapter-conformance/1",
+  "host": "darwin",
+  "python_codecs": {
+    "py-native": {
+      "status": "pass",
+      "executed": "native",
+      "codecs": "74"
+    },
+    "py-x86_64": {
+      "status": "pass",
+      "executed": "docker linux/amd64 (QEMU)",
+      "codecs": "74"
+    },
+    "py-aarch64": {
+      "status": "pass",
+      "executed": "docker linux/arm64 (QEMU)",
+      "codecs": "74"
+    },
+    "py-riscv64": {
+      "status": "pass",
+      "executed": "docker linux/riscv64 (QEMU)",
+      "codecs": "74"
+    },
+    "py-ppc64le": {
+      "status": "pass",
+      "executed": "docker linux/ppc64le (QEMU)",
+      "codecs": "74"
+    },
+    "py-s390x-BE": {
+      "status": "pass",
+      "executed": "docker linux/s390x (QEMU)",
+      "codecs": "74"
+    },
+    "py-i386": {
+      "status": "pass",
+      "executed": "docker linux/386 (QEMU)",
+      "codecs": "74"
+    },
+    "py-armv7": {
+      "status": "pass",
+      "executed": "docker linux/arm/v7 (QEMU)",
+      "codecs": "74"
+    }
+  },
+  "grid": {
+    "abtag": {
+      "tier": "public",
+      "python-native": {
+        "status": "pass"
+      },
+      "c-ports": {
+        "status": "skip",
+        "reason": "host-only adapter (no embedded C port yet)"
+      }
+    },
+    "ach": {
+      "tier": "public",
+      "python-native": {
+        "status": "pass"
+      },
+      "c-ports": {
+        "status": "skip",
+        "reason": "host-only adapter (no embedded C port yet)"
+      }
+    },
+    "ads": {
+      "tier": "public",
+      "python-native": {
+        "status": "pass"
+      },
+      "c-ports": {
+        "status": "skip",
+        "reason": "host-only adapter (no embedded C port yet)"
+      }
+    },
+    "arinc429": {
+      "tier": "public",
+      "python-native": {
+        "status": "pass"
+      },
+      "c-ports": {
+        "status": "skip",
+        "reason": "host-only adapter (no embedded C port yet)"
+      }
+    },
+    "arinc615a": {
+      "tier": "public",
+      "python-native": {
+        "status": "pass"
+      },
+      "c-ports": {
+        "status": "skip",
+        "reason": "host-only adapter (no embedded C port yet)"
+      }
+    },
+    "arinc629": {
+      "tier": "public",
+      "python-native": {
+        "status": "pass",
+        "note": "covered by test_arinc_family.py"
+      },
+      "c-ports": {
+        "status": "skip",
+        "reason": "host-only adapter (no embedded C port yet)"
+      }
+    },
+    "arinc653": {
+      "tier": "public",
+      "python-native": {
+        "status": "pass",
+        "note": "covered by test_arinc_family.py"
+      },
+      "c-ports": {
+        "status": "skip",
+        "reason": "host-only adapter (no embedded C port yet)"
+      }
+    },
+    "arinc664": {
+      "tier": "public",
+      "python-native": {
+        "status": "pass",
+        "note": "covered by test_arinc_family.py"
+      },
+      "c-ports": {
+        "status": "skip",
+        "reason": "host-only adapter (no embedded C port yet)"
+      }
+    },
+    "arinc708": {
+      "tier": "public",
+      "python-native": {
+        "status": "pass",
+        "note": "covered by test_arinc_family.py"
+      },
+      "c-ports": {
+        "status": "skip",
+        "reason": "host-only adapter (no embedded C port yet)"
+      }
+    },
+    "arinc717": {
+      "tier": "public",
+      "python-native": {
+        "status": "pass",
+        "note": "covered by test_arinc_family.py"
+      },
+      "c-ports": {
+        "status": "skip",
+        "reason": "host-only adapter (no embedded C port yet)"
+      }
+    },
+    "arinc818": {
+      "tier": "public",
+      "python-native": {
+        "status": "pass",
+        "note": "covered by test_arinc_family.py"
+      },
+      "c-ports": {
+        "status": "skip",
+        "reason": "host-only adapter (no embedded C port yet)"
+      }
+    },
+    "arinc825": {
+      "tier": "public",
+      "python-native": {
+        "status": "pass"
+      },
+      "c-ports": {
+        "status": "skip",
+        "reason": "host-only adapter (no embedded C port yet)"
+      }
+    },
+    "arrowflight": {
+      "tier": "public",
+      "python-native": {
+        "status": "pass"
+      },
+      "c-ports": {
+        "status": "skip",
+        "reason": "host-only adapter (no embedded C port yet)"
+      }
+    },
+    "bacnet": {
+      "tier": "public",
+      "python-native": {
+        "status": "pass"
+      },
+      "c-ports": {
+        "status": "skip",
+        "reason": "host-only adapter (no embedded C port yet)"
+      }
+    },
+    "bacnet_mstp": {
+      "tier": "public",
+      "python-native": {
+        "status": "pass"
+      },
+      "c-ports": {
+        "status": "skip",
+        "reason": "host-only adapter (no embedded C port yet)"
+      }
+    },
+    "bfd": {
+      "tier": "public",
+      "python-native": {
+        "status": "pass"
+      },
+      "c-ports": {
+        "status": "skip",
+        "reason": "host-only adapter (no embedded C port yet)"
+      }
+    },
+    "bgp": {
+      "tier": "public",
+      "python-native": {
+        "status": "pass"
+      },
+      "c-native-arm64": {
+        "status": "pass",
+        "executed": "native"
+      },
+      "c-x86_64": {
+        "status": "pass",
+        "executed": "docker linux/amd64"
+      },
+      "c-aarch64": {
+        "status": "pass",
+        "executed": "docker linux/arm64"
+      },
+      "c-riscv64": {
+        "status": "pass",
+        "executed": "docker linux/riscv64"
+      },
+      "c-ppc64le": {
+        "status": "pass",
+        "executed": "docker linux/ppc64le"
+      },
+      "c-s390x-BE": {
+        "status": "pass",
+        "executed": "docker linux/s390x"
+      },
+      "c-wasm32": {
+        "status": "pass",
+        "executed": "wasm"
+      }
+    },
+    "canaerospace": {
+      "tier": "public",
+      "python-native": {
+        "status": "pass"
+      },
+      "c-ports": {
+        "status": "skip",
+        "reason": "host-only adapter (no embedded C port yet)"
+      }
+    },
+    "canopen": {
+      "tier": "public",
+      "python-native": {
+        "status": "pass"
+      },
+      "c-ports": {
+        "status": "skip",
+        "reason": "host-only adapter (no embedded C port yet)"
+      }
+    },
+    "ccsds": {
+      "tier": "public",
+      "python-native": {
+        "status": "pass"
+      },
+      "c-ports": {
+        "status": "skip",
+        "reason": "host-only adapter (no embedded C port yet)"
+      }
+    },
+    "cfs": {
+      "tier": "public",
+      "python-native": {
+        "status": "pass"
+      },
+      "c-ports": {
+        "status": "skip",
+        "reason": "host-only adapter (no embedded C port yet)"
+      }
+    },
+    "cot": {
+      "tier": "public",
+      "python-native": {
+        "status": "pass"
+      },
+      "c-ports": {
+        "status": "skip",
+        "reason": "host-only adapter (no embedded C port yet)"
+      }
+    },
+    "dhcp": {
+      "tier": "public",
+      "python-native": {
+        "status": "pass"
+      },
+      "c-ports": {
+        "status": "skip",
+        "reason": "host-only adapter (no embedded C port yet)"
+      }
+    },
+    "dnp3": {
+      "tier": "public",
+      "python-native": {
+        "status": "pass"
+      },
+      "c-ports": {
+        "status": "skip",
+        "reason": "host-only adapter (no embedded C port yet)"
+      }
+    },
+    "dns": {
+      "tier": "public",
+      "python-native": {
+        "status": "pass",
+        "note": "covered by test_netinfra.py"
+      },
+      "c-ports": {
+        "status": "skip",
+        "reason": "host-only adapter (no embedded C port yet)"
+      }
+    },
+    "doip": {
+      "tier": "public",
+      "python-native": {
+        "status": "pass"
+      },
+      "c-ports": {
+        "status": "skip",
+        "reason": "host-only adapter (no embedded C port yet)"
+      }
+    },
+    "dtls": {
+      "tier": "public",
+      "python-native": {
+        "status": "pass"
+      },
+      "c-ports": {
+        "status": "skip",
+        "reason": "host-only adapter (no embedded C port yet)"
+      }
+    },
+    "dtn": {
+      "tier": "public",
+      "python-native": {
+        "status": "pass"
+      },
+      "c-ports": {
+        "status": "skip",
+        "reason": "host-only adapter (no embedded C port yet)"
+      }
+    },
+    "dvbs2x": {
+      "tier": "public",
+      "python-native": {
+        "status": "pass"
+      },
+      "c-ports": {
+        "status": "skip",
+        "reason": "host-only adapter (no embedded C port yet)"
+      }
+    },
+    "eapol": {
+      "tier": "public",
+      "python-native": {
+        "status": "pass"
+      },
+      "c-ports": {
+        "status": "skip",
+        "reason": "host-only adapter (no embedded C port yet)"
+      }
+    },
+    "ecpri": {
+      "tier": "public",
+      "python-native": {
+        "status": "pass"
+      },
+      "c-ports": {
+        "status": "skip",
+        "reason": "host-only adapter (no embedded C port yet)"
+      }
+    },
+    "ethernetip": {
+      "tier": "public",
+      "python-native": {
+        "status": "pass"
+      },
+      "c-ports": {
+        "status": "skip",
+        "reason": "host-only adapter (no embedded C port yet)"
+      }
+    },
+    "fins": {
+      "tier": "public",
+      "python-native": {
+        "status": "pass"
+      },
+      "c-ports": {
+        "status": "skip",
+        "reason": "host-only adapter (no embedded C port yet)"
+      }
+    },
+    "fix": {
+      "tier": "public",
+      "python-native": {
+        "status": "pass",
+        "note": "covered by test_payments.py"
+      },
+      "c-ports": {
+        "status": "skip",
+        "reason": "host-only adapter (no embedded C port yet)"
+      }
+    },
+    "geneve": {
+      "tier": "public",
+      "python-native": {
+        "status": "pass"
+      },
+      "c-ports": {
+        "status": "skip",
+        "reason": "host-only adapter (no embedded C port yet)"
+      }
+    },
+    "gmsec": {
+      "tier": "public",
+      "python-native": {
+        "status": "pass"
+      },
+      "c-ports": {
+        "status": "skip",
+        "reason": "host-only adapter (no embedded C port yet)"
+      }
+    },
+    "goose": {
+      "tier": "public",
+      "python-native": {
+        "status": "pass",
+        "note": "covered by test_grid_space_cyber.py"
+      },
+      "c-ports": {
+        "status": "skip",
+        "reason": "host-only adapter (no embedded C port yet)"
+      }
+    },
+    "gre": {
+      "tier": "public",
+      "python-native": {
+        "status": "pass",
+        "note": "covered by test_overlay.py"
+      },
+      "c-ports": {
+        "status": "skip",
+        "reason": "host-only adapter (no embedded C port yet)"
+      }
+    },
+    "hartip": {
+      "tier": "public",
+      "python-native": {
+        "status": "pass"
+      },
+      "c-ports": {
+        "status": "skip",
+        "reason": "host-only adapter (no embedded C port yet)"
+      }
+    },
+    "iec60870": {
+      "tier": "public",
+      "python-native": {
+        "status": "pass",
+        "note": "covered by test_grid_space_cyber.py"
+      },
+      "c-ports": {
+        "status": "skip",
+        "reason": "host-only adapter (no embedded C port yet)"
+      }
+    },
+    "ipfix": {
+      "tier": "public",
+      "python-native": {
+        "status": "pass",
+        "note": "covered by test_netinfra.py"
+      },
+      "c-ports": {
+        "status": "skip",
+        "reason": "host-only adapter (no embedded C port yet)"
+      }
+    },
+    "ipsec": {
+      "tier": "public",
+      "python-native": {
+        "status": "pass"
+      },
+      "c-ports": {
+        "status": "skip",
+        "reason": "host-only adapter (no embedded C port yet)"
+      }
+    },
+    "irig106": {
+      "tier": "public",
+      "python-native": {
+        "status": "pass",
+        "note": "covered by test_dtn_cyber_space.py"
+      },
+      "c-ports": {
+        "status": "skip",
+        "reason": "host-only adapter (no embedded C port yet)"
+      }
+    },
+    "iscsi": {
+      "tier": "public",
+      "python-native": {
+        "status": "pass"
+      },
+      "c-ports": {
+        "status": "skip",
+        "reason": "host-only adapter (no embedded C port yet)"
+      }
+    },
+    "isis": {
+      "tier": "public",
+      "python-native": {
+        "status": "pass",
+        "note": "covered by test_routing.py"
+      },
+      "c-ports": {
+        "status": "skip",
+        "reason": "host-only adapter (no embedded C port yet)"
+      }
+    },
+    "iso20022": {
+      "tier": "public",
+      "python-native": {
+        "status": "pass",
+        "note": "covered by test_payments.py"
+      },
+      "c-ports": {
+        "status": "skip",
+        "reason": "host-only adapter (no embedded C port yet)"
+      }
+    },
+    "iso7816": {
+      "tier": "public",
+      "python-native": {
+        "status": "pass",
+        "note": "covered by test_secure_optical.py"
+      },
+      "c-ports": {
+        "status": "skip",
+        "reason": "host-only adapter (no embedded C port yet)"
+      }
+    },
+    "iso8583": {
+      "tier": "public",
+      "python-native": {
+        "status": "pass",
+        "note": "covered by test_payments.py"
+      },
+      "c-ports": {
+        "status": "skip",
+        "reason": "host-only adapter (no embedded C port yet)"
+      }
+    },
+    "isotp": {
+      "tier": "public",
+      "python-native": {
+        "status": "pass",
+        "note": "covered by test_automotive.py"
+      },
+      "c-ports": {
+        "status": "skip",
+        "reason": "host-only adapter (no embedded C port yet)"
+      }
+    },
+    "j1939": {
+      "tier": "public",
+      "python-native": {
+        "status": "pass",
+        "note": "covered by test_automotive.py"
+      },
+      "c-ports": {
+        "status": "skip",
+        "reason": "host-only adapter (no embedded C port yet)"
+      }
+    },
+    "klv": {
+      "tier": "public",
+      "python-native": {
+        "status": "pass"
+      },
+      "c-ports": {
+        "status": "skip",
+        "reason": "host-only adapter (no embedded C port yet)"
+      }
+    },
+    "lldp": {
+      "tier": "public",
+      "python-native": {
+        "status": "pass",
+        "note": "covered by test_routing.py"
+      },
+      "c-ports": {
+        "status": "skip",
+        "reason": "host-only adapter (no embedded C port yet)"
+      }
+    },
+    "macsec": {
+      "tier": "public",
+      "python-native": {
+        "status": "pass",
+        "note": "covered by test_secure_transport.py"
+      },
+      "c-ports": {
+        "status": "skip",
+        "reason": "host-only adapter (no embedded C port yet)"
+      }
+    },
+    "meshcore": {
+      "tier": "public",
+      "python-native": {
+        "status": "pass"
+      },
+      "c-ports": {
+        "status": "skip",
+        "reason": "host-only adapter (no embedded C port yet)"
+      }
+    },
+    "meshtastic": {
+      "tier": "public",
+      "python-native": {
+        "status": "pass",
+        "note": "covered by test_mesh.py"
+      },
+      "c-ports": {
+        "status": "skip",
+        "reason": "host-only adapter (no embedded C port yet)"
+      }
+    },
+    "mil1553": {
+      "tier": "public",
+      "python-native": {
+        "status": "pass"
+      },
+      "c-ports": {
+        "status": "skip",
+        "reason": "host-only adapter (no embedded C port yet)"
+      }
+    },
+    "modbus": {
+      "tier": "public",
+      "python-native": {
+        "status": "pass"
+      },
+      "c-ports": {
+        "status": "skip",
+        "reason": "host-only adapter (no embedded C port yet)"
+      }
+    },
+    "momal": {
+      "tier": "public",
+      "python-native": {
+        "status": "pass",
+        "note": "covered by test_ground_systems.py"
+      },
+      "c-ports": {
+        "status": "skip",
+        "reason": "host-only adapter (no embedded C port yet)"
+      }
+    },
+    "netconf": {
+      "tier": "public",
+      "python-native": {
+        "status": "pass",
+        "note": "covered by test_netaccess.py"
+      },
+      "c-ports": {
+        "status": "skip",
+        "reason": "host-only adapter (no embedded C port yet)"
+      }
+    },
+    "nmea0183": {
+      "tier": "public",
+      "python-native": {
+        "status": "pass"
+      },
+      "c-ports": {
+        "status": "skip",
+        "reason": "host-only adapter (no embedded C port yet)"
+      }
+    },
+    "nmea2000": {
+      "tier": "public",
+      "python-native": {
+        "status": "pass"
+      },
+      "c-native-arm64": {
+        "status": "pass",
+        "executed": "native"
+      },
+      "c-x86_64": {
+        "status": "pass",
+        "executed": "docker linux/amd64"
+      },
+      "c-aarch64": {
+        "status": "pass",
+        "executed": "docker linux/arm64"
+      },
+      "c-riscv64": {
+        "status": "pass",
+        "executed": "docker linux/riscv64"
+      },
+      "c-ppc64le": {
+        "status": "pass",
+        "executed": "docker linux/ppc64le"
+      },
+      "c-s390x-BE": {
+        "status": "pass",
+        "executed": "docker linux/s390x"
+      },
+      "c-wasm32": {
+        "status": "pass",
+        "executed": "wasm"
+      }
+    },
+    "ntp": {
+      "tier": "public",
+      "python-native": {
+        "status": "pass"
+      },
+      "c-ports": {
+        "status": "skip",
+        "reason": "host-only adapter (no embedded C port yet)"
+      }
+    },
+    "obd2": {
+      "tier": "public",
+      "python-native": {
+        "status": "pass",
+        "note": "covered by test_automotive.py"
+      },
+      "c-ports": {
+        "status": "skip",
+        "reason": "host-only adapter (no embedded C port yet)"
+      }
+    },
+    "omci": {
+      "tier": "public",
+      "python-native": {
+        "status": "pass",
+        "note": "covered by test_dtn_cyber_space.py"
+      },
+      "c-ports": {
+        "status": "skip",
+        "reason": "host-only adapter (no embedded C port yet)"
+      }
+    },
+    "opcua": {
+      "tier": "public",
+      "python-native": {
+        "status": "pass"
+      },
+      "c-ports": {
+        "status": "skip",
+        "reason": "host-only adapter (no embedded C port yet)"
+      }
+    },
+    "openc2": {
+      "tier": "public",
+      "python-native": {
+        "status": "pass",
+        "note": "covered by test_grid_space_cyber.py"
+      },
+      "c-ports": {
+        "status": "skip",
+        "reason": "host-only adapter (no embedded C port yet)"
+      }
+    },
+    "openplc": {
+      "tier": "public",
+      "python-native": {
+        "status": "pass"
+      },
+      "c-ports": {
+        "status": "skip",
+        "reason": "host-only adapter (no embedded C port yet)"
+      }
+    },
+    "ospf": {
+      "tier": "public",
+      "python-native": {
+        "status": "pass",
+        "note": "covered by test_routing.py"
+      },
+      "c-ports": {
+        "status": "skip",
+        "reason": "host-only adapter (no embedded C port yet)"
+      }
+    },
+    "palantir": {
+      "tier": "public",
+      "python-native": {
+        "status": "pass",
+        "note": "covered by test_connectors_partner.py"
+      },
+      "c-ports": {
+        "status": "skip",
+        "reason": "host-only adapter (no embedded C port yet)"
+      }
+    },
+    "pim": {
+      "tier": "public",
+      "python-native": {
+        "status": "pass",
+        "note": "covered by test_netaccess.py"
+      },
+      "c-ports": {
+        "status": "skip",
+        "reason": "host-only adapter (no embedded C port yet)"
+      }
+    },
+    "profinet": {
+      "tier": "public",
+      "python-native": {
+        "status": "pass"
+      },
+      "c-ports": {
+        "status": "skip",
+        "reason": "host-only adapter (no embedded C port yet)"
+      }
+    },
+    "ptp": {
+      "tier": "public",
+      "python-native": {
+        "status": "pass",
+        "note": "covered by test_timing.py"
+      },
+      "c-ports": {
+        "status": "skip",
+        "reason": "host-only adapter (no embedded C port yet)"
+      }
+    },
+    "pus": {
+      "tier": "public",
+      "python-native": {
+        "status": "pass",
+        "note": "covered by test_grid_space_cyber.py"
+      },
+      "c-ports": {
+        "status": "skip",
+        "reason": "host-only adapter (no embedded C port yet)"
+      }
+    },
+    "qkd": {
+      "tier": "public",
+      "python-native": {
+        "status": "pass"
+      },
+      "c-ports": {
+        "status": "skip",
+        "reason": "host-only adapter (no embedded C port yet)"
+      }
+    },
+    "qrl": {
+      "tier": "public",
+      "python-native": {
+        "status": "pass"
+      },
+      "c-ports": {
+        "status": "skip",
+        "reason": "host-only adapter (no embedded C port yet)"
+      }
+    },
+    "quic": {
+      "tier": "public",
+      "python-native": {
+        "status": "pass",
+        "note": "covered by test_secure_transport.py"
+      },
+      "c-ports": {
+        "status": "skip",
+        "reason": "host-only adapter (no embedded C port yet)"
+      }
+    },
+    "radius": {
+      "tier": "public",
+      "python-native": {
+        "status": "pass",
+        "note": "covered by test_netaccess.py"
+      },
+      "c-ports": {
+        "status": "skip",
+        "reason": "host-only adapter (no embedded C port yet)"
+      }
+    },
+    "rtp": {
+      "tier": "public",
+      "python-native": {
+        "status": "pass"
+      },
+      "c-ports": {
+        "status": "skip",
+        "reason": "host-only adapter (no embedded C port yet)"
+      }
+    },
+    "rtsp": {
+      "tier": "public",
+      "python-native": {
+        "status": "pass",
+        "note": "covered by test_streaming.py"
+      },
+      "c-ports": {
+        "status": "skip",
+        "reason": "host-only adapter (no embedded C port yet)"
+      }
+    },
+    "s7comm": {
+      "tier": "public",
+      "python-native": {
+        "status": "pass"
+      },
+      "c-ports": {
+        "status": "skip",
+        "reason": "host-only adapter (no embedded C port yet)"
+      }
+    },
+    "sdls": {
+      "tier": "public",
+      "python-native": {
+        "status": "pass"
+      },
+      "c-ports": {
+        "status": "skip",
+        "reason": "host-only adapter (no embedded C port yet)"
+      }
+    },
+    "securertp": {
+      "tier": "public",
+      "python-native": {
+        "status": "pass"
+      },
+      "c-ports": {
+        "status": "skip",
+        "reason": "host-only adapter (no embedded C port yet)"
+      }
+    },
+    "sff_dom": {
+      "tier": "public",
+      "python-native": {
+        "status": "pass",
+        "note": "covered by test_secure_optical.py"
+      },
+      "c-ports": {
+        "status": "skip",
+        "reason": "host-only adapter (no embedded C port yet)"
+      }
+    },
+    "sip": {
+      "tier": "public",
+      "python-native": {
+        "status": "pass",
+        "note": "covered by test_streaming.py"
+      },
+      "c-ports": {
+        "status": "skip",
+        "reason": "host-only adapter (no embedded C port yet)"
+      }
+    },
+    "sle": {
+      "tier": "public",
+      "python-native": {
+        "status": "pass",
+        "note": "covered by test_ground_systems.py"
+      },
+      "c-ports": {
+        "status": "skip",
+        "reason": "host-only adapter (no embedded C port yet)"
+      }
+    },
+    "slmp": {
+      "tier": "public",
+      "python-native": {
+        "status": "pass"
+      },
+      "c-ports": {
+        "status": "skip",
+        "reason": "host-only adapter (no embedded C port yet)"
+      }
+    },
+    "snmp": {
+      "tier": "public",
+      "python-native": {
+        "status": "pass",
+        "note": "covered by test_netinfra.py"
+      },
+      "c-ports": {
+        "status": "skip",
+        "reason": "host-only adapter (no embedded C port yet)"
+      }
+    },
+    "someip": {
+      "tier": "public",
+      "python-native": {
+        "status": "pass",
+        "note": "covered by test_secure_optical.py"
+      },
+      "c-ports": {
+        "status": "skip",
+        "reason": "host-only adapter (no embedded C port yet)"
+      }
+    },
+    "spacefibre": {
+      "tier": "public",
+      "python-native": {
+        "status": "pass",
+        "note": "covered by test_satcom_spacefibre.py"
+      },
+      "c-ports": {
+        "status": "skip",
+        "reason": "host-only adapter (no embedded C port yet)"
+      }
+    },
+    "spacewire": {
+      "tier": "public",
+      "python-native": {
+        "status": "pass"
+      },
+      "c-ports": {
+        "status": "skip",
+        "reason": "host-only adapter (no embedded C port yet)"
+      }
+    },
+    "sphinx": {
+      "tier": "public",
+      "python-native": {
+        "status": "pass",
+        "note": "covered by test_secure_transport.py"
+      },
+      "c-ports": {
+        "status": "skip",
+        "reason": "host-only adapter (no embedded C port yet)"
+      }
+    },
+    "srtp": {
+      "tier": "public",
+      "python-native": {
+        "status": "pass"
+      },
+      "c-ports": {
+        "status": "skip",
+        "reason": "host-only adapter (no embedded C port yet)"
+      }
+    },
+    "ssh": {
+      "tier": "public",
+      "python-native": {
+        "status": "pass",
+        "note": "covered by test_secure_transport.py"
+      },
+      "c-ports": {
+        "status": "skip",
+        "reason": "host-only adapter (no embedded C port yet)"
+      }
+    },
+    "stanag4609": {
+      "tier": "public",
+      "python-native": {
+        "status": "pass"
+      },
+      "c-ports": {
+        "status": "skip",
+        "reason": "host-only adapter (no embedded C port yet)"
+      }
+    },
+    "stix": {
+      "tier": "public",
+      "python-native": {
+        "status": "pass",
+        "note": "covered by test_dtn_cyber_space.py"
+      },
+      "c-ports": {
+        "status": "skip",
+        "reason": "host-only adapter (no embedded C port yet)"
+      }
+    },
+    "sunspec": {
+      "tier": "public",
+      "python-native": {
+        "status": "pass"
+      },
+      "c-ports": {
+        "status": "skip",
+        "reason": "host-only adapter (no embedded C port yet)"
+      }
+    },
+    "swift_mt": {
+      "tier": "public",
+      "python-native": {
+        "status": "pass",
+        "note": "covered by test_payments.py"
+      },
+      "c-ports": {
+        "status": "skip",
+        "reason": "host-only adapter (no embedded C port yet)"
+      }
+    },
+    "syslog": {
+      "tier": "public",
+      "python-native": {
+        "status": "pass",
+        "note": "covered by test_netinfra.py"
+      },
+      "c-ports": {
+        "status": "skip",
+        "reason": "host-only adapter (no embedded C port yet)"
+      }
+    },
+    "tdl": {
+      "tier": "public",
+      "python-native": {
+        "status": "pass"
+      },
+      "c-ports": {
+        "status": "skip",
+        "reason": "host-only adapter (no embedded C port yet)"
+      }
+    },
+    "tls": {
+      "tier": "public",
+      "python-native": {
+        "status": "pass",
+        "note": "covered by test_secure_transport.py"
+      },
+      "c-ports": {
+        "status": "skip",
+        "reason": "host-only adapter (no embedded C port yet)"
+      }
+    },
+    "tmtc": {
+      "tier": "public",
+      "python-native": {
+        "status": "pass"
+      },
+      "c-ports": {
+        "status": "skip",
+        "reason": "host-only adapter (no embedded C port yet)"
+      }
+    },
+    "tor": {
+      "tier": "public",
+      "python-native": {
+        "status": "pass",
+        "note": "covered by test_secure_transport.py"
+      },
+      "c-ports": {
+        "status": "skip",
+        "reason": "host-only adapter (no embedded C port yet)"
+      }
+    },
+    "tpm2": {
+      "tier": "public",
+      "python-native": {
+        "status": "pass",
+        "note": "covered by test_secure_optical.py"
+      },
+      "c-ports": {
+        "status": "skip",
+        "reason": "host-only adapter (no embedded C port yet)"
+      }
+    },
+    "uds": {
+      "tier": "public",
+      "python-native": {
+        "status": "pass",
+        "note": "covered by test_automotive.py"
+      },
+      "c-ports": {
+        "status": "skip",
+        "reason": "host-only adapter (no embedded C port yet)"
+      }
+    },
+    "vrrp": {
+      "tier": "public",
+      "python-native": {
+        "status": "pass",
+        "note": "covered by test_routing.py"
+      },
+      "c-ports": {
+        "status": "skip",
+        "reason": "host-only adapter (no embedded C port yet)"
+      }
+    },
+    "vxlan": {
+      "tier": "public",
+      "python-native": {
+        "status": "pass",
+        "note": "covered by test_overlay.py"
+      },
+      "c-ports": {
+        "status": "skip",
+        "reason": "host-only adapter (no embedded C port yet)"
+      }
+    },
+    "wireguard": {
+      "tier": "public",
+      "python-native": {
+        "status": "pass",
+        "note": "covered by test_vpn.py"
+      },
+      "c-ports": {
+        "status": "skip",
+        "reason": "host-only adapter (no embedded C port yet)"
+      }
+    },
+    "xcp": {
+      "tier": "public",
+      "python-native": {
+        "status": "pass",
+        "note": "covered by test_xcp_iscsi.py"
+      },
+      "c-ports": {
+        "status": "skip",
+        "reason": "host-only adapter (no embedded C port yet)"
+      }
+    }
+  }
+}

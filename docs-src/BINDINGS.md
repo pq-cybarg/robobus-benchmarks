@@ -21,7 +21,7 @@ language.
 ## The Speed matrix: every binding, measured live
 
 "Multi-language" is no longer a claim: the **[Speed matrix](../speed.html)** measures the same
-workloads in **33 language configs** on real toolchains, with *no faked cells*:
+workloads in **34 language configs** on real toolchains, with *no faked cells*:
 
 * **Wire codec** decode, all 33 configs (Mojo ~0.6 ns → COBOL ~1 µs).
 * **Crypto suite**, every one of **26 primitives** (AEAD ×4, hashes ×6, KDF/MAC ×5, PQC KEM ×4,

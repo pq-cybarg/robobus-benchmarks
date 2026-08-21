@@ -1,0 +1,247 @@
+{
+  "schema": "suite-matrix/1",
+  "total": 11,
+  "pass": 11,
+  "fail": 0,
+  "skip": 0,
+  "results": {
+    "classical": {
+      "kem": "x25519",
+      "sig": "ed25519",
+      "aead": "aes256-gcm",
+      "hash": "sha256",
+      "level": 0,
+      "standards": [
+        "RFC 7748 (X25519)",
+        "RFC 8032 (Ed25519)",
+        "NIST SP 800-38D (AES-GCM)"
+      ],
+      "status": "pass",
+      "handshake_ok": true,
+      "seal_ok": true,
+      "handshake_ms": 14.263,
+      "kem_pub_bytes": 32,
+      "sig_token_bytes": 64,
+      "kem_ct_bytes": 32,
+      "session_key_bits": 256,
+      "sealed_frame_bytes": 75
+    },
+    "cnsa20": {
+      "kem": "ml-kem-1024",
+      "sig": "ml-dsa-87",
+      "aead": "aes256-gcm",
+      "hash": "sha384",
+      "level": 5,
+      "standards": [
+        "CNSA 2.0",
+        "FIPS 203 (ML-KEM-1024)",
+        "FIPS 204 (ML-DSA-87)",
+        "FIPS 180-4 (SHA-384)",
+        "NIST SP 800-38D (AES-256-GCM)"
+      ],
+      "status": "pass",
+      "handshake_ok": true,
+      "seal_ok": true,
+      "handshake_ms": 1.345,
+      "kem_pub_bytes": 1568,
+      "sig_token_bytes": 4627,
+      "kem_ct_bytes": 1568,
+      "session_key_bits": 256,
+      "sealed_frame_bytes": 75
+    },
+    "csfc": {
+      "kem": "x448+ml-kem-1024",
+      "sig": "ml-dsa-87",
+      "aead": "aes256-gcm",
+      "hash": "sha3-512",
+      "level": 5,
+      "standards": [
+        "NSA CSfC (two-layer)",
+        "FIPS 203/204/202",
+        "CNSA 2.0 inner"
+      ],
+      "status": "pass",
+      "handshake_ok": true,
+      "seal_ok": true,
+      "handshake_ms": 10.579,
+      "kem_pub_bytes": 1628,
+      "sig_token_bytes": 4627,
+      "kem_ct_bytes": 1628,
+      "session_key_bits": 256,
+      "sealed_frame_bytes": 75
+    },
+    "falcon5": {
+      "kem": "ml-kem-1024",
+      "sig": "falcon-1024",
+      "aead": "aes256-gcm",
+      "hash": "sha3-512",
+      "level": 5,
+      "standards": [
+        "FN-DSA/Falcon (NIST round 3 sig)",
+        "FIPS 203",
+        "FIPS 202"
+      ],
+      "status": "pass",
+      "handshake_ok": true,
+      "seal_ok": true,
+      "handshake_ms": 16.56,
+      "kem_pub_bytes": 1568,
+      "sig_token_bytes": 1271,
+      "kem_ct_bytes": 1568,
+      "session_key_bits": 256,
+      "sealed_frame_bytes": 75
+    },
+    "hybrid3": {
+      "kem": "x25519+ml-kem-768",
+      "sig": "ml-dsa-65",
+      "aead": "aes256-gcm",
+      "hash": "sha3-384",
+      "level": 3,
+      "standards": [
+        "FIPS 203",
+        "FIPS 204",
+        "RFC 7748",
+        "NIST SP 800-56C (hybrid KDF)"
+      ],
+      "status": "pass",
+      "handshake_ok": true,
+      "seal_ok": true,
+      "handshake_ms": 2.4,
+      "kem_pub_bytes": 1220,
+      "sig_token_bytes": 3309,
+      "kem_ct_bytes": 1124,
+      "session_key_bits": 256,
+      "sealed_frame_bytes": 75
+    },
+    "hybrid5": {
+      "kem": "x448+ml-kem-1024",
+      "sig": "ml-dsa-87",
+      "aead": "aes256-gcm",
+      "hash": "sha3-512",
+      "level": 5,
+      "standards": [
+        "FIPS 203",
+        "FIPS 204",
+        "RFC 7748 (X448)",
+        "NIST SP 800-56C"
+      ],
+      "status": "pass",
+      "handshake_ok": true,
+      "seal_ok": true,
+      "handshake_ms": 8.853,
+      "kem_pub_bytes": 1628,
+      "sig_token_bytes": 4627,
+      "kem_ct_bytes": 1628,
+      "session_key_bits": 256,
+      "sealed_frame_bytes": 75
+    },
+    "nist1": {
+      "kem": "ml-kem-512",
+      "sig": "ml-dsa-44",
+      "aead": "aes256-gcm",
+      "hash": "sha3-256",
+      "level": 1,
+      "standards": [
+        "FIPS 203 (ML-KEM-512)",
+        "FIPS 204 (ML-DSA-44)",
+        "FIPS 202 (SHA3-256)",
+        "NIST SP 800-38D"
+      ],
+      "status": "pass",
+      "handshake_ok": true,
+      "seal_ok": true,
+      "handshake_ms": 0.622,
+      "kem_pub_bytes": 800,
+      "sig_token_bytes": 2420,
+      "kem_ct_bytes": 768,
+      "session_key_bits": 256,
+      "sealed_frame_bytes": 75
+    },
+    "nist3": {
+      "kem": "ml-kem-768",
+      "sig": "ml-dsa-65",
+      "aead": "aes256-gcm",
+      "hash": "sha3-384",
+      "level": 3,
+      "standards": [
+        "FIPS 203 (ML-KEM-768)",
+        "FIPS 204 (ML-DSA-65)",
+        "FIPS 202 (SHA3-384)"
+      ],
+      "status": "pass",
+      "handshake_ok": true,
+      "seal_ok": true,
+      "handshake_ms": 1.385,
+      "kem_pub_bytes": 1184,
+      "sig_token_bytes": 3309,
+      "kem_ct_bytes": 1088,
+      "session_key_bits": 256,
+      "sealed_frame_bytes": 75
+    },
+    "nist5": {
+      "kem": "ml-kem-1024",
+      "sig": "ml-dsa-87",
+      "aead": "aes256-gcm",
+      "hash": "sha3-512",
+      "level": 5,
+      "standards": [
+        "FIPS 203 (ML-KEM-1024)",
+        "FIPS 204 (ML-DSA-87)",
+        "FIPS 202 (SHA3-512)"
+      ],
+      "status": "pass",
+      "handshake_ok": true,
+      "seal_ok": true,
+      "handshake_ms": 1.006,
+      "kem_pub_bytes": 1568,
+      "sig_token_bytes": 4627,
+      "kem_ct_bytes": 1568,
+      "session_key_bits": 256,
+      "sealed_frame_bytes": 75
+    },
+    "nist5-kmac": {
+      "kem": "ml-kem-1024",
+      "sig": "ml-dsa-87",
+      "aead": "aes256-gcm",
+      "hash": "sha3-512",
+      "level": 5,
+      "standards": [
+        "FIPS 203 (ML-KEM-1024)",
+        "FIPS 204 (ML-DSA-87)",
+        "FIPS 202 (SHA3-512)",
+        "NIST SP 800-185 (KMAC256)",
+        "NIST SP 800-56C rev3 (KMAC KDF)"
+      ],
+      "status": "pass",
+      "handshake_ok": true,
+      "seal_ok": true,
+      "handshake_ms": 1.685,
+      "kem_pub_bytes": 1568,
+      "sig_token_bytes": 4627,
+      "kem_ct_bytes": 1568,
+      "session_key_bits": 256,
+      "sealed_frame_bytes": 75
+    },
+    "sphincs5": {
+      "kem": "ml-kem-1024",
+      "sig": "sphincs-sha2-256f",
+      "aead": "aes256-gcm",
+      "hash": "sha3-512",
+      "level": 5,
+      "standards": [
+        "FIPS 205 (SLH-DSA / SPHINCS+)",
+        "FIPS 203",
+        "FIPS 202"
+      ],
+      "status": "pass",
+      "handshake_ok": true,
+      "seal_ok": true,
+      "handshake_ms": 49.014,
+      "kem_pub_bytes": 1568,
+      "sig_token_bytes": 49856,
+      "kem_ct_bytes": 1568,
+      "session_key_bits": 256,
+      "sealed_frame_bytes": 75
+    }
+  }
+}

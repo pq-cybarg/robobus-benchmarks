@@ -1,0 +1,3756 @@
+{
+  "schema": "robobus-maxroutes/1",
+  "principle": "Per transport route: the full implementation TIER LADDER (stock client -> librbxport shim -> native C broker -> raw medium ceiling) and the MAXIMUM sealed throughput, then the standards-COMPLIANT maximum for EVERY compliance profile. All rates machine-measured (provenance per row); an unoptimized row always carries its optimized answer. Profiles compose the SAME per-message AES-256-GCM seal (CNSA-2.0 symmetric leg) at the same steady-state ceiling but differ in the authenticated PQC/hybrid handshake, internal security level, and COMSEC/TRANSEC guarantee.",
+  "compliance_profiles": {
+    "classical": {
+      "suite": "classical",
+      "kem": "x25519",
+      "sig": "ed25519",
+      "aead": "aes256-gcm",
+      "hash": "sha256",
+      "security_level": 0,
+      "standards": [
+        "RFC 7748 (X25519)",
+        "RFC 8032 (Ed25519)",
+        "NIST SP 800-38D (AES-GCM)"
+      ],
+      "aead_is_cnsa2": false,
+      "handshake_ms": 14.263,
+      "kem_ct_bytes": 32,
+      "sig_token_bytes": 64,
+      "session_key_bits": 256,
+      "comsec": "payload AEAD (aes256-gcm) + authenticated PQC/hybrid handshake (ed25519 over x25519); key establishment is the COMSEC boundary, TRANSEC is the carrier's concern"
+    },
+    "nist1": {
+      "suite": "nist1",
+      "kem": "ml-kem-512",
+      "sig": "ml-dsa-44",
+      "aead": "aes256-gcm",
+      "hash": "sha3-256",
+      "security_level": 1,
+      "standards": [
+        "FIPS 203 (ML-KEM-512)",
+        "FIPS 204 (ML-DSA-44)",
+        "FIPS 202 (SHA3-256)",
+        "NIST SP 800-38D"
+      ],
+      "aead_is_cnsa2": false,
+      "handshake_ms": 0.622,
+      "kem_ct_bytes": 768,
+      "sig_token_bytes": 2420,
+      "session_key_bits": 256,
+      "comsec": "payload AEAD (aes256-gcm) + authenticated PQC/hybrid handshake (ml-dsa-44 over ml-kem-512); key establishment is the COMSEC boundary, TRANSEC is the carrier's concern"
+    },
+    "nist3": {
+      "suite": "nist3",
+      "kem": "ml-kem-768",
+      "sig": "ml-dsa-65",
+      "aead": "aes256-gcm",
+      "hash": "sha3-384",
+      "security_level": 3,
+      "standards": [
+        "FIPS 203 (ML-KEM-768)",
+        "FIPS 204 (ML-DSA-65)",
+        "FIPS 202 (SHA3-384)"
+      ],
+      "aead_is_cnsa2": false,
+      "handshake_ms": 1.385,
+      "kem_ct_bytes": 1088,
+      "sig_token_bytes": 3309,
+      "session_key_bits": 256,
+      "comsec": "payload AEAD (aes256-gcm) + authenticated PQC/hybrid handshake (ml-dsa-65 over ml-kem-768); key establishment is the COMSEC boundary, TRANSEC is the carrier's concern"
+    },
+    "nist5": {
+      "suite": "nist5",
+      "kem": "ml-kem-1024",
+      "sig": "ml-dsa-87",
+      "aead": "aes256-gcm",
+      "hash": "sha3-512",
+      "security_level": 5,
+      "standards": [
+        "FIPS 203 (ML-KEM-1024)",
+        "FIPS 204 (ML-DSA-87)",
+        "FIPS 202 (SHA3-512)"
+      ],
+      "aead_is_cnsa2": false,
+      "handshake_ms": 1.685,
+      "kem_ct_bytes": 1568,
+      "sig_token_bytes": 4627,
+      "session_key_bits": 256,
+      "comsec": "payload AEAD (aes256-gcm) + authenticated PQC/hybrid handshake (ml-dsa-87 over ml-kem-1024); key establishment is the COMSEC boundary, TRANSEC is the carrier's concern"
+    },
+    "hybrid3": {
+      "suite": "hybrid3",
+      "kem": "x25519+ml-kem-768",
+      "sig": "ml-dsa-65",
+      "aead": "aes256-gcm",
+      "hash": "sha3-384",
+      "security_level": 3,
+      "standards": [
+        "FIPS 203",
+        "FIPS 204",
+        "RFC 7748",
+        "NIST SP 800-56C (hybrid KDF)"
+      ],
+      "aead_is_cnsa2": false,
+      "handshake_ms": 2.4,
+      "kem_ct_bytes": 1124,
+      "sig_token_bytes": 3309,
+      "session_key_bits": 256,
+      "comsec": "payload AEAD (aes256-gcm) + authenticated PQC/hybrid handshake (ml-dsa-65 over x25519+ml-kem-768); key establishment is the COMSEC boundary, TRANSEC is the carrier's concern"
+    },
+    "hybrid5": {
+      "suite": "hybrid5",
+      "kem": "x448+ml-kem-1024",
+      "sig": "ml-dsa-87",
+      "aead": "aes256-gcm",
+      "hash": "sha3-512",
+      "security_level": 5,
+      "standards": [
+        "FIPS 203",
+        "FIPS 204",
+        "RFC 7748 (X448)",
+        "NIST SP 800-56C"
+      ],
+      "aead_is_cnsa2": false,
+      "handshake_ms": 8.853,
+      "kem_ct_bytes": 1628,
+      "sig_token_bytes": 4627,
+      "session_key_bits": 256,
+      "comsec": "payload AEAD (aes256-gcm) + authenticated PQC/hybrid handshake (ml-dsa-87 over x448+ml-kem-1024); key establishment is the COMSEC boundary, TRANSEC is the carrier's concern"
+    },
+    "cnsa20": {
+      "suite": "cnsa20",
+      "kem": "ml-kem-1024",
+      "sig": "ml-dsa-87",
+      "aead": "aes256-gcm",
+      "hash": "sha384",
+      "security_level": 5,
+      "standards": [
+        "CNSA 2.0",
+        "FIPS 203 (ML-KEM-1024)",
+        "FIPS 204 (ML-DSA-87)",
+        "FIPS 180-4 (SHA-384)",
+        "NIST SP 800-38D (AES-256-GCM)"
+      ],
+      "aead_is_cnsa2": true,
+      "handshake_ms": 1.345,
+      "kem_ct_bytes": 1568,
+      "sig_token_bytes": 4627,
+      "session_key_bits": 256,
+      "comsec": "payload AEAD (aes256-gcm) + authenticated PQC/hybrid handshake (ml-dsa-87 over ml-kem-1024); key establishment is the COMSEC boundary, TRANSEC is the carrier's concern"
+    },
+    "nist5-kmac": {
+      "suite": "nist5-kmac",
+      "kem": "ml-kem-1024",
+      "sig": "ml-dsa-87",
+      "aead": "aes256-gcm",
+      "hash": "sha3-512",
+      "security_level": 5,
+      "standards": [
+        "FIPS 203 (ML-KEM-1024)",
+        "FIPS 204 (ML-DSA-87)",
+        "FIPS 202 (SHA3-512)",
+        "NIST SP 800-185 (KMAC256)",
+        "NIST SP 800-56C rev3 (KMAC KDF)"
+      ],
+      "aead_is_cnsa2": false,
+      "handshake_ms": 1.685,
+      "kem_ct_bytes": 1568,
+      "sig_token_bytes": 4627,
+      "session_key_bits": 256,
+      "comsec": "payload AEAD (aes256-gcm) + authenticated PQC/hybrid handshake (ml-dsa-87 over ml-kem-1024); key establishment is the COMSEC boundary, TRANSEC is the carrier's concern"
+    },
+    "sphincs5": {
+      "suite": "sphincs5",
+      "kem": "ml-kem-1024",
+      "sig": "sphincs-sha2-256f",
+      "aead": "aes256-gcm",
+      "hash": "sha3-512",
+      "security_level": 5,
+      "standards": [
+        "FIPS 205 (SLH-DSA / SPHINCS+)",
+        "FIPS 203",
+        "FIPS 202"
+      ],
+      "aead_is_cnsa2": false,
+      "handshake_ms": 49.014,
+      "kem_ct_bytes": 1568,
+      "sig_token_bytes": 49856,
+      "session_key_bits": 256,
+      "comsec": "payload AEAD (aes256-gcm) + authenticated PQC/hybrid handshake (sphincs-sha2-256f over ml-kem-1024); key establishment is the COMSEC boundary, TRANSEC is the carrier's concern"
+    },
+    "falcon5": {
+      "suite": "falcon5",
+      "kem": "ml-kem-1024",
+      "sig": "falcon-1024",
+      "aead": "aes256-gcm",
+      "hash": "sha3-512",
+      "security_level": 5,
+      "standards": [
+        "FN-DSA/Falcon (NIST round 3 sig)",
+        "FIPS 203",
+        "FIPS 202"
+      ],
+      "aead_is_cnsa2": false,
+      "handshake_ms": 16.56,
+      "kem_ct_bytes": 1568,
+      "sig_token_bytes": 1271,
+      "session_key_bits": 256,
+      "comsec": "payload AEAD (aes256-gcm) + authenticated PQC/hybrid handshake (falcon-1024 over ml-kem-1024); key establishment is the COMSEC boundary, TRANSEC is the carrier's concern"
+    },
+    "csfc": {
+      "suite": "csfc",
+      "kem": "x448+ml-kem-1024",
+      "sig": "ml-dsa-87",
+      "aead": "aes256-gcm",
+      "hash": "sha3-512",
+      "security_level": 5,
+      "standards": [
+        "NSA CSfC (two-layer)",
+        "FIPS 203/204/202",
+        "CNSA 2.0 inner"
+      ],
+      "aead_is_cnsa2": false,
+      "handshake_ms": 8.853,
+      "kem_ct_bytes": 1628,
+      "sig_token_bytes": 4627,
+      "session_key_bits": 256,
+      "comsec": "payload AEAD (aes256-gcm) + authenticated PQC/hybrid handshake (ml-dsa-87 over x448+ml-kem-1024); key establishment is the COMSEC boundary, TRANSEC is the carrier's concern"
+    },
+    "_policy_notes": {
+      "fips": "FIPS 140-3 approved set. X25519/X448 ECDH and ChaCha20 are NOT approved, so hybrid suites are flagged non-FIPS (use pure",
+      "cnsa20": "NSA CNSA 2.0 for National Security Systems (Level 5 only).",
+      "csfc": "NSA CSfC: two independent CNSA/FIPS layers (defence in depth)."
+    }
+  },
+  "routes": {
+    "AMQP": {
+      "max_fps": 269812.318548,
+      "max_impl": "librbxport C shim",
+      "max_tier": "shim",
+      "max_sealed": true,
+      "tier_ladder": [
+        {
+          "tier": "stock-client",
+          "impl": "pika + RabbitMQ",
+          "lang": "python",
+          "fps": 17313,
+          "sealed": true,
+          "src": "transport-matrix.json"
+        },
+        {
+          "tier": "shim",
+          "impl": "librbxport C shim",
+          "lang": "go",
+          "fps": 269812,
+          "sealed": true,
+          "src": "xport-lang.json"
+        }
+      ],
+      "raw_ceiling_gbps": null,
+      "per_profile_max": {
+        "classical": {
+          "steady_state_max_fps": 269812.318548,
+          "one_time_handshake_ms": 14.263,
+          "meets": [
+            "RFC 7748 (X25519)",
+            "RFC 8032 (Ed25519)",
+            "NIST SP 800-38D (AES-GCM)"
+          ],
+          "security_level": 0,
+          "kem": "x25519",
+          "sig": "ed25519",
+          "aead": "aes256-gcm",
+          "hash": "sha256",
+          "session_key_bits": 256,
+          "comsec": "payload AEAD (aes256-gcm) + authenticated PQC/hybrid handshake (ed25519 over x25519); key establishment is the COMSEC boundary, TRANSEC is the carrier's concern"
+        },
+        "nist1": {
+          "steady_state_max_fps": 269812.318548,
+          "one_time_handshake_ms": 0.622,
+          "meets": [
+            "FIPS 203 (ML-KEM-512)",
+            "FIPS 204 (ML-DSA-44)",
+            "FIPS 202 (SHA3-256)",
+            "NIST SP 800-38D"
+          ],
+          "security_level": 1,
+          "kem": "ml-kem-512",
+          "sig": "ml-dsa-44",
+          "aead": "aes256-gcm",
+          "hash": "sha3-256",
+          "session_key_bits": 256,
+          "comsec": "payload AEAD (aes256-gcm) + authenticated PQC/hybrid handshake (ml-dsa-44 over ml-kem-512); key establishment is the COMSEC boundary, TRANSEC is the carrier's concern"
+        },
+        "nist3": {
+          "steady_state_max_fps": 269812.318548,
+          "one_time_handshake_ms": 1.385,
+          "meets": [
+            "FIPS 203 (ML-KEM-768)",
+            "FIPS 204 (ML-DSA-65)",
+            "FIPS 202 (SHA3-384)"
+          ],
+          "security_level": 3,
+          "kem": "ml-kem-768",
+          "sig": "ml-dsa-65",
+          "aead": "aes256-gcm",
+          "hash": "sha3-384",
+          "session_key_bits": 256,
+          "comsec": "payload AEAD (aes256-gcm) + authenticated PQC/hybrid handshake (ml-dsa-65 over ml-kem-768); key establishment is the COMSEC boundary, TRANSEC is the carrier's concern"
+        },
+        "nist5": {
+          "steady_state_max_fps": 269812.318548,
+          "one_time_handshake_ms": 1.685,
+          "meets": [
+            "FIPS 203 (ML-KEM-1024)",
+            "FIPS 204 (ML-DSA-87)",
+            "FIPS 202 (SHA3-512)"
+          ],
+          "security_level": 5,
+          "kem": "ml-kem-1024",
+          "sig": "ml-dsa-87",
+          "aead": "aes256-gcm",
+          "hash": "sha3-512",
+          "session_key_bits": 256,
+          "comsec": "payload AEAD (aes256-gcm) + authenticated PQC/hybrid handshake (ml-dsa-87 over ml-kem-1024); key establishment is the COMSEC boundary, TRANSEC is the carrier's concern"
+        },
+        "hybrid3": {
+          "steady_state_max_fps": 269812.318548,
+          "one_time_handshake_ms": 2.4,
+          "meets": [
+            "FIPS 203",
+            "FIPS 204",
+            "RFC 7748",
+            "NIST SP 800-56C (hybrid KDF)"
+          ],
+          "security_level": 3,
+          "kem": "x25519+ml-kem-768",
+          "sig": "ml-dsa-65",
+          "aead": "aes256-gcm",
+          "hash": "sha3-384",
+          "session_key_bits": 256,
+          "comsec": "payload AEAD (aes256-gcm) + authenticated PQC/hybrid handshake (ml-dsa-65 over x25519+ml-kem-768); key establishment is the COMSEC boundary, TRANSEC is the carrier's concern"
+        },
+        "hybrid5": {
+          "steady_state_max_fps": 269812.318548,
+          "one_time_handshake_ms": 8.853,
+          "meets": [
+            "FIPS 203",
+            "FIPS 204",
+            "RFC 7748 (X448)",
+            "NIST SP 800-56C"
+          ],
+          "security_level": 5,
+          "kem": "x448+ml-kem-1024",
+          "sig": "ml-dsa-87",
+          "aead": "aes256-gcm",
+          "hash": "sha3-512",
+          "session_key_bits": 256,
+          "comsec": "payload AEAD (aes256-gcm) + authenticated PQC/hybrid handshake (ml-dsa-87 over x448+ml-kem-1024); key establishment is the COMSEC boundary, TRANSEC is the carrier's concern"
+        },
+        "cnsa20": {
+          "steady_state_max_fps": 269812.318548,
+          "one_time_handshake_ms": 1.345,
+          "meets": [
+            "CNSA 2.0",
+            "FIPS 203 (ML-KEM-1024)",
+            "FIPS 204 (ML-DSA-87)",
+            "FIPS 180-4 (SHA-384)",
+            "NIST SP 800-38D (AES-256-GCM)"
+          ],
+          "security_level": 5,
+          "kem": "ml-kem-1024",
+          "sig": "ml-dsa-87",
+          "aead": "aes256-gcm",
+          "hash": "sha384",
+          "session_key_bits": 256,
+          "comsec": "payload AEAD (aes256-gcm) + authenticated PQC/hybrid handshake (ml-dsa-87 over ml-kem-1024); key establishment is the COMSEC boundary, TRANSEC is the carrier's concern"
+        },
+        "nist5-kmac": {
+          "steady_state_max_fps": 269812.318548,
+          "one_time_handshake_ms": 1.685,
+          "meets": [
+            "FIPS 203 (ML-KEM-1024)",
+            "FIPS 204 (ML-DSA-87)",
+            "FIPS 202 (SHA3-512)",
+            "NIST SP 800-185 (KMAC256)",
+            "NIST SP 800-56C rev3 (KMAC KDF)"
+          ],
+          "security_level": 5,
+          "kem": "ml-kem-1024",
+          "sig": "ml-dsa-87",
+          "aead": "aes256-gcm",
+          "hash": "sha3-512",
+          "session_key_bits": 256,
+          "comsec": "payload AEAD (aes256-gcm) + authenticated PQC/hybrid handshake (ml-dsa-87 over ml-kem-1024); key establishment is the COMSEC boundary, TRANSEC is the carrier's concern"
+        },
+        "sphincs5": {
+          "steady_state_max_fps": 269812.318548,
+          "one_time_handshake_ms": 49.014,
+          "meets": [
+            "FIPS 205 (SLH-DSA / SPHINCS+)",
+            "FIPS 203",
+            "FIPS 202"
+          ],
+          "security_level": 5,
+          "kem": "ml-kem-1024",
+          "sig": "sphincs-sha2-256f",
+          "aead": "aes256-gcm",
+          "hash": "sha3-512",
+          "session_key_bits": 256,
+          "comsec": "payload AEAD (aes256-gcm) + authenticated PQC/hybrid handshake (sphincs-sha2-256f over ml-kem-1024); key establishment is the COMSEC boundary, TRANSEC is the carrier's concern"
+        },
+        "falcon5": {
+          "steady_state_max_fps": 269812.318548,
+          "one_time_handshake_ms": 16.56,
+          "meets": [
+            "FN-DSA/Falcon (NIST round 3 sig)",
+            "FIPS 203",
+            "FIPS 202"
+          ],
+          "security_level": 5,
+          "kem": "ml-kem-1024",
+          "sig": "falcon-1024",
+          "aead": "aes256-gcm",
+          "hash": "sha3-512",
+          "session_key_bits": 256,
+          "comsec": "payload AEAD (aes256-gcm) + authenticated PQC/hybrid handshake (falcon-1024 over ml-kem-1024); key establishment is the COMSEC boundary, TRANSEC is the carrier's concern"
+        },
+        "csfc": {
+          "steady_state_max_fps": 269812.318548,
+          "one_time_handshake_ms": 8.853,
+          "meets": [
+            "NSA CSfC (two-layer)",
+            "FIPS 203/204/202",
+            "CNSA 2.0 inner"
+          ],
+          "security_level": 5,
+          "kem": "x448+ml-kem-1024",
+          "sig": "ml-dsa-87",
+          "aead": "aes256-gcm",
+          "hash": "sha3-512",
+          "session_key_bits": 256,
+          "comsec": "payload AEAD (aes256-gcm) + authenticated PQC/hybrid handshake (ml-dsa-87 over x448+ml-kem-1024); key establishment is the COMSEC boundary, TRANSEC is the carrier's concern"
+        }
+      }
+    },
+    "CAN": {
+      "max_fps": 3611933.8311053356,
+      "max_impl": "librbxport C shim",
+      "max_tier": "shim",
+      "max_sealed": true,
+      "tier_ladder": [
+        {
+          "tier": "native",
+          "impl": "python-can",
+          "lang": "python",
+          "fps": 27950,
+          "sealed": true,
+          "src": "transport-matrix.json"
+        },
+        {
+          "tier": "shim",
+          "impl": "librbxport C shim",
+          "lang": "python",
+          "fps": 3611934,
+          "sealed": true,
+          "src": "xport-lang.json"
+        }
+      ],
+      "raw_ceiling_gbps": null,
+      "per_profile_max": {
+        "classical": {
+          "steady_state_max_fps": 3611933.8311053356,
+          "one_time_handshake_ms": 14.263,
+          "meets": [
+            "RFC 7748 (X25519)",
+            "RFC 8032 (Ed25519)",
+            "NIST SP 800-38D (AES-GCM)"
+          ],
+          "security_level": 0,
+          "kem": "x25519",
+          "sig": "ed25519",
+          "aead": "aes256-gcm",
+          "hash": "sha256",
+          "session_key_bits": 256,
+          "comsec": "payload AEAD (aes256-gcm) + authenticated PQC/hybrid handshake (ed25519 over x25519); key establishment is the COMSEC boundary, TRANSEC is the carrier's concern"
+        },
+        "nist1": {
+          "steady_state_max_fps": 3611933.8311053356,
+          "one_time_handshake_ms": 0.622,
+          "meets": [
+            "FIPS 203 (ML-KEM-512)",
+            "FIPS 204 (ML-DSA-44)",
+            "FIPS 202 (SHA3-256)",
+            "NIST SP 800-38D"
+          ],
+          "security_level": 1,
+          "kem": "ml-kem-512",
+          "sig": "ml-dsa-44",
+          "aead": "aes256-gcm",
+          "hash": "sha3-256",
+          "session_key_bits": 256,
+          "comsec": "payload AEAD (aes256-gcm) + authenticated PQC/hybrid handshake (ml-dsa-44 over ml-kem-512); key establishment is the COMSEC boundary, TRANSEC is the carrier's concern"
+        },
+        "nist3": {
+          "steady_state_max_fps": 3611933.8311053356,
+          "one_time_handshake_ms": 1.385,
+          "meets": [
+            "FIPS 203 (ML-KEM-768)",
+            "FIPS 204 (ML-DSA-65)",
+            "FIPS 202 (SHA3-384)"
+          ],
+          "security_level": 3,
+          "kem": "ml-kem-768",
+          "sig": "ml-dsa-65",
+          "aead": "aes256-gcm",
+          "hash": "sha3-384",
+          "session_key_bits": 256,
+          "comsec": "payload AEAD (aes256-gcm) + authenticated PQC/hybrid handshake (ml-dsa-65 over ml-kem-768); key establishment is the COMSEC boundary, TRANSEC is the carrier's concern"
+        },
+        "nist5": {
+          "steady_state_max_fps": 3611933.8311053356,
+          "one_time_handshake_ms": 1.685,
+          "meets": [
+            "FIPS 203 (ML-KEM-1024)",
+            "FIPS 204 (ML-DSA-87)",
+            "FIPS 202 (SHA3-512)"
+          ],
+          "security_level": 5,
+          "kem": "ml-kem-1024",
+          "sig": "ml-dsa-87",
+          "aead": "aes256-gcm",
+          "hash": "sha3-512",
+          "session_key_bits": 256,
+          "comsec": "payload AEAD (aes256-gcm) + authenticated PQC/hybrid handshake (ml-dsa-87 over ml-kem-1024); key establishment is the COMSEC boundary, TRANSEC is the carrier's concern"
+        },
+        "hybrid3": {
+          "steady_state_max_fps": 3611933.8311053356,
+          "one_time_handshake_ms": 2.4,
+          "meets": [
+            "FIPS 203",
+            "FIPS 204",
+            "RFC 7748",
+            "NIST SP 800-56C (hybrid KDF)"
+          ],
+          "security_level": 3,
+          "kem": "x25519+ml-kem-768",
+          "sig": "ml-dsa-65",
+          "aead": "aes256-gcm",
+          "hash": "sha3-384",
+          "session_key_bits": 256,
+          "comsec": "payload AEAD (aes256-gcm) + authenticated PQC/hybrid handshake (ml-dsa-65 over x25519+ml-kem-768); key establishment is the COMSEC boundary, TRANSEC is the carrier's concern"
+        },
+        "hybrid5": {
+          "steady_state_max_fps": 3611933.8311053356,
+          "one_time_handshake_ms": 8.853,
+          "meets": [
+            "FIPS 203",
+            "FIPS 204",
+            "RFC 7748 (X448)",
+            "NIST SP 800-56C"
+          ],
+          "security_level": 5,
+          "kem": "x448+ml-kem-1024",
+          "sig": "ml-dsa-87",
+          "aead": "aes256-gcm",
+          "hash": "sha3-512",
+          "session_key_bits": 256,
+          "comsec": "payload AEAD (aes256-gcm) + authenticated PQC/hybrid handshake (ml-dsa-87 over x448+ml-kem-1024); key establishment is the COMSEC boundary, TRANSEC is the carrier's concern"
+        },
+        "cnsa20": {
+          "steady_state_max_fps": 3611933.8311053356,
+          "one_time_handshake_ms": 1.345,
+          "meets": [
+            "CNSA 2.0",
+            "FIPS 203 (ML-KEM-1024)",
+            "FIPS 204 (ML-DSA-87)",
+            "FIPS 180-4 (SHA-384)",
+            "NIST SP 800-38D (AES-256-GCM)"
+          ],
+          "security_level": 5,
+          "kem": "ml-kem-1024",
+          "sig": "ml-dsa-87",
+          "aead": "aes256-gcm",
+          "hash": "sha384",
+          "session_key_bits": 256,
+          "comsec": "payload AEAD (aes256-gcm) + authenticated PQC/hybrid handshake (ml-dsa-87 over ml-kem-1024); key establishment is the COMSEC boundary, TRANSEC is the carrier's concern"
+        },
+        "nist5-kmac": {
+          "steady_state_max_fps": 3611933.8311053356,
+          "one_time_handshake_ms": 1.685,
+          "meets": [
+            "FIPS 203 (ML-KEM-1024)",
+            "FIPS 204 (ML-DSA-87)",
+            "FIPS 202 (SHA3-512)",
+            "NIST SP 800-185 (KMAC256)",
+            "NIST SP 800-56C rev3 (KMAC KDF)"
+          ],
+          "security_level": 5,
+          "kem": "ml-kem-1024",
+          "sig": "ml-dsa-87",
+          "aead": "aes256-gcm",
+          "hash": "sha3-512",
+          "session_key_bits": 256,
+          "comsec": "payload AEAD (aes256-gcm) + authenticated PQC/hybrid handshake (ml-dsa-87 over ml-kem-1024); key establishment is the COMSEC boundary, TRANSEC is the carrier's concern"
+        },
+        "sphincs5": {
+          "steady_state_max_fps": 3611933.8311053356,
+          "one_time_handshake_ms": 49.014,
+          "meets": [
+            "FIPS 205 (SLH-DSA / SPHINCS+)",
+            "FIPS 203",
+            "FIPS 202"
+          ],
+          "security_level": 5,
+          "kem": "ml-kem-1024",
+          "sig": "sphincs-sha2-256f",
+          "aead": "aes256-gcm",
+          "hash": "sha3-512",
+          "session_key_bits": 256,
+          "comsec": "payload AEAD (aes256-gcm) + authenticated PQC/hybrid handshake (sphincs-sha2-256f over ml-kem-1024); key establishment is the COMSEC boundary, TRANSEC is the carrier's concern"
+        },
+        "falcon5": {
+          "steady_state_max_fps": 3611933.8311053356,
+          "one_time_handshake_ms": 16.56,
+          "meets": [
+            "FN-DSA/Falcon (NIST round 3 sig)",
+            "FIPS 203",
+            "FIPS 202"
+          ],
+          "security_level": 5,
+          "kem": "ml-kem-1024",
+          "sig": "falcon-1024",
+          "aead": "aes256-gcm",
+          "hash": "sha3-512",
+          "session_key_bits": 256,
+          "comsec": "payload AEAD (aes256-gcm) + authenticated PQC/hybrid handshake (falcon-1024 over ml-kem-1024); key establishment is the COMSEC boundary, TRANSEC is the carrier's concern"
+        },
+        "csfc": {
+          "steady_state_max_fps": 3611933.8311053356,
+          "one_time_handshake_ms": 8.853,
+          "meets": [
+            "NSA CSfC (two-layer)",
+            "FIPS 203/204/202",
+            "CNSA 2.0 inner"
+          ],
+          "security_level": 5,
+          "kem": "x448+ml-kem-1024",
+          "sig": "ml-dsa-87",
+          "aead": "aes256-gcm",
+          "hash": "sha3-512",
+          "session_key_bits": 256,
+          "comsec": "payload AEAD (aes256-gcm) + authenticated PQC/hybrid handshake (ml-dsa-87 over x448+ml-kem-1024); key establishment is the COMSEC boundary, TRANSEC is the carrier's concern"
+        }
+      }
+    },
+    "DDS": {
+      "max_fps": 6249999.998726708,
+      "max_impl": "librbxport C shim",
+      "max_tier": "shim",
+      "max_sealed": true,
+      "tier_ladder": [
+        {
+          "tier": "shim",
+          "impl": "librbxport C shim",
+          "lang": "nim",
+          "fps": 6250000,
+          "sealed": true,
+          "src": "xport-lang.json"
+        }
+      ],
+      "raw_ceiling_gbps": null,
+      "per_profile_max": {
+        "classical": {
+          "steady_state_max_fps": 6249999.998726708,
+          "one_time_handshake_ms": 14.263,
+          "meets": [
+            "RFC 7748 (X25519)",
+            "RFC 8032 (Ed25519)",
+            "NIST SP 800-38D (AES-GCM)"
+          ],
+          "security_level": 0,
+          "kem": "x25519",
+          "sig": "ed25519",
+          "aead": "aes256-gcm",
+          "hash": "sha256",
+          "session_key_bits": 256,
+          "comsec": "payload AEAD (aes256-gcm) + authenticated PQC/hybrid handshake (ed25519 over x25519); key establishment is the COMSEC boundary, TRANSEC is the carrier's concern"
+        },
+        "nist1": {
+          "steady_state_max_fps": 6249999.998726708,
+          "one_time_handshake_ms": 0.622,
+          "meets": [
+            "FIPS 203 (ML-KEM-512)",
+            "FIPS 204 (ML-DSA-44)",
+            "FIPS 202 (SHA3-256)",
+            "NIST SP 800-38D"
+          ],
+          "security_level": 1,
+          "kem": "ml-kem-512",
+          "sig": "ml-dsa-44",
+          "aead": "aes256-gcm",
+          "hash": "sha3-256",
+          "session_key_bits": 256,
+          "comsec": "payload AEAD (aes256-gcm) + authenticated PQC/hybrid handshake (ml-dsa-44 over ml-kem-512); key establishment is the COMSEC boundary, TRANSEC is the carrier's concern"
+        },
+        "nist3": {
+          "steady_state_max_fps": 6249999.998726708,
+          "one_time_handshake_ms": 1.385,
+          "meets": [
+            "FIPS 203 (ML-KEM-768)",
+            "FIPS 204 (ML-DSA-65)",
+            "FIPS 202 (SHA3-384)"
+          ],
+          "security_level": 3,
+          "kem": "ml-kem-768",
+          "sig": "ml-dsa-65",
+          "aead": "aes256-gcm",
+          "hash": "sha3-384",
+          "session_key_bits": 256,
+          "comsec": "payload AEAD (aes256-gcm) + authenticated PQC/hybrid handshake (ml-dsa-65 over ml-kem-768); key establishment is the COMSEC boundary, TRANSEC is the carrier's concern"
+        },
+        "nist5": {
+          "steady_state_max_fps": 6249999.998726708,
+          "one_time_handshake_ms": 1.685,
+          "meets": [
+            "FIPS 203 (ML-KEM-1024)",
+            "FIPS 204 (ML-DSA-87)",
+            "FIPS 202 (SHA3-512)"
+          ],
+          "security_level": 5,
+          "kem": "ml-kem-1024",
+          "sig": "ml-dsa-87",
+          "aead": "aes256-gcm",
+          "hash": "sha3-512",
+          "session_key_bits": 256,
+          "comsec": "payload AEAD (aes256-gcm) + authenticated PQC/hybrid handshake (ml-dsa-87 over ml-kem-1024); key establishment is the COMSEC boundary, TRANSEC is the carrier's concern"
+        },
+        "hybrid3": {
+          "steady_state_max_fps": 6249999.998726708,
+          "one_time_handshake_ms": 2.4,
+          "meets": [
+            "FIPS 203",
+            "FIPS 204",
+            "RFC 7748",
+            "NIST SP 800-56C (hybrid KDF)"
+          ],
+          "security_level": 3,
+          "kem": "x25519+ml-kem-768",
+          "sig": "ml-dsa-65",
+          "aead": "aes256-gcm",
+          "hash": "sha3-384",
+          "session_key_bits": 256,
+          "comsec": "payload AEAD (aes256-gcm) + authenticated PQC/hybrid handshake (ml-dsa-65 over x25519+ml-kem-768); key establishment is the COMSEC boundary, TRANSEC is the carrier's concern"
+        },
+        "hybrid5": {
+          "steady_state_max_fps": 6249999.998726708,
+          "one_time_handshake_ms": 8.853,
+          "meets": [
+            "FIPS 203",
+            "FIPS 204",
+            "RFC 7748 (X448)",
+            "NIST SP 800-56C"
+          ],
+          "security_level": 5,
+          "kem": "x448+ml-kem-1024",
+          "sig": "ml-dsa-87",
+          "aead": "aes256-gcm",
+          "hash": "sha3-512",
+          "session_key_bits": 256,
+          "comsec": "payload AEAD (aes256-gcm) + authenticated PQC/hybrid handshake (ml-dsa-87 over x448+ml-kem-1024); key establishment is the COMSEC boundary, TRANSEC is the carrier's concern"
+        },
+        "cnsa20": {
+          "steady_state_max_fps": 6249999.998726708,
+          "one_time_handshake_ms": 1.345,
+          "meets": [
+            "CNSA 2.0",
+            "FIPS 203 (ML-KEM-1024)",
+            "FIPS 204 (ML-DSA-87)",
+            "FIPS 180-4 (SHA-384)",
+            "NIST SP 800-38D (AES-256-GCM)"
+          ],
+          "security_level": 5,
+          "kem": "ml-kem-1024",
+          "sig": "ml-dsa-87",
+          "aead": "aes256-gcm",
+          "hash": "sha384",
+          "session_key_bits": 256,
+          "comsec": "payload AEAD (aes256-gcm) + authenticated PQC/hybrid handshake (ml-dsa-87 over ml-kem-1024); key establishment is the COMSEC boundary, TRANSEC is the carrier's concern"
+        },
+        "nist5-kmac": {
+          "steady_state_max_fps": 6249999.998726708,
+          "one_time_handshake_ms": 1.685,
+          "meets": [
+            "FIPS 203 (ML-KEM-1024)",
+            "FIPS 204 (ML-DSA-87)",
+            "FIPS 202 (SHA3-512)",
+            "NIST SP 800-185 (KMAC256)",
+            "NIST SP 800-56C rev3 (KMAC KDF)"
+          ],
+          "security_level": 5,
+          "kem": "ml-kem-1024",
+          "sig": "ml-dsa-87",
+          "aead": "aes256-gcm",
+          "hash": "sha3-512",
+          "session_key_bits": 256,
+          "comsec": "payload AEAD (aes256-gcm) + authenticated PQC/hybrid handshake (ml-dsa-87 over ml-kem-1024); key establishment is the COMSEC boundary, TRANSEC is the carrier's concern"
+        },
+        "sphincs5": {
+          "steady_state_max_fps": 6249999.998726708,
+          "one_time_handshake_ms": 49.014,
+          "meets": [
+            "FIPS 205 (SLH-DSA / SPHINCS+)",
+            "FIPS 203",
+            "FIPS 202"
+          ],
+          "security_level": 5,
+          "kem": "ml-kem-1024",
+          "sig": "sphincs-sha2-256f",
+          "aead": "aes256-gcm",
+          "hash": "sha3-512",
+          "session_key_bits": 256,
+          "comsec": "payload AEAD (aes256-gcm) + authenticated PQC/hybrid handshake (sphincs-sha2-256f over ml-kem-1024); key establishment is the COMSEC boundary, TRANSEC is the carrier's concern"
+        },
+        "falcon5": {
+          "steady_state_max_fps": 6249999.998726708,
+          "one_time_handshake_ms": 16.56,
+          "meets": [
+            "FN-DSA/Falcon (NIST round 3 sig)",
+            "FIPS 203",
+            "FIPS 202"
+          ],
+          "security_level": 5,
+          "kem": "ml-kem-1024",
+          "sig": "falcon-1024",
+          "aead": "aes256-gcm",
+          "hash": "sha3-512",
+          "session_key_bits": 256,
+          "comsec": "payload AEAD (aes256-gcm) + authenticated PQC/hybrid handshake (falcon-1024 over ml-kem-1024); key establishment is the COMSEC boundary, TRANSEC is the carrier's concern"
+        },
+        "csfc": {
+          "steady_state_max_fps": 6249999.998726708,
+          "one_time_handshake_ms": 8.853,
+          "meets": [
+            "NSA CSfC (two-layer)",
+            "FIPS 203/204/202",
+            "CNSA 2.0 inner"
+          ],
+          "security_level": 5,
+          "kem": "x448+ml-kem-1024",
+          "sig": "ml-dsa-87",
+          "aead": "aes256-gcm",
+          "hash": "sha3-512",
+          "session_key_bits": 256,
+          "comsec": "payload AEAD (aes256-gcm) + authenticated PQC/hybrid handshake (ml-dsa-87 over x448+ml-kem-1024); key establishment is the COMSEC boundary, TRANSEC is the carrier's concern"
+        }
+      }
+    },
+    "Kafka": {
+      "max_fps": 3249850,
+      "max_impl": "libkafcore native broker",
+      "max_tier": "native",
+      "max_sealed": true,
+      "tier_ladder": [
+        {
+          "tier": "shim",
+          "impl": "librbxport C shim",
+          "lang": "typescript",
+          "fps": 15107,
+          "sealed": true,
+          "src": "xport-lang.json"
+        },
+        {
+          "tier": "stock-client",
+          "impl": "confluent-kafka + Apache Kafka (KRaft, :9092)",
+          "lang": "python",
+          "fps": 487271,
+          "sealed": true,
+          "src": "transport-matrix.json"
+        },
+        {
+          "tier": "native",
+          "impl": "libkafcore native broker",
+          "lang": "julia",
+          "fps": 3249850,
+          "sealed": true,
+          "src": "demos/kafka-protocol/native/ffi/kafka-throughput.json"
+        }
+      ],
+      "raw_ceiling_gbps": null,
+      "per_profile_max": {
+        "classical": {
+          "steady_state_max_fps": 3249850,
+          "one_time_handshake_ms": 14.263,
+          "meets": [
+            "RFC 7748 (X25519)",
+            "RFC 8032 (Ed25519)",
+            "NIST SP 800-38D (AES-GCM)"
+          ],
+          "security_level": 0,
+          "kem": "x25519",
+          "sig": "ed25519",
+          "aead": "aes256-gcm",
+          "hash": "sha256",
+          "session_key_bits": 256,
+          "comsec": "payload AEAD (aes256-gcm) + authenticated PQC/hybrid handshake (ed25519 over x25519); key establishment is the COMSEC boundary, TRANSEC is the carrier's concern"
+        },
+        "nist1": {
+          "steady_state_max_fps": 3249850,
+          "one_time_handshake_ms": 0.622,
+          "meets": [
+            "FIPS 203 (ML-KEM-512)",
+            "FIPS 204 (ML-DSA-44)",
+            "FIPS 202 (SHA3-256)",
+            "NIST SP 800-38D"
+          ],
+          "security_level": 1,
+          "kem": "ml-kem-512",
+          "sig": "ml-dsa-44",
+          "aead": "aes256-gcm",
+          "hash": "sha3-256",
+          "session_key_bits": 256,
+          "comsec": "payload AEAD (aes256-gcm) + authenticated PQC/hybrid handshake (ml-dsa-44 over ml-kem-512); key establishment is the COMSEC boundary, TRANSEC is the carrier's concern"
+        },
+        "nist3": {
+          "steady_state_max_fps": 3249850,
+          "one_time_handshake_ms": 1.385,
+          "meets": [
+            "FIPS 203 (ML-KEM-768)",
+            "FIPS 204 (ML-DSA-65)",
+            "FIPS 202 (SHA3-384)"
+          ],
+          "security_level": 3,
+          "kem": "ml-kem-768",
+          "sig": "ml-dsa-65",
+          "aead": "aes256-gcm",
+          "hash": "sha3-384",
+          "session_key_bits": 256,
+          "comsec": "payload AEAD (aes256-gcm) + authenticated PQC/hybrid handshake (ml-dsa-65 over ml-kem-768); key establishment is the COMSEC boundary, TRANSEC is the carrier's concern"
+        },
+        "nist5": {
+          "steady_state_max_fps": 3249850,
+          "one_time_handshake_ms": 1.685,
+          "meets": [
+            "FIPS 203 (ML-KEM-1024)",
+            "FIPS 204 (ML-DSA-87)",
+            "FIPS 202 (SHA3-512)"
+          ],
+          "security_level": 5,
+          "kem": "ml-kem-1024",
+          "sig": "ml-dsa-87",
+          "aead": "aes256-gcm",
+          "hash": "sha3-512",
+          "session_key_bits": 256,
+          "comsec": "payload AEAD (aes256-gcm) + authenticated PQC/hybrid handshake (ml-dsa-87 over ml-kem-1024); key establishment is the COMSEC boundary, TRANSEC is the carrier's concern"
+        },
+        "hybrid3": {
+          "steady_state_max_fps": 3249850,
+          "one_time_handshake_ms": 2.4,
+          "meets": [
+            "FIPS 203",
+            "FIPS 204",
+            "RFC 7748",
+            "NIST SP 800-56C (hybrid KDF)"
+          ],
+          "security_level": 3,
+          "kem": "x25519+ml-kem-768",
+          "sig": "ml-dsa-65",
+          "aead": "aes256-gcm",
+          "hash": "sha3-384",
+          "session_key_bits": 256,
+          "comsec": "payload AEAD (aes256-gcm) + authenticated PQC/hybrid handshake (ml-dsa-65 over x25519+ml-kem-768); key establishment is the COMSEC boundary, TRANSEC is the carrier's concern"
+        },
+        "hybrid5": {
+          "steady_state_max_fps": 3249850,
+          "one_time_handshake_ms": 8.853,
+          "meets": [
+            "FIPS 203",
+            "FIPS 204",
+            "RFC 7748 (X448)",
+            "NIST SP 800-56C"
+          ],
+          "security_level": 5,
+          "kem": "x448+ml-kem-1024",
+          "sig": "ml-dsa-87",
+          "aead": "aes256-gcm",
+          "hash": "sha3-512",
+          "session_key_bits": 256,
+          "comsec": "payload AEAD (aes256-gcm) + authenticated PQC/hybrid handshake (ml-dsa-87 over x448+ml-kem-1024); key establishment is the COMSEC boundary, TRANSEC is the carrier's concern"
+        },
+        "cnsa20": {
+          "steady_state_max_fps": 3249850,
+          "one_time_handshake_ms": 1.345,
+          "meets": [
+            "CNSA 2.0",
+            "FIPS 203 (ML-KEM-1024)",
+            "FIPS 204 (ML-DSA-87)",
+            "FIPS 180-4 (SHA-384)",
+            "NIST SP 800-38D (AES-256-GCM)"
+          ],
+          "security_level": 5,
+          "kem": "ml-kem-1024",
+          "sig": "ml-dsa-87",
+          "aead": "aes256-gcm",
+          "hash": "sha384",
+          "session_key_bits": 256,
+          "comsec": "payload AEAD (aes256-gcm) + authenticated PQC/hybrid handshake (ml-dsa-87 over ml-kem-1024); key establishment is the COMSEC boundary, TRANSEC is the carrier's concern"
+        },
+        "nist5-kmac": {
+          "steady_state_max_fps": 3249850,
+          "one_time_handshake_ms": 1.685,
+          "meets": [
+            "FIPS 203 (ML-KEM-1024)",
+            "FIPS 204 (ML-DSA-87)",
+            "FIPS 202 (SHA3-512)",
+            "NIST SP 800-185 (KMAC256)",
+            "NIST SP 800-56C rev3 (KMAC KDF)"
+          ],
+          "security_level": 5,
+          "kem": "ml-kem-1024",
+          "sig": "ml-dsa-87",
+          "aead": "aes256-gcm",
+          "hash": "sha3-512",
+          "session_key_bits": 256,
+          "comsec": "payload AEAD (aes256-gcm) + authenticated PQC/hybrid handshake (ml-dsa-87 over ml-kem-1024); key establishment is the COMSEC boundary, TRANSEC is the carrier's concern"
+        },
+        "sphincs5": {
+          "steady_state_max_fps": 3249850,
+          "one_time_handshake_ms": 49.014,
+          "meets": [
+            "FIPS 205 (SLH-DSA / SPHINCS+)",
+            "FIPS 203",
+            "FIPS 202"
+          ],
+          "security_level": 5,
+          "kem": "ml-kem-1024",
+          "sig": "sphincs-sha2-256f",
+          "aead": "aes256-gcm",
+          "hash": "sha3-512",
+          "session_key_bits": 256,
+          "comsec": "payload AEAD (aes256-gcm) + authenticated PQC/hybrid handshake (sphincs-sha2-256f over ml-kem-1024); key establishment is the COMSEC boundary, TRANSEC is the carrier's concern"
+        },
+        "falcon5": {
+          "steady_state_max_fps": 3249850,
+          "one_time_handshake_ms": 16.56,
+          "meets": [
+            "FN-DSA/Falcon (NIST round 3 sig)",
+            "FIPS 203",
+            "FIPS 202"
+          ],
+          "security_level": 5,
+          "kem": "ml-kem-1024",
+          "sig": "falcon-1024",
+          "aead": "aes256-gcm",
+          "hash": "sha3-512",
+          "session_key_bits": 256,
+          "comsec": "payload AEAD (aes256-gcm) + authenticated PQC/hybrid handshake (falcon-1024 over ml-kem-1024); key establishment is the COMSEC boundary, TRANSEC is the carrier's concern"
+        },
+        "csfc": {
+          "steady_state_max_fps": 3249850,
+          "one_time_handshake_ms": 8.853,
+          "meets": [
+            "NSA CSfC (two-layer)",
+            "FIPS 203/204/202",
+            "CNSA 2.0 inner"
+          ],
+          "security_level": 5,
+          "kem": "x448+ml-kem-1024",
+          "sig": "ml-dsa-87",
+          "aead": "aes256-gcm",
+          "hash": "sha3-512",
+          "session_key_bits": 256,
+          "comsec": "payload AEAD (aes256-gcm) + authenticated PQC/hybrid handshake (ml-dsa-87 over x448+ml-kem-1024); key establishment is the COMSEC boundary, TRANSEC is the carrier's concern"
+        }
+      }
+    },
+    "LSL": {
+      "max_fps": 99780.632514,
+      "max_impl": "librbxport C shim",
+      "max_tier": "shim",
+      "max_sealed": true,
+      "tier_ladder": [
+        {
+          "tier": "runtime-carrier",
+          "impl": "pylsl + liblsl",
+          "lang": "python",
+          "fps": 14809,
+          "sealed": true,
+          "src": "transport-matrix.json"
+        },
+        {
+          "tier": "shim",
+          "impl": "librbxport C shim",
+          "lang": "rust",
+          "fps": 99781,
+          "sealed": true,
+          "src": "xport-lang.json"
+        }
+      ],
+      "raw_ceiling_gbps": null,
+      "per_profile_max": {
+        "classical": {
+          "steady_state_max_fps": 99780.632514,
+          "one_time_handshake_ms": 14.263,
+          "meets": [
+            "RFC 7748 (X25519)",
+            "RFC 8032 (Ed25519)",
+            "NIST SP 800-38D (AES-GCM)"
+          ],
+          "security_level": 0,
+          "kem": "x25519",
+          "sig": "ed25519",
+          "aead": "aes256-gcm",
+          "hash": "sha256",
+          "session_key_bits": 256,
+          "comsec": "payload AEAD (aes256-gcm) + authenticated PQC/hybrid handshake (ed25519 over x25519); key establishment is the COMSEC boundary, TRANSEC is the carrier's concern"
+        },
+        "nist1": {
+          "steady_state_max_fps": 99780.632514,
+          "one_time_handshake_ms": 0.622,
+          "meets": [
+            "FIPS 203 (ML-KEM-512)",
+            "FIPS 204 (ML-DSA-44)",
+            "FIPS 202 (SHA3-256)",
+            "NIST SP 800-38D"
+          ],
+          "security_level": 1,
+          "kem": "ml-kem-512",
+          "sig": "ml-dsa-44",
+          "aead": "aes256-gcm",
+          "hash": "sha3-256",
+          "session_key_bits": 256,
+          "comsec": "payload AEAD (aes256-gcm) + authenticated PQC/hybrid handshake (ml-dsa-44 over ml-kem-512); key establishment is the COMSEC boundary, TRANSEC is the carrier's concern"
+        },
+        "nist3": {
+          "steady_state_max_fps": 99780.632514,
+          "one_time_handshake_ms": 1.385,
+          "meets": [
+            "FIPS 203 (ML-KEM-768)",
+            "FIPS 204 (ML-DSA-65)",
+            "FIPS 202 (SHA3-384)"
+          ],
+          "security_level": 3,
+          "kem": "ml-kem-768",
+          "sig": "ml-dsa-65",
+          "aead": "aes256-gcm",
+          "hash": "sha3-384",
+          "session_key_bits": 256,
+          "comsec": "payload AEAD (aes256-gcm) + authenticated PQC/hybrid handshake (ml-dsa-65 over ml-kem-768); key establishment is the COMSEC boundary, TRANSEC is the carrier's concern"
+        },
+        "nist5": {
+          "steady_state_max_fps": 99780.632514,
+          "one_time_handshake_ms": 1.685,
+          "meets": [
+            "FIPS 203 (ML-KEM-1024)",
+            "FIPS 204 (ML-DSA-87)",
+            "FIPS 202 (SHA3-512)"
+          ],
+          "security_level": 5,
+          "kem": "ml-kem-1024",
+          "sig": "ml-dsa-87",
+          "aead": "aes256-gcm",
+          "hash": "sha3-512",
+          "session_key_bits": 256,
+          "comsec": "payload AEAD (aes256-gcm) + authenticated PQC/hybrid handshake (ml-dsa-87 over ml-kem-1024); key establishment is the COMSEC boundary, TRANSEC is the carrier's concern"
+        },
+        "hybrid3": {
+          "steady_state_max_fps": 99780.632514,
+          "one_time_handshake_ms": 2.4,
+          "meets": [
+            "FIPS 203",
+            "FIPS 204",
+            "RFC 7748",
+            "NIST SP 800-56C (hybrid KDF)"
+          ],
+          "security_level": 3,
+          "kem": "x25519+ml-kem-768",
+          "sig": "ml-dsa-65",
+          "aead": "aes256-gcm",
+          "hash": "sha3-384",
+          "session_key_bits": 256,
+          "comsec": "payload AEAD (aes256-gcm) + authenticated PQC/hybrid handshake (ml-dsa-65 over x25519+ml-kem-768); key establishment is the COMSEC boundary, TRANSEC is the carrier's concern"
+        },
+        "hybrid5": {
+          "steady_state_max_fps": 99780.632514,
+          "one_time_handshake_ms": 8.853,
+          "meets": [
+            "FIPS 203",
+            "FIPS 204",
+            "RFC 7748 (X448)",
+            "NIST SP 800-56C"
+          ],
+          "security_level": 5,
+          "kem": "x448+ml-kem-1024",
+          "sig": "ml-dsa-87",
+          "aead": "aes256-gcm",
+          "hash": "sha3-512",
+          "session_key_bits": 256,
+          "comsec": "payload AEAD (aes256-gcm) + authenticated PQC/hybrid handshake (ml-dsa-87 over x448+ml-kem-1024); key establishment is the COMSEC boundary, TRANSEC is the carrier's concern"
+        },
+        "cnsa20": {
+          "steady_state_max_fps": 99780.632514,
+          "one_time_handshake_ms": 1.345,
+          "meets": [
+            "CNSA 2.0",
+            "FIPS 203 (ML-KEM-1024)",
+            "FIPS 204 (ML-DSA-87)",
+            "FIPS 180-4 (SHA-384)",
+            "NIST SP 800-38D (AES-256-GCM)"
+          ],
+          "security_level": 5,
+          "kem": "ml-kem-1024",
+          "sig": "ml-dsa-87",
+          "aead": "aes256-gcm",
+          "hash": "sha384",
+          "session_key_bits": 256,
+          "comsec": "payload AEAD (aes256-gcm) + authenticated PQC/hybrid handshake (ml-dsa-87 over ml-kem-1024); key establishment is the COMSEC boundary, TRANSEC is the carrier's concern"
+        },
+        "nist5-kmac": {
+          "steady_state_max_fps": 99780.632514,
+          "one_time_handshake_ms": 1.685,
+          "meets": [
+            "FIPS 203 (ML-KEM-1024)",
+            "FIPS 204 (ML-DSA-87)",
+            "FIPS 202 (SHA3-512)",
+            "NIST SP 800-185 (KMAC256)",
+            "NIST SP 800-56C rev3 (KMAC KDF)"
+          ],
+          "security_level": 5,
+          "kem": "ml-kem-1024",
+          "sig": "ml-dsa-87",
+          "aead": "aes256-gcm",
+          "hash": "sha3-512",
+          "session_key_bits": 256,
+          "comsec": "payload AEAD (aes256-gcm) + authenticated PQC/hybrid handshake (ml-dsa-87 over ml-kem-1024); key establishment is the COMSEC boundary, TRANSEC is the carrier's concern"
+        },
+        "sphincs5": {
+          "steady_state_max_fps": 99780.632514,
+          "one_time_handshake_ms": 49.014,
+          "meets": [
+            "FIPS 205 (SLH-DSA / SPHINCS+)",
+            "FIPS 203",
+            "FIPS 202"
+          ],
+          "security_level": 5,
+          "kem": "ml-kem-1024",
+          "sig": "sphincs-sha2-256f",
+          "aead": "aes256-gcm",
+          "hash": "sha3-512",
+          "session_key_bits": 256,
+          "comsec": "payload AEAD (aes256-gcm) + authenticated PQC/hybrid handshake (sphincs-sha2-256f over ml-kem-1024); key establishment is the COMSEC boundary, TRANSEC is the carrier's concern"
+        },
+        "falcon5": {
+          "steady_state_max_fps": 99780.632514,
+          "one_time_handshake_ms": 16.56,
+          "meets": [
+            "FN-DSA/Falcon (NIST round 3 sig)",
+            "FIPS 203",
+            "FIPS 202"
+          ],
+          "security_level": 5,
+          "kem": "ml-kem-1024",
+          "sig": "falcon-1024",
+          "aead": "aes256-gcm",
+          "hash": "sha3-512",
+          "session_key_bits": 256,
+          "comsec": "payload AEAD (aes256-gcm) + authenticated PQC/hybrid handshake (falcon-1024 over ml-kem-1024); key establishment is the COMSEC boundary, TRANSEC is the carrier's concern"
+        },
+        "csfc": {
+          "steady_state_max_fps": 99780.632514,
+          "one_time_handshake_ms": 8.853,
+          "meets": [
+            "NSA CSfC (two-layer)",
+            "FIPS 203/204/202",
+            "CNSA 2.0 inner"
+          ],
+          "security_level": 5,
+          "kem": "x448+ml-kem-1024",
+          "sig": "ml-dsa-87",
+          "aead": "aes256-gcm",
+          "hash": "sha3-512",
+          "session_key_bits": 256,
+          "comsec": "payload AEAD (aes256-gcm) + authenticated PQC/hybrid handshake (ml-dsa-87 over x448+ml-kem-1024); key establishment is the COMSEC boundary, TRANSEC is the carrier's concern"
+        }
+      }
+    },
+    "MQTT": {
+      "max_fps": 598795.223898,
+      "max_impl": "librbxport C shim",
+      "max_tier": "shim",
+      "max_sealed": true,
+      "tier_ladder": [
+        {
+          "tier": "stock-client",
+          "impl": "paho-mqtt + mosquitto",
+          "lang": "python",
+          "fps": 32920,
+          "sealed": true,
+          "src": "transport-matrix.json"
+        },
+        {
+          "tier": "shim",
+          "impl": "librbxport C shim",
+          "lang": "cpp",
+          "fps": 598795,
+          "sealed": true,
+          "src": "xport-lang.json"
+        }
+      ],
+      "raw_ceiling_gbps": null,
+      "per_profile_max": {
+        "classical": {
+          "steady_state_max_fps": 598795.223898,
+          "one_time_handshake_ms": 14.263,
+          "meets": [
+            "RFC 7748 (X25519)",
+            "RFC 8032 (Ed25519)",
+            "NIST SP 800-38D (AES-GCM)"
+          ],
+          "security_level": 0,
+          "kem": "x25519",
+          "sig": "ed25519",
+          "aead": "aes256-gcm",
+          "hash": "sha256",
+          "session_key_bits": 256,
+          "comsec": "payload AEAD (aes256-gcm) + authenticated PQC/hybrid handshake (ed25519 over x25519); key establishment is the COMSEC boundary, TRANSEC is the carrier's concern"
+        },
+        "nist1": {
+          "steady_state_max_fps": 598795.223898,
+          "one_time_handshake_ms": 0.622,
+          "meets": [
+            "FIPS 203 (ML-KEM-512)",
+            "FIPS 204 (ML-DSA-44)",
+            "FIPS 202 (SHA3-256)",
+            "NIST SP 800-38D"
+          ],
+          "security_level": 1,
+          "kem": "ml-kem-512",
+          "sig": "ml-dsa-44",
+          "aead": "aes256-gcm",
+          "hash": "sha3-256",
+          "session_key_bits": 256,
+          "comsec": "payload AEAD (aes256-gcm) + authenticated PQC/hybrid handshake (ml-dsa-44 over ml-kem-512); key establishment is the COMSEC boundary, TRANSEC is the carrier's concern"
+        },
+        "nist3": {
+          "steady_state_max_fps": 598795.223898,
+          "one_time_handshake_ms": 1.385,
+          "meets": [
+            "FIPS 203 (ML-KEM-768)",
+            "FIPS 204 (ML-DSA-65)",
+            "FIPS 202 (SHA3-384)"
+          ],
+          "security_level": 3,
+          "kem": "ml-kem-768",
+          "sig": "ml-dsa-65",
+          "aead": "aes256-gcm",
+          "hash": "sha3-384",
+          "session_key_bits": 256,
+          "comsec": "payload AEAD (aes256-gcm) + authenticated PQC/hybrid handshake (ml-dsa-65 over ml-kem-768); key establishment is the COMSEC boundary, TRANSEC is the carrier's concern"
+        },
+        "nist5": {
+          "steady_state_max_fps": 598795.223898,
+          "one_time_handshake_ms": 1.685,
+          "meets": [
+            "FIPS 203 (ML-KEM-1024)",
+            "FIPS 204 (ML-DSA-87)",
+            "FIPS 202 (SHA3-512)"
+          ],
+          "security_level": 5,
+          "kem": "ml-kem-1024",
+          "sig": "ml-dsa-87",
+          "aead": "aes256-gcm",
+          "hash": "sha3-512",
+          "session_key_bits": 256,
+          "comsec": "payload AEAD (aes256-gcm) + authenticated PQC/hybrid handshake (ml-dsa-87 over ml-kem-1024); key establishment is the COMSEC boundary, TRANSEC is the carrier's concern"
+        },
+        "hybrid3": {
+          "steady_state_max_fps": 598795.223898,
+          "one_time_handshake_ms": 2.4,
+          "meets": [
+            "FIPS 203",
+            "FIPS 204",
+            "RFC 7748",
+            "NIST SP 800-56C (hybrid KDF)"
+          ],
+          "security_level": 3,
+          "kem": "x25519+ml-kem-768",
+          "sig": "ml-dsa-65",
+          "aead": "aes256-gcm",
+          "hash": "sha3-384",
+          "session_key_bits": 256,
+          "comsec": "payload AEAD (aes256-gcm) + authenticated PQC/hybrid handshake (ml-dsa-65 over x25519+ml-kem-768); key establishment is the COMSEC boundary, TRANSEC is the carrier's concern"
+        },
+        "hybrid5": {
+          "steady_state_max_fps": 598795.223898,
+          "one_time_handshake_ms": 8.853,
+          "meets": [
+            "FIPS 203",
+            "FIPS 204",
+            "RFC 7748 (X448)",
+            "NIST SP 800-56C"
+          ],
+          "security_level": 5,
+          "kem": "x448+ml-kem-1024",
+          "sig": "ml-dsa-87",
+          "aead": "aes256-gcm",
+          "hash": "sha3-512",
+          "session_key_bits": 256,
+          "comsec": "payload AEAD (aes256-gcm) + authenticated PQC/hybrid handshake (ml-dsa-87 over x448+ml-kem-1024); key establishment is the COMSEC boundary, TRANSEC is the carrier's concern"
+        },
+        "cnsa20": {
+          "steady_state_max_fps": 598795.223898,
+          "one_time_handshake_ms": 1.345,
+          "meets": [
+            "CNSA 2.0",
+            "FIPS 203 (ML-KEM-1024)",
+            "FIPS 204 (ML-DSA-87)",
+            "FIPS 180-4 (SHA-384)",
+            "NIST SP 800-38D (AES-256-GCM)"
+          ],
+          "security_level": 5,
+          "kem": "ml-kem-1024",
+          "sig": "ml-dsa-87",
+          "aead": "aes256-gcm",
+          "hash": "sha384",
+          "session_key_bits": 256,
+          "comsec": "payload AEAD (aes256-gcm) + authenticated PQC/hybrid handshake (ml-dsa-87 over ml-kem-1024); key establishment is the COMSEC boundary, TRANSEC is the carrier's concern"
+        },
+        "nist5-kmac": {
+          "steady_state_max_fps": 598795.223898,
+          "one_time_handshake_ms": 1.685,
+          "meets": [
+            "FIPS 203 (ML-KEM-1024)",
+            "FIPS 204 (ML-DSA-87)",
+            "FIPS 202 (SHA3-512)",
+            "NIST SP 800-185 (KMAC256)",
+            "NIST SP 800-56C rev3 (KMAC KDF)"
+          ],
+          "security_level": 5,
+          "kem": "ml-kem-1024",
+          "sig": "ml-dsa-87",
+          "aead": "aes256-gcm",
+          "hash": "sha3-512",
+          "session_key_bits": 256,
+          "comsec": "payload AEAD (aes256-gcm) + authenticated PQC/hybrid handshake (ml-dsa-87 over ml-kem-1024); key establishment is the COMSEC boundary, TRANSEC is the carrier's concern"
+        },
+        "sphincs5": {
+          "steady_state_max_fps": 598795.223898,
+          "one_time_handshake_ms": 49.014,
+          "meets": [
+            "FIPS 205 (SLH-DSA / SPHINCS+)",
+            "FIPS 203",
+            "FIPS 202"
+          ],
+          "security_level": 5,
+          "kem": "ml-kem-1024",
+          "sig": "sphincs-sha2-256f",
+          "aead": "aes256-gcm",
+          "hash": "sha3-512",
+          "session_key_bits": 256,
+          "comsec": "payload AEAD (aes256-gcm) + authenticated PQC/hybrid handshake (sphincs-sha2-256f over ml-kem-1024); key establishment is the COMSEC boundary, TRANSEC is the carrier's concern"
+        },
+        "falcon5": {
+          "steady_state_max_fps": 598795.223898,
+          "one_time_handshake_ms": 16.56,
+          "meets": [
+            "FN-DSA/Falcon (NIST round 3 sig)",
+            "FIPS 203",
+            "FIPS 202"
+          ],
+          "security_level": 5,
+          "kem": "ml-kem-1024",
+          "sig": "falcon-1024",
+          "aead": "aes256-gcm",
+          "hash": "sha3-512",
+          "session_key_bits": 256,
+          "comsec": "payload AEAD (aes256-gcm) + authenticated PQC/hybrid handshake (falcon-1024 over ml-kem-1024); key establishment is the COMSEC boundary, TRANSEC is the carrier's concern"
+        },
+        "csfc": {
+          "steady_state_max_fps": 598795.223898,
+          "one_time_handshake_ms": 8.853,
+          "meets": [
+            "NSA CSfC (two-layer)",
+            "FIPS 203/204/202",
+            "CNSA 2.0 inner"
+          ],
+          "security_level": 5,
+          "kem": "x448+ml-kem-1024",
+          "sig": "ml-dsa-87",
+          "aead": "aes256-gcm",
+          "hash": "sha3-512",
+          "session_key_bits": 256,
+          "comsec": "payload AEAD (aes256-gcm) + authenticated PQC/hybrid handshake (ml-dsa-87 over x448+ml-kem-1024); key establishment is the COMSEC boundary, TRANSEC is the carrier's concern"
+        }
+      }
+    },
+    "NNG": {
+      "max_fps": 58339.254981624574,
+      "max_impl": "pynng (nanomsg)",
+      "max_tier": "stock-client",
+      "max_sealed": true,
+      "tier_ladder": [
+        {
+          "tier": "stock-client",
+          "impl": "pynng (nanomsg)",
+          "lang": "python",
+          "fps": 58339,
+          "sealed": true,
+          "src": "transport-matrix.json"
+        }
+      ],
+      "raw_ceiling_gbps": null,
+      "per_profile_max": {
+        "classical": {
+          "steady_state_max_fps": 58339.254981624574,
+          "one_time_handshake_ms": 14.263,
+          "meets": [
+            "RFC 7748 (X25519)",
+            "RFC 8032 (Ed25519)",
+            "NIST SP 800-38D (AES-GCM)"
+          ],
+          "security_level": 0,
+          "kem": "x25519",
+          "sig": "ed25519",
+          "aead": "aes256-gcm",
+          "hash": "sha256",
+          "session_key_bits": 256,
+          "comsec": "payload AEAD (aes256-gcm) + authenticated PQC/hybrid handshake (ed25519 over x25519); key establishment is the COMSEC boundary, TRANSEC is the carrier's concern"
+        },
+        "nist1": {
+          "steady_state_max_fps": 58339.254981624574,
+          "one_time_handshake_ms": 0.622,
+          "meets": [
+            "FIPS 203 (ML-KEM-512)",
+            "FIPS 204 (ML-DSA-44)",
+            "FIPS 202 (SHA3-256)",
+            "NIST SP 800-38D"
+          ],
+          "security_level": 1,
+          "kem": "ml-kem-512",
+          "sig": "ml-dsa-44",
+          "aead": "aes256-gcm",
+          "hash": "sha3-256",
+          "session_key_bits": 256,
+          "comsec": "payload AEAD (aes256-gcm) + authenticated PQC/hybrid handshake (ml-dsa-44 over ml-kem-512); key establishment is the COMSEC boundary, TRANSEC is the carrier's concern"
+        },
+        "nist3": {
+          "steady_state_max_fps": 58339.254981624574,
+          "one_time_handshake_ms": 1.385,
+          "meets": [
+            "FIPS 203 (ML-KEM-768)",
+            "FIPS 204 (ML-DSA-65)",
+            "FIPS 202 (SHA3-384)"
+          ],
+          "security_level": 3,
+          "kem": "ml-kem-768",
+          "sig": "ml-dsa-65",
+          "aead": "aes256-gcm",
+          "hash": "sha3-384",
+          "session_key_bits": 256,
+          "comsec": "payload AEAD (aes256-gcm) + authenticated PQC/hybrid handshake (ml-dsa-65 over ml-kem-768); key establishment is the COMSEC boundary, TRANSEC is the carrier's concern"
+        },
+        "nist5": {
+          "steady_state_max_fps": 58339.254981624574,
+          "one_time_handshake_ms": 1.685,
+          "meets": [
+            "FIPS 203 (ML-KEM-1024)",
+            "FIPS 204 (ML-DSA-87)",
+            "FIPS 202 (SHA3-512)"
+          ],
+          "security_level": 5,
+          "kem": "ml-kem-1024",
+          "sig": "ml-dsa-87",
+          "aead": "aes256-gcm",
+          "hash": "sha3-512",
+          "session_key_bits": 256,
+          "comsec": "payload AEAD (aes256-gcm) + authenticated PQC/hybrid handshake (ml-dsa-87 over ml-kem-1024); key establishment is the COMSEC boundary, TRANSEC is the carrier's concern"
+        },
+        "hybrid3": {
+          "steady_state_max_fps": 58339.254981624574,
+          "one_time_handshake_ms": 2.4,
+          "meets": [
+            "FIPS 203",
+            "FIPS 204",
+            "RFC 7748",
+            "NIST SP 800-56C (hybrid KDF)"
+          ],
+          "security_level": 3,
+          "kem": "x25519+ml-kem-768",
+          "sig": "ml-dsa-65",
+          "aead": "aes256-gcm",
+          "hash": "sha3-384",
+          "session_key_bits": 256,
+          "comsec": "payload AEAD (aes256-gcm) + authenticated PQC/hybrid handshake (ml-dsa-65 over x25519+ml-kem-768); key establishment is the COMSEC boundary, TRANSEC is the carrier's concern"
+        },
+        "hybrid5": {
+          "steady_state_max_fps": 58339.254981624574,
+          "one_time_handshake_ms": 8.853,
+          "meets": [
+            "FIPS 203",
+            "FIPS 204",
+            "RFC 7748 (X448)",
+            "NIST SP 800-56C"
+          ],
+          "security_level": 5,
+          "kem": "x448+ml-kem-1024",
+          "sig": "ml-dsa-87",
+          "aead": "aes256-gcm",
+          "hash": "sha3-512",
+          "session_key_bits": 256,
+          "comsec": "payload AEAD (aes256-gcm) + authenticated PQC/hybrid handshake (ml-dsa-87 over x448+ml-kem-1024); key establishment is the COMSEC boundary, TRANSEC is the carrier's concern"
+        },
+        "cnsa20": {
+          "steady_state_max_fps": 58339.254981624574,
+          "one_time_handshake_ms": 1.345,
+          "meets": [
+            "CNSA 2.0",
+            "FIPS 203 (ML-KEM-1024)",
+            "FIPS 204 (ML-DSA-87)",
+            "FIPS 180-4 (SHA-384)",
+            "NIST SP 800-38D (AES-256-GCM)"
+          ],
+          "security_level": 5,
+          "kem": "ml-kem-1024",
+          "sig": "ml-dsa-87",
+          "aead": "aes256-gcm",
+          "hash": "sha384",
+          "session_key_bits": 256,
+          "comsec": "payload AEAD (aes256-gcm) + authenticated PQC/hybrid handshake (ml-dsa-87 over ml-kem-1024); key establishment is the COMSEC boundary, TRANSEC is the carrier's concern"
+        },
+        "nist5-kmac": {
+          "steady_state_max_fps": 58339.254981624574,
+          "one_time_handshake_ms": 1.685,
+          "meets": [
+            "FIPS 203 (ML-KEM-1024)",
+            "FIPS 204 (ML-DSA-87)",
+            "FIPS 202 (SHA3-512)",
+            "NIST SP 800-185 (KMAC256)",
+            "NIST SP 800-56C rev3 (KMAC KDF)"
+          ],
+          "security_level": 5,
+          "kem": "ml-kem-1024",
+          "sig": "ml-dsa-87",
+          "aead": "aes256-gcm",
+          "hash": "sha3-512",
+          "session_key_bits": 256,
+          "comsec": "payload AEAD (aes256-gcm) + authenticated PQC/hybrid handshake (ml-dsa-87 over ml-kem-1024); key establishment is the COMSEC boundary, TRANSEC is the carrier's concern"
+        },
+        "sphincs5": {
+          "steady_state_max_fps": 58339.254981624574,
+          "one_time_handshake_ms": 49.014,
+          "meets": [
+            "FIPS 205 (SLH-DSA / SPHINCS+)",
+            "FIPS 203",
+            "FIPS 202"
+          ],
+          "security_level": 5,
+          "kem": "ml-kem-1024",
+          "sig": "sphincs-sha2-256f",
+          "aead": "aes256-gcm",
+          "hash": "sha3-512",
+          "session_key_bits": 256,
+          "comsec": "payload AEAD (aes256-gcm) + authenticated PQC/hybrid handshake (sphincs-sha2-256f over ml-kem-1024); key establishment is the COMSEC boundary, TRANSEC is the carrier's concern"
+        },
+        "falcon5": {
+          "steady_state_max_fps": 58339.254981624574,
+          "one_time_handshake_ms": 16.56,
+          "meets": [
+            "FN-DSA/Falcon (NIST round 3 sig)",
+            "FIPS 203",
+            "FIPS 202"
+          ],
+          "security_level": 5,
+          "kem": "ml-kem-1024",
+          "sig": "falcon-1024",
+          "aead": "aes256-gcm",
+          "hash": "sha3-512",
+          "session_key_bits": 256,
+          "comsec": "payload AEAD (aes256-gcm) + authenticated PQC/hybrid handshake (falcon-1024 over ml-kem-1024); key establishment is the COMSEC boundary, TRANSEC is the carrier's concern"
+        },
+        "csfc": {
+          "steady_state_max_fps": 58339.254981624574,
+          "one_time_handshake_ms": 8.853,
+          "meets": [
+            "NSA CSfC (two-layer)",
+            "FIPS 203/204/202",
+            "CNSA 2.0 inner"
+          ],
+          "security_level": 5,
+          "kem": "x448+ml-kem-1024",
+          "sig": "ml-dsa-87",
+          "aead": "aes256-gcm",
+          "hash": "sha3-512",
+          "session_key_bits": 256,
+          "comsec": "payload AEAD (aes256-gcm) + authenticated PQC/hybrid handshake (ml-dsa-87 over x448+ml-kem-1024); key establishment is the COMSEC boundary, TRANSEC is the carrier's concern"
+        }
+      }
+    },
+    "ROS 1": {
+      "max_fps": 66770.8,
+      "max_impl": "rospy (TCPROS)",
+      "max_tier": "runtime-carrier",
+      "max_sealed": true,
+      "tier_ladder": [
+        {
+          "tier": "runtime-carrier",
+          "impl": "rospy (TCPROS)",
+          "lang": "python",
+          "fps": 66771,
+          "sealed": true,
+          "src": "transport-matrix.json"
+        }
+      ],
+      "raw_ceiling_gbps": null,
+      "per_profile_max": {
+        "classical": {
+          "steady_state_max_fps": 66770.8,
+          "one_time_handshake_ms": 14.263,
+          "meets": [
+            "RFC 7748 (X25519)",
+            "RFC 8032 (Ed25519)",
+            "NIST SP 800-38D (AES-GCM)"
+          ],
+          "security_level": 0,
+          "kem": "x25519",
+          "sig": "ed25519",
+          "aead": "aes256-gcm",
+          "hash": "sha256",
+          "session_key_bits": 256,
+          "comsec": "payload AEAD (aes256-gcm) + authenticated PQC/hybrid handshake (ed25519 over x25519); key establishment is the COMSEC boundary, TRANSEC is the carrier's concern"
+        },
+        "nist1": {
+          "steady_state_max_fps": 66770.8,
+          "one_time_handshake_ms": 0.622,
+          "meets": [
+            "FIPS 203 (ML-KEM-512)",
+            "FIPS 204 (ML-DSA-44)",
+            "FIPS 202 (SHA3-256)",
+            "NIST SP 800-38D"
+          ],
+          "security_level": 1,
+          "kem": "ml-kem-512",
+          "sig": "ml-dsa-44",
+          "aead": "aes256-gcm",
+          "hash": "sha3-256",
+          "session_key_bits": 256,
+          "comsec": "payload AEAD (aes256-gcm) + authenticated PQC/hybrid handshake (ml-dsa-44 over ml-kem-512); key establishment is the COMSEC boundary, TRANSEC is the carrier's concern"
+        },
+        "nist3": {
+          "steady_state_max_fps": 66770.8,
+          "one_time_handshake_ms": 1.385,
+          "meets": [
+            "FIPS 203 (ML-KEM-768)",
+            "FIPS 204 (ML-DSA-65)",
+            "FIPS 202 (SHA3-384)"
+          ],
+          "security_level": 3,
+          "kem": "ml-kem-768",
+          "sig": "ml-dsa-65",
+          "aead": "aes256-gcm",
+          "hash": "sha3-384",
+          "session_key_bits": 256,
+          "comsec": "payload AEAD (aes256-gcm) + authenticated PQC/hybrid handshake (ml-dsa-65 over ml-kem-768); key establishment is the COMSEC boundary, TRANSEC is the carrier's concern"
+        },
+        "nist5": {
+          "steady_state_max_fps": 66770.8,
+          "one_time_handshake_ms": 1.685,
+          "meets": [
+            "FIPS 203 (ML-KEM-1024)",
+            "FIPS 204 (ML-DSA-87)",
+            "FIPS 202 (SHA3-512)"
+          ],
+          "security_level": 5,
+          "kem": "ml-kem-1024",
+          "sig": "ml-dsa-87",
+          "aead": "aes256-gcm",
+          "hash": "sha3-512",
+          "session_key_bits": 256,
+          "comsec": "payload AEAD (aes256-gcm) + authenticated PQC/hybrid handshake (ml-dsa-87 over ml-kem-1024); key establishment is the COMSEC boundary, TRANSEC is the carrier's concern"
+        },
+        "hybrid3": {
+          "steady_state_max_fps": 66770.8,
+          "one_time_handshake_ms": 2.4,
+          "meets": [
+            "FIPS 203",
+            "FIPS 204",
+            "RFC 7748",
+            "NIST SP 800-56C (hybrid KDF)"
+          ],
+          "security_level": 3,
+          "kem": "x25519+ml-kem-768",
+          "sig": "ml-dsa-65",
+          "aead": "aes256-gcm",
+          "hash": "sha3-384",
+          "session_key_bits": 256,
+          "comsec": "payload AEAD (aes256-gcm) + authenticated PQC/hybrid handshake (ml-dsa-65 over x25519+ml-kem-768); key establishment is the COMSEC boundary, TRANSEC is the carrier's concern"
+        },
+        "hybrid5": {
+          "steady_state_max_fps": 66770.8,
+          "one_time_handshake_ms": 8.853,
+          "meets": [
+            "FIPS 203",
+            "FIPS 204",
+            "RFC 7748 (X448)",
+            "NIST SP 800-56C"
+          ],
+          "security_level": 5,
+          "kem": "x448+ml-kem-1024",
+          "sig": "ml-dsa-87",
+          "aead": "aes256-gcm",
+          "hash": "sha3-512",
+          "session_key_bits": 256,
+          "comsec": "payload AEAD (aes256-gcm) + authenticated PQC/hybrid handshake (ml-dsa-87 over x448+ml-kem-1024); key establishment is the COMSEC boundary, TRANSEC is the carrier's concern"
+        },
+        "cnsa20": {
+          "steady_state_max_fps": 66770.8,
+          "one_time_handshake_ms": 1.345,
+          "meets": [
+            "CNSA 2.0",
+            "FIPS 203 (ML-KEM-1024)",
+            "FIPS 204 (ML-DSA-87)",
+            "FIPS 180-4 (SHA-384)",
+            "NIST SP 800-38D (AES-256-GCM)"
+          ],
+          "security_level": 5,
+          "kem": "ml-kem-1024",
+          "sig": "ml-dsa-87",
+          "aead": "aes256-gcm",
+          "hash": "sha384",
+          "session_key_bits": 256,
+          "comsec": "payload AEAD (aes256-gcm) + authenticated PQC/hybrid handshake (ml-dsa-87 over ml-kem-1024); key establishment is the COMSEC boundary, TRANSEC is the carrier's concern"
+        },
+        "nist5-kmac": {
+          "steady_state_max_fps": 66770.8,
+          "one_time_handshake_ms": 1.685,
+          "meets": [
+            "FIPS 203 (ML-KEM-1024)",
+            "FIPS 204 (ML-DSA-87)",
+            "FIPS 202 (SHA3-512)",
+            "NIST SP 800-185 (KMAC256)",
+            "NIST SP 800-56C rev3 (KMAC KDF)"
+          ],
+          "security_level": 5,
+          "kem": "ml-kem-1024",
+          "sig": "ml-dsa-87",
+          "aead": "aes256-gcm",
+          "hash": "sha3-512",
+          "session_key_bits": 256,
+          "comsec": "payload AEAD (aes256-gcm) + authenticated PQC/hybrid handshake (ml-dsa-87 over ml-kem-1024); key establishment is the COMSEC boundary, TRANSEC is the carrier's concern"
+        },
+        "sphincs5": {
+          "steady_state_max_fps": 66770.8,
+          "one_time_handshake_ms": 49.014,
+          "meets": [
+            "FIPS 205 (SLH-DSA / SPHINCS+)",
+            "FIPS 203",
+            "FIPS 202"
+          ],
+          "security_level": 5,
+          "kem": "ml-kem-1024",
+          "sig": "sphincs-sha2-256f",
+          "aead": "aes256-gcm",
+          "hash": "sha3-512",
+          "session_key_bits": 256,
+          "comsec": "payload AEAD (aes256-gcm) + authenticated PQC/hybrid handshake (sphincs-sha2-256f over ml-kem-1024); key establishment is the COMSEC boundary, TRANSEC is the carrier's concern"
+        },
+        "falcon5": {
+          "steady_state_max_fps": 66770.8,
+          "one_time_handshake_ms": 16.56,
+          "meets": [
+            "FN-DSA/Falcon (NIST round 3 sig)",
+            "FIPS 203",
+            "FIPS 202"
+          ],
+          "security_level": 5,
+          "kem": "ml-kem-1024",
+          "sig": "falcon-1024",
+          "aead": "aes256-gcm",
+          "hash": "sha3-512",
+          "session_key_bits": 256,
+          "comsec": "payload AEAD (aes256-gcm) + authenticated PQC/hybrid handshake (falcon-1024 over ml-kem-1024); key establishment is the COMSEC boundary, TRANSEC is the carrier's concern"
+        },
+        "csfc": {
+          "steady_state_max_fps": 66770.8,
+          "one_time_handshake_ms": 8.853,
+          "meets": [
+            "NSA CSfC (two-layer)",
+            "FIPS 203/204/202",
+            "CNSA 2.0 inner"
+          ],
+          "security_level": 5,
+          "kem": "x448+ml-kem-1024",
+          "sig": "ml-dsa-87",
+          "aead": "aes256-gcm",
+          "hash": "sha3-512",
+          "session_key_bits": 256,
+          "comsec": "payload AEAD (aes256-gcm) + authenticated PQC/hybrid handshake (ml-dsa-87 over x448+ml-kem-1024); key establishment is the COMSEC boundary, TRANSEC is the carrier's concern"
+        }
+      }
+    },
+    "ROS 2": {
+      "max_fps": 553009.3,
+      "max_impl": "rclpy take-loop (rmw_cyclonedds_cpp)",
+      "max_tier": "native",
+      "max_sealed": true,
+      "tier_ladder": [
+        {
+          "tier": "native",
+          "impl": "rclpy take-loop (rmw_cyclonedds_cpp)",
+          "lang": "python",
+          "fps": 553009,
+          "sealed": true,
+          "src": "transport-matrix.json"
+        }
+      ],
+      "raw_ceiling_gbps": null,
+      "per_profile_max": {
+        "classical": {
+          "steady_state_max_fps": 553009.3,
+          "one_time_handshake_ms": 14.263,
+          "meets": [
+            "RFC 7748 (X25519)",
+            "RFC 8032 (Ed25519)",
+            "NIST SP 800-38D (AES-GCM)"
+          ],
+          "security_level": 0,
+          "kem": "x25519",
+          "sig": "ed25519",
+          "aead": "aes256-gcm",
+          "hash": "sha256",
+          "session_key_bits": 256,
+          "comsec": "payload AEAD (aes256-gcm) + authenticated PQC/hybrid handshake (ed25519 over x25519); key establishment is the COMSEC boundary, TRANSEC is the carrier's concern"
+        },
+        "nist1": {
+          "steady_state_max_fps": 553009.3,
+          "one_time_handshake_ms": 0.622,
+          "meets": [
+            "FIPS 203 (ML-KEM-512)",
+            "FIPS 204 (ML-DSA-44)",
+            "FIPS 202 (SHA3-256)",
+            "NIST SP 800-38D"
+          ],
+          "security_level": 1,
+          "kem": "ml-kem-512",
+          "sig": "ml-dsa-44",
+          "aead": "aes256-gcm",
+          "hash": "sha3-256",
+          "session_key_bits": 256,
+          "comsec": "payload AEAD (aes256-gcm) + authenticated PQC/hybrid handshake (ml-dsa-44 over ml-kem-512); key establishment is the COMSEC boundary, TRANSEC is the carrier's concern"
+        },
+        "nist3": {
+          "steady_state_max_fps": 553009.3,
+          "one_time_handshake_ms": 1.385,
+          "meets": [
+            "FIPS 203 (ML-KEM-768)",
+            "FIPS 204 (ML-DSA-65)",
+            "FIPS 202 (SHA3-384)"
+          ],
+          "security_level": 3,
+          "kem": "ml-kem-768",
+          "sig": "ml-dsa-65",
+          "aead": "aes256-gcm",
+          "hash": "sha3-384",
+          "session_key_bits": 256,
+          "comsec": "payload AEAD (aes256-gcm) + authenticated PQC/hybrid handshake (ml-dsa-65 over ml-kem-768); key establishment is the COMSEC boundary, TRANSEC is the carrier's concern"
+        },
+        "nist5": {
+          "steady_state_max_fps": 553009.3,
+          "one_time_handshake_ms": 1.685,
+          "meets": [
+            "FIPS 203 (ML-KEM-1024)",
+            "FIPS 204 (ML-DSA-87)",
+            "FIPS 202 (SHA3-512)"
+          ],
+          "security_level": 5,
+          "kem": "ml-kem-1024",
+          "sig": "ml-dsa-87",
+          "aead": "aes256-gcm",
+          "hash": "sha3-512",
+          "session_key_bits": 256,
+          "comsec": "payload AEAD (aes256-gcm) + authenticated PQC/hybrid handshake (ml-dsa-87 over ml-kem-1024); key establishment is the COMSEC boundary, TRANSEC is the carrier's concern"
+        },
+        "hybrid3": {
+          "steady_state_max_fps": 553009.3,
+          "one_time_handshake_ms": 2.4,
+          "meets": [
+            "FIPS 203",
+            "FIPS 204",
+            "RFC 7748",
+            "NIST SP 800-56C (hybrid KDF)"
+          ],
+          "security_level": 3,
+          "kem": "x25519+ml-kem-768",
+          "sig": "ml-dsa-65",
+          "aead": "aes256-gcm",
+          "hash": "sha3-384",
+          "session_key_bits": 256,
+          "comsec": "payload AEAD (aes256-gcm) + authenticated PQC/hybrid handshake (ml-dsa-65 over x25519+ml-kem-768); key establishment is the COMSEC boundary, TRANSEC is the carrier's concern"
+        },
+        "hybrid5": {
+          "steady_state_max_fps": 553009.3,
+          "one_time_handshake_ms": 8.853,
+          "meets": [
+            "FIPS 203",
+            "FIPS 204",
+            "RFC 7748 (X448)",
+            "NIST SP 800-56C"
+          ],
+          "security_level": 5,
+          "kem": "x448+ml-kem-1024",
+          "sig": "ml-dsa-87",
+          "aead": "aes256-gcm",
+          "hash": "sha3-512",
+          "session_key_bits": 256,
+          "comsec": "payload AEAD (aes256-gcm) + authenticated PQC/hybrid handshake (ml-dsa-87 over x448+ml-kem-1024); key establishment is the COMSEC boundary, TRANSEC is the carrier's concern"
+        },
+        "cnsa20": {
+          "steady_state_max_fps": 553009.3,
+          "one_time_handshake_ms": 1.345,
+          "meets": [
+            "CNSA 2.0",
+            "FIPS 203 (ML-KEM-1024)",
+            "FIPS 204 (ML-DSA-87)",
+            "FIPS 180-4 (SHA-384)",
+            "NIST SP 800-38D (AES-256-GCM)"
+          ],
+          "security_level": 5,
+          "kem": "ml-kem-1024",
+          "sig": "ml-dsa-87",
+          "aead": "aes256-gcm",
+          "hash": "sha384",
+          "session_key_bits": 256,
+          "comsec": "payload AEAD (aes256-gcm) + authenticated PQC/hybrid handshake (ml-dsa-87 over ml-kem-1024); key establishment is the COMSEC boundary, TRANSEC is the carrier's concern"
+        },
+        "nist5-kmac": {
+          "steady_state_max_fps": 553009.3,
+          "one_time_handshake_ms": 1.685,
+          "meets": [
+            "FIPS 203 (ML-KEM-1024)",
+            "FIPS 204 (ML-DSA-87)",
+            "FIPS 202 (SHA3-512)",
+            "NIST SP 800-185 (KMAC256)",
+            "NIST SP 800-56C rev3 (KMAC KDF)"
+          ],
+          "security_level": 5,
+          "kem": "ml-kem-1024",
+          "sig": "ml-dsa-87",
+          "aead": "aes256-gcm",
+          "hash": "sha3-512",
+          "session_key_bits": 256,
+          "comsec": "payload AEAD (aes256-gcm) + authenticated PQC/hybrid handshake (ml-dsa-87 over ml-kem-1024); key establishment is the COMSEC boundary, TRANSEC is the carrier's concern"
+        },
+        "sphincs5": {
+          "steady_state_max_fps": 553009.3,
+          "one_time_handshake_ms": 49.014,
+          "meets": [
+            "FIPS 205 (SLH-DSA / SPHINCS+)",
+            "FIPS 203",
+            "FIPS 202"
+          ],
+          "security_level": 5,
+          "kem": "ml-kem-1024",
+          "sig": "sphincs-sha2-256f",
+          "aead": "aes256-gcm",
+          "hash": "sha3-512",
+          "session_key_bits": 256,
+          "comsec": "payload AEAD (aes256-gcm) + authenticated PQC/hybrid handshake (sphincs-sha2-256f over ml-kem-1024); key establishment is the COMSEC boundary, TRANSEC is the carrier's concern"
+        },
+        "falcon5": {
+          "steady_state_max_fps": 553009.3,
+          "one_time_handshake_ms": 16.56,
+          "meets": [
+            "FN-DSA/Falcon (NIST round 3 sig)",
+            "FIPS 203",
+            "FIPS 202"
+          ],
+          "security_level": 5,
+          "kem": "ml-kem-1024",
+          "sig": "falcon-1024",
+          "aead": "aes256-gcm",
+          "hash": "sha3-512",
+          "session_key_bits": 256,
+          "comsec": "payload AEAD (aes256-gcm) + authenticated PQC/hybrid handshake (falcon-1024 over ml-kem-1024); key establishment is the COMSEC boundary, TRANSEC is the carrier's concern"
+        },
+        "csfc": {
+          "steady_state_max_fps": 553009.3,
+          "one_time_handshake_ms": 8.853,
+          "meets": [
+            "NSA CSfC (two-layer)",
+            "FIPS 203/204/202",
+            "CNSA 2.0 inner"
+          ],
+          "security_level": 5,
+          "kem": "x448+ml-kem-1024",
+          "sig": "ml-dsa-87",
+          "aead": "aes256-gcm",
+          "hash": "sha3-512",
+          "session_key_bits": 256,
+          "comsec": "payload AEAD (aes256-gcm) + authenticated PQC/hybrid handshake (ml-dsa-87 over x448+ml-kem-1024); key establishment is the COMSEC boundary, TRANSEC is the carrier's concern"
+        }
+      }
+    },
+    "Redis": {
+      "max_fps": 9979.124088204313,
+      "max_impl": "redis + redis-server",
+      "max_tier": "stock-client",
+      "max_sealed": true,
+      "tier_ladder": [
+        {
+          "tier": "stock-client",
+          "impl": "redis + redis-server",
+          "lang": "python",
+          "fps": 9979,
+          "sealed": true,
+          "src": "transport-matrix.json"
+        }
+      ],
+      "raw_ceiling_gbps": null,
+      "per_profile_max": {
+        "classical": {
+          "steady_state_max_fps": 9979.124088204313,
+          "one_time_handshake_ms": 14.263,
+          "meets": [
+            "RFC 7748 (X25519)",
+            "RFC 8032 (Ed25519)",
+            "NIST SP 800-38D (AES-GCM)"
+          ],
+          "security_level": 0,
+          "kem": "x25519",
+          "sig": "ed25519",
+          "aead": "aes256-gcm",
+          "hash": "sha256",
+          "session_key_bits": 256,
+          "comsec": "payload AEAD (aes256-gcm) + authenticated PQC/hybrid handshake (ed25519 over x25519); key establishment is the COMSEC boundary, TRANSEC is the carrier's concern"
+        },
+        "nist1": {
+          "steady_state_max_fps": 9979.124088204313,
+          "one_time_handshake_ms": 0.622,
+          "meets": [
+            "FIPS 203 (ML-KEM-512)",
+            "FIPS 204 (ML-DSA-44)",
+            "FIPS 202 (SHA3-256)",
+            "NIST SP 800-38D"
+          ],
+          "security_level": 1,
+          "kem": "ml-kem-512",
+          "sig": "ml-dsa-44",
+          "aead": "aes256-gcm",
+          "hash": "sha3-256",
+          "session_key_bits": 256,
+          "comsec": "payload AEAD (aes256-gcm) + authenticated PQC/hybrid handshake (ml-dsa-44 over ml-kem-512); key establishment is the COMSEC boundary, TRANSEC is the carrier's concern"
+        },
+        "nist3": {
+          "steady_state_max_fps": 9979.124088204313,
+          "one_time_handshake_ms": 1.385,
+          "meets": [
+            "FIPS 203 (ML-KEM-768)",
+            "FIPS 204 (ML-DSA-65)",
+            "FIPS 202 (SHA3-384)"
+          ],
+          "security_level": 3,
+          "kem": "ml-kem-768",
+          "sig": "ml-dsa-65",
+          "aead": "aes256-gcm",
+          "hash": "sha3-384",
+          "session_key_bits": 256,
+          "comsec": "payload AEAD (aes256-gcm) + authenticated PQC/hybrid handshake (ml-dsa-65 over ml-kem-768); key establishment is the COMSEC boundary, TRANSEC is the carrier's concern"
+        },
+        "nist5": {
+          "steady_state_max_fps": 9979.124088204313,
+          "one_time_handshake_ms": 1.685,
+          "meets": [
+            "FIPS 203 (ML-KEM-1024)",
+            "FIPS 204 (ML-DSA-87)",
+            "FIPS 202 (SHA3-512)"
+          ],
+          "security_level": 5,
+          "kem": "ml-kem-1024",
+          "sig": "ml-dsa-87",
+          "aead": "aes256-gcm",
+          "hash": "sha3-512",
+          "session_key_bits": 256,
+          "comsec": "payload AEAD (aes256-gcm) + authenticated PQC/hybrid handshake (ml-dsa-87 over ml-kem-1024); key establishment is the COMSEC boundary, TRANSEC is the carrier's concern"
+        },
+        "hybrid3": {
+          "steady_state_max_fps": 9979.124088204313,
+          "one_time_handshake_ms": 2.4,
+          "meets": [
+            "FIPS 203",
+            "FIPS 204",
+            "RFC 7748",
+            "NIST SP 800-56C (hybrid KDF)"
+          ],
+          "security_level": 3,
+          "kem": "x25519+ml-kem-768",
+          "sig": "ml-dsa-65",
+          "aead": "aes256-gcm",
+          "hash": "sha3-384",
+          "session_key_bits": 256,
+          "comsec": "payload AEAD (aes256-gcm) + authenticated PQC/hybrid handshake (ml-dsa-65 over x25519+ml-kem-768); key establishment is the COMSEC boundary, TRANSEC is the carrier's concern"
+        },
+        "hybrid5": {
+          "steady_state_max_fps": 9979.124088204313,
+          "one_time_handshake_ms": 8.853,
+          "meets": [
+            "FIPS 203",
+            "FIPS 204",
+            "RFC 7748 (X448)",
+            "NIST SP 800-56C"
+          ],
+          "security_level": 5,
+          "kem": "x448+ml-kem-1024",
+          "sig": "ml-dsa-87",
+          "aead": "aes256-gcm",
+          "hash": "sha3-512",
+          "session_key_bits": 256,
+          "comsec": "payload AEAD (aes256-gcm) + authenticated PQC/hybrid handshake (ml-dsa-87 over x448+ml-kem-1024); key establishment is the COMSEC boundary, TRANSEC is the carrier's concern"
+        },
+        "cnsa20": {
+          "steady_state_max_fps": 9979.124088204313,
+          "one_time_handshake_ms": 1.345,
+          "meets": [
+            "CNSA 2.0",
+            "FIPS 203 (ML-KEM-1024)",
+            "FIPS 204 (ML-DSA-87)",
+            "FIPS 180-4 (SHA-384)",
+            "NIST SP 800-38D (AES-256-GCM)"
+          ],
+          "security_level": 5,
+          "kem": "ml-kem-1024",
+          "sig": "ml-dsa-87",
+          "aead": "aes256-gcm",
+          "hash": "sha384",
+          "session_key_bits": 256,
+          "comsec": "payload AEAD (aes256-gcm) + authenticated PQC/hybrid handshake (ml-dsa-87 over ml-kem-1024); key establishment is the COMSEC boundary, TRANSEC is the carrier's concern"
+        },
+        "nist5-kmac": {
+          "steady_state_max_fps": 9979.124088204313,
+          "one_time_handshake_ms": 1.685,
+          "meets": [
+            "FIPS 203 (ML-KEM-1024)",
+            "FIPS 204 (ML-DSA-87)",
+            "FIPS 202 (SHA3-512)",
+            "NIST SP 800-185 (KMAC256)",
+            "NIST SP 800-56C rev3 (KMAC KDF)"
+          ],
+          "security_level": 5,
+          "kem": "ml-kem-1024",
+          "sig": "ml-dsa-87",
+          "aead": "aes256-gcm",
+          "hash": "sha3-512",
+          "session_key_bits": 256,
+          "comsec": "payload AEAD (aes256-gcm) + authenticated PQC/hybrid handshake (ml-dsa-87 over ml-kem-1024); key establishment is the COMSEC boundary, TRANSEC is the carrier's concern"
+        },
+        "sphincs5": {
+          "steady_state_max_fps": 9979.124088204313,
+          "one_time_handshake_ms": 49.014,
+          "meets": [
+            "FIPS 205 (SLH-DSA / SPHINCS+)",
+            "FIPS 203",
+            "FIPS 202"
+          ],
+          "security_level": 5,
+          "kem": "ml-kem-1024",
+          "sig": "sphincs-sha2-256f",
+          "aead": "aes256-gcm",
+          "hash": "sha3-512",
+          "session_key_bits": 256,
+          "comsec": "payload AEAD (aes256-gcm) + authenticated PQC/hybrid handshake (sphincs-sha2-256f over ml-kem-1024); key establishment is the COMSEC boundary, TRANSEC is the carrier's concern"
+        },
+        "falcon5": {
+          "steady_state_max_fps": 9979.124088204313,
+          "one_time_handshake_ms": 16.56,
+          "meets": [
+            "FN-DSA/Falcon (NIST round 3 sig)",
+            "FIPS 203",
+            "FIPS 202"
+          ],
+          "security_level": 5,
+          "kem": "ml-kem-1024",
+          "sig": "falcon-1024",
+          "aead": "aes256-gcm",
+          "hash": "sha3-512",
+          "session_key_bits": 256,
+          "comsec": "payload AEAD (aes256-gcm) + authenticated PQC/hybrid handshake (falcon-1024 over ml-kem-1024); key establishment is the COMSEC boundary, TRANSEC is the carrier's concern"
+        },
+        "csfc": {
+          "steady_state_max_fps": 9979.124088204313,
+          "one_time_handshake_ms": 8.853,
+          "meets": [
+            "NSA CSfC (two-layer)",
+            "FIPS 203/204/202",
+            "CNSA 2.0 inner"
+          ],
+          "security_level": 5,
+          "kem": "x448+ml-kem-1024",
+          "sig": "ml-dsa-87",
+          "aead": "aes256-gcm",
+          "hash": "sha3-512",
+          "session_key_bits": 256,
+          "comsec": "payload AEAD (aes256-gcm) + authenticated PQC/hybrid handshake (ml-dsa-87 over x448+ml-kem-1024); key establishment is the COMSEC boundary, TRANSEC is the carrier's concern"
+        }
+      }
+    },
+    "SHM": {
+      "max_fps": 74183975.17210123,
+      "max_impl": "librbxport C shim",
+      "max_tier": "shim",
+      "max_sealed": true,
+      "tier_ladder": [
+        {
+          "tier": "native",
+          "impl": "robobus (native)",
+          "lang": "python",
+          "fps": 470192,
+          "sealed": true,
+          "src": "transport-matrix.json"
+        },
+        {
+          "tier": "shim",
+          "impl": "librbxport C shim",
+          "lang": "crystal",
+          "fps": 74183975,
+          "sealed": true,
+          "src": "xport-lang.json"
+        }
+      ],
+      "raw_ceiling_gbps": null,
+      "per_profile_max": {
+        "classical": {
+          "steady_state_max_fps": 74183975.17210123,
+          "one_time_handshake_ms": 14.263,
+          "meets": [
+            "RFC 7748 (X25519)",
+            "RFC 8032 (Ed25519)",
+            "NIST SP 800-38D (AES-GCM)"
+          ],
+          "security_level": 0,
+          "kem": "x25519",
+          "sig": "ed25519",
+          "aead": "aes256-gcm",
+          "hash": "sha256",
+          "session_key_bits": 256,
+          "comsec": "payload AEAD (aes256-gcm) + authenticated PQC/hybrid handshake (ed25519 over x25519); key establishment is the COMSEC boundary, TRANSEC is the carrier's concern"
+        },
+        "nist1": {
+          "steady_state_max_fps": 74183975.17210123,
+          "one_time_handshake_ms": 0.622,
+          "meets": [
+            "FIPS 203 (ML-KEM-512)",
+            "FIPS 204 (ML-DSA-44)",
+            "FIPS 202 (SHA3-256)",
+            "NIST SP 800-38D"
+          ],
+          "security_level": 1,
+          "kem": "ml-kem-512",
+          "sig": "ml-dsa-44",
+          "aead": "aes256-gcm",
+          "hash": "sha3-256",
+          "session_key_bits": 256,
+          "comsec": "payload AEAD (aes256-gcm) + authenticated PQC/hybrid handshake (ml-dsa-44 over ml-kem-512); key establishment is the COMSEC boundary, TRANSEC is the carrier's concern"
+        },
+        "nist3": {
+          "steady_state_max_fps": 74183975.17210123,
+          "one_time_handshake_ms": 1.385,
+          "meets": [
+            "FIPS 203 (ML-KEM-768)",
+            "FIPS 204 (ML-DSA-65)",
+            "FIPS 202 (SHA3-384)"
+          ],
+          "security_level": 3,
+          "kem": "ml-kem-768",
+          "sig": "ml-dsa-65",
+          "aead": "aes256-gcm",
+          "hash": "sha3-384",
+          "session_key_bits": 256,
+          "comsec": "payload AEAD (aes256-gcm) + authenticated PQC/hybrid handshake (ml-dsa-65 over ml-kem-768); key establishment is the COMSEC boundary, TRANSEC is the carrier's concern"
+        },
+        "nist5": {
+          "steady_state_max_fps": 74183975.17210123,
+          "one_time_handshake_ms": 1.685,
+          "meets": [
+            "FIPS 203 (ML-KEM-1024)",
+            "FIPS 204 (ML-DSA-87)",
+            "FIPS 202 (SHA3-512)"
+          ],
+          "security_level": 5,
+          "kem": "ml-kem-1024",
+          "sig": "ml-dsa-87",
+          "aead": "aes256-gcm",
+          "hash": "sha3-512",
+          "session_key_bits": 256,
+          "comsec": "payload AEAD (aes256-gcm) + authenticated PQC/hybrid handshake (ml-dsa-87 over ml-kem-1024); key establishment is the COMSEC boundary, TRANSEC is the carrier's concern"
+        },
+        "hybrid3": {
+          "steady_state_max_fps": 74183975.17210123,
+          "one_time_handshake_ms": 2.4,
+          "meets": [
+            "FIPS 203",
+            "FIPS 204",
+            "RFC 7748",
+            "NIST SP 800-56C (hybrid KDF)"
+          ],
+          "security_level": 3,
+          "kem": "x25519+ml-kem-768",
+          "sig": "ml-dsa-65",
+          "aead": "aes256-gcm",
+          "hash": "sha3-384",
+          "session_key_bits": 256,
+          "comsec": "payload AEAD (aes256-gcm) + authenticated PQC/hybrid handshake (ml-dsa-65 over x25519+ml-kem-768); key establishment is the COMSEC boundary, TRANSEC is the carrier's concern"
+        },
+        "hybrid5": {
+          "steady_state_max_fps": 74183975.17210123,
+          "one_time_handshake_ms": 8.853,
+          "meets": [
+            "FIPS 203",
+            "FIPS 204",
+            "RFC 7748 (X448)",
+            "NIST SP 800-56C"
+          ],
+          "security_level": 5,
+          "kem": "x448+ml-kem-1024",
+          "sig": "ml-dsa-87",
+          "aead": "aes256-gcm",
+          "hash": "sha3-512",
+          "session_key_bits": 256,
+          "comsec": "payload AEAD (aes256-gcm) + authenticated PQC/hybrid handshake (ml-dsa-87 over x448+ml-kem-1024); key establishment is the COMSEC boundary, TRANSEC is the carrier's concern"
+        },
+        "cnsa20": {
+          "steady_state_max_fps": 74183975.17210123,
+          "one_time_handshake_ms": 1.345,
+          "meets": [
+            "CNSA 2.0",
+            "FIPS 203 (ML-KEM-1024)",
+            "FIPS 204 (ML-DSA-87)",
+            "FIPS 180-4 (SHA-384)",
+            "NIST SP 800-38D (AES-256-GCM)"
+          ],
+          "security_level": 5,
+          "kem": "ml-kem-1024",
+          "sig": "ml-dsa-87",
+          "aead": "aes256-gcm",
+          "hash": "sha384",
+          "session_key_bits": 256,
+          "comsec": "payload AEAD (aes256-gcm) + authenticated PQC/hybrid handshake (ml-dsa-87 over ml-kem-1024); key establishment is the COMSEC boundary, TRANSEC is the carrier's concern"
+        },
+        "nist5-kmac": {
+          "steady_state_max_fps": 74183975.17210123,
+          "one_time_handshake_ms": 1.685,
+          "meets": [
+            "FIPS 203 (ML-KEM-1024)",
+            "FIPS 204 (ML-DSA-87)",
+            "FIPS 202 (SHA3-512)",
+            "NIST SP 800-185 (KMAC256)",
+            "NIST SP 800-56C rev3 (KMAC KDF)"
+          ],
+          "security_level": 5,
+          "kem": "ml-kem-1024",
+          "sig": "ml-dsa-87",
+          "aead": "aes256-gcm",
+          "hash": "sha3-512",
+          "session_key_bits": 256,
+          "comsec": "payload AEAD (aes256-gcm) + authenticated PQC/hybrid handshake (ml-dsa-87 over ml-kem-1024); key establishment is the COMSEC boundary, TRANSEC is the carrier's concern"
+        },
+        "sphincs5": {
+          "steady_state_max_fps": 74183975.17210123,
+          "one_time_handshake_ms": 49.014,
+          "meets": [
+            "FIPS 205 (SLH-DSA / SPHINCS+)",
+            "FIPS 203",
+            "FIPS 202"
+          ],
+          "security_level": 5,
+          "kem": "ml-kem-1024",
+          "sig": "sphincs-sha2-256f",
+          "aead": "aes256-gcm",
+          "hash": "sha3-512",
+          "session_key_bits": 256,
+          "comsec": "payload AEAD (aes256-gcm) + authenticated PQC/hybrid handshake (sphincs-sha2-256f over ml-kem-1024); key establishment is the COMSEC boundary, TRANSEC is the carrier's concern"
+        },
+        "falcon5": {
+          "steady_state_max_fps": 74183975.17210123,
+          "one_time_handshake_ms": 16.56,
+          "meets": [
+            "FN-DSA/Falcon (NIST round 3 sig)",
+            "FIPS 203",
+            "FIPS 202"
+          ],
+          "security_level": 5,
+          "kem": "ml-kem-1024",
+          "sig": "falcon-1024",
+          "aead": "aes256-gcm",
+          "hash": "sha3-512",
+          "session_key_bits": 256,
+          "comsec": "payload AEAD (aes256-gcm) + authenticated PQC/hybrid handshake (falcon-1024 over ml-kem-1024); key establishment is the COMSEC boundary, TRANSEC is the carrier's concern"
+        },
+        "csfc": {
+          "steady_state_max_fps": 74183975.17210123,
+          "one_time_handshake_ms": 8.853,
+          "meets": [
+            "NSA CSfC (two-layer)",
+            "FIPS 203/204/202",
+            "CNSA 2.0 inner"
+          ],
+          "security_level": 5,
+          "kem": "x448+ml-kem-1024",
+          "sig": "ml-dsa-87",
+          "aead": "aes256-gcm",
+          "hash": "sha3-512",
+          "session_key_bits": 256,
+          "comsec": "payload AEAD (aes256-gcm) + authenticated PQC/hybrid handshake (ml-dsa-87 over x448+ml-kem-1024); key establishment is the COMSEC boundary, TRANSEC is the carrier's concern"
+        }
+      }
+    },
+    "Serial": {
+      "max_fps": 175518.657631,
+      "max_impl": "librbxport C shim",
+      "max_tier": "shim",
+      "max_sealed": true,
+      "tier_ladder": [
+        {
+          "tier": "native",
+          "impl": "pyserial (loop://)",
+          "lang": "python",
+          "fps": 13767,
+          "sealed": true,
+          "src": "transport-matrix.json"
+        },
+        {
+          "tier": "shim",
+          "impl": "librbxport C shim",
+          "lang": "rust",
+          "fps": 175519,
+          "sealed": true,
+          "src": "xport-lang.json"
+        }
+      ],
+      "raw_ceiling_gbps": null,
+      "per_profile_max": {
+        "classical": {
+          "steady_state_max_fps": 175518.657631,
+          "one_time_handshake_ms": 14.263,
+          "meets": [
+            "RFC 7748 (X25519)",
+            "RFC 8032 (Ed25519)",
+            "NIST SP 800-38D (AES-GCM)"
+          ],
+          "security_level": 0,
+          "kem": "x25519",
+          "sig": "ed25519",
+          "aead": "aes256-gcm",
+          "hash": "sha256",
+          "session_key_bits": 256,
+          "comsec": "payload AEAD (aes256-gcm) + authenticated PQC/hybrid handshake (ed25519 over x25519); key establishment is the COMSEC boundary, TRANSEC is the carrier's concern"
+        },
+        "nist1": {
+          "steady_state_max_fps": 175518.657631,
+          "one_time_handshake_ms": 0.622,
+          "meets": [
+            "FIPS 203 (ML-KEM-512)",
+            "FIPS 204 (ML-DSA-44)",
+            "FIPS 202 (SHA3-256)",
+            "NIST SP 800-38D"
+          ],
+          "security_level": 1,
+          "kem": "ml-kem-512",
+          "sig": "ml-dsa-44",
+          "aead": "aes256-gcm",
+          "hash": "sha3-256",
+          "session_key_bits": 256,
+          "comsec": "payload AEAD (aes256-gcm) + authenticated PQC/hybrid handshake (ml-dsa-44 over ml-kem-512); key establishment is the COMSEC boundary, TRANSEC is the carrier's concern"
+        },
+        "nist3": {
+          "steady_state_max_fps": 175518.657631,
+          "one_time_handshake_ms": 1.385,
+          "meets": [
+            "FIPS 203 (ML-KEM-768)",
+            "FIPS 204 (ML-DSA-65)",
+            "FIPS 202 (SHA3-384)"
+          ],
+          "security_level": 3,
+          "kem": "ml-kem-768",
+          "sig": "ml-dsa-65",
+          "aead": "aes256-gcm",
+          "hash": "sha3-384",
+          "session_key_bits": 256,
+          "comsec": "payload AEAD (aes256-gcm) + authenticated PQC/hybrid handshake (ml-dsa-65 over ml-kem-768); key establishment is the COMSEC boundary, TRANSEC is the carrier's concern"
+        },
+        "nist5": {
+          "steady_state_max_fps": 175518.657631,
+          "one_time_handshake_ms": 1.685,
+          "meets": [
+            "FIPS 203 (ML-KEM-1024)",
+            "FIPS 204 (ML-DSA-87)",
+            "FIPS 202 (SHA3-512)"
+          ],
+          "security_level": 5,
+          "kem": "ml-kem-1024",
+          "sig": "ml-dsa-87",
+          "aead": "aes256-gcm",
+          "hash": "sha3-512",
+          "session_key_bits": 256,
+          "comsec": "payload AEAD (aes256-gcm) + authenticated PQC/hybrid handshake (ml-dsa-87 over ml-kem-1024); key establishment is the COMSEC boundary, TRANSEC is the carrier's concern"
+        },
+        "hybrid3": {
+          "steady_state_max_fps": 175518.657631,
+          "one_time_handshake_ms": 2.4,
+          "meets": [
+            "FIPS 203",
+            "FIPS 204",
+            "RFC 7748",
+            "NIST SP 800-56C (hybrid KDF)"
+          ],
+          "security_level": 3,
+          "kem": "x25519+ml-kem-768",
+          "sig": "ml-dsa-65",
+          "aead": "aes256-gcm",
+          "hash": "sha3-384",
+          "session_key_bits": 256,
+          "comsec": "payload AEAD (aes256-gcm) + authenticated PQC/hybrid handshake (ml-dsa-65 over x25519+ml-kem-768); key establishment is the COMSEC boundary, TRANSEC is the carrier's concern"
+        },
+        "hybrid5": {
+          "steady_state_max_fps": 175518.657631,
+          "one_time_handshake_ms": 8.853,
+          "meets": [
+            "FIPS 203",
+            "FIPS 204",
+            "RFC 7748 (X448)",
+            "NIST SP 800-56C"
+          ],
+          "security_level": 5,
+          "kem": "x448+ml-kem-1024",
+          "sig": "ml-dsa-87",
+          "aead": "aes256-gcm",
+          "hash": "sha3-512",
+          "session_key_bits": 256,
+          "comsec": "payload AEAD (aes256-gcm) + authenticated PQC/hybrid handshake (ml-dsa-87 over x448+ml-kem-1024); key establishment is the COMSEC boundary, TRANSEC is the carrier's concern"
+        },
+        "cnsa20": {
+          "steady_state_max_fps": 175518.657631,
+          "one_time_handshake_ms": 1.345,
+          "meets": [
+            "CNSA 2.0",
+            "FIPS 203 (ML-KEM-1024)",
+            "FIPS 204 (ML-DSA-87)",
+            "FIPS 180-4 (SHA-384)",
+            "NIST SP 800-38D (AES-256-GCM)"
+          ],
+          "security_level": 5,
+          "kem": "ml-kem-1024",
+          "sig": "ml-dsa-87",
+          "aead": "aes256-gcm",
+          "hash": "sha384",
+          "session_key_bits": 256,
+          "comsec": "payload AEAD (aes256-gcm) + authenticated PQC/hybrid handshake (ml-dsa-87 over ml-kem-1024); key establishment is the COMSEC boundary, TRANSEC is the carrier's concern"
+        },
+        "nist5-kmac": {
+          "steady_state_max_fps": 175518.657631,
+          "one_time_handshake_ms": 1.685,
+          "meets": [
+            "FIPS 203 (ML-KEM-1024)",
+            "FIPS 204 (ML-DSA-87)",
+            "FIPS 202 (SHA3-512)",
+            "NIST SP 800-185 (KMAC256)",
+            "NIST SP 800-56C rev3 (KMAC KDF)"
+          ],
+          "security_level": 5,
+          "kem": "ml-kem-1024",
+          "sig": "ml-dsa-87",
+          "aead": "aes256-gcm",
+          "hash": "sha3-512",
+          "session_key_bits": 256,
+          "comsec": "payload AEAD (aes256-gcm) + authenticated PQC/hybrid handshake (ml-dsa-87 over ml-kem-1024); key establishment is the COMSEC boundary, TRANSEC is the carrier's concern"
+        },
+        "sphincs5": {
+          "steady_state_max_fps": 175518.657631,
+          "one_time_handshake_ms": 49.014,
+          "meets": [
+            "FIPS 205 (SLH-DSA / SPHINCS+)",
+            "FIPS 203",
+            "FIPS 202"
+          ],
+          "security_level": 5,
+          "kem": "ml-kem-1024",
+          "sig": "sphincs-sha2-256f",
+          "aead": "aes256-gcm",
+          "hash": "sha3-512",
+          "session_key_bits": 256,
+          "comsec": "payload AEAD (aes256-gcm) + authenticated PQC/hybrid handshake (sphincs-sha2-256f over ml-kem-1024); key establishment is the COMSEC boundary, TRANSEC is the carrier's concern"
+        },
+        "falcon5": {
+          "steady_state_max_fps": 175518.657631,
+          "one_time_handshake_ms": 16.56,
+          "meets": [
+            "FN-DSA/Falcon (NIST round 3 sig)",
+            "FIPS 203",
+            "FIPS 202"
+          ],
+          "security_level": 5,
+          "kem": "ml-kem-1024",
+          "sig": "falcon-1024",
+          "aead": "aes256-gcm",
+          "hash": "sha3-512",
+          "session_key_bits": 256,
+          "comsec": "payload AEAD (aes256-gcm) + authenticated PQC/hybrid handshake (falcon-1024 over ml-kem-1024); key establishment is the COMSEC boundary, TRANSEC is the carrier's concern"
+        },
+        "csfc": {
+          "steady_state_max_fps": 175518.657631,
+          "one_time_handshake_ms": 8.853,
+          "meets": [
+            "NSA CSfC (two-layer)",
+            "FIPS 203/204/202",
+            "CNSA 2.0 inner"
+          ],
+          "security_level": 5,
+          "kem": "x448+ml-kem-1024",
+          "sig": "ml-dsa-87",
+          "aead": "aes256-gcm",
+          "hash": "sha3-512",
+          "session_key_bits": 256,
+          "comsec": "payload AEAD (aes256-gcm) + authenticated PQC/hybrid handshake (ml-dsa-87 over x448+ml-kem-1024); key establishment is the COMSEC boundary, TRANSEC is the carrier's concern"
+        }
+      }
+    },
+    "TCP": {
+      "max_fps": 501170.2324928709,
+      "max_impl": "librbxport C shim",
+      "max_tier": "shim",
+      "max_sealed": true,
+      "tier_ladder": [
+        {
+          "tier": "native",
+          "impl": "socket (stdlib)",
+          "lang": "python",
+          "fps": 110491,
+          "sealed": true,
+          "src": "transport-matrix.json"
+        },
+        {
+          "tier": "shim",
+          "impl": "librbxport C shim",
+          "lang": "haskell",
+          "fps": 501170,
+          "sealed": true,
+          "src": "xport-lang.json"
+        }
+      ],
+      "raw_ceiling_gbps": null,
+      "per_profile_max": {
+        "classical": {
+          "steady_state_max_fps": 501170.2324928709,
+          "one_time_handshake_ms": 14.263,
+          "meets": [
+            "RFC 7748 (X25519)",
+            "RFC 8032 (Ed25519)",
+            "NIST SP 800-38D (AES-GCM)"
+          ],
+          "security_level": 0,
+          "kem": "x25519",
+          "sig": "ed25519",
+          "aead": "aes256-gcm",
+          "hash": "sha256",
+          "session_key_bits": 256,
+          "comsec": "payload AEAD (aes256-gcm) + authenticated PQC/hybrid handshake (ed25519 over x25519); key establishment is the COMSEC boundary, TRANSEC is the carrier's concern"
+        },
+        "nist1": {
+          "steady_state_max_fps": 501170.2324928709,
+          "one_time_handshake_ms": 0.622,
+          "meets": [
+            "FIPS 203 (ML-KEM-512)",
+            "FIPS 204 (ML-DSA-44)",
+            "FIPS 202 (SHA3-256)",
+            "NIST SP 800-38D"
+          ],
+          "security_level": 1,
+          "kem": "ml-kem-512",
+          "sig": "ml-dsa-44",
+          "aead": "aes256-gcm",
+          "hash": "sha3-256",
+          "session_key_bits": 256,
+          "comsec": "payload AEAD (aes256-gcm) + authenticated PQC/hybrid handshake (ml-dsa-44 over ml-kem-512); key establishment is the COMSEC boundary, TRANSEC is the carrier's concern"
+        },
+        "nist3": {
+          "steady_state_max_fps": 501170.2324928709,
+          "one_time_handshake_ms": 1.385,
+          "meets": [
+            "FIPS 203 (ML-KEM-768)",
+            "FIPS 204 (ML-DSA-65)",
+            "FIPS 202 (SHA3-384)"
+          ],
+          "security_level": 3,
+          "kem": "ml-kem-768",
+          "sig": "ml-dsa-65",
+          "aead": "aes256-gcm",
+          "hash": "sha3-384",
+          "session_key_bits": 256,
+          "comsec": "payload AEAD (aes256-gcm) + authenticated PQC/hybrid handshake (ml-dsa-65 over ml-kem-768); key establishment is the COMSEC boundary, TRANSEC is the carrier's concern"
+        },
+        "nist5": {
+          "steady_state_max_fps": 501170.2324928709,
+          "one_time_handshake_ms": 1.685,
+          "meets": [
+            "FIPS 203 (ML-KEM-1024)",
+            "FIPS 204 (ML-DSA-87)",
+            "FIPS 202 (SHA3-512)"
+          ],
+          "security_level": 5,
+          "kem": "ml-kem-1024",
+          "sig": "ml-dsa-87",
+          "aead": "aes256-gcm",
+          "hash": "sha3-512",
+          "session_key_bits": 256,
+          "comsec": "payload AEAD (aes256-gcm) + authenticated PQC/hybrid handshake (ml-dsa-87 over ml-kem-1024); key establishment is the COMSEC boundary, TRANSEC is the carrier's concern"
+        },
+        "hybrid3": {
+          "steady_state_max_fps": 501170.2324928709,
+          "one_time_handshake_ms": 2.4,
+          "meets": [
+            "FIPS 203",
+            "FIPS 204",
+            "RFC 7748",
+            "NIST SP 800-56C (hybrid KDF)"
+          ],
+          "security_level": 3,
+          "kem": "x25519+ml-kem-768",
+          "sig": "ml-dsa-65",
+          "aead": "aes256-gcm",
+          "hash": "sha3-384",
+          "session_key_bits": 256,
+          "comsec": "payload AEAD (aes256-gcm) + authenticated PQC/hybrid handshake (ml-dsa-65 over x25519+ml-kem-768); key establishment is the COMSEC boundary, TRANSEC is the carrier's concern"
+        },
+        "hybrid5": {
+          "steady_state_max_fps": 501170.2324928709,
+          "one_time_handshake_ms": 8.853,
+          "meets": [
+            "FIPS 203",
+            "FIPS 204",
+            "RFC 7748 (X448)",
+            "NIST SP 800-56C"
+          ],
+          "security_level": 5,
+          "kem": "x448+ml-kem-1024",
+          "sig": "ml-dsa-87",
+          "aead": "aes256-gcm",
+          "hash": "sha3-512",
+          "session_key_bits": 256,
+          "comsec": "payload AEAD (aes256-gcm) + authenticated PQC/hybrid handshake (ml-dsa-87 over x448+ml-kem-1024); key establishment is the COMSEC boundary, TRANSEC is the carrier's concern"
+        },
+        "cnsa20": {
+          "steady_state_max_fps": 501170.2324928709,
+          "one_time_handshake_ms": 1.345,
+          "meets": [
+            "CNSA 2.0",
+            "FIPS 203 (ML-KEM-1024)",
+            "FIPS 204 (ML-DSA-87)",
+            "FIPS 180-4 (SHA-384)",
+            "NIST SP 800-38D (AES-256-GCM)"
+          ],
+          "security_level": 5,
+          "kem": "ml-kem-1024",
+          "sig": "ml-dsa-87",
+          "aead": "aes256-gcm",
+          "hash": "sha384",
+          "session_key_bits": 256,
+          "comsec": "payload AEAD (aes256-gcm) + authenticated PQC/hybrid handshake (ml-dsa-87 over ml-kem-1024); key establishment is the COMSEC boundary, TRANSEC is the carrier's concern"
+        },
+        "nist5-kmac": {
+          "steady_state_max_fps": 501170.2324928709,
+          "one_time_handshake_ms": 1.685,
+          "meets": [
+            "FIPS 203 (ML-KEM-1024)",
+            "FIPS 204 (ML-DSA-87)",
+            "FIPS 202 (SHA3-512)",
+            "NIST SP 800-185 (KMAC256)",
+            "NIST SP 800-56C rev3 (KMAC KDF)"
+          ],
+          "security_level": 5,
+          "kem": "ml-kem-1024",
+          "sig": "ml-dsa-87",
+          "aead": "aes256-gcm",
+          "hash": "sha3-512",
+          "session_key_bits": 256,
+          "comsec": "payload AEAD (aes256-gcm) + authenticated PQC/hybrid handshake (ml-dsa-87 over ml-kem-1024); key establishment is the COMSEC boundary, TRANSEC is the carrier's concern"
+        },
+        "sphincs5": {
+          "steady_state_max_fps": 501170.2324928709,
+          "one_time_handshake_ms": 49.014,
+          "meets": [
+            "FIPS 205 (SLH-DSA / SPHINCS+)",
+            "FIPS 203",
+            "FIPS 202"
+          ],
+          "security_level": 5,
+          "kem": "ml-kem-1024",
+          "sig": "sphincs-sha2-256f",
+          "aead": "aes256-gcm",
+          "hash": "sha3-512",
+          "session_key_bits": 256,
+          "comsec": "payload AEAD (aes256-gcm) + authenticated PQC/hybrid handshake (sphincs-sha2-256f over ml-kem-1024); key establishment is the COMSEC boundary, TRANSEC is the carrier's concern"
+        },
+        "falcon5": {
+          "steady_state_max_fps": 501170.2324928709,
+          "one_time_handshake_ms": 16.56,
+          "meets": [
+            "FN-DSA/Falcon (NIST round 3 sig)",
+            "FIPS 203",
+            "FIPS 202"
+          ],
+          "security_level": 5,
+          "kem": "ml-kem-1024",
+          "sig": "falcon-1024",
+          "aead": "aes256-gcm",
+          "hash": "sha3-512",
+          "session_key_bits": 256,
+          "comsec": "payload AEAD (aes256-gcm) + authenticated PQC/hybrid handshake (falcon-1024 over ml-kem-1024); key establishment is the COMSEC boundary, TRANSEC is the carrier's concern"
+        },
+        "csfc": {
+          "steady_state_max_fps": 501170.2324928709,
+          "one_time_handshake_ms": 8.853,
+          "meets": [
+            "NSA CSfC (two-layer)",
+            "FIPS 203/204/202",
+            "CNSA 2.0 inner"
+          ],
+          "security_level": 5,
+          "kem": "x448+ml-kem-1024",
+          "sig": "ml-dsa-87",
+          "aead": "aes256-gcm",
+          "hash": "sha3-512",
+          "session_key_bits": 256,
+          "comsec": "payload AEAD (aes256-gcm) + authenticated PQC/hybrid handshake (ml-dsa-87 over x448+ml-kem-1024); key establishment is the COMSEC boundary, TRANSEC is the carrier's concern"
+        }
+      }
+    },
+    "UDP": {
+      "max_fps": 376675.2,
+      "max_impl": "librbxport C shim",
+      "max_tier": "shim",
+      "max_sealed": true,
+      "tier_ladder": [
+        {
+          "tier": "native",
+          "impl": "socket (stdlib)",
+          "lang": "python",
+          "fps": 120232,
+          "sealed": true,
+          "src": "transport-matrix.json"
+        },
+        {
+          "tier": "shim",
+          "impl": "librbxport C shim",
+          "lang": "crystal",
+          "fps": 376675,
+          "sealed": true,
+          "src": "xport-lang.json"
+        }
+      ],
+      "raw_ceiling_gbps": null,
+      "per_profile_max": {
+        "classical": {
+          "steady_state_max_fps": 376675.2,
+          "one_time_handshake_ms": 14.263,
+          "meets": [
+            "RFC 7748 (X25519)",
+            "RFC 8032 (Ed25519)",
+            "NIST SP 800-38D (AES-GCM)"
+          ],
+          "security_level": 0,
+          "kem": "x25519",
+          "sig": "ed25519",
+          "aead": "aes256-gcm",
+          "hash": "sha256",
+          "session_key_bits": 256,
+          "comsec": "payload AEAD (aes256-gcm) + authenticated PQC/hybrid handshake (ed25519 over x25519); key establishment is the COMSEC boundary, TRANSEC is the carrier's concern"
+        },
+        "nist1": {
+          "steady_state_max_fps": 376675.2,
+          "one_time_handshake_ms": 0.622,
+          "meets": [
+            "FIPS 203 (ML-KEM-512)",
+            "FIPS 204 (ML-DSA-44)",
+            "FIPS 202 (SHA3-256)",
+            "NIST SP 800-38D"
+          ],
+          "security_level": 1,
+          "kem": "ml-kem-512",
+          "sig": "ml-dsa-44",
+          "aead": "aes256-gcm",
+          "hash": "sha3-256",
+          "session_key_bits": 256,
+          "comsec": "payload AEAD (aes256-gcm) + authenticated PQC/hybrid handshake (ml-dsa-44 over ml-kem-512); key establishment is the COMSEC boundary, TRANSEC is the carrier's concern"
+        },
+        "nist3": {
+          "steady_state_max_fps": 376675.2,
+          "one_time_handshake_ms": 1.385,
+          "meets": [
+            "FIPS 203 (ML-KEM-768)",
+            "FIPS 204 (ML-DSA-65)",
+            "FIPS 202 (SHA3-384)"
+          ],
+          "security_level": 3,
+          "kem": "ml-kem-768",
+          "sig": "ml-dsa-65",
+          "aead": "aes256-gcm",
+          "hash": "sha3-384",
+          "session_key_bits": 256,
+          "comsec": "payload AEAD (aes256-gcm) + authenticated PQC/hybrid handshake (ml-dsa-65 over ml-kem-768); key establishment is the COMSEC boundary, TRANSEC is the carrier's concern"
+        },
+        "nist5": {
+          "steady_state_max_fps": 376675.2,
+          "one_time_handshake_ms": 1.685,
+          "meets": [
+            "FIPS 203 (ML-KEM-1024)",
+            "FIPS 204 (ML-DSA-87)",
+            "FIPS 202 (SHA3-512)"
+          ],
+          "security_level": 5,
+          "kem": "ml-kem-1024",
+          "sig": "ml-dsa-87",
+          "aead": "aes256-gcm",
+          "hash": "sha3-512",
+          "session_key_bits": 256,
+          "comsec": "payload AEAD (aes256-gcm) + authenticated PQC/hybrid handshake (ml-dsa-87 over ml-kem-1024); key establishment is the COMSEC boundary, TRANSEC is the carrier's concern"
+        },
+        "hybrid3": {
+          "steady_state_max_fps": 376675.2,
+          "one_time_handshake_ms": 2.4,
+          "meets": [
+            "FIPS 203",
+            "FIPS 204",
+            "RFC 7748",
+            "NIST SP 800-56C (hybrid KDF)"
+          ],
+          "security_level": 3,
+          "kem": "x25519+ml-kem-768",
+          "sig": "ml-dsa-65",
+          "aead": "aes256-gcm",
+          "hash": "sha3-384",
+          "session_key_bits": 256,
+          "comsec": "payload AEAD (aes256-gcm) + authenticated PQC/hybrid handshake (ml-dsa-65 over x25519+ml-kem-768); key establishment is the COMSEC boundary, TRANSEC is the carrier's concern"
+        },
+        "hybrid5": {
+          "steady_state_max_fps": 376675.2,
+          "one_time_handshake_ms": 8.853,
+          "meets": [
+            "FIPS 203",
+            "FIPS 204",
+            "RFC 7748 (X448)",
+            "NIST SP 800-56C"
+          ],
+          "security_level": 5,
+          "kem": "x448+ml-kem-1024",
+          "sig": "ml-dsa-87",
+          "aead": "aes256-gcm",
+          "hash": "sha3-512",
+          "session_key_bits": 256,
+          "comsec": "payload AEAD (aes256-gcm) + authenticated PQC/hybrid handshake (ml-dsa-87 over x448+ml-kem-1024); key establishment is the COMSEC boundary, TRANSEC is the carrier's concern"
+        },
+        "cnsa20": {
+          "steady_state_max_fps": 376675.2,
+          "one_time_handshake_ms": 1.345,
+          "meets": [
+            "CNSA 2.0",
+            "FIPS 203 (ML-KEM-1024)",
+            "FIPS 204 (ML-DSA-87)",
+            "FIPS 180-4 (SHA-384)",
+            "NIST SP 800-38D (AES-256-GCM)"
+          ],
+          "security_level": 5,
+          "kem": "ml-kem-1024",
+          "sig": "ml-dsa-87",
+          "aead": "aes256-gcm",
+          "hash": "sha384",
+          "session_key_bits": 256,
+          "comsec": "payload AEAD (aes256-gcm) + authenticated PQC/hybrid handshake (ml-dsa-87 over ml-kem-1024); key establishment is the COMSEC boundary, TRANSEC is the carrier's concern"
+        },
+        "nist5-kmac": {
+          "steady_state_max_fps": 376675.2,
+          "one_time_handshake_ms": 1.685,
+          "meets": [
+            "FIPS 203 (ML-KEM-1024)",
+            "FIPS 204 (ML-DSA-87)",
+            "FIPS 202 (SHA3-512)",
+            "NIST SP 800-185 (KMAC256)",
+            "NIST SP 800-56C rev3 (KMAC KDF)"
+          ],
+          "security_level": 5,
+          "kem": "ml-kem-1024",
+          "sig": "ml-dsa-87",
+          "aead": "aes256-gcm",
+          "hash": "sha3-512",
+          "session_key_bits": 256,
+          "comsec": "payload AEAD (aes256-gcm) + authenticated PQC/hybrid handshake (ml-dsa-87 over ml-kem-1024); key establishment is the COMSEC boundary, TRANSEC is the carrier's concern"
+        },
+        "sphincs5": {
+          "steady_state_max_fps": 376675.2,
+          "one_time_handshake_ms": 49.014,
+          "meets": [
+            "FIPS 205 (SLH-DSA / SPHINCS+)",
+            "FIPS 203",
+            "FIPS 202"
+          ],
+          "security_level": 5,
+          "kem": "ml-kem-1024",
+          "sig": "sphincs-sha2-256f",
+          "aead": "aes256-gcm",
+          "hash": "sha3-512",
+          "session_key_bits": 256,
+          "comsec": "payload AEAD (aes256-gcm) + authenticated PQC/hybrid handshake (sphincs-sha2-256f over ml-kem-1024); key establishment is the COMSEC boundary, TRANSEC is the carrier's concern"
+        },
+        "falcon5": {
+          "steady_state_max_fps": 376675.2,
+          "one_time_handshake_ms": 16.56,
+          "meets": [
+            "FN-DSA/Falcon (NIST round 3 sig)",
+            "FIPS 203",
+            "FIPS 202"
+          ],
+          "security_level": 5,
+          "kem": "ml-kem-1024",
+          "sig": "falcon-1024",
+          "aead": "aes256-gcm",
+          "hash": "sha3-512",
+          "session_key_bits": 256,
+          "comsec": "payload AEAD (aes256-gcm) + authenticated PQC/hybrid handshake (falcon-1024 over ml-kem-1024); key establishment is the COMSEC boundary, TRANSEC is the carrier's concern"
+        },
+        "csfc": {
+          "steady_state_max_fps": 376675.2,
+          "one_time_handshake_ms": 8.853,
+          "meets": [
+            "NSA CSfC (two-layer)",
+            "FIPS 203/204/202",
+            "CNSA 2.0 inner"
+          ],
+          "security_level": 5,
+          "kem": "x448+ml-kem-1024",
+          "sig": "ml-dsa-87",
+          "aead": "aes256-gcm",
+          "hash": "sha3-512",
+          "session_key_bits": 256,
+          "comsec": "payload AEAD (aes256-gcm) + authenticated PQC/hybrid handshake (ml-dsa-87 over x448+ml-kem-1024); key establishment is the COMSEC boundary, TRANSEC is the carrier's concern"
+        }
+      }
+    },
+    "Zenoh": {
+      "max_fps": 814444.9964571643,
+      "max_impl": "zenoh",
+      "max_tier": "native",
+      "max_sealed": true,
+      "tier_ladder": [
+        {
+          "tier": "native",
+          "impl": "zenoh",
+          "lang": "python",
+          "fps": 814445,
+          "sealed": true,
+          "src": "transport-matrix.json"
+        }
+      ],
+      "raw_ceiling_gbps": null,
+      "per_profile_max": {
+        "classical": {
+          "steady_state_max_fps": 814444.9964571643,
+          "one_time_handshake_ms": 14.263,
+          "meets": [
+            "RFC 7748 (X25519)",
+            "RFC 8032 (Ed25519)",
+            "NIST SP 800-38D (AES-GCM)"
+          ],
+          "security_level": 0,
+          "kem": "x25519",
+          "sig": "ed25519",
+          "aead": "aes256-gcm",
+          "hash": "sha256",
+          "session_key_bits": 256,
+          "comsec": "payload AEAD (aes256-gcm) + authenticated PQC/hybrid handshake (ed25519 over x25519); key establishment is the COMSEC boundary, TRANSEC is the carrier's concern"
+        },
+        "nist1": {
+          "steady_state_max_fps": 814444.9964571643,
+          "one_time_handshake_ms": 0.622,
+          "meets": [
+            "FIPS 203 (ML-KEM-512)",
+            "FIPS 204 (ML-DSA-44)",
+            "FIPS 202 (SHA3-256)",
+            "NIST SP 800-38D"
+          ],
+          "security_level": 1,
+          "kem": "ml-kem-512",
+          "sig": "ml-dsa-44",
+          "aead": "aes256-gcm",
+          "hash": "sha3-256",
+          "session_key_bits": 256,
+          "comsec": "payload AEAD (aes256-gcm) + authenticated PQC/hybrid handshake (ml-dsa-44 over ml-kem-512); key establishment is the COMSEC boundary, TRANSEC is the carrier's concern"
+        },
+        "nist3": {
+          "steady_state_max_fps": 814444.9964571643,
+          "one_time_handshake_ms": 1.385,
+          "meets": [
+            "FIPS 203 (ML-KEM-768)",
+            "FIPS 204 (ML-DSA-65)",
+            "FIPS 202 (SHA3-384)"
+          ],
+          "security_level": 3,
+          "kem": "ml-kem-768",
+          "sig": "ml-dsa-65",
+          "aead": "aes256-gcm",
+          "hash": "sha3-384",
+          "session_key_bits": 256,
+          "comsec": "payload AEAD (aes256-gcm) + authenticated PQC/hybrid handshake (ml-dsa-65 over ml-kem-768); key establishment is the COMSEC boundary, TRANSEC is the carrier's concern"
+        },
+        "nist5": {
+          "steady_state_max_fps": 814444.9964571643,
+          "one_time_handshake_ms": 1.685,
+          "meets": [
+            "FIPS 203 (ML-KEM-1024)",
+            "FIPS 204 (ML-DSA-87)",
+            "FIPS 202 (SHA3-512)"
+          ],
+          "security_level": 5,
+          "kem": "ml-kem-1024",
+          "sig": "ml-dsa-87",
+          "aead": "aes256-gcm",
+          "hash": "sha3-512",
+          "session_key_bits": 256,
+          "comsec": "payload AEAD (aes256-gcm) + authenticated PQC/hybrid handshake (ml-dsa-87 over ml-kem-1024); key establishment is the COMSEC boundary, TRANSEC is the carrier's concern"
+        },
+        "hybrid3": {
+          "steady_state_max_fps": 814444.9964571643,
+          "one_time_handshake_ms": 2.4,
+          "meets": [
+            "FIPS 203",
+            "FIPS 204",
+            "RFC 7748",
+            "NIST SP 800-56C (hybrid KDF)"
+          ],
+          "security_level": 3,
+          "kem": "x25519+ml-kem-768",
+          "sig": "ml-dsa-65",
+          "aead": "aes256-gcm",
+          "hash": "sha3-384",
+          "session_key_bits": 256,
+          "comsec": "payload AEAD (aes256-gcm) + authenticated PQC/hybrid handshake (ml-dsa-65 over x25519+ml-kem-768); key establishment is the COMSEC boundary, TRANSEC is the carrier's concern"
+        },
+        "hybrid5": {
+          "steady_state_max_fps": 814444.9964571643,
+          "one_time_handshake_ms": 8.853,
+          "meets": [
+            "FIPS 203",
+            "FIPS 204",
+            "RFC 7748 (X448)",
+            "NIST SP 800-56C"
+          ],
+          "security_level": 5,
+          "kem": "x448+ml-kem-1024",
+          "sig": "ml-dsa-87",
+          "aead": "aes256-gcm",
+          "hash": "sha3-512",
+          "session_key_bits": 256,
+          "comsec": "payload AEAD (aes256-gcm) + authenticated PQC/hybrid handshake (ml-dsa-87 over x448+ml-kem-1024); key establishment is the COMSEC boundary, TRANSEC is the carrier's concern"
+        },
+        "cnsa20": {
+          "steady_state_max_fps": 814444.9964571643,
+          "one_time_handshake_ms": 1.345,
+          "meets": [
+            "CNSA 2.0",
+            "FIPS 203 (ML-KEM-1024)",
+            "FIPS 204 (ML-DSA-87)",
+            "FIPS 180-4 (SHA-384)",
+            "NIST SP 800-38D (AES-256-GCM)"
+          ],
+          "security_level": 5,
+          "kem": "ml-kem-1024",
+          "sig": "ml-dsa-87",
+          "aead": "aes256-gcm",
+          "hash": "sha384",
+          "session_key_bits": 256,
+          "comsec": "payload AEAD (aes256-gcm) + authenticated PQC/hybrid handshake (ml-dsa-87 over ml-kem-1024); key establishment is the COMSEC boundary, TRANSEC is the carrier's concern"
+        },
+        "nist5-kmac": {
+          "steady_state_max_fps": 814444.9964571643,
+          "one_time_handshake_ms": 1.685,
+          "meets": [
+            "FIPS 203 (ML-KEM-1024)",
+            "FIPS 204 (ML-DSA-87)",
+            "FIPS 202 (SHA3-512)",
+            "NIST SP 800-185 (KMAC256)",
+            "NIST SP 800-56C rev3 (KMAC KDF)"
+          ],
+          "security_level": 5,
+          "kem": "ml-kem-1024",
+          "sig": "ml-dsa-87",
+          "aead": "aes256-gcm",
+          "hash": "sha3-512",
+          "session_key_bits": 256,
+          "comsec": "payload AEAD (aes256-gcm) + authenticated PQC/hybrid handshake (ml-dsa-87 over ml-kem-1024); key establishment is the COMSEC boundary, TRANSEC is the carrier's concern"
+        },
+        "sphincs5": {
+          "steady_state_max_fps": 814444.9964571643,
+          "one_time_handshake_ms": 49.014,
+          "meets": [
+            "FIPS 205 (SLH-DSA / SPHINCS+)",
+            "FIPS 203",
+            "FIPS 202"
+          ],
+          "security_level": 5,
+          "kem": "ml-kem-1024",
+          "sig": "sphincs-sha2-256f",
+          "aead": "aes256-gcm",
+          "hash": "sha3-512",
+          "session_key_bits": 256,
+          "comsec": "payload AEAD (aes256-gcm) + authenticated PQC/hybrid handshake (sphincs-sha2-256f over ml-kem-1024); key establishment is the COMSEC boundary, TRANSEC is the carrier's concern"
+        },
+        "falcon5": {
+          "steady_state_max_fps": 814444.9964571643,
+          "one_time_handshake_ms": 16.56,
+          "meets": [
+            "FN-DSA/Falcon (NIST round 3 sig)",
+            "FIPS 203",
+            "FIPS 202"
+          ],
+          "security_level": 5,
+          "kem": "ml-kem-1024",
+          "sig": "falcon-1024",
+          "aead": "aes256-gcm",
+          "hash": "sha3-512",
+          "session_key_bits": 256,
+          "comsec": "payload AEAD (aes256-gcm) + authenticated PQC/hybrid handshake (falcon-1024 over ml-kem-1024); key establishment is the COMSEC boundary, TRANSEC is the carrier's concern"
+        },
+        "csfc": {
+          "steady_state_max_fps": 814444.9964571643,
+          "one_time_handshake_ms": 8.853,
+          "meets": [
+            "NSA CSfC (two-layer)",
+            "FIPS 203/204/202",
+            "CNSA 2.0 inner"
+          ],
+          "security_level": 5,
+          "kem": "x448+ml-kem-1024",
+          "sig": "ml-dsa-87",
+          "aead": "aes256-gcm",
+          "hash": "sha3-512",
+          "session_key_bits": 256,
+          "comsec": "payload AEAD (aes256-gcm) + authenticated PQC/hybrid handshake (ml-dsa-87 over x448+ml-kem-1024); key establishment is the COMSEC boundary, TRANSEC is the carrier's concern"
+        }
+      }
+    },
+    "ZeroCM": {
+      "max_fps": 1911534.1962658558,
+      "max_impl": "librbxport C shim",
+      "max_tier": "shim",
+      "max_sealed": true,
+      "tier_ladder": [
+        {
+          "tier": "native",
+          "impl": "zerocm",
+          "lang": "python",
+          "fps": 320161,
+          "sealed": true,
+          "src": "transport-matrix.json"
+        },
+        {
+          "tier": "shim",
+          "impl": "librbxport C shim",
+          "lang": "python",
+          "fps": 1911534,
+          "sealed": true,
+          "src": "xport-lang.json"
+        }
+      ],
+      "raw_ceiling_gbps": null,
+      "per_profile_max": {
+        "classical": {
+          "steady_state_max_fps": 1911534.1962658558,
+          "one_time_handshake_ms": 14.263,
+          "meets": [
+            "RFC 7748 (X25519)",
+            "RFC 8032 (Ed25519)",
+            "NIST SP 800-38D (AES-GCM)"
+          ],
+          "security_level": 0,
+          "kem": "x25519",
+          "sig": "ed25519",
+          "aead": "aes256-gcm",
+          "hash": "sha256",
+          "session_key_bits": 256,
+          "comsec": "payload AEAD (aes256-gcm) + authenticated PQC/hybrid handshake (ed25519 over x25519); key establishment is the COMSEC boundary, TRANSEC is the carrier's concern"
+        },
+        "nist1": {
+          "steady_state_max_fps": 1911534.1962658558,
+          "one_time_handshake_ms": 0.622,
+          "meets": [
+            "FIPS 203 (ML-KEM-512)",
+            "FIPS 204 (ML-DSA-44)",
+            "FIPS 202 (SHA3-256)",
+            "NIST SP 800-38D"
+          ],
+          "security_level": 1,
+          "kem": "ml-kem-512",
+          "sig": "ml-dsa-44",
+          "aead": "aes256-gcm",
+          "hash": "sha3-256",
+          "session_key_bits": 256,
+          "comsec": "payload AEAD (aes256-gcm) + authenticated PQC/hybrid handshake (ml-dsa-44 over ml-kem-512); key establishment is the COMSEC boundary, TRANSEC is the carrier's concern"
+        },
+        "nist3": {
+          "steady_state_max_fps": 1911534.1962658558,
+          "one_time_handshake_ms": 1.385,
+          "meets": [
+            "FIPS 203 (ML-KEM-768)",
+            "FIPS 204 (ML-DSA-65)",
+            "FIPS 202 (SHA3-384)"
+          ],
+          "security_level": 3,
+          "kem": "ml-kem-768",
+          "sig": "ml-dsa-65",
+          "aead": "aes256-gcm",
+          "hash": "sha3-384",
+          "session_key_bits": 256,
+          "comsec": "payload AEAD (aes256-gcm) + authenticated PQC/hybrid handshake (ml-dsa-65 over ml-kem-768); key establishment is the COMSEC boundary, TRANSEC is the carrier's concern"
+        },
+        "nist5": {
+          "steady_state_max_fps": 1911534.1962658558,
+          "one_time_handshake_ms": 1.685,
+          "meets": [
+            "FIPS 203 (ML-KEM-1024)",
+            "FIPS 204 (ML-DSA-87)",
+            "FIPS 202 (SHA3-512)"
+          ],
+          "security_level": 5,
+          "kem": "ml-kem-1024",
+          "sig": "ml-dsa-87",
+          "aead": "aes256-gcm",
+          "hash": "sha3-512",
+          "session_key_bits": 256,
+          "comsec": "payload AEAD (aes256-gcm) + authenticated PQC/hybrid handshake (ml-dsa-87 over ml-kem-1024); key establishment is the COMSEC boundary, TRANSEC is the carrier's concern"
+        },
+        "hybrid3": {
+          "steady_state_max_fps": 1911534.1962658558,
+          "one_time_handshake_ms": 2.4,
+          "meets": [
+            "FIPS 203",
+            "FIPS 204",
+            "RFC 7748",
+            "NIST SP 800-56C (hybrid KDF)"
+          ],
+          "security_level": 3,
+          "kem": "x25519+ml-kem-768",
+          "sig": "ml-dsa-65",
+          "aead": "aes256-gcm",
+          "hash": "sha3-384",
+          "session_key_bits": 256,
+          "comsec": "payload AEAD (aes256-gcm) + authenticated PQC/hybrid handshake (ml-dsa-65 over x25519+ml-kem-768); key establishment is the COMSEC boundary, TRANSEC is the carrier's concern"
+        },
+        "hybrid5": {
+          "steady_state_max_fps": 1911534.1962658558,
+          "one_time_handshake_ms": 8.853,
+          "meets": [
+            "FIPS 203",
+            "FIPS 204",
+            "RFC 7748 (X448)",
+            "NIST SP 800-56C"
+          ],
+          "security_level": 5,
+          "kem": "x448+ml-kem-1024",
+          "sig": "ml-dsa-87",
+          "aead": "aes256-gcm",
+          "hash": "sha3-512",
+          "session_key_bits": 256,
+          "comsec": "payload AEAD (aes256-gcm) + authenticated PQC/hybrid handshake (ml-dsa-87 over x448+ml-kem-1024); key establishment is the COMSEC boundary, TRANSEC is the carrier's concern"
+        },
+        "cnsa20": {
+          "steady_state_max_fps": 1911534.1962658558,
+          "one_time_handshake_ms": 1.345,
+          "meets": [
+            "CNSA 2.0",
+            "FIPS 203 (ML-KEM-1024)",
+            "FIPS 204 (ML-DSA-87)",
+            "FIPS 180-4 (SHA-384)",
+            "NIST SP 800-38D (AES-256-GCM)"
+          ],
+          "security_level": 5,
+          "kem": "ml-kem-1024",
+          "sig": "ml-dsa-87",
+          "aead": "aes256-gcm",
+          "hash": "sha384",
+          "session_key_bits": 256,
+          "comsec": "payload AEAD (aes256-gcm) + authenticated PQC/hybrid handshake (ml-dsa-87 over ml-kem-1024); key establishment is the COMSEC boundary, TRANSEC is the carrier's concern"
+        },
+        "nist5-kmac": {
+          "steady_state_max_fps": 1911534.1962658558,
+          "one_time_handshake_ms": 1.685,
+          "meets": [
+            "FIPS 203 (ML-KEM-1024)",
+            "FIPS 204 (ML-DSA-87)",
+            "FIPS 202 (SHA3-512)",
+            "NIST SP 800-185 (KMAC256)",
+            "NIST SP 800-56C rev3 (KMAC KDF)"
+          ],
+          "security_level": 5,
+          "kem": "ml-kem-1024",
+          "sig": "ml-dsa-87",
+          "aead": "aes256-gcm",
+          "hash": "sha3-512",
+          "session_key_bits": 256,
+          "comsec": "payload AEAD (aes256-gcm) + authenticated PQC/hybrid handshake (ml-dsa-87 over ml-kem-1024); key establishment is the COMSEC boundary, TRANSEC is the carrier's concern"
+        },
+        "sphincs5": {
+          "steady_state_max_fps": 1911534.1962658558,
+          "one_time_handshake_ms": 49.014,
+          "meets": [
+            "FIPS 205 (SLH-DSA / SPHINCS+)",
+            "FIPS 203",
+            "FIPS 202"
+          ],
+          "security_level": 5,
+          "kem": "ml-kem-1024",
+          "sig": "sphincs-sha2-256f",
+          "aead": "aes256-gcm",
+          "hash": "sha3-512",
+          "session_key_bits": 256,
+          "comsec": "payload AEAD (aes256-gcm) + authenticated PQC/hybrid handshake (sphincs-sha2-256f over ml-kem-1024); key establishment is the COMSEC boundary, TRANSEC is the carrier's concern"
+        },
+        "falcon5": {
+          "steady_state_max_fps": 1911534.1962658558,
+          "one_time_handshake_ms": 16.56,
+          "meets": [
+            "FN-DSA/Falcon (NIST round 3 sig)",
+            "FIPS 203",
+            "FIPS 202"
+          ],
+          "security_level": 5,
+          "kem": "ml-kem-1024",
+          "sig": "falcon-1024",
+          "aead": "aes256-gcm",
+          "hash": "sha3-512",
+          "session_key_bits": 256,
+          "comsec": "payload AEAD (aes256-gcm) + authenticated PQC/hybrid handshake (falcon-1024 over ml-kem-1024); key establishment is the COMSEC boundary, TRANSEC is the carrier's concern"
+        },
+        "csfc": {
+          "steady_state_max_fps": 1911534.1962658558,
+          "one_time_handshake_ms": 8.853,
+          "meets": [
+            "NSA CSfC (two-layer)",
+            "FIPS 203/204/202",
+            "CNSA 2.0 inner"
+          ],
+          "security_level": 5,
+          "kem": "x448+ml-kem-1024",
+          "sig": "ml-dsa-87",
+          "aead": "aes256-gcm",
+          "hash": "sha3-512",
+          "session_key_bits": 256,
+          "comsec": "payload AEAD (aes256-gcm) + authenticated PQC/hybrid handshake (ml-dsa-87 over x448+ml-kem-1024); key establishment is the COMSEC boundary, TRANSEC is the carrier's concern"
+        }
+      }
+    },
+    "uds": {
+      "max_fps": 1205429.2531594352,
+      "max_impl": "librbxport C shim",
+      "max_tier": "shim",
+      "max_sealed": true,
+      "tier_ladder": [
+        {
+          "tier": "shim",
+          "impl": "librbxport C shim",
+          "lang": "typescript",
+          "fps": 1205429,
+          "sealed": true,
+          "src": "xport-lang.json"
+        }
+      ],
+      "raw_ceiling_gbps": null,
+      "per_profile_max": {
+        "classical": {
+          "steady_state_max_fps": 1205429.2531594352,
+          "one_time_handshake_ms": 14.263,
+          "meets": [
+            "RFC 7748 (X25519)",
+            "RFC 8032 (Ed25519)",
+            "NIST SP 800-38D (AES-GCM)"
+          ],
+          "security_level": 0,
+          "kem": "x25519",
+          "sig": "ed25519",
+          "aead": "aes256-gcm",
+          "hash": "sha256",
+          "session_key_bits": 256,
+          "comsec": "payload AEAD (aes256-gcm) + authenticated PQC/hybrid handshake (ed25519 over x25519); key establishment is the COMSEC boundary, TRANSEC is the carrier's concern"
+        },
+        "nist1": {
+          "steady_state_max_fps": 1205429.2531594352,
+          "one_time_handshake_ms": 0.622,
+          "meets": [
+            "FIPS 203 (ML-KEM-512)",
+            "FIPS 204 (ML-DSA-44)",
+            "FIPS 202 (SHA3-256)",
+            "NIST SP 800-38D"
+          ],
+          "security_level": 1,
+          "kem": "ml-kem-512",
+          "sig": "ml-dsa-44",
+          "aead": "aes256-gcm",
+          "hash": "sha3-256",
+          "session_key_bits": 256,
+          "comsec": "payload AEAD (aes256-gcm) + authenticated PQC/hybrid handshake (ml-dsa-44 over ml-kem-512); key establishment is the COMSEC boundary, TRANSEC is the carrier's concern"
+        },
+        "nist3": {
+          "steady_state_max_fps": 1205429.2531594352,
+          "one_time_handshake_ms": 1.385,
+          "meets": [
+            "FIPS 203 (ML-KEM-768)",
+            "FIPS 204 (ML-DSA-65)",
+            "FIPS 202 (SHA3-384)"
+          ],
+          "security_level": 3,
+          "kem": "ml-kem-768",
+          "sig": "ml-dsa-65",
+          "aead": "aes256-gcm",
+          "hash": "sha3-384",
+          "session_key_bits": 256,
+          "comsec": "payload AEAD (aes256-gcm) + authenticated PQC/hybrid handshake (ml-dsa-65 over ml-kem-768); key establishment is the COMSEC boundary, TRANSEC is the carrier's concern"
+        },
+        "nist5": {
+          "steady_state_max_fps": 1205429.2531594352,
+          "one_time_handshake_ms": 1.685,
+          "meets": [
+            "FIPS 203 (ML-KEM-1024)",
+            "FIPS 204 (ML-DSA-87)",
+            "FIPS 202 (SHA3-512)"
+          ],
+          "security_level": 5,
+          "kem": "ml-kem-1024",
+          "sig": "ml-dsa-87",
+          "aead": "aes256-gcm",
+          "hash": "sha3-512",
+          "session_key_bits": 256,
+          "comsec": "payload AEAD (aes256-gcm) + authenticated PQC/hybrid handshake (ml-dsa-87 over ml-kem-1024); key establishment is the COMSEC boundary, TRANSEC is the carrier's concern"
+        },
+        "hybrid3": {
+          "steady_state_max_fps": 1205429.2531594352,
+          "one_time_handshake_ms": 2.4,
+          "meets": [
+            "FIPS 203",
+            "FIPS 204",
+            "RFC 7748",
+            "NIST SP 800-56C (hybrid KDF)"
+          ],
+          "security_level": 3,
+          "kem": "x25519+ml-kem-768",
+          "sig": "ml-dsa-65",
+          "aead": "aes256-gcm",
+          "hash": "sha3-384",
+          "session_key_bits": 256,
+          "comsec": "payload AEAD (aes256-gcm) + authenticated PQC/hybrid handshake (ml-dsa-65 over x25519+ml-kem-768); key establishment is the COMSEC boundary, TRANSEC is the carrier's concern"
+        },
+        "hybrid5": {
+          "steady_state_max_fps": 1205429.2531594352,
+          "one_time_handshake_ms": 8.853,
+          "meets": [
+            "FIPS 203",
+            "FIPS 204",
+            "RFC 7748 (X448)",
+            "NIST SP 800-56C"
+          ],
+          "security_level": 5,
+          "kem": "x448+ml-kem-1024",
+          "sig": "ml-dsa-87",
+          "aead": "aes256-gcm",
+          "hash": "sha3-512",
+          "session_key_bits": 256,
+          "comsec": "payload AEAD (aes256-gcm) + authenticated PQC/hybrid handshake (ml-dsa-87 over x448+ml-kem-1024); key establishment is the COMSEC boundary, TRANSEC is the carrier's concern"
+        },
+        "cnsa20": {
+          "steady_state_max_fps": 1205429.2531594352,
+          "one_time_handshake_ms": 1.345,
+          "meets": [
+            "CNSA 2.0",
+            "FIPS 203 (ML-KEM-1024)",
+            "FIPS 204 (ML-DSA-87)",
+            "FIPS 180-4 (SHA-384)",
+            "NIST SP 800-38D (AES-256-GCM)"
+          ],
+          "security_level": 5,
+          "kem": "ml-kem-1024",
+          "sig": "ml-dsa-87",
+          "aead": "aes256-gcm",
+          "hash": "sha384",
+          "session_key_bits": 256,
+          "comsec": "payload AEAD (aes256-gcm) + authenticated PQC/hybrid handshake (ml-dsa-87 over ml-kem-1024); key establishment is the COMSEC boundary, TRANSEC is the carrier's concern"
+        },
+        "nist5-kmac": {
+          "steady_state_max_fps": 1205429.2531594352,
+          "one_time_handshake_ms": 1.685,
+          "meets": [
+            "FIPS 203 (ML-KEM-1024)",
+            "FIPS 204 (ML-DSA-87)",
+            "FIPS 202 (SHA3-512)",
+            "NIST SP 800-185 (KMAC256)",
+            "NIST SP 800-56C rev3 (KMAC KDF)"
+          ],
+          "security_level": 5,
+          "kem": "ml-kem-1024",
+          "sig": "ml-dsa-87",
+          "aead": "aes256-gcm",
+          "hash": "sha3-512",
+          "session_key_bits": 256,
+          "comsec": "payload AEAD (aes256-gcm) + authenticated PQC/hybrid handshake (ml-dsa-87 over ml-kem-1024); key establishment is the COMSEC boundary, TRANSEC is the carrier's concern"
+        },
+        "sphincs5": {
+          "steady_state_max_fps": 1205429.2531594352,
+          "one_time_handshake_ms": 49.014,
+          "meets": [
+            "FIPS 205 (SLH-DSA / SPHINCS+)",
+            "FIPS 203",
+            "FIPS 202"
+          ],
+          "security_level": 5,
+          "kem": "ml-kem-1024",
+          "sig": "sphincs-sha2-256f",
+          "aead": "aes256-gcm",
+          "hash": "sha3-512",
+          "session_key_bits": 256,
+          "comsec": "payload AEAD (aes256-gcm) + authenticated PQC/hybrid handshake (sphincs-sha2-256f over ml-kem-1024); key establishment is the COMSEC boundary, TRANSEC is the carrier's concern"
+        },
+        "falcon5": {
+          "steady_state_max_fps": 1205429.2531594352,
+          "one_time_handshake_ms": 16.56,
+          "meets": [
+            "FN-DSA/Falcon (NIST round 3 sig)",
+            "FIPS 203",
+            "FIPS 202"
+          ],
+          "security_level": 5,
+          "kem": "ml-kem-1024",
+          "sig": "falcon-1024",
+          "aead": "aes256-gcm",
+          "hash": "sha3-512",
+          "session_key_bits": 256,
+          "comsec": "payload AEAD (aes256-gcm) + authenticated PQC/hybrid handshake (falcon-1024 over ml-kem-1024); key establishment is the COMSEC boundary, TRANSEC is the carrier's concern"
+        },
+        "csfc": {
+          "steady_state_max_fps": 1205429.2531594352,
+          "one_time_handshake_ms": 8.853,
+          "meets": [
+            "NSA CSfC (two-layer)",
+            "FIPS 203/204/202",
+            "CNSA 2.0 inner"
+          ],
+          "security_level": 5,
+          "kem": "x448+ml-kem-1024",
+          "sig": "ml-dsa-87",
+          "aead": "aes256-gcm",
+          "hash": "sha3-512",
+          "session_key_bits": 256,
+          "comsec": "payload AEAD (aes256-gcm) + authenticated PQC/hybrid handshake (ml-dsa-87 over x448+ml-kem-1024); key establishment is the COMSEC boundary, TRANSEC is the carrier's concern"
+        }
+      }
+    }
+  },
+  "sources_ingested": [
+    "demos/kafka-protocol/native/ffi/kafka-throughput.json",
+    "transport-matrix.json",
+    "xport-lang.json"
+  ]
+}

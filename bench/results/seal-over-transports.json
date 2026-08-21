@@ -1,0 +1,67 @@
+{
+  "schema": "seal-over-transports/1",
+  "pass": 5,
+  "fail": 0,
+  "skip": 11,
+  "results": {
+    "udp": {
+      "status": "pass"
+    },
+    "tcp": {
+      "status": "pass"
+    },
+    "mqtt": {
+      "status": "skip",
+      "reason": "covered cross-language in bench/seal_transport_e2e.py"
+    },
+    "redis": {
+      "status": "skip",
+      "reason": "covered cross-language in bench/seal_transport_e2e.py"
+    },
+    "zmq": {
+      "status": "pass"
+    },
+    "nng": {
+      "status": "skip",
+      "reason": "pynng present; carrier not wired here yet (needs a live broker/participant)"
+    },
+    "nats": {
+      "status": "skip",
+      "reason": "nats present; carrier not wired here yet (needs a live broker/participant)"
+    },
+    "amqp": {
+      "status": "pass"
+    },
+    "kafka": {
+      "status": "skip",
+      "reason": "confluent_kafka present; carrier not wired here yet (needs a live broker/participant)"
+    },
+    "dds": {
+      "status": "skip",
+      "reason": "cyclonedds present; carrier not wired here yet (needs a live broker/participant)"
+    },
+    "zenoh": {
+      "status": "skip",
+      "reason": "zenoh present; carrier not wired here yet (needs a live broker/participant)"
+    },
+    "zcm": {
+      "status": "skip",
+      "reason": "zerocm present; carrier not wired here yet (needs a live broker/participant)"
+    },
+    "serial": {
+      "status": "pass"
+    },
+    "can": {
+      "status": "skip",
+      "reason": "can present; carrier not wired here yet (needs a live broker/participant)"
+    },
+    "ws": {
+      "status": "skip",
+      "reason": "client lib / broker / hardware absent on this host"
+    },
+    "grpc": {
+      "status": "skip",
+      "reason": "client lib / broker / hardware absent on this host"
+    }
+  }
+}
