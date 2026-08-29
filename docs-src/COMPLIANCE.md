@@ -34,6 +34,7 @@ policy check that rejects non-conformant suites.
 |---|---|---|
 | **robobus crypto** | FIPS 140-3, 203/204/205, CNSA 2.0, CSfC, ISO/IEC 18033, 19790 | Approved algorithms; **Module-required** for 140-3 validation → FIPS sidecar |
 | **robobus bus** |, (transport, no crypto) | Host-local shared memory; carries ciphertext when a suite is set |
+| **PQC-TLS (web / machine access)** | TLS 1.3, FIPS 203/204, CNSA 2.0 | Two tiers: **browser** `X25519MLKEM768` (ML-KEM-768 / Level 3, server-auth, the browser ceiling); **machine** `MLKEM1024` **mutual** (ML-KEM-1024 + AES-256-GCM/SHA-384 + ML-DSA-87 certs both ends), machine-verified defence-in-depth (no-cert + untrusted-cert both rejected) |
 | **ROS 2 DDS** | DDS-Security (OMG), AES-GCM | `scripts/setup_sros2.sh` (classical transport security); not PQC |
 | **ROS 1** | n/a | No native transport security; use robobus app-layer crypto |
 | **LSL** | n/a | No native security; robobus carries AEAD ciphertext over LSL |
