@@ -261,7 +261,7 @@ def page(title, active, body, prefix="", extra_head="", desc="", canon=""):
             f"Benchmarked in {N_LANG} languages across 26 crypto primitives and {N_XPORT} transports.<br>"
             f"Source-available under the Business Source License 1.1 , free for academic, self-hosting, and "
             f"government use; a commercial license is required only to offer it as a hosted service. "
-            f"This site's own code is MIT.</div>"
+            f"This site's own code is presently All Rights Reserved.</div>"
             f"<div><a href='{prefix}index.html'>Home</a> · <a href='{prefix}benchmarks.html'>Benchmarks</a> "
             f"· <a href='{prefix}docs/index.html'>Docs</a> · <a href='{prefix}archive/index.html'>Archive</a> "
             f"· <a href='{GH}'>GitHub</a></div>"
