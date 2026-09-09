@@ -1,0 +1,1081 @@
+{
+  "schema": "new-methods-bench/1",
+  "host": {
+    "platform": "darwin",
+    "python": "3.14.6"
+  },
+  "note": "wall-clock on the native host; adaptive iteration; no write-ins.",
+  "pqc": {
+    "kem": [
+      {
+        "alg": "ml-kem-512",
+        "backend": "openssl",
+        "keygen": {
+          "us_p50": 52.083,
+          "us_p90": 58.708,
+          "us_mean": 57.462,
+          "ops_per_sec": 17402.9,
+          "iters": 8687
+        },
+        "encaps": {
+          "us_p50": 18.875,
+          "us_p90": 20.875,
+          "us_mean": 20.886,
+          "ops_per_sec": 47878.8,
+          "iters": 23769
+        },
+        "decaps": {
+          "us_p50": 25.042,
+          "us_p90": 34.458,
+          "us_mean": 30.808,
+          "ops_per_sec": 32459.4,
+          "iters": 16143
+        }
+      },
+      {
+        "alg": "ml-kem-512",
+        "backend": "liboqs",
+        "keygen": {
+          "us_p50": 8.916,
+          "us_p90": 9.583,
+          "us_mean": 9.337,
+          "ops_per_sec": 107101.5,
+          "iters": 50000
+        },
+        "encaps": {
+          "us_p50": 14.541,
+          "us_p90": 51.167,
+          "us_mean": 29.329,
+          "ops_per_sec": 34095.5,
+          "iters": 16879
+        },
+        "decaps": {
+          "us_p50": 15.333,
+          "us_p90": 16.708,
+          "us_mean": 16.925,
+          "ops_per_sec": 59084.5,
+          "iters": 29317
+        }
+      },
+      {
+        "alg": "ml-kem-768",
+        "backend": "openssl",
+        "keygen": {
+          "us_p50": 75.667,
+          "us_p90": 83.292,
+          "us_mean": 83.809,
+          "ops_per_sec": 11931.9,
+          "iters": 5955
+        },
+        "encaps": {
+          "us_p50": 24.0,
+          "us_p90": 25.042,
+          "us_mean": 25.036,
+          "ops_per_sec": 39943.1,
+          "iters": 19871
+        },
+        "decaps": {
+          "us_p50": 30.167,
+          "us_p90": 32.791,
+          "us_mean": 31.157,
+          "ops_per_sec": 32095.2,
+          "iters": 15989
+        }
+      },
+      {
+        "alg": "ml-kem-768",
+        "backend": "liboqs",
+        "keygen": {
+          "us_p50": 12.166,
+          "us_p90": 13.166,
+          "us_mean": 12.721,
+          "ops_per_sec": 78609.3,
+          "iters": 38962
+        },
+        "encaps": {
+          "us_p50": 18.042,
+          "us_p90": 19.083,
+          "us_mean": 20.169,
+          "ops_per_sec": 49581.2,
+          "iters": 24631
+        },
+        "decaps": {
+          "us_p50": 19.125,
+          "us_p90": 20.0,
+          "us_mean": 19.971,
+          "ops_per_sec": 50072.4,
+          "iters": 24882
+        }
+      },
+      {
+        "alg": "ml-kem-1024",
+        "backend": "openssl",
+        "keygen": {
+          "us_p50": 98.542,
+          "us_p90": 104.916,
+          "us_mean": 100.689,
+          "ops_per_sec": 9931.6,
+          "iters": 4960
+        },
+        "encaps": {
+          "us_p50": 28.708,
+          "us_p90": 30.708,
+          "us_mean": 29.511,
+          "ops_per_sec": 33886.0,
+          "iters": 16873
+        },
+        "decaps": {
+          "us_p50": 40.458,
+          "us_p90": 43.25,
+          "us_mean": 42.072,
+          "ops_per_sec": 23769.0,
+          "iters": 11848
+        }
+      },
+      {
+        "alg": "ml-kem-1024",
+        "backend": "liboqs",
+        "keygen": {
+          "us_p50": 18.209,
+          "us_p90": 20.042,
+          "us_mean": 19.608,
+          "ops_per_sec": 51000.6,
+          "iters": 25347
+        },
+        "encaps": {
+          "us_p50": 21.917,
+          "us_p90": 22.542,
+          "us_mean": 22.294,
+          "ops_per_sec": 44855.6,
+          "iters": 22322
+        },
+        "decaps": {
+          "us_p50": 24.25,
+          "us_p90": 30.334,
+          "us_mean": 27.468,
+          "ops_per_sec": 36406.7,
+          "iters": 18113
+        }
+      }
+    ],
+    "sig": [
+      {
+        "alg": "ml-dsa-44",
+        "backend": "openssl",
+        "keygen": {
+          "us_p50": 57.375,
+          "us_p90": 75.458,
+          "us_mean": 68.196,
+          "ops_per_sec": 14663.6,
+          "iters": 5853
+        },
+        "sign": {
+          "us_p50": 216.834,
+          "us_p90": 546.916,
+          "us_mean": 286.425,
+          "ops_per_sec": 3491.3,
+          "iters": 1396
+        },
+        "verify": {
+          "us_p50": 55.875,
+          "us_p90": 62.25,
+          "us_mean": 59.251,
+          "ops_per_sec": 16877.2,
+          "iters": 6735
+        },
+        "sig_bytes": 2420,
+        "pub_bytes": 1312
+      },
+      {
+        "alg": "ml-dsa-44",
+        "backend": "liboqs",
+        "keygen": {
+          "us_p50": 35.208,
+          "us_p90": 96.708,
+          "us_mean": 56.294,
+          "ops_per_sec": 17764.0,
+          "iters": 7008
+        },
+        "sign": {
+          "us_p50": 153.166,
+          "us_p90": 414.791,
+          "us_mean": 207.499,
+          "ops_per_sec": 4819.3,
+          "iters": 1922
+        },
+        "verify": {
+          "us_p50": 56.625,
+          "us_p90": 154.666,
+          "us_mean": 101.898,
+          "ops_per_sec": 9813.7,
+          "iters": 3913
+        },
+        "sig_bytes": 2420,
+        "pub_bytes": 1312
+      },
+      {
+        "alg": "ml-dsa-65",
+        "backend": "openssl",
+        "keygen": {
+          "us_p50": 101.958,
+          "us_p90": 335.25,
+          "us_mean": 180.883,
+          "ops_per_sec": 5528.4,
+          "iters": 2206
+        },
+        "sign": {
+          "us_p50": 362.625,
+          "us_p90": 986.417,
+          "us_mean": 494.107,
+          "ops_per_sec": 2023.9,
+          "iters": 809
+        },
+        "verify": {
+          "us_p50": 85.0,
+          "us_p90": 113.709,
+          "us_mean": 104.318,
+          "ops_per_sec": 9586.1,
+          "iters": 3827
+        },
+        "sig_bytes": 3309,
+        "pub_bytes": 1952
+      },
+      {
+        "alg": "ml-dsa-65",
+        "backend": "liboqs",
+        "keygen": {
+          "us_p50": 68.459,
+          "us_p90": 80.167,
+          "us_mean": 73.531,
+          "ops_per_sec": 13599.7,
+          "iters": 5426
+        },
+        "sign": {
+          "us_p50": 202.708,
+          "us_p90": 513.208,
+          "us_mean": 258.299,
+          "ops_per_sec": 3871.5,
+          "iters": 1548
+        },
+        "verify": {
+          "us_p50": 84.75,
+          "us_p90": 91.125,
+          "us_mean": 89.598,
+          "ops_per_sec": 11161.0,
+          "iters": 4457
+        },
+        "sig_bytes": 3309,
+        "pub_bytes": 1952
+      },
+      {
+        "alg": "ml-dsa-87",
+        "backend": "openssl",
+        "keygen": {
+          "us_p50": 134.416,
+          "us_p90": 148.25,
+          "us_mean": 140.809,
+          "ops_per_sec": 7101.8,
+          "iters": 2838
+        },
+        "sign": {
+          "us_p50": 423.292,
+          "us_p90": 912.959,
+          "us_mean": 515.728,
+          "ops_per_sec": 1939.0,
+          "iters": 776
+        },
+        "verify": {
+          "us_p50": 124.917,
+          "us_p90": 132.958,
+          "us_mean": 126.323,
+          "ops_per_sec": 7916.2,
+          "iters": 3163
+        },
+        "sig_bytes": 4627,
+        "pub_bytes": 2592
+      },
+      {
+        "alg": "ml-dsa-87",
+        "backend": "liboqs",
+        "keygen": {
+          "us_p50": 92.292,
+          "us_p90": 100.958,
+          "us_mean": 95.149,
+          "ops_per_sec": 10509.8,
+          "iters": 4198
+        },
+        "sign": {
+          "us_p50": 249.875,
+          "us_p90": 596.542,
+          "us_mean": 319.383,
+          "ops_per_sec": 3131.0,
+          "iters": 1253
+        },
+        "verify": {
+          "us_p50": 132.25,
+          "us_p90": 163.042,
+          "us_mean": 145.176,
+          "ops_per_sec": 6888.2,
+          "iters": 2752
+        },
+        "sig_bytes": 4627,
+        "pub_bytes": 2592
+      },
+      {
+        "alg": "falcon-512",
+        "backend": "liboqs",
+        "keygen": {
+          "us_p50": 3312.125,
+          "us_p90": 4747.25,
+          "us_mean": 3549.202,
+          "ops_per_sec": 281.8,
+          "iters": 113
+        },
+        "sign": {
+          "us_p50": 103.458,
+          "us_p90": 111.208,
+          "us_mean": 105.927,
+          "ops_per_sec": 9440.5,
+          "iters": 3771
+        },
+        "verify": {
+          "us_p50": 19.625,
+          "us_p90": 21.417,
+          "us_mean": 20.652,
+          "ops_per_sec": 48421.2,
+          "iters": 19256
+        },
+        "sig_bytes": 655,
+        "pub_bytes": 897
+      },
+      {
+        "alg": "falcon-1024",
+        "backend": "liboqs",
+        "keygen": {
+          "us_p50": 11768.791,
+          "us_p90": 21415.958,
+          "us_mean": 14002.473,
+          "ops_per_sec": 71.4,
+          "iters": 29
+        },
+        "sign": {
+          "us_p50": 211.833,
+          "us_p90": 364.375,
+          "us_mean": 263.765,
+          "ops_per_sec": 3791.3,
+          "iters": 1514
+        },
+        "verify": {
+          "us_p50": 37.041,
+          "us_p90": 45.333,
+          "us_mean": 41.064,
+          "ops_per_sec": 24352.5,
+          "iters": 9662
+        },
+        "sig_bytes": 1271,
+        "pub_bytes": 1793
+      },
+      {
+        "alg": "sphincs-sha2-128s",
+        "backend": "liboqs",
+        "keygen": {
+          "us_p50": 28078.541,
+          "us_p90": 33632.792,
+          "us_mean": 28909.17,
+          "ops_per_sec": 34.6,
+          "iters": 14
+        },
+        "sign": {
+          "us_p50": 214859.542,
+          "us_p90": 260002.25,
+          "us_mean": 220296.833,
+          "ops_per_sec": 4.5,
+          "iters": 5
+        },
+        "verify": {
+          "us_p50": 200.042,
+          "us_p90": 235.375,
+          "us_mean": 214.151,
+          "ops_per_sec": 4669.6,
+          "iters": 1866
+        },
+        "sig_bytes": 7856,
+        "pub_bytes": 32
+      },
+      {
+        "alg": "sphincs-sha2-256f",
+        "backend": "liboqs",
+        "keygen": {
+          "us_p50": 1611.041,
+          "us_p90": 1913.417,
+          "us_mean": 1702.646,
+          "ops_per_sec": 587.3,
+          "iters": 235
+        },
+        "sign": {
+          "us_p50": 32028.709,
+          "us_p90": 33821.0,
+          "us_mean": 32043.218,
+          "ops_per_sec": 31.2,
+          "iters": 13
+        },
+        "verify": {
+          "us_p50": 842.833,
+          "us_p90": 891.625,
+          "us_mean": 852.077,
+          "ops_per_sec": 1173.6,
+          "iters": 470
+        },
+        "sig_bytes": 49856,
+        "pub_bytes": 64
+      }
+    ]
+  },
+  "securertp": {
+    "kdf": [
+      {
+        "profile": "AES_CM_128_HMAC_SHA1_80",
+        "derive_session_keys": {
+          "us_p50": 15.958,
+          "us_p90": 17.292,
+          "us_mean": 16.754,
+          "ops_per_sec": 59686.9,
+          "iters": 29626
+        }
+      },
+      {
+        "profile": "AES_CM_128_HMAC_SHA1_32",
+        "derive_session_keys": {
+          "us_p50": 15.166,
+          "us_p90": 18.125,
+          "us_mean": 21.916,
+          "ops_per_sec": 45629.1,
+          "iters": 22662
+        }
+      },
+      {
+        "profile": "AES_256_CM_HMAC_SHA1_80",
+        "derive_session_keys": {
+          "us_p50": 15.75,
+          "us_p90": 19.125,
+          "us_mean": 28.407,
+          "ops_per_sec": 35203.0,
+          "iters": 17554
+        }
+      },
+      {
+        "profile": "AES_256_CM_HMAC_SHA1_32",
+        "derive_session_keys": {
+          "us_p50": 22.917,
+          "us_p90": 83.291,
+          "us_mean": 46.065,
+          "ops_per_sec": 21708.3,
+          "iters": 10761
+        }
+      }
+    ],
+    "protect": [
+      {
+        "profile": "AES_CM_128_HMAC_SHA1_80",
+        "payload": 64,
+        "us": {
+          "us_p50": 7.666,
+          "us_p90": 10.041,
+          "us_mean": 10.357,
+          "ops_per_sec": 96554.7,
+          "iters": 47636
+        },
+        "MB_per_s": 6.2
+      },
+      {
+        "profile": "AES_CM_128_HMAC_SHA1_80",
+        "payload": 160,
+        "us": {
+          "us_p50": 7.708,
+          "us_p90": 8.083,
+          "us_mean": 8.094,
+          "ops_per_sec": 123542.5,
+          "iters": 50000
+        },
+        "MB_per_s": 19.8
+      },
+      {
+        "profile": "AES_CM_128_HMAC_SHA1_80",
+        "payload": 512,
+        "us": {
+          "us_p50": 7.625,
+          "us_p90": 8.25,
+          "us_mean": 8.63,
+          "ops_per_sec": 115879.8,
+          "iters": 50000
+        },
+        "MB_per_s": 59.3
+      },
+      {
+        "profile": "AES_CM_128_HMAC_SHA1_80",
+        "payload": 1200,
+        "us": {
+          "us_p50": 8.333,
+          "us_p90": 8.667,
+          "us_mean": 8.711,
+          "ops_per_sec": 114797.4,
+          "iters": 50000
+        },
+        "MB_per_s": 137.8
+      },
+      {
+        "profile": "AES_CM_128_HMAC_SHA1_80",
+        "payload": 8192,
+        "us": {
+          "us_p50": 15.875,
+          "us_p90": 18.708,
+          "us_mean": 16.796,
+          "ops_per_sec": 59536.8,
+          "iters": 29579
+        },
+        "MB_per_s": 487.7
+      },
+      {
+        "profile": "AES_CM_128_HMAC_SHA1_32",
+        "payload": 64,
+        "us": {
+          "us_p50": 7.792,
+          "us_p90": 8.334,
+          "us_mean": 9.186,
+          "ops_per_sec": 108857.4,
+          "iters": 50000
+        },
+        "MB_per_s": 7.0
+      },
+      {
+        "profile": "AES_CM_128_HMAC_SHA1_32",
+        "payload": 160,
+        "us": {
+          "us_p50": 7.584,
+          "us_p90": 8.0,
+          "us_mean": 8.328,
+          "ops_per_sec": 120071.9,
+          "iters": 50000
+        },
+        "MB_per_s": 19.2
+      },
+      {
+        "profile": "AES_CM_128_HMAC_SHA1_32",
+        "payload": 512,
+        "us": {
+          "us_p50": 7.625,
+          "us_p90": 8.084,
+          "us_mean": 7.961,
+          "ops_per_sec": 125606.6,
+          "iters": 50000
+        },
+        "MB_per_s": 64.3
+      },
+      {
+        "profile": "AES_CM_128_HMAC_SHA1_32",
+        "payload": 1200,
+        "us": {
+          "us_p50": 8.459,
+          "us_p90": 9.416,
+          "us_mean": 9.305,
+          "ops_per_sec": 107467.4,
+          "iters": 50000
+        },
+        "MB_per_s": 129.0
+      },
+      {
+        "profile": "AES_CM_128_HMAC_SHA1_32",
+        "payload": 8192,
+        "us": {
+          "us_p50": 16.083,
+          "us_p90": 25.875,
+          "us_mean": 20.66,
+          "ops_per_sec": 48403.1,
+          "iters": 24033
+        },
+        "MB_per_s": 396.5
+      },
+      {
+        "profile": "AES_256_CM_HMAC_SHA1_80",
+        "payload": 64,
+        "us": {
+          "us_p50": 7.625,
+          "us_p90": 8.0,
+          "us_mean": 8.117,
+          "ops_per_sec": 123203.0,
+          "iters": 50000
+        },
+        "MB_per_s": 7.9
+      },
+      {
+        "profile": "AES_256_CM_HMAC_SHA1_80",
+        "payload": 160,
+        "us": {
+          "us_p50": 7.375,
+          "us_p90": 7.709,
+          "us_mean": 7.63,
+          "ops_per_sec": 131059.6,
+          "iters": 50000
+        },
+        "MB_per_s": 21.0
+      },
+      {
+        "profile": "AES_256_CM_HMAC_SHA1_80",
+        "payload": 512,
+        "us": {
+          "us_p50": 7.958,
+          "us_p90": 8.25,
+          "us_mean": 8.781,
+          "ops_per_sec": 113882.1,
+          "iters": 50000
+        },
+        "MB_per_s": 58.3
+      },
+      {
+        "profile": "AES_256_CM_HMAC_SHA1_80",
+        "payload": 1200,
+        "us": {
+          "us_p50": 8.166,
+          "us_p90": 8.541,
+          "us_mean": 8.73,
+          "ops_per_sec": 114553.8,
+          "iters": 50000
+        },
+        "MB_per_s": 137.5
+      },
+      {
+        "profile": "AES_256_CM_HMAC_SHA1_80",
+        "payload": 8192,
+        "us": {
+          "us_p50": 15.541,
+          "us_p90": 18.208,
+          "us_mean": 17.321,
+          "ops_per_sec": 57732.6,
+          "iters": 28684
+        },
+        "MB_per_s": 473.0
+      },
+      {
+        "profile": "AES_256_CM_HMAC_SHA1_32",
+        "payload": 64,
+        "us": {
+          "us_p50": 7.417,
+          "us_p90": 7.833,
+          "us_mean": 7.742,
+          "ops_per_sec": 129158.7,
+          "iters": 50000
+        },
+        "MB_per_s": 8.3
+      },
+      {
+        "profile": "AES_256_CM_HMAC_SHA1_32",
+        "payload": 160,
+        "us": {
+          "us_p50": 7.416,
+          "us_p90": 7.958,
+          "us_mean": 8.221,
+          "ops_per_sec": 121634.3,
+          "iters": 50000
+        },
+        "MB_per_s": 19.5
+      },
+      {
+        "profile": "AES_256_CM_HMAC_SHA1_32",
+        "payload": 512,
+        "us": {
+          "us_p50": 8.333,
+          "us_p90": 21.625,
+          "us_mean": 13.229,
+          "ops_per_sec": 75590.1,
+          "iters": 33800
+        },
+        "MB_per_s": 38.7
+      },
+      {
+        "profile": "AES_256_CM_HMAC_SHA1_32",
+        "payload": 1200,
+        "us": {
+          "us_p50": 9.125,
+          "us_p90": 35.75,
+          "us_mean": 29.129,
+          "ops_per_sec": 34330.0,
+          "iters": 16961
+        },
+        "MB_per_s": 41.2
+      },
+      {
+        "profile": "AES_256_CM_HMAC_SHA1_32",
+        "payload": 8192,
+        "us": {
+          "us_p50": 18.25,
+          "us_p90": 27.584,
+          "us_mean": 27.992,
+          "ops_per_sec": 35723.9,
+          "iters": 17619
+        },
+        "MB_per_s": 292.7
+      }
+    ],
+    "unprotect": [
+      {
+        "profile": "AES_CM_128_HMAC_SHA1_80",
+        "payload": 64,
+        "us": {
+          "us_p50": 7.791,
+          "us_p90": 8.167,
+          "us_mean": 8.084,
+          "ops_per_sec": 123698.3,
+          "iters": 50000
+        }
+      },
+      {
+        "profile": "AES_CM_128_HMAC_SHA1_80",
+        "payload": 160,
+        "us": {
+          "us_p50": 7.583,
+          "us_p90": 8.25,
+          "us_mean": 8.665,
+          "ops_per_sec": 115406.2,
+          "iters": 50000
+        }
+      },
+      {
+        "profile": "AES_CM_128_HMAC_SHA1_80",
+        "payload": 512,
+        "us": {
+          "us_p50": 7.958,
+          "us_p90": 8.416,
+          "us_mean": 8.173,
+          "ops_per_sec": 122353.2,
+          "iters": 50000
+        }
+      },
+      {
+        "profile": "AES_CM_128_HMAC_SHA1_80",
+        "payload": 1200,
+        "us": {
+          "us_p50": 8.084,
+          "us_p90": 8.583,
+          "us_mean": 8.415,
+          "ops_per_sec": 118841.2,
+          "iters": 50000
+        }
+      },
+      {
+        "profile": "AES_CM_128_HMAC_SHA1_80",
+        "payload": 8192,
+        "us": {
+          "us_p50": 15.667,
+          "us_p90": 25.209,
+          "us_mean": 20.638,
+          "ops_per_sec": 48454.6,
+          "iters": 24080
+        }
+      },
+      {
+        "profile": "AES_CM_128_HMAC_SHA1_32",
+        "payload": 64,
+        "us": {
+          "us_p50": 7.75,
+          "us_p90": 8.542,
+          "us_mean": 9.299,
+          "ops_per_sec": 107533.9,
+          "iters": 50000
+        }
+      },
+      {
+        "profile": "AES_CM_128_HMAC_SHA1_32",
+        "payload": 160,
+        "us": {
+          "us_p50": 7.709,
+          "us_p90": 8.208,
+          "us_mean": 8.428,
+          "ops_per_sec": 118654.6,
+          "iters": 50000
+        }
+      },
+      {
+        "profile": "AES_CM_128_HMAC_SHA1_32",
+        "payload": 512,
+        "us": {
+          "us_p50": 7.875,
+          "us_p90": 8.291,
+          "us_mean": 8.557,
+          "ops_per_sec": 116861.0,
+          "iters": 50000
+        }
+      },
+      {
+        "profile": "AES_CM_128_HMAC_SHA1_32",
+        "payload": 1200,
+        "us": {
+          "us_p50": 8.542,
+          "us_p90": 9.708,
+          "us_mean": 10.63,
+          "ops_per_sec": 94071.6,
+          "iters": 43009
+        }
+      },
+      {
+        "profile": "AES_CM_128_HMAC_SHA1_32",
+        "payload": 8192,
+        "us": {
+          "us_p50": 15.583,
+          "us_p90": 18.042,
+          "us_mean": 17.07,
+          "ops_per_sec": 58581.8,
+          "iters": 29090
+        }
+      },
+      {
+        "profile": "AES_256_CM_HMAC_SHA1_80",
+        "payload": 64,
+        "us": {
+          "us_p50": 7.542,
+          "us_p90": 7.875,
+          "us_mean": 7.793,
+          "ops_per_sec": 128324.9,
+          "iters": 50000
+        }
+      },
+      {
+        "profile": "AES_256_CM_HMAC_SHA1_80",
+        "payload": 160,
+        "us": {
+          "us_p50": 7.5,
+          "us_p90": 7.875,
+          "us_mean": 7.724,
+          "ops_per_sec": 129459.5,
+          "iters": 50000
+        }
+      },
+      {
+        "profile": "AES_256_CM_HMAC_SHA1_80",
+        "payload": 512,
+        "us": {
+          "us_p50": 8.042,
+          "us_p90": 8.334,
+          "us_mean": 8.672,
+          "ops_per_sec": 115309.7,
+          "iters": 50000
+        }
+      },
+      {
+        "profile": "AES_256_CM_HMAC_SHA1_80",
+        "payload": 1200,
+        "us": {
+          "us_p50": 8.083,
+          "us_p90": 8.458,
+          "us_mean": 8.431,
+          "ops_per_sec": 118603.4,
+          "iters": 50000
+        }
+      },
+      {
+        "profile": "AES_256_CM_HMAC_SHA1_80",
+        "payload": 8192,
+        "us": {
+          "us_p50": 15.792,
+          "us_p90": 17.5,
+          "us_mean": 17.004,
+          "ops_per_sec": 58810.9,
+          "iters": 29209
+        }
+      },
+      {
+        "profile": "AES_256_CM_HMAC_SHA1_32",
+        "payload": 64,
+        "us": {
+          "us_p50": 7.375,
+          "us_p90": 7.833,
+          "us_mean": 7.718,
+          "ops_per_sec": 129563.2,
+          "iters": 50000
+        }
+      },
+      {
+        "profile": "AES_256_CM_HMAC_SHA1_32",
+        "payload": 160,
+        "us": {
+          "us_p50": 7.792,
+          "us_p90": 10.417,
+          "us_mean": 9.916,
+          "ops_per_sec": 100845.1,
+          "iters": 49529
+        }
+      },
+      {
+        "profile": "AES_256_CM_HMAC_SHA1_32",
+        "payload": 512,
+        "us": {
+          "us_p50": 8.458,
+          "us_p90": 20.0,
+          "us_mean": 11.959,
+          "ops_per_sec": 83617.8,
+          "iters": 41210
+        }
+      },
+      {
+        "profile": "AES_256_CM_HMAC_SHA1_32",
+        "payload": 1200,
+        "us": {
+          "us_p50": 8.458,
+          "us_p90": 24.292,
+          "us_mean": 15.015,
+          "ops_per_sec": 66602.3,
+          "iters": 32830
+        }
+      },
+      {
+        "profile": "AES_256_CM_HMAC_SHA1_32",
+        "payload": 8192,
+        "us": {
+          "us_p50": 17.125,
+          "us_p90": 37.834,
+          "us_mean": 24.888,
+          "ops_per_sec": 40180.3,
+          "iters": 19950
+        }
+      }
+    ],
+    "establish_master_keying": [
+      {
+        "profile": "AES_CM_128_HMAC_SHA1_80",
+        "us": {
+          "us_p50": 24.416,
+          "us_p90": 25.333,
+          "us_mean": 24.911,
+          "ops_per_sec": 40143.0,
+          "iters": 19980
+        }
+      },
+      {
+        "profile": "AES_CM_128_HMAC_SHA1_32",
+        "us": {
+          "us_p50": 25.208,
+          "us_p90": 78.125,
+          "us_mean": 42.891,
+          "ops_per_sec": 23314.9,
+          "iters": 11495
+        }
+      },
+      {
+        "profile": "AES_256_CM_HMAC_SHA1_80",
+        "us": {
+          "us_p50": 59.0,
+          "us_p90": 154.958,
+          "us_mean": 100.174,
+          "ops_per_sec": 9982.6,
+          "iters": 4857
+        }
+      },
+      {
+        "profile": "AES_256_CM_HMAC_SHA1_32",
+        "us": {
+          "us_p50": 25.375,
+          "us_p90": 87.75,
+          "us_mean": 46.303,
+          "ops_per_sec": 21596.8,
+          "iters": 10726
+        }
+      }
+    ]
+  },
+  "codecs": {
+    "xcp": [
+      {
+        "op": "connect (build)",
+        "us": {
+          "us_p50": 0.125,
+          "us_p90": 0.166,
+          "us_mean": 0.136,
+          "ops_per_sec": 7360999.3,
+          "iters": 50000
+        }
+      },
+      {
+        "op": "set_mta (build)",
+        "us": {
+          "us_p50": 0.166,
+          "us_p90": 0.25,
+          "us_mean": 0.181,
+          "ops_per_sec": 5515941.3,
+          "iters": 50000
+        }
+      },
+      {
+        "op": "short_download (build)",
+        "us": {
+          "us_p50": 0.166,
+          "us_p90": 0.208,
+          "us_mean": 0.171,
+          "ops_per_sec": 5863421.7,
+          "iters": 50000
+        }
+      },
+      {
+        "op": "parse_response",
+        "us": {
+          "us_p50": 0.166,
+          "us_p90": 0.208,
+          "us_mean": 0.157,
+          "ops_per_sec": 6364206.5,
+          "iters": 50000
+        }
+      },
+      {
+        "op": "eth_stream (8 frames)",
+        "us": {
+          "us_p50": 1.5,
+          "us_p90": 1.583,
+          "us_mean": 1.626,
+          "ops_per_sec": 614989.9,
+          "iters": 50000
+        }
+      }
+    ],
+    "iscsi": [
+      {
+        "op": "build_bhs (512B data)",
+        "us": {
+          "us_p50": 0.917,
+          "us_p90": 1.0,
+          "us_mean": 0.995,
+          "ops_per_sec": 1005377.8,
+          "iters": 50000
+        }
+      },
+      {
+        "op": "parse_bhs",
+        "us": {
+          "us_p50": 0.708,
+          "us_p90": 0.75,
+          "us_mean": 0.734,
+          "ops_per_sec": 1362353.3,
+          "iters": 50000
+        }
+      },
+      {
+        "op": "stream_pdus (16 PDUs)",
+        "us": {
+          "us_p50": 3.459,
+          "us_p90": 3.75,
+          "us_mean": 3.741,
+          "ops_per_sec": 267300.1,
+          "iters": 50000
+        }
+      },
+      {
+        "op": "crc32c (1 MiB)",
+        "us": {
+          "us_p50": 64937.542,
+          "us_p90": 73100.208,
+          "us_mean": 65603.312,
+          "ops_per_sec": 15.2,
+          "iters": 10
+        },
+        "MB_per_s": 16.0
+      }
+    ]
+  }
+}

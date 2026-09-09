@@ -1,0 +1,1527 @@
+<!doctype html>
+<html lang="en" data-theme="dark">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>robobus · PQC Systems Studio</title>
+<meta name="description" content="Model a multipart system, see the post-quantum migration at every crypto surface, and compare baseline vs PQC across security, performance and cost — grounded in robobus's measured corpus. Offline, self-contained.">
+<style>
+/* ------- design tokens: instrument console; dark primary, light available ------- */
+:root{
+  --ground:#0a0e13; --panel:#111823; --panel2:#0d141d; --edge:#1e2a38;
+  --ink:#dbe4ee; --ink-dim:#8b9bad; --ink-faint:#5b6b7d;
+  --signal:#46e0c8;                 /* robobus phosphor — interactive/brand, used sparingly */
+  --p0:#6ea8ff; --p1:#b98cff; --p2:#46e0c8; --p3:#ffb454;   /* phase 0..3 (observe/sign/kex/wrap) */
+  --risk-hi:#ff5d5d; --risk-md:#ffb454; --risk-lo:#4ccf8f;
+  --grid:rgba(120,150,180,.09); --shadow:rgba(0,0,0,.45);
+  --mono:ui-monospace,"SF Mono",Menlo,"Cascadia Mono","Roboto Mono",monospace;
+  --sans:ui-sans-serif,system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
+}
+:root[data-theme="light"]{
+  --ground:#eef1f5; --panel:#ffffff; --panel2:#f4f6f9; --edge:#d2dae4;
+  --ink:#18222e; --ink-dim:#4a5a6b; --ink-faint:#8494a4;
+  --signal:#0aa595; --p2:#0aa595; --grid:rgba(20,40,70,.08); --shadow:rgba(30,50,80,.12);
+}
+@media (prefers-color-scheme:light){ :root:not([data-theme]){ --ground:#eef1f5; --panel:#fff; --ink:#18222e; } }
+*{box-sizing:border-box}
+html,body{margin:0;height:100%}
+body{background:var(--ground);color:var(--ink);font-family:var(--sans);font-size:14px;line-height:1.5;
+  -webkit-font-smoothing:antialiased;display:flex;flex-direction:column;height:100vh;overflow:hidden}
+h1,h2,h3{margin:0;font-weight:650;letter-spacing:-.01em}
+button,select{font-family:inherit;font-size:13px;color:var(--ink);background:var(--panel2);
+  border:1px solid var(--edge);border-radius:7px;padding:6px 10px;cursor:pointer}
+button:hover,select:hover{border-color:var(--signal)}
+button:focus-visible,select:focus-visible,[tabindex]:focus-visible{outline:2px solid var(--signal);outline-offset:2px}
+.mono{font-family:var(--mono);font-variant-numeric:tabular-nums}
+.eyebrow{font-family:var(--mono);font-size:10.5px;letter-spacing:.16em;text-transform:uppercase;color:var(--ink-faint)}
+
+/* ------- top bar ------- */
+header{display:flex;align-items:center;gap:14px;padding:10px 16px;background:var(--panel);
+  border-bottom:1px solid var(--edge);flex-wrap:wrap}
+.brand{display:flex;align-items:baseline;gap:9px}
+.brand .dot{width:9px;height:9px;border-radius:50%;background:var(--signal);box-shadow:0 0 10px var(--signal);align-self:center}
+.brand b{font-size:15px;letter-spacing:-.02em}
+.brand span{font-family:var(--mono);font-size:11px;color:var(--ink-faint)}
+header .ctl{display:flex;align-items:center;gap:7px;margin-left:auto;flex-wrap:wrap}
+.seg{display:inline-flex;border:1px solid var(--edge);border-radius:8px;overflow:hidden}
+.seg button{border:0;border-radius:0;background:transparent;padding:6px 12px}
+.seg button[aria-pressed="true"]{background:var(--signal);color:#04120f;font-weight:650}
+label.f{display:inline-flex;align-items:center;gap:6px;font-size:12px;color:var(--ink-dim)}
+.editstate{font-family:var(--mono);font-size:11px;color:var(--ink-dim);display:inline-flex;align-items:center;gap:6px}
+.editdot{color:var(--flag)} .editstate .mini{padding:3px 8px;font-size:11px}
+button:disabled{opacity:.4;cursor:default}
+.histpop{position:absolute;left:12px;top:52px;z-index:8;width:260px;max-height:50vh;overflow:auto;background:var(--panel);border:1px solid var(--edge);border-radius:9px;box-shadow:0 6px 20px var(--shadow);padding:6px}
+.histhd{font-family:var(--mono);font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:var(--ink-faint);padding:4px 6px 6px}
+.histrow{display:flex;justify-content:space-between;gap:8px;font-family:var(--mono);font-size:11px;color:var(--ink-dim);padding:3px 6px;border-top:1px solid var(--edge)}
+.histrow .ht{color:var(--ink-faint)}
+.ctxmenu{position:fixed;z-index:20;min-width:170px;background:var(--panel);border:1px solid var(--edge);border-radius:9px;box-shadow:0 8px 26px var(--shadow);padding:5px;font-size:13px}
+.ctxmenu .ci{padding:6px 10px;border-radius:6px;cursor:pointer;display:flex;justify-content:space-between;gap:12px;color:var(--ink)}
+.ctxmenu .ci:hover{background:var(--panel2)} .ctxmenu .ci.danger{color:var(--risk-hi)}
+.ctxmenu .ck{color:var(--ink-faint);font-family:var(--mono);font-size:11px}
+.ctxmenu .sep{height:1px;background:var(--edge);margin:4px 2px}
+.ctxmenu .ch{font-family:var(--mono);font-size:10px;letter-spacing:.08em;text-transform:uppercase;color:var(--ink-faint);padding:4px 10px}
+
+/* ------- layout ------- */
+main{flex:1;display:grid;grid-template-columns:236px 1fr 320px;min-height:0}
+aside{background:var(--panel);border-right:1px solid var(--edge);overflow:auto;padding:14px}
+aside.right{border-right:0;border-left:1px solid var(--edge)}
+.canvas-wrap{position:relative;overflow:hidden;background:
+  radial-gradient(circle at 1px 1px,var(--grid) 1px,transparent 0) 0 0/26px 26px, var(--ground)}
+#graph{display:block;width:100%;height:100%;cursor:grab;touch-action:none}
+#graph.grabbing{cursor:grabbing}
+.zoomctl{position:absolute;right:12px;bottom:12px;display:flex;gap:6px;z-index:5}
+.zoomctl button{width:32px;height:32px;padding:0;font-size:16px;line-height:1;background:var(--panel);box-shadow:0 2px 8px var(--shadow)}
+.hint{position:absolute;left:12px;bottom:12px;font-family:var(--mono);font-size:10.5px;color:var(--ink-faint);z-index:5;pointer-events:none}
+/* ports: glowing inlet (left) / outlet (right) dots, grab an outlet and drag to connect */
+.port{stroke:var(--ground);stroke-width:2;cursor:crosshair}
+.port.in{fill:var(--p0);filter:drop-shadow(0 0 3px var(--p0))}
+.port.out{fill:var(--signal);filter:drop-shadow(0 0 4px var(--signal))}
+.port:hover{r:9}
+.porthalo{fill:none;stroke:var(--signal);stroke-width:1;opacity:.35;pointer-events:none}
+#tmpwire{stroke:var(--signal);stroke-width:2.5;stroke-dasharray:6 4;fill:none;pointer-events:none;filter:drop-shadow(0 0 4px var(--signal))}
+.node.warn{border-color:var(--risk-hi)!important;box-shadow:0 0 0 1px var(--risk-hi),0 4px 14px var(--shadow)}
+.warnglyph{color:var(--risk-hi);font-weight:800}
+.fo{font-family:var(--mono);font-size:9px;fill:var(--ink-faint)}
+.fo.lbl-on{fill:var(--ink-dim)}
+.grouphandle{cursor:move;fill:transparent}
+.grpbtn{cursor:pointer;fill:var(--ink-faint);font-family:var(--mono);font-size:12px}
+.grpbtn:hover{fill:var(--signal)}
+.node.blackbox{background:var(--panel2);border-style:dashed;border-color:var(--ink-faint)}
+.node.sealed{border-color:var(--p1);border-style:solid;box-shadow:0 0 0 1px var(--p1),0 4px 14px var(--shadow)}
+.simhud{position:absolute;left:12px;top:12px;font-family:var(--mono);font-size:11px;color:var(--ink);
+  background:var(--panel);border:1px solid var(--edge);border-radius:8px;padding:6px 10px;z-index:6;box-shadow:0 2px 8px var(--shadow)}
+#simBtn[aria-pressed="true"]{background:var(--signal);color:#04120f;font-weight:650}
+.proc{font-family:var(--mono);font-size:10px;color:var(--p1);margin-top:4px}
+.collapse{margin-left:auto;cursor:pointer;color:var(--ink-faint);padding:0 3px;font-weight:700}
+.collapse:hover{color:var(--signal)}
+
+/* ------- left rail: rollup ------- */
+.metric{background:var(--panel2);border:1px solid var(--edge);border-radius:10px;padding:11px 12px;margin-bottom:10px}
+.metric .k{font-family:var(--mono);font-size:10.5px;letter-spacing:.12em;text-transform:uppercase;color:var(--ink-faint)}
+.metric .v{font-size:23px;font-weight:680;margin-top:3px;letter-spacing:-.02em}
+.metric .v small{font-size:12px;font-weight:500;color:var(--ink-dim)}
+.delta{font-family:var(--mono);font-size:12px;margin-top:4px}
+.delta.up{color:var(--risk-hi)} .delta.down{color:var(--risk-lo)} .delta.flat{color:var(--ink-faint)}
+.bar{height:7px;border-radius:4px;background:var(--edge);overflow:hidden;margin-top:8px}
+.bar>i{display:block;height:100%;background:var(--signal)}
+.legend{margin-top:14px}
+.legend .row{display:flex;align-items:center;gap:8px;font-size:12px;color:var(--ink-dim);margin:5px 0}
+.sw{width:12px;height:12px;border-radius:3px;flex:none}
+
+/* ------- graph nodes (foreignObject cards) ------- */
+.node{background:var(--panel);border:1px solid var(--edge);border-radius:11px;padding:9px 10px;
+  box-shadow:0 3px 12px var(--shadow);cursor:pointer;height:100%;position:relative;transition:border-color .12s}
+.node:hover{border-color:var(--signal)}
+.node.sel{border-color:var(--signal);box-shadow:0 0 0 1px var(--signal),0 6px 18px var(--shadow)}
+.node .lbl{font-weight:640;font-size:13px;letter-spacing:-.01em;display:flex;align-items:center;gap:6px}
+.node .kind{font-family:var(--mono);font-size:9.5px;letter-spacing:.1em;text-transform:uppercase;color:var(--ink-faint)}
+.node .badge{margin-left:auto;font-family:var(--mono);font-size:10px;background:var(--panel2);
+  border:1px solid var(--edge);border-radius:20px;padding:1px 7px;color:var(--signal)}
+.node .surfs{display:flex;flex-wrap:wrap;gap:4px;margin-top:8px}
+.pill{font-family:var(--mono);font-size:9.5px;padding:1px 6px;border-radius:20px;border:1px solid transparent;color:#050a0e}
+.node .cap{font-family:var(--mono);font-size:10px;color:var(--ink-dim);margin-top:7px;display:flex;justify-content:space-between}
+.stack::before,.stack::after{content:"";position:absolute;inset:0;border:1px solid var(--edge);
+  border-radius:11px;background:var(--panel2);z-index:-1}
+.stack::before{transform:translate(5px,5px)} .stack::after{transform:translate(10px,10px);opacity:.6}
+
+/* ------- right inspector ------- */
+.insp h3{font-size:14px;margin-bottom:2px}
+.insp .sub{font-family:var(--mono);font-size:11px;color:var(--ink-faint);margin-bottom:12px}
+.field{margin:10px 0}
+.field .k{font-family:var(--mono);font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:var(--ink-faint);margin-bottom:2px}
+.surface{border:1px solid var(--edge);border-radius:9px;padding:9px 10px;margin:9px 0;background:var(--panel2)}
+.surface .top{display:flex;align-items:center;gap:7px;margin-bottom:5px}
+.surface .role{font-family:var(--mono);font-size:10px;letter-spacing:.08em;text-transform:uppercase}
+.surface .rk{margin-left:auto;font-family:var(--mono);font-size:9.5px;padding:1px 6px;border-radius:20px;color:#050a0e}
+.surface .line{font-size:12px;margin:3px 0}
+.surface .line b{color:var(--ink-dim);font-weight:600}
+.arrow{color:var(--signal)}
+.empty{color:var(--ink-faint);font-size:13px;padding:20px 4px;text-align:center}
+.note{font-size:11px;color:var(--ink-faint);margin-top:14px;border-top:1px solid var(--edge);padding-top:10px}
+.tag{font-family:var(--mono);font-size:10px;border:1px solid var(--edge);border-radius:6px;padding:1px 6px;color:var(--ink-dim)}
+input.ed,select.ed{width:100%;font-family:inherit;font-size:12px;color:var(--ink);background:var(--panel);
+  border:1px solid var(--edge);border-radius:6px;padding:4px 7px}
+input.ed.mono{font-family:var(--mono)}
+input.ed:focus,select.ed:focus{outline:1px solid var(--signal)}
+.two{display:grid;grid-template-columns:1fr 1fr;gap:6px}
+.three{display:grid;grid-template-columns:1fr 1fr 1fr;gap:6px}
+.mini{padding:3px 8px;font-size:11px}
+.del{color:var(--risk-hi)}
+.addbtn{width:100%;margin-top:7px;border-style:dashed;color:var(--ink-dim)}
+.linkcard{border:1px dashed var(--edge);border-radius:9px;padding:8px 9px;margin:8px 0;background:var(--panel2)}
+.hrow{display:flex;align-items:center;gap:7px;margin-bottom:8px}
+.lab{font-family:var(--mono);font-size:9.5px;letter-spacing:.08em;text-transform:uppercase;color:var(--ink-faint);margin:6px 0 2px}
+.grp-link{color:var(--signal);cursor:pointer;text-transform:none;letter-spacing:0}.grp-link:hover{text-decoration:underline}
+.cmp{margin-top:6px;max-height:220px;overflow:auto}
+.cmprow{display:grid;grid-template-columns:88px 1fr 50px;gap:7px;align-items:center;cursor:pointer;padding:2px 0}
+.cmprow:hover .cmpk{color:var(--signal)}
+.cmpk{font-family:var(--mono);font-size:10px;color:var(--ink-dim);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.cmpk.cur{color:var(--signal);font-weight:700}
+.cmpbar{height:8px;background:var(--edge);border-radius:4px;overflow:hidden}
+.cmpbar>i{display:block;height:100%;background:var(--ink-faint)}
+.cmpv{font-family:var(--mono);font-size:9.5px;color:var(--ink-dim);text-align:right}
+@media (prefers-reduced-motion:reduce){*{transition:none!important}}
+/* responsive: below 920px stack graph over collapsible panels (nothing hidden) */
+@media (max-width:920px){
+  header{padding:8px 10px;gap:8px}
+  header .brand b{font-size:14px}
+  header .ctl{gap:5px;width:100%;order:3;overflow-x:auto;padding-bottom:2px}
+  main{grid-template-columns:1fr;grid-template-rows:minmax(46vh,1fr) auto auto;min-height:0}
+  .canvas-wrap{order:-1;min-height:46vh}
+  aside{border:0;border-top:1px solid var(--edge);max-height:38vh}
+  aside.left{order:1} aside.right{order:2}
+  .metric .v{font-size:20px}
+}
+@media (max-width:560px){
+  header .brand span{display:none}
+  main{grid-template-rows:minmax(40vh,1fr) auto auto}
+  .zoomctl button{width:38px;height:38px}   /* larger touch targets */
+}
+</style>
+</head>
+<body>
+<header>
+  <div class="brand"><span class="dot"></span><b>PQC Systems Studio</b><span>robobus</span></div>
+  <div class="ctl">
+    <label class="f">system
+      <select id="sysSel"></select></label>
+    <div class="seg" role="group" aria-label="scenario">
+      <button id="scBase" aria-pressed="true">Baseline</button>
+      <button id="scTgt" aria-pressed="false">Target · PQC</button>
+    </div>
+    <span class="f">regimes
+      <span class="seg" id="stdChips" role="group" aria-label="compliance regimes (compose)">
+        <button data-std="fips" aria-pressed="false">FIPS 140-3</button>
+        <button data-std="cnsa20" aria-pressed="true">CNSA 2.0</button>
+        <button data-std="csfc" aria-pressed="false">CSfC</button>
+      </span></span>
+    <button id="addNode" title="add a component">+ Node</button>
+    <button id="simBtn" title="animate a real-time simulation of the modelled network">▶ Simulate</button>
+    <button id="undoBtn" title="Undo (⌘Z / Ctrl+Z)" disabled>⟲</button>
+    <button id="redoBtn" title="Redo (⌘⇧Z / Ctrl+Y)" disabled>⟳</button>
+    <button id="histBtn" title="History / audit trail">log</button>
+    <span id="editState" class="editstate"></span>
+    <label class="f">$/region
+      <select id="priceSel"></select></label>
+    <button id="expBtn" title="download this model as JSON">Export</button>
+    <button id="impBtn" title="load a model JSON">Import</button>
+    <button id="clearBtn" title="clear every saved edit on this device and start from the built-in models">Start fresh</button>
+    <button id="themeBtn" title="toggle theme" aria-label="toggle theme">◐</button>
+    <input id="impFile" type="file" accept="application/json" hidden>
+  </div>
+</header>
+
+<main>
+  <aside class="left">
+    <div class="eyebrow">rollup · <span id="scLabel">baseline</span></div>
+    <div id="rollup"></div>
+    <div class="legend">
+      <div class="eyebrow">insertion mode / phase</div>
+      <div class="row"><span class="sw" style="background:var(--p0)"></span>observe · inventory (ph 0)</div>
+      <div class="row"><span class="sw" style="background:var(--p1)"></span>sig-graft · sign first (ph 1)</div>
+      <div class="row"><span class="sw" style="background:var(--p2)"></span>kex-graft · key exchange (ph 2)</div>
+      <div class="row"><span class="sw" style="background:var(--p3)"></span>wrap · seal carry (ph 3)</div>
+      <div class="eyebrow" style="margin-top:10px">quantum risk</div>
+      <div class="row"><span class="sw" style="background:var(--risk-hi)"></span>high (harvest-now / forgery)</div>
+      <div class="row"><span class="sw" style="background:var(--risk-md)"></span>medium</div>
+      <div class="row"><span class="sw" style="background:var(--risk-lo)"></span>low / covered</div>
+    </div>
+  </aside>
+
+  <div class="canvas-wrap"><svg id="graph"></svg>
+    <div class="simhud" id="simhud" style="display:none"></div>
+    <div class="hint">drag to pan · two-finger scroll · pinch / ⌘-scroll to zoom · right-click for menu</div>
+    <div id="histPop" class="histpop" style="display:none"></div>
+    <div id="ctxMenu" class="ctxmenu" style="display:none"></div>
+    <div class="zoomctl"><button data-z="untangle" title="untangle: auto-arrange to reduce crossings">✦</button><button data-z="grid" title="snap-to-grid resolution (off / 12 / 24 / 48)">⊞</button><button data-z="auto" title="auto-layout (left→right)">⇄</button><button data-z="out" title="zoom out">−</button><button data-z="in" title="zoom in">+</button><button data-z="fit" title="fit to view">⤢</button></div>
+  </div>
+
+  <aside class="right insp"><div id="inspector"><div class="empty">Select a component in the graph to inspect its crypto surfaces and the post-quantum transition at each location.</div></div></aside>
+</main>
+
+<script>
+"use strict";
+/* ===================================================================================
+   REAL measured corpus (robobus, Apple M-series / macOS / arm64) — embedded, offline.
+   Sources: bench/results/{lang-matrix,transport-matrix,shm-ring-methods,shm-ring-gbps,
+   maximized-routes}.json + FIPS 203/204/205 fixed artifact sizes.
+   =================================================================================== */
+// per-language frame-codec core, ops/s (33 langs). Illustrates the implementation-layer swing.
+const LANG = {c:1314578678,cpp:1465845793,rust:1058201058,go:557227237,swift:261301280,java:358924662,
+ kotlin:358127708,csharp:784375245,typescript:950118765,julia:1497230124,python:3047055,
+ "python-pypy":14066953,"python-cython":1570623061,"python-numpy":273821190,ruby:3762185,
+ crystal:1517244269,mojo:1581344146,cobol:916090,nim:1136646145,zig:1413875576,haskell:1342758788,
+ perl:3700943,lua:13372434,fortran:154714938,ocaml:104593758,"lua-luajit":838926174,nelua:362069590};
+// Python-level transport throughput (fps @ ~75B sealed frame) — the "raw Python" floor.
+const TRANSPORT = {bus:470192,udp:120232,tcp:110491,serial:13767,can:27950,zenoh:814445,mqtt:32920,
+ lsl:14809,amqp:17313,kafka:487271,ros2:553009,ros1:66771,zerocm:320161,nng:58339,redis:9979,valkey:9979,
+ "shm":39998400,"shm-zc":60273642};                 // intra-machine local carriers: the C ring (copy / zero-copy)
+const LOCAL_CARRIERS=new Set(["shm","shm-zc","bus","serial","can"]);   // usable only within one machine
+// live self-probe: measure THIS machine (cores/mem + a real in-page codec micro-bench) so the tool
+// knows the system it runs inside and can calibrate "same-as-this-host" against the measured corpus.
+let HOST=null;
+function probeHost(){
+  // measure performance.now() resolution — anti-fingerprinting (Brave farbling, Tor/resistFingerprinting)
+  // clamps/jitters it, which both signals a hardened environment AND makes any micro-bench unreliable.
+  let res=Infinity, last=performance.now();
+  for(let i=0;i<3000;i++){ const t=performance.now(), d=t-last; if(d>0) res=Math.min(res,d); last=t; }
+  const dv=new DataView(new ArrayBuffer(4096)); for(let i=0;i<4096;i++) dv.setUint8(i,(i*31)&255);
+  let acc=0, ops=0; const t0=performance.now();
+  while(performance.now()-t0<120){ for(let j=0;j<20000;j++){ const o=(j*6)&4088;    // LE u16+u32 reads, like the codec core
+    acc=(acc + dv.getUint16(o,true) + dv.getUint32(o,true))>>>0; } ops+=20000; }
+  const dt=(performance.now()-t0)/1000; void acc;
+  const mem=navigator.deviceMemory||null, cores=navigator.hardwareConcurrency||null;
+  const coarse = !isFinite(res) || res>=0.9;                         // sub-ms timer expected when un-hardened
+  const reliable = mem!=null && !coarse && dt>0.05;                  // only trust the number if not clamped
+  HOST={cores,mem,jsOps:Math.round(ops/dt),plat:(navigator.platform||""),timerRes:isFinite(res)?res:null,reliable,manual:null};
+  return HOST;
+}
+// C-native ceilings (the true maximum the Python path calls into).
+const NATIVE = {ring_copy:39998400,ring_zerocopy:60273642,ring_batched:11441735,
+ ring_zerocopy_gbps:52.0,raw_memcpy_gbps:81.8,aead_seal_fps:76923077};
+// FIPS-fixed post-quantum artifact sizes (bytes) + classical baselines.
+const PQC={"ML-KEM-768":{pk:1184,ct:1088},"ML-KEM-1024":{pk:1568,ct:1568},
+ "ML-DSA-65":{pk:1952,sig:3309},"ML-DSA-87":{pk:2592,sig:4627},"SLH-DSA-128s":{pk:32,sig:7856}};
+const CLASSIC={X25519:{pk:32},"ECDSA-P256":{sig:72},"ECDSA-P384":{sig:104},"RSA-2048":{sig:256,pk:270}};
+const AEAD_OH=28;                        // AES-256-GCM: 12B nonce + 16B tag per frame (baseline==target)
+const PRICING={
+ "AWS (est.)":{egress:0.09,storage:0.023,compute:0.04},
+ "GCP (est.)":{egress:0.12,storage:0.020,compute:0.038},
+ "Azure (est.)":{egress:0.087,storage:0.021,compute:0.041},
+ "On-prem":{egress:0,storage:0.005,compute:0.01}};
+
+/* ---- surface role -> robobus PQC insertion (mode, phase, mechanism, target artifact) ---- */
+const SELF_SECURING=new Set(["tls","dtls","ssh","ipsec","wireguard","quic","dds","opcua","macsec","srtp","sdls"]);
+// routing / fabric / infra protocols run between routers/servers: robobus recognizes them + reports
+// residual quantum risk (observe mode), it does not carry or graft them. Mirrors the registry taxonomy.
+const OBSERVE_PROTOS=new Set(["ospf","bgp","isis","vrrp","bfd","pim","dhcp","ntp","snmp","lldp","eapol","vxlan","geneve","gre","dvbs2x","dns"]);
+// Regimes COMPOSE (they are not mutually exclusive): CNSA 2.0 also requires FIPS-validated modules;
+// CSfC = two independent CNSA/FIPS layers. The chosen set shifts the concrete mechanism accordingly.
+function resolve(role, proto){
+  const S=STATE.standards, csfc=S.has("csfc"), cnsa=S.has("cnsa20");
+  // role first: a SIGNING surface on a fabric protocol is still sig-graft — that IS the protocol's
+  // own PQC path (DNSSEC->ML-DSA, BGPsec, RPKI). observe only covers its transit/carry surface.
+  if(role==="code-signing"||role==="pki"||role==="auth-device"||role==="auth-user"||role==="kms")
+    return {mode:"sig-graft",phase:1,art:"sig",
+      mech: csfc ? "ML-DSA-87 + SLH-DSA (two independent layers)" : "ML-DSA-87 (FIPS 204)"};
+  if(role==="transit"&&SELF_SECURING.has(proto))
+    return {mode:"kex-graft",phase:2,art:"kex",
+      mech: csfc ? "X25519MLKEM768 ×2 independent layers"
+           : cnsa ? "machine tier: ML-KEM-1024 mutual + ML-DSA-87 certs (CNSA 2.0 / Level 5); browser tier: X25519MLKEM768 (ML-KEM-768 / Level 3)"
+           : "X25519MLKEM768 hybrid KEX (browser / Level 3) — ML-KEM-1024 mutual for the machine / Level-5 tier"};
+  // routing/fabric protocols between routers/servers: recognize + report, don't carry (registry: observe)
+  if((role==="transit"||role==="at-rest") && proto && OBSERVE_PROTOS.has(proto))
+    return {mode:"observe",phase:0,mech:"recognize + report residual risk (protocol's own PQC path — e.g. DNSSEC ML-DSA / NTS / BGPsec — where it exists)",art:"none"};
+  if(role==="transit"||role==="at-rest")
+    return {mode:"wrap",phase:3,art:"seal",
+      mech: csfc ? "RBX1 sealed envelope ×2 layers (AES-256-GCM)" : "RBX1 CNSA-2.0 sealed envelope (AES-256-GCM)"};
+  return {mode:"observe",phase:0,mech:"recognize + report residual risk",art:"none"};
+}
+const PHASE_COL=["var(--p0)","var(--p1)","var(--p2)","var(--p3)"];
+const MODE_COL={observe:"var(--p0)","sig-graft":"var(--p1)","kex-graft":"var(--p2)",wrap:"var(--p3)"};
+const RISK_COL={high:"var(--risk-hi)",medium:"var(--risk-md)",low:"var(--risk-lo)"};
+
+/* ===================================================================================
+   Reference systems (nodes -> crypto surfaces; links carry carrier + fan-in + rate).
+   Every surface names a real robobus adapter where one applies.
+   =================================================================================== */
+const SYSTEMS = systemsLibrary();
+let STATE={sys:clone(SYSTEMS[0]), scenario:"baseline", standards:new Set(["cnsa20"]), price:"AWS (est.)", sel:null, grid:0};
+function clone(o){ return (typeof structuredClone==="function")?structuredClone(o):JSON.parse(JSON.stringify(o)); }
+// ---- offline persistence: autosave edits to localStorage (no server; degrades silently if blocked) ----
+let _persistReady=false;
+function refIndex(id){ return SYSTEMS.findIndex(s=>s.id===id); }
+// serialize WITHOUT transient fields (computeRollup stamps _util/_load; drag sets _drag) so edit-detection
+// and the saved copy reflect the real model only, never computed scratch state.
+function serial(o){ return JSON.stringify(o, (k,v)=> (k&&k[0]==="_")?undefined:v); }
+function isEdited(){ const i=refIndex(STATE.sys.id); if(i<0) return true; return serial(STATE.sys)!==serial(SYSTEMS[i]); }
+function pkey(){ return "robobus.studio."+(STATE.sys&&STATE.sys.id||"x"); }
+function persist(){ if(!_persistReady) return; const ed=isEdited();
+  try{ if(ed) localStorage.setItem(pkey(), serial(STATE.sys)); else localStorage.removeItem(pkey()); }catch(e){}
+  updateEditState(ed); }
+function restoreSys(id){ try{ const v=localStorage.getItem("robobus.studio."+id); return v?JSON.parse(v):null; }catch(e){ return null; } }
+function resetSys(){ try{ localStorage.removeItem(pkey()); }catch(e){}
+  const i=refIndex(STATE.sys.id); STATE.sys=clone(SYSTEMS[i>=0?i:0]); STATE.sel=null; VIEW.inited=false; renderAll(); }
+// "Start fresh": wipe every saved edit on this device (all systems) and reload the built-in models.
+function clearAllSaved(){
+  if(!confirm("Start fresh? This clears all saved work on this device for every system and cannot be undone.")) return;
+  try{ Object.keys(localStorage).filter(k=>k.indexOf("robobus.studio.")===0).forEach(k=>localStorage.removeItem(k)); }catch(e){}
+  HISTORY.undo.length=0; HISTORY.redo.length=0; HISTORY.log.length=0;
+  const i=refIndex(STATE.sys.id); STATE.sys=clone(SYSTEMS[i>=0?i:0]); STATE.sel=null; VIEW.inited=false;
+  updateHistoryUI(); renderAll(); }
+function updateEditState(ed){ const el=document.getElementById("editState"); if(!el) return;
+  el.innerHTML = ed?`<span class="editdot" title="edits auto-saved on this device">●</span> edited <button id="resetBtn" class="mini" title="discard local edits, reload the reference model">↺ reset</button>`:"";
+  const rb=document.getElementById("resetBtn"); if(rb) rb.onclick=resetSys; }
+// ---- history: undo/redo + audit trail (one snapshot stack drives both) ----
+const HISTORY={undo:[],redo:[],log:[]}; let _restoring=false;
+function nowTs(){ try{ return Date.now(); }catch(e){ return 0; } }
+function pushHistory(label, preSnap){ if(_restoring) return;
+  HISTORY.undo.push(preSnap!=null?preSnap:serial(STATE.sys)); if(HISTORY.undo.length>200) HISTORY.undo.shift();
+  HISTORY.redo.length=0; HISTORY.log.push({label,t:nowTs(),sys:STATE.sys.id}); if(HISTORY.log.length>500) HISTORY.log.shift();
+  updateHistoryUI(); }
+function commit(label){ pushHistory(label); }
+function restoreSnap(snap){ _restoring=true; try{ STATE.sys=JSON.parse(snap); }catch(e){} STATE.sel=null; renderAll(); _restoring=false; }
+function undo(){ if(!HISTORY.undo.length) return; HISTORY.redo.push(serial(STATE.sys));
+  restoreSnap(HISTORY.undo.pop()); HISTORY.log.push({label:"↩ undo",t:nowTs(),sys:STATE.sys.id}); updateHistoryUI(); }
+function redo(){ if(!HISTORY.redo.length) return; HISTORY.undo.push(serial(STATE.sys));
+  restoreSnap(HISTORY.redo.pop()); HISTORY.log.push({label:"↪ redo",t:nowTs(),sys:STATE.sys.id}); updateHistoryUI(); }
+function relTime(t){ if(!t) return ""; const s=Math.max(0,Math.round((nowTs()-t)/1000));
+  return s<60?s+"s":s<3600?Math.round(s/60)+"m":Math.round(s/3600)+"h"; }
+function updateHistoryUI(){ const u=document.getElementById("undoBtn"),r=document.getElementById("redoBtn");
+  if(u) u.disabled=!HISTORY.undo.length; if(r) r.disabled=!HISTORY.redo.length;
+  const p=document.getElementById("histPop"); if(p && p.style.display!=="none") renderHistPop(); }
+function renderHistPop(){ const p=document.getElementById("histPop"); if(!p) return;
+  const rows=HISTORY.log.slice(-40).reverse().map(e=>`<div class="histrow"><span>${esc(e.label)}</span><span class="ht">${relTime(e.t)}</span></div>`).join("");
+  p.innerHTML=`<div class="histhd">audit trail · ${HISTORY.log.length} actions</div>${rows||'<div class="histrow"><span>no actions yet</span></div>'}`; }
+function toggleHistPop(){ const p=document.getElementById("histPop"); if(!p) return;
+  p.style.display = p.style.display==="none"?"block":"none"; if(p.style.display==="block") renderHistPop(); }
+
+/* ---- per-node sealed-frame capacity for the chosen implementation layer ----
+   No single "floor": per-language codec rates span COBOL ~0.9M to Mojo/Cython ~1.5B ops/s, so pure
+   Python (3.0M) is mid-pack, not slowest. A node is bounded by the tighter of its language's codec
+   rate and its transport carrier. Languages with no native robobus codec bridge via the C-ABI (FFI). */
+// an internal process model: ordered operations, each a per-message cost (ns) and/or a fixed delay (µs)
+function processCost(node){ if(node.sealed) return {perMsgNs:0, delayUs:node.sealed.specs.delay_us||0, steps:node.sealed.specs.steps||0};
+  let perMsgNs=0, delayUs=0;
+  (node.process||[]).forEach(st=>{ perMsgNs+=(+st.per_msg_ns||0); delayUs+=(+st.delay_us||0); });
+  return {perMsgNs, delayUs, steps:(node.process||[]).length}; }
+function computeCeiling(L){                                         // per-layer compute ceiling (no wire cap)
+  if(L==="c-native") return NATIVE.aead_seal_fps;                  // C RBX1 seal ceiling (true max)
+  if(L==="python-client") return TRANSPORT.bus;                    // stock Python transport-client path
+  if(L in LANG) return Math.min(LANG[L], NATIVE.ring_copy);        // native codec, bounded by the C ring
+  return Math.min(NATIVE.ring_copy, LANG.python); }               // no native impl -> C-ABI FFI bridge
+function nodeCapacity(node, carrier){
+  if(node.sealed) return node.sealed.specs.cap_fps;                // classified: simulate from public spec
+  const compute=computeCeiling(node.layer||"python");
+  const wire = carrier ? (TRANSPORT[carrier]||Infinity) : Infinity;
+  const pc=processCost(node), proc = pc.perMsgNs>0 ? 1e9/pc.perMsgNs : Infinity;  // internal pipeline ceiling
+  return Math.min(compute, wire, proc);                            // bottleneck = tighter of compute / wire / pipeline
+}
+function capLabel(L){ L=L||"python";
+  if(L==="c-native") return "C RBX1 seal ceiling";
+  if(L==="python-client") return "stock Python transport-client path";
+  if(!(L in LANG)) return "no native impl → C-ABI FFI bridge";
+  return L+" native codec, over the C ring"; }
+function fmt(n){ if(n>=1e9)return (n/1e9).toFixed(2)+"B"; if(n>=1e6)return (n/1e6).toFixed(1)+"M";
+  if(n>=1e3)return (n/1e3).toFixed(1)+"k"; return Math.round(n).toString(); }
+function money(n){ return n>=1e6?"$"+(n/1e6).toFixed(2)+"M":n>=1e3?"$"+(n/1e3).toFixed(1)+"k":"$"+n.toFixed(0); }
+
+/* ---- roll up a scenario across the whole system ---- */
+function computeRollup(scenario){
+  const S=STATE.sys, price=PRICING[STATE.price], nodeById=Object.fromEntries(S.nodes.map(n=>[n.id,n]));
+  let surf=0, covered=0, hndl=0, bytesPerDay=0, atRestBytes=0, worst=0, worstName="—", conformant=0, keptClassical=0;
+  const target = scenario==="target";
+  for(const n of S.nodes){
+    if(n.sealed){ const sp=n.sealed.specs; surf+=sp.surfaces*n.count;   // classified: aggregate from specs only
+      if(target){ covered+=sp.upgradable*n.count; hndl+=sp.residual_high*n.count;
+        if(STATE.standards.size>0) conformant+=sp.upgradable*n.count; }
+      else { hndl+=sp.high_total*n.count; }
+      continue; }
+    for(const s of (n.surfaces||[])){
+      surf += n.count;
+      const r=resolve(s.role, s.protocol);
+      const upgraded = target && !s.keep_classical && r.mode!=="observe";   // enforcement: opt-out stays non-PQ
+      if(upgraded) covered += n.count;
+      else if(s.risk==="high" && (s.role==="transit"||s.role==="at-rest")) hndl += n.count;
+      if(s.keep_classical) keptClassical += n.count;
+      if(target && STATE.standards.size>0 && upgraded) conformant += n.count;
+      // at-rest signed-artifact growth (baseline classical sig vs target ML-DSA-87)
+      if(s.role==="code-signing"||s.role==="pki"){
+        const sz = target ? PQC["ML-DSA-87"].sig : CLASSIC["ECDSA-P384"].sig;
+        atRestBytes += sz * n.count * (s.objects_per_day||1);
+      }
+    }
+  }
+  // link load + egress; handshake bytes scale with reconnects, per-msg with rate
+  for(const l of S.links){
+    const src=nodeById[l.from], dst=nodeById[l.to];
+    const srcCount=(src&&src.count)||1, sinkCount=(dst&&dst.count)||1;
+    const perMsg=(l.payload||256)+AEAD_OH;
+    const totalFps=srcCount*(l.rate||1);                      // total frames/s across ALL instances (egress)
+    const perSinkFps=totalFps/Math.max(1,sinkCount);          // frames/s converging on ONE sink instance
+    const cap=nodeCapacity(dst||src, l.carrier);
+    const util=perSinkFps/cap; if(util>worst){worst=util; worstName=(dst&&dst.label)||l.to;}
+    l._util=util; l._load=totalFps;
+    // handshake bytes/day (one-time per connection, recurs at reconnect rate)
+    const hs = target
+      ? (PQC["ML-KEM-1024"].ct+PQC["ML-KEM-1024"].pk+PQC["ML-DSA-87"].sig+PQC["ML-DSA-87"].pk)
+      : (CLASSIC.X25519.pk+CLASSIC["RSA-2048"].sig+CLASSIC["RSA-2048"].pk);
+    const reconn=(l.reconnect_per_day||24)*srcCount;
+    bytesPerDay += reconn*hs + totalFps*perMsg*86400;
+  }
+  const egressMo=(bytesPerDay*30/1e9)*price.egress;
+  const storageMo=(atRestBytes/1e9)*price.storage;
+  return {surf, covered, hndl, coverage:surf?covered/surf:0, worst, worstName, conformant, keptClassical,
+    egressMo, storageMo, costMo:egressMo+storageMo, bytesPerDay, atRestBytes};
+}
+
+/* ===================================================================================
+   Render: left rollup, center graph, right inspector
+   =================================================================================== */
+function renderRollup(){
+  const base=computeRollup("baseline"), tgt=computeRollup("target");
+  const cur = STATE.scenario==="target"?tgt:base;
+  const dCost=tgt.costMo-base.costMo;
+  const regimes=[...STATE.standards];
+  const el=document.getElementById("rollup");
+  el.innerHTML=`
+   <div class="metric"><div class="k">PQC coverage</div>
+     <div class="v">${Math.round(cur.coverage*100)}<small>% surfaces</small></div>
+     <div class="bar"><i style="width:${Math.round(cur.coverage*100)}%"></i></div>
+     <div class="delta ${tgt.coverage>base.coverage?'down':'flat'}">baseline ${Math.round(base.coverage*100)}% → target ${Math.round(tgt.coverage*100)}%</div></div>
+   <div class="metric"><div class="k">Regime conformance</div>
+     <div class="v" style="font-size:18px">${regimes.length?Math.round(100*cur.conformant/Math.max(1,cur.surf)):0}<small>% · ${regimes.join(" + ")||"none"}</small></div>
+     ${!regimes.length?'<div class="delta up">no regime selected — nothing enforced</div>'
+       :'<div class="delta flat">requires FIPS-validated modules + CNSA/CSfC algorithms'+(STATE.standards.has("csfc")?' · CSfC = 2 layers':'')+'</div>'}
+     ${cur.keptClassical?`<div class="delta up">⚠ ${fmt(cur.keptClassical)} surface(s) kept classical — non-PQ residual</div>`:''}</div>
+   <div class="metric"><div class="k">Harvest-now exposure</div>
+     <div class="v">${fmt(cur.hndl)}<small> surfaces</small></div>
+     <div class="delta ${tgt.hndl<base.hndl?'down':'flat'}">${fmt(base.hndl)} → ${fmt(tgt.hndl)} (transit+at-rest, high risk)</div></div>
+   <div class="metric"><div class="k">Tightest link</div>
+     <div class="v" style="font-size:18px">${(cur.worst*100).toFixed(cur.worst<0.01?3:1)}<small>% util · ${cur.worstName}</small></div>
+     <div class="bar"><i style="width:${Math.min(100,cur.worst*100)}%;background:${cur.worst>0.8?'var(--risk-hi)':cur.worst>0.4?'var(--risk-md)':'var(--signal)'}"></i></div>
+     <div class="delta flat">aggregate fps vs node capacity (chosen impl layer)</div></div>
+   <div class="metric"><div class="k">Cloud cost / month</div>
+     <div class="v">${money(cur.costMo)}</div>
+     <div class="delta ${dCost>0?'up':'flat'}">PQC delta ${dCost>=0?'+':''}${money(dCost)}/mo · egress+storage (${STATE.price})</div>
+     <div class="delta flat">${(cur.bytesPerDay/1e9).toFixed(1)} GB/day on the wire</div></div>
+   ${HOST?`<div class="metric"><div class="k">This host · live probe</div>
+     ${HOST.reliable
+       ? `<div class="v" style="font-size:16px">${HOST.cores||"?"}<small> cores${HOST.mem?" · "+HOST.mem+" GB":""}</small></div>
+          <div class="delta flat mono">JS codec ~${fmt(HOST.jsOps)} ops/s (best-effort) · "this-browser" in the compare${HOST.manual?` · manual ${fmt(HOST.manual)}`:''}</div>
+          <div class="delta flat" style="margin-top:2px">values from browser APIs; if you run anti-fingerprinting they may be spoofed — override below.</div>
+          <button class="mini" id="manualHost" style="width:100%;margin-top:5px">enter specs manually ▸</button>`
+       : `<div class="v" style="font-size:15px">privacy-hardened</div>
+          <div class="delta flat">self-probe blocked/clamped (deviceMemory ${HOST.mem?'ok':'hidden'} · timer ${HOST.timerRes!=null?HOST.timerRes.toFixed(2)+'ms':'coarse'}). robobus won't fingerprint you — anti-tracking respected.${HOST.manual?` · manual ${fmt(HOST.manual)} ops/s`:''}</div>
+          <button class="mini" id="manualHost" style="width:100%;margin-top:6px">enter specs manually ▸</button>`}
+     </div>`:''}`;
+  document.getElementById("scLabel").textContent = STATE.scenario;
+  const mh=el.querySelector("#manualHost");
+  if(mh) mh.addEventListener("click",()=>{ const v=prompt("Your machine's codec throughput in ops/s (if you know it) — kept locally, only to calibrate the comparison:");
+    const x=parseFloat((v||"").replace(/[, ]/g,"")); if(x>0){ LANG["this-host"]=x; if(!LAYERS.includes("this-host")) LAYERS.splice(LAYERS.indexOf("python"),0,"this-host"); if(HOST)HOST.manual=x; renderAll(); } });
+}
+
+const NW=232, NH=120, GAPX=96, GAPY=34, PADX=48, PADY=40;
+/* ---- pan / zoom over a transform group (no native scroll) ---- */
+const VIEW={k:1,tx:0,ty:0,inited:false}, CONTENT={W:1,H:1,cw:1,ch:1};
+function applyView(){const g=document.getElementById("vp");
+  if(g) g.setAttribute("transform",`translate(${VIEW.tx.toFixed(1)},${VIEW.ty.toFixed(1)}) scale(${VIEW.k.toFixed(4)})`);}
+function fitView(){const {W,H,cw,ch}=CONTENT; const k=Math.min((cw-32)/W,(ch-32)/H,1.4);
+  VIEW.k=(isFinite(k)&&k>0)?k:1; VIEW.tx=Math.max(12,(cw-W*VIEW.k)/2); VIEW.ty=Math.max(16,(ch-H*VIEW.k)/2);
+  VIEW.inited=true; applyView();}
+function zoomAt(cx,cy,f){const nk=Math.min(4,Math.max(0.12,VIEW.k*f));
+  VIEW.tx=cx-(cx-VIEW.tx)*(nk/VIEW.k); VIEW.ty=cy-(cy-VIEW.ty)*(nk/VIEW.k); VIEW.k=nk; applyView();}
+function tdist(e){const a=e.touches[0],b=e.touches[1];return Math.hypot(a.clientX-b.clientX,a.clientY-b.clientY);}
+function screenToContent(svg,cx,cy){const r=svg.getBoundingClientRect();
+  return {x:(cx-r.left-VIEW.tx)/VIEW.k, y:(cy-r.top-VIEW.ty)/VIEW.k};}
+function posOf(n){const lay=layoutPositions(STATE.sys); return {x:(n.x!=null?n.x:(lay[n.id]||{x:PADX}).x), y:(n.y!=null?n.y:(lay[n.id]||{y:PADY}).y)};}
+function nodeAt(cx,cy){return STATE.sys.nodes.find(n=>{const p=posOf(n);return cx>=p.x&&cx<=p.x+NW&&cy>=p.y&&cy<=p.y+NH;});}
+// would node `dn` at (x,y) overlap any OTHER node? (min-gap margin so boxes never sit on top of each other)
+function overlapsAny(dn,x,y){ const G=12;
+  return STATE.sys.nodes.some(n=>{ if(n.id===dn.id) return false; const p=posOf(n);
+    return x < p.x+NW+G && x+NW+G > p.x && y < p.y+NH+G && y+NH+G > p.y; }); }
+function createLink(from,to){ const S=STATE.sys;
+  if(S.links.find(l=>l.from===from&&l.to===to)) return;          // no duplicate spoke
+  commit("connect link");
+  const a=S.nodes.find(n=>n.id===from), b=S.nodes.find(n=>n.id===to);
+  const carrier=isLocal(a,b)?"shm":"tcp";                         // default = first valid route (local vs network)
+  S.links.push({from,to,carrier,rate:10,payload:256,fan:"one_to_one",reconnect_per_day:24});
+  STATE.sel=from; renderAll();
+}
+function drawTempLink(fromId,cx,cy){const g=document.getElementById("vp"); if(!g)return;
+  const n=STATE.sys.nodes.find(x=>x.id===fromId); if(!n)return; const p=posOf(n);
+  const x1=p.x+NW,y1=p.y+NH/2,mx=(x1+cx)/2; let w=document.getElementById("tmpwire");
+  if(!w){w=document.createElementNS("http://www.w3.org/2000/svg","path");w.id="tmpwire";g.appendChild(w);}
+  w.setAttribute("d",`M${x1},${y1} C${mx},${y1} ${mx},${cy} ${cx},${cy}`);}
+function clearTemp(){const w=document.getElementById("tmpwire"); if(w)w.remove();}
+// ---- right-click / two-finger context menu ----
+function hideCtxMenu(){ const m=document.getElementById("ctxMenu"); if(m) m.style.display="none"; }
+function showCtxMenu(x,y,items){ const m=document.getElementById("ctxMenu"); if(!m) return;
+  m.innerHTML=items.map((it,i)=> it.sep?`<div class="sep"></div>`:it.head?`<div class="ch">${esc(it.head)}</div>`:
+    `<div class="ci ${it.danger?'danger':''}" data-ci="${i}">${esc(it.label)}${it.key?`<span class="ck">${esc(it.key)}</span>`:''}</div>`).join("");
+  m.style.display="block";
+  m.style.left=Math.min(x,window.innerWidth-m.offsetWidth-8)+"px";
+  m.style.top=Math.min(y,window.innerHeight-m.offsetHeight-8)+"px";
+  m.querySelectorAll("[data-ci]").forEach(el=>el.onclick=()=>{ const it=items[+el.dataset.ci]; hideCtxMenu(); if(it&&it.fn) it.fn(); });
+}
+function openCtxMenu(e){ e.preventDefault();
+  const nodeEl=e.target.closest&&e.target.closest(".node");
+  const grpEl=e.target.closest&&(e.target.closest(".grouphandle")||e.target.closest(".grpbtn"));
+  let items;
+  if(nodeEl && nodeEl.dataset.id.indexOf("grp:")!==0){ const id=nodeEl.dataset.id, n=STATE.sys.nodes.find(x=>x.id===id);
+    items=[{head:n?esc(n.label):"component"},
+      {label:"Inspect", fn:()=>{STATE.sel=id;renderGraph();renderInspector();}},
+      {label:"Duplicate", fn:()=>duplicateNode(id)},
+      {label:"Add link from here", fn:()=>addLink(id)},
+      {label:"Wrap in group…", fn:()=>wrapInGroup(id)},
+      {label:"Seal as black box", fn:()=>{STATE.sel=id;renderInspector();sealNode(n);}},
+      {label:"Simulate subgraph", fn:()=>playSim(reachableFrom(id))},
+      {sep:true},
+      {label:"Delete", key:"⌫", danger:true, fn:()=>deleteNode(id)}];
+  } else if(grpEl){ const path=grpEl.dataset.group||grpEl.dataset.gcollapse||grpEl.dataset.gungroup;
+    const collapsed=(STATE.sys.collapsedGroups||[]).includes(path);
+    items=[{head:"group · "+esc(path)},
+      {label:collapsed?"Expand group":"Collapse to black box", fn:()=>toggleGroupCollapse(path)},
+      {label:"Ungroup (keep nodes)", fn:()=>ungroupPath(path)}];
+  } else {
+    items=[{head:"canvas"},{label:"Add component", fn:addNode},{label:"Untangle", fn:untangle},
+      {label:"Auto-layout", fn:autoLayout},{sep:true},{label:"Fit to view", fn:fitView}];
+  }
+  showCtxMenu(e.clientX,e.clientY,items);
+}
+window.addEventListener("click",e=>{ const m=document.getElementById("ctxMenu");
+  if(m&&m.style.display==="block"&&!m.contains(e.target)) hideCtxMenu(); });
+function initGraphInteractions(){
+  const svg=document.getElementById("graph"); let mode=null,lx=0,ly=0,moved=0,dn=null,ox=0,oy=0,cf=null,t=null,gm=null,dragPre=null;
+  svg.addEventListener("wheel",e=>{e.preventDefault(); const r=svg.getBoundingClientRect();
+    if(e.ctrlKey||e.metaKey) zoomAt(e.clientX-r.left,e.clientY-r.top,Math.exp(-e.deltaY*0.01));
+    else {VIEW.tx-=e.deltaX; VIEW.ty-=e.deltaY; applyView();}
+  },{passive:false});
+  svg.addEventListener("contextmenu",openCtxMenu);       // right-click / two-finger click
+  svg.addEventListener("mousedown",e=>{ if(e.button!==0)return;
+    if(e.target.closest&&e.target.closest(".grpbtn")) return;     // group buttons: handled by click, no drag
+    const grp=e.target.closest&&e.target.closest(".grouphandle");
+    const port=e.target.closest&&e.target.closest(".port.out"), nodeEl=e.target.closest&&e.target.closest(".node");
+    lx=e.clientX;ly=e.clientY;moved=0;
+    if(port){ mode="connect"; cf=port.dataset.id; }
+    else if(nodeEl){ const did=nodeEl.dataset.id;
+      if(did.indexOf("grp:")===0){ mode="group"; const c=screenToContent(svg,e.clientX,e.clientY); dragPre=serial(STATE.sys);
+        gm={s0:c, base:groupMembers(did.slice(4)).map(n=>({n,bx:posOf(n).x,by:posOf(n).y}))}; }
+      else { mode="node"; dragPre=serial(STATE.sys); dn=STATE.sys.nodes.find(n=>n.id===did);
+        const c=screenToContent(svg,e.clientX,e.clientY),p=posOf(dn); ox=c.x-p.x; oy=c.y-p.y; } }
+    else if(grp){ mode="group"; const c=screenToContent(svg,e.clientX,e.clientY); dragPre=serial(STATE.sys);   // drag the whole group
+      gm={s0:c, base:groupMembers(grp.dataset.group).map(n=>({n,bx:posOf(n).x,by:posOf(n).y}))}; }
+    else { mode="pan"; svg.classList.add("grabbing"); }
+  });
+  window.addEventListener("mousemove",e=>{ if(!mode)return;
+    const dx=e.clientX-lx,dy=e.clientY-ly; lx=e.clientX;ly=e.clientY; moved+=Math.abs(dx)+Math.abs(dy);
+    if(mode==="pan"){VIEW.tx+=dx;VIEW.ty+=dy;applyView();}
+    else if(mode==="node"&&dn){const c=screenToContent(svg,e.clientX,e.clientY);
+      const nx=snapv(c.x-ox), ny=snapv(c.y-oy), px=(dn.x!=null?dn.x:posOf(dn).x), py=(dn.y!=null?dn.y:posOf(dn).y);
+      // no overlap: try full move, else slide along whichever axis stays clear (never pass through a node)
+      if(!overlapsAny(dn,nx,ny)){ dn.x=nx; dn.y=ny; }
+      else if(!overlapsAny(dn,nx,py)){ dn.x=nx; dn.y=py; }
+      else if(!overlapsAny(dn,px,ny)){ dn.x=px; dn.y=ny; }
+      renderGraph();}
+    else if(mode==="group"&&gm){const c=screenToContent(svg,e.clientX,e.clientY),ddx=c.x-gm.s0.x,ddy=c.y-gm.s0.y;
+      gm.base.forEach(({n,bx,by})=>{ n.x=snapv(bx+ddx); n.y=snapv(by+ddy); }); renderGraph();}
+    else if(mode==="connect"){const c=screenToContent(svg,e.clientX,e.clientY); drawTempLink(cf,c.x,c.y);}
+  });
+  window.addEventListener("mouseup",e=>{
+    if(mode==="connect"){const c=screenToContent(svg,e.clientX,e.clientY),tgt=nodeAt(c.x,c.y);
+      clearTemp(); if(tgt&&tgt.id!==cf) createLink(cf,tgt.id);}
+    if((mode==="pan"||mode==="node"||mode==="group")&&moved>5){svg._drag=true;setTimeout(()=>{svg._drag=false;},0);}
+    if((mode==="node"||mode==="group")&&moved>3&&dragPre){ pushHistory(mode==="group"?"move group":"move component",dragPre); persist(); }
+    mode=null;dn=null;cf=null;gm=null;dragPre=null;svg.classList.remove("grabbing");
+  });
+  svg.addEventListener("touchstart",e=>{ if(e.touches.length===1) t={mode:"pan",x:e.touches[0].clientX,y:e.touches[0].clientY};
+    else if(e.touches.length===2) t={mode:"pinch",d:tdist(e),cx:(e.touches[0].clientX+e.touches[1].clientX)/2,cy:(e.touches[0].clientY+e.touches[1].clientY)/2}; },{passive:false});
+  svg.addEventListener("touchmove",e=>{e.preventDefault(); if(!t)return; const r=svg.getBoundingClientRect();
+    if(t.mode==="pan"&&e.touches.length===1){const dx=e.touches[0].clientX-t.x,dy=e.touches[0].clientY-t.y;t.x=e.touches[0].clientX;t.y=e.touches[0].clientY;VIEW.tx+=dx;VIEW.ty+=dy;applyView();}
+    else if(t.mode==="pinch"&&e.touches.length===2){const nd=tdist(e); zoomAt(t.cx-r.left,t.cy-r.top,nd/t.d); t.d=nd;}
+  },{passive:false});
+  svg.addEventListener("touchend",()=>{t=null;});
+  document.querySelector(".zoomctl").addEventListener("click",e=>{const z=e.target.dataset.z; if(!z)return; const r=svg.getBoundingClientRect();
+    if(z==="in")zoomAt(r.width/2,r.height/2,1.25); else if(z==="out")zoomAt(r.width/2,r.height/2,0.8);
+    else if(z==="auto")autoLayout(); else if(z==="untangle")untangle(); else if(z==="grid")cycleGrid(); else fitView();});
+}
+const FANOUT={pubsub:"pub/sub",interleave:"interleave",lsl:"inlet/outlet",parallel:"parallel",broadcast:"broadcast"};
+function layoutPositions(S){   // tier-column L→R layout (the default; node.x/node.y override when set)
+  const tiers=[...new Set([...(S.tiers||[]), ...S.nodes.map(n=>n.tier)])].filter(Boolean);
+  const lay={};
+  tiers.forEach((t,ci)=>{ let ri=0; S.nodes.filter(n=>(n.tier||tiers[0])===t).forEach(n=>{
+    lay[n.id]={x:PADX+ci*(NW+GAPX), y:PADY+ri*(NH+GAPY)}; ri++; }); });
+  return lay;
+}
+function autoLayout(){ commit("auto-layout"); STATE.sys.nodes.forEach(n=>{delete n.x; delete n.y;}); VIEW.inited=false; renderAll(); }
+const GRID_STEPS=[0,12,24,48];
+function snapv(v){ return STATE.grid ? Math.round(v/STATE.grid)*STATE.grid : v; }
+function cycleGrid(){ const i=(GRID_STEPS.indexOf(STATE.grid)+1)%GRID_STEPS.length; STATE.grid=GRID_STEPS[i];
+  const b=document.querySelector('.zoomctl [data-z="grid"]'); if(b){b.textContent=STATE.grid?String(STATE.grid):"⊞"; b.setAttribute("aria-pressed",String(!!STATE.grid));}
+  if(STATE.grid) STATE.sys.nodes.forEach(n=>{ if(n.x!=null)n.x=snapv(n.x); if(n.y!=null)n.y=snapv(n.y); });
+  renderGraph(); }
+// untangle: layered (Sugiyama-lite) arrange — rank by longest path (back edges dropped), then order
+// each layer by neighbour barycenter over several sweeps to minimise crossings. Snaps to grid if on.
+function untangle(){
+  const S=STATE.sys, nodes=S.nodes, N=nodes.length; if(!N) return; commit("untangle");
+  const id2i=Object.fromEntries(nodes.map((n,i)=>[n.id,i]));
+  const succ=nodes.map(()=>[]), pred=nodes.map(()=>[]);
+  S.links.forEach(l=>{ const a=id2i[l.from], b=id2i[l.to]; if(a==null||b==null||a===b) return; succ[a].push(b); pred[b].push(a); });
+  // DFS -> reverse-topological order, recording back edges (cycles) to drop from ranking
+  const state=nodes.map(()=>0), order=[], back=new Set();
+  (function(){ const st=[]; for(let s=0;s<N;s++){ if(state[s])continue; st.push([s,0]);
+    while(st.length){ const top=st[st.length-1], u=top[0];
+      if(top[1]===0) state[u]=1;
+      if(top[1]<succ[u].length){ const v=succ[u][top[1]++]; if(state[v]===1) back.add(u+"->"+v); else if(state[v]===0) st.push([v,0]); }
+      else { state[u]=2; order.push(u); st.pop(); } } } })();
+  const rank=nodes.map(()=>0), topo=order.slice().reverse();
+  for(const u of topo) for(const v of succ[u]){ if(back.has(u+"->"+v)) continue; if(rank[v]<rank[u]+1) rank[v]=rank[u]+1; }
+  const layers={}; nodes.forEach((n,i)=>{ (layers[rank[i]]=layers[rank[i]]||[]).push(i); });
+  const maxR=Math.max(0,...Object.keys(layers).map(Number));
+  const posInLayer=nodes.map(()=>0); Object.values(layers).forEach(L=>L.forEach((i,k)=>posInLayer[i]=k));
+  for(let sweep=0; sweep<8; sweep++){ const down=sweep%2===0, neigh=down?pred:succ;
+    const rs=[...Array(maxR+1).keys()]; if(!down) rs.reverse();
+    for(const r of rs){ const L=layers[r]; if(!L||L.length<2) continue;
+      const bc=L.map(i=>{ const ns=neigh[i]; return ns.length? ns.reduce((s,j)=>s+posInLayer[j],0)/ns.length : posInLayer[i]; });
+      const ix=L.map((_,k)=>k).sort((a,b)=>bc[a]-bc[b]); layers[r]=ix.map(k=>L[k]); layers[r].forEach((i,k)=>posInLayer[i]=k); } }
+  const GX=NW+GAPX, GY=NH+GAPY;
+  nodes.forEach((n,i)=>{ n.x=snapv(PADX+rank[i]*GX); n.y=snapv(PADY+posInLayer[i]*GY); });
+  VIEW.inited=false; renderAll();
+}
+// two nodes are "local" (may use shm/ring/serial) if they share a machine or one nests in the other
+function isLocal(a,b){ if(!a||!b||!a.machine||!b.machine) return false;
+  return a.machine===b.machine || a.machine.startsWith(b.machine+"/") || b.machine.startsWith(a.machine+"/"); }
+// nested container hulls from machine paths ("dc/rack/host/vm" -> boxes within boxes), channelled left
+function machineHulls(pos, nodes){ nodes=nodes||STATE.sys.nodes;
+  const collapsed=new Set(STATE.sys.collapsedGroups||[]);
+  const paths=new Set();
+  nodes.forEach(n=>{ if(n.machine){ let acc=""; n.machine.split("/").forEach(s=>{acc=acc?acc+"/"+s:s; paths.add(acc);}); }});
+  return [...paths].filter(p=>!collapsed.has(p)).map(path=>{ const members=nodes.filter(n=>n.machine && (n.machine===path||n.machine.startsWith(path+"/")));
+    const depth=path.split("/").length-1; let x0=1e9,y0=1e9,x1=-1e9,y1=-1e9;
+    members.forEach(n=>{const p=pos[n.id]; if(!p)return; x0=Math.min(x0,p.x);y0=Math.min(y0,p.y);x1=Math.max(x1,p.x+NW);y1=Math.max(y1,p.y+NH);});
+    const pad=30-depth*8; return {path,label:path.split("/").pop(),depth,x:x0-pad,y:y0-pad-15,w:(x1-x0)+pad*2,h:(y1-y0)+pad*2+15};
+  }).filter(h=>isFinite(h.x)).sort((a,b)=>a.depth-b.depth); }
+function surfaceNonPQ(n){ if(n.sealed) return STATE.scenario==="target" && n.sealed.specs.residual_high>0;
+  return (n.surfaces||[]).some(su=>{const r=resolve(su.role,su.protocol);
+  return su.keep_classical || (STATE.scenario==="target" && r.mode==="observe"); }); }
+
+/* ---- Phase 4: classified spec black-boxes — encrypt internals (AES-256-GCM/PBKDF2, WebCrypto, offline),
+       keep only public specs so the model still simulates without decrypting ---- */
+function b64(buf){let s="";const b=new Uint8Array(buf);for(let i=0;i<b.length;i++)s+=String.fromCharCode(b[i]);return btoa(s);}
+function ub64(s){return Uint8Array.from(atob(s),c=>c.charCodeAt(0));}
+async function deriveKey(pass,salt){const enc=new TextEncoder();
+  const km=await crypto.subtle.importKey("raw",enc.encode(pass),"PBKDF2",false,["deriveKey"]);
+  return crypto.subtle.deriveKey({name:"PBKDF2",salt,iterations:150000,hash:"SHA-256"},km,{name:"AES-GCM",length:256},false,["encrypt","decrypt"]);}
+function nodeSpecs(n){ const cap=nodeCapacity(n,carrierOf(STATE.sys,n)), pc=processCost(n);
+  let surfaces=0,upgradable=0,residual_high=0,high_total=0;
+  (n.surfaces||[]).forEach(su=>{const r=resolve(su.role,su.protocol); surfaces++;
+    const up=!su.keep_classical && r.mode!=="observe"; if(up)upgradable++;
+    if(su.risk==="high"&&(su.role==="transit"||su.role==="at-rest")){high_total++; if(!up)residual_high++;}});
+  return {cap_fps:Math.round(cap),delay_us:pc.delayUs,steps:pc.steps,surfaces,upgradable,residual_high,high_total};}
+async function sealNode(n){
+  if(!(crypto&&crypto.subtle)){alert("WebCrypto unavailable in this context.");return;}
+  const pass=prompt("Passphrase to SEAL this subsystem.\nInternals are encrypted (AES-256-GCM); public specs remain so the model still simulates.");
+  if(!pass) return; commit("seal subsystem");
+  const salt=crypto.getRandomValues(new Uint8Array(16)), iv=crypto.getRandomValues(new Uint8Array(12));
+  const key=await deriveKey(pass,salt);
+  const internals={label:n.label,layer:n.layer,surfaces:n.surfaces||[],process:n.process||[]};
+  const ct=await crypto.subtle.encrypt({name:"AES-GCM",iv},key,new TextEncoder().encode(JSON.stringify(internals)));
+  const specs=nodeSpecs(n);
+  n._sealedLabel=n.label; n.sealed={specs,ct:b64(ct),iv:b64(iv),salt:b64(salt)};
+  delete n.surfaces; delete n.process; n.layer="sealed";       // internals no longer present in the model
+  renderAll();
+}
+async function unsealNode(n,pass){
+  try{ const key=await deriveKey(pass,ub64(n.sealed.salt));
+    const pt=await crypto.subtle.decrypt({name:"AES-GCM",iv:ub64(n.sealed.iv)},key,ub64(n.sealed.ct));
+    const it=JSON.parse(new TextDecoder().decode(pt));
+    n.label=it.label; n.layer=it.layer; n.surfaces=it.surfaces; n.process=it.process;
+    delete n.sealed; delete n._sealedLabel; renderAll();
+  }catch(e){ alert("Wrong passphrase — cannot decrypt. You can still simulate from the specs."); }
+}
+
+// sample a linkPath into a polyline of points (for crossing detection + hop rendering)
+function pathPoints(lp,N){ N=N||60; const out=[]; for(let i=0;i<=N;i++) out.push(samplePath(lp,i/N)); return out; }
+function segX(a,b,c,d){ // intersection of seg a-b and c-d -> point or null
+  const r={x:b.x-a.x,y:b.y-a.y}, s={x:d.x-c.x,y:d.y-c.y}, den=r.x*s.y-r.y*s.x; if(Math.abs(den)<1e-6) return null;
+  const t=((c.x-a.x)*s.y-(c.y-a.y)*s.x)/den, u=((c.x-a.x)*r.y-(c.y-a.y)*r.x)/den;
+  if(t<0.02||t>0.98||u<0.02||u>0.98) return null; return {x:a.x+t*r.x,y:a.y+t*r.y}; }
+// render a polyline as an SVG path, arcing a small "jump" bump over each crossing point (schematic hop)
+function polyWithHops(pts, hops){ const R=6;
+  let d=`M${pts[0].x.toFixed(1)},${pts[0].y.toFixed(1)}`;
+  for(let i=1;i<pts.length;i++){ const p0=pts[i-1], p1=pts[i];
+    const on=hops.filter(h=>{ const dx=p1.x-p0.x,dy=p1.y-p0.y,L2=dx*dx+dy*dy; if(!L2) return false;
+      const t=((h.x-p0.x)*dx+(h.y-p0.y)*dy)/L2; if(t<0||t>1) return false;
+      const px=p0.x+t*dx,py=p0.y+t*dy; return Math.hypot(px-h.x,py-h.y)<2 && Math.hypot(dx,dy)*Math.min(t,1-t)>R; })
+      .map(h=>({h,t:((h.x-p0.x)*(p1.x-p0.x)+(h.y-p0.y)*(p1.y-p0.y))/((p1.x-p0.x)**2+(p1.y-p0.y)**2)}))
+      .sort((a,b)=>a.t-b.t);
+    const ux=(p1.x-p0.x), uy=(p1.y-p0.y), len=Math.hypot(ux,uy)||1, nx=ux/len, ny=uy/len;
+    for(const {h} of on){ const bx=h.x-nx*R, by=h.y-ny*R, ax=h.x+nx*R, ay=h.y+ny*R;
+      d+=` L${bx.toFixed(1)},${by.toFixed(1)} A${R},${R} 0 0 1 ${ax.toFixed(1)},${ay.toFixed(1)}`; }
+    d+=` L${p1.x.toFixed(1)},${p1.y.toFixed(1)}`;
+  }
+  return d;
+}
+
+// multiline bundle: draw a fan-in spoke as K PARALLEL lines (multiplicity), spread along the run and
+// converging (angling in) to the single inlet point so the flow direction reads at a glance. The lines
+// also fan out from the source. K grows with the order of magnitude of the source count.
+function bundlePaths(pts,count,col,w){
+  const K=Math.min(6,2+Math.floor(Math.log10(Math.max(1,count))));     // 2..6 lines by magnitude
+  // arc length + per-point unit tangent/normal
+  const n=pts.length, cum=[0]; for(let i=1;i<n;i++) cum[i]=cum[i-1]+Math.hypot(pts[i].x-pts[i-1].x,pts[i].y-pts[i-1].y);
+  const total=cum[n-1]||1, GAP=Math.min(6,Math.max(3,w+1.5)), FAN=18, CONV=26;
+  const norm=i=>{ const a=pts[Math.max(0,i-1)], b=pts[Math.min(n-1,i+1)]; let dx=b.x-a.x,dy=b.y-a.y,L=Math.hypot(dx,dy)||1; return {x:-dy/L,y:dx/L}; };
+  let s="";
+  for(let k=0;k<K;k++){ const base=(K===1?0:(k/(K-1)-0.5))*GAP*(K-1);
+    let d="";
+    for(let i=0;i<n;i++){ const nrm=norm(i), sStart=cum[i], sEnd=total-cum[i];
+      const taper=Math.min(1,sStart/FAN)*Math.min(1,sEnd/CONV);         // 0 at both ends -> converge to points
+      const x=pts[i].x+nrm.x*base*taper, y=pts[i].y+nrm.y*base*taper;
+      d+=(i?` L`:`M`)+x.toFixed(1)+","+y.toFixed(1); }
+    s+=`<path d="${d}" fill="none" stroke="${col}" stroke-width="${Math.max(1,w*0.62).toFixed(1)}" opacity="${k? .55:.82}" stroke-linejoin="round"/>`;
+  }
+  return s;
+}
+
+// an edge label with a contrasting rounded background so text stays readable over lines/grid.
+// font is monospace (var(--mono) 9px), so width ≈ length × char-width — no DOM measurement needed.
+function foLabel(x,y,txt){ if(!txt) return "";
+  const cw=5.4, w=Math.max(8,[...txt].length*cw), pad=4;
+  return `<rect x="${(x-w/2-pad).toFixed(1)}" y="${(y-9).toFixed(1)}" width="${(w+2*pad).toFixed(1)}" height="13" rx="3.5" fill="var(--ground)" fill-opacity="0.86" stroke="var(--edge)" stroke-opacity="0.6"/>`
+    +`<text class="fo lbl-on" x="${x.toFixed(1)}" y="${y.toFixed(1)}" text-anchor="middle">${txt}</text>`;
+}
+
+function renderGraph(){
+  const S=STATE.sys, svg=document.getElementById("graph"), tgt=STATE.scenario==="target";
+  const {DN,DL}=deriveDisplay();                    // collapsed groups -> merged black boxes + re-routed links
+  const lay=layoutPositions(S);
+  const pos={}; DN.forEach(n=>{ pos[n.id]={x:(n.x!=null?n.x:(lay[n.id]||{x:PADX}).x),
+                                            y:(n.y!=null?n.y:(lay[n.id]||{y:PADY}).y), n}; });
+  NODE_IX=Object.fromEntries(DN.map(n=>[n.id,n])); LINK_IX=DL;   // so linkPath/geometry resolve synth boxes
+  let maxX=0,maxY=0; for(const id in pos){maxX=Math.max(maxX,pos[id].x+NW); maxY=Math.max(maxY,pos[id].y+NH);}
+  const W=maxX+PADX, H=maxY+PADY;
+  const cw=svg.clientWidth||svg.parentNode.clientWidth||1200, ch=svg.clientHeight||svg.parentNode.clientHeight||700;
+  svg.setAttribute("viewBox",`0 0 ${cw} ${ch}`); svg.removeAttribute("width"); svg.removeAttribute("height");
+  CONTENT.W=W; CONTENT.H=H; CONTENT.cw=cw; CONTENT.ch=ch;
+  const nodeById=NODE_IX;
+  let s=`<defs><marker id="ah" markerUnits="userSpaceOnUse" markerWidth="11" markerHeight="11" refX="8" refY="4" orient="auto">
+    <path d="M0,0 L9,4 L0,8 z" fill="var(--ink-faint)"/></marker></defs>`;
+  for(const h of machineHulls(pos, DN)){            // nested machine/VM containers = first-class groups
+    const collapsed=(S.collapsedGroups||[]).includes(h.path);
+    s+=`<rect x="${h.x.toFixed(0)}" y="${h.y.toFixed(0)}" width="${h.w.toFixed(0)}" height="${h.h.toFixed(0)}" rx="14"
+      fill="var(--signal)" fill-opacity="${(0.03+h.depth*0.02).toFixed(3)}" stroke="var(--edge)" stroke-dasharray="4 4" pointer-events="none"/>
+      <rect class="grouphandle" data-group="${esc(h.path)}" x="${h.x.toFixed(0)}" y="${h.y.toFixed(0)}" width="${(h.w-42).toFixed(0)}" height="18" rx="8"/>
+      <circle class="porthalo" cx="${h.x.toFixed(0)}" cy="${(h.y+h.h/2).toFixed(0)}" r="7" pointer-events="none"/>
+      <text class="fo" x="${(h.x+10).toFixed(0)}" y="${(h.y+13).toFixed(0)}" fill="var(--ink-dim)" pointer-events="none">⛶ ${esc(h.label)}</text>
+      <text class="grpbtn" data-gcollapse="${esc(h.path)}" x="${(h.x+h.w-26).toFixed(0)}" y="${(h.y+13).toFixed(0)}" title="collapse group to black box">${collapsed?"▨":"▾"}</text>
+      <text class="grpbtn" data-gungroup="${esc(h.path)}" x="${(h.x+h.w-12).toFixed(0)}" y="${(h.y+13).toFixed(0)}" title="ungroup (keep nodes)">✕</text>`;
+  }
+  // spokes: obstacle-routed; where two spokes cross, the LATER one arcs over (schematic-style hop)
+  const routes=DL.map(l=>{const lp=linkPath(l); return lp?{l,lp,pts:pathPoints(lp)}:null;}).filter(Boolean);
+  routes.forEach((r,ri)=>{ r.hops=[];
+    for(let rj=0;rj<ri;rj++){ const o=routes[rj];
+      if(r.l.from===o.l.from||r.l.to===o.l.to||r.l.from===o.l.to||r.l.to===o.l.from) continue;  // shared endpoint: no hop
+      for(let i=1;i<r.pts.length;i++) for(let j=1;j<o.pts.length;j++){
+        const x=segX(r.pts[i-1],r.pts[i],o.pts[j-1],o.pts[j]); if(x) r.hops.push(x); } } });
+  let edgeLabels="";
+  for(const {l,lp,pts,hops} of routes){
+    const util=l._util||0, col=util>0.8?"var(--risk-hi)":util>0.4?"var(--risk-md)":"var(--ink-faint)";
+    const w=Math.max(1.2, Math.min(9, Math.log10((l._load||1)+10)*2.1));
+    const src=nodeById[l.from], fan=(src&&src.count>1)?`×${fmt(src.count)}→1`:"";
+    const sem=src&&src.fanout?FANOUT[src.fanout]:"";
+    const local=isLocal(nodeById[l.from],nodeById[l.to]);
+    const dash = local?'stroke-dasharray="7 4"':(lp.feedback?'stroke-dasharray="2 4"':'');
+    const scol=lp.feedback?'var(--p3)':col;
+    const fanin=(src&&src.count>1)&&(l.fan==="all_to_one"||l.fan==="hierarchical"||l.fan==="sharded");
+    if(fanin){                                          // multiline bundle: parallel lines converging at the inlet
+      s+=bundlePaths(pts,src.count,scol,w);
+      s+=`<path d="M${pts[pts.length-1].x.toFixed(1)},${pts[pts.length-1].y.toFixed(1)}" marker-end="url(#ah)"/>`;
+      const e=pts[pts.length-1], a=pts[pts.length-2]||e;
+      s+=`<path d="M${a.x.toFixed(1)},${a.y.toFixed(1)} L${e.x.toFixed(1)},${e.y.toFixed(1)}" fill="none" stroke="${scol}" stroke-width="${w.toFixed(1)}" marker-end="url(#ah)"/>`;
+    } else {
+      const d = hops.length ? polyWithHops(pts,hops) : lp.d;
+      s+=`<path d="${d}" fill="none" ${dash} stroke="${scol}" stroke-width="${w.toFixed(1)}" stroke-linejoin="round" opacity=".82" marker-end="url(#ah)"/>`;
+    }
+    const lbl=[fan,(local?"⌂ ":"")+(lp.feedback?"↺ ":"")+l.carrier,sem].filter(Boolean).join(" · ");
+    edgeLabels+=foLabel(lp.lx,lp.ly,lbl);            // collected -> drawn on top of all lines
+  }
+  s+=edgeLabels;
+  for(const id in pos){
+    const {x,y,n}=pos[id], isG=!!n._group;
+    const cap=isG ? n.cap : nodeCapacity(n, carrierOf(S,n));
+    const surfs=isG?"":(n.surfaces||[]).map(su=>{const r=resolve(su.role,su.protocol);
+      const classical=su.keep_classical||(tgt&&r.mode==="observe");
+      const c=classical?"var(--risk-hi)":(tgt?MODE_COL[r.mode]:RISK_COL[su.risk]||"var(--ink-faint)");
+      return `<span class="pill" style="background:${c}" title="${su.role}${su.keep_classical?" · kept classical":""}">${su.role.replace('auth-','')}</span>`;}).join("");
+    const warn=isG ? (tgt&&n.nonpq) : (tgt&&surfaceNonPQ(n));
+    if(n.count>1){ const sc=n.count>=1000?3:2;
+      for(let i=sc;i>=1;i--) s+=`<rect x="${x+i*5}" y="${y+i*5}" width="${NW}" height="${NH}" rx="11"
+        fill="var(--panel2)" stroke="var(--edge)" opacity="${(0.9-i*0.18).toFixed(2)}"/>`;
+    }
+    const pc=isG?{steps:0,delayUs:0}:processCost(n);
+    const tgl= isG ? `<span class="collapse" data-gexpand="${esc(n._group)}" title="expand group">▸</span>`
+      : (!n.sealed&&(pc.steps||n.collapsed||n.machine))?`<span class="collapse" data-collapse="${id}" title="black-box collapse / expand">${n.collapsed?"▸":"▾"}</span>`:"";
+    let inner;
+    if(isG){
+      inner=`<div class="kind">▨ group · ${n.memberCount} node${n.memberCount>1?"s":""}${n.surfCount?` · ${n.surfCount} surfaces`:""}</div>
+         <div class="cap"><span>cap ${fmt(n.cap)} fps</span><span>bottleneck</span></div>`;
+    } else if(n.sealed){ const sp=n.sealed.specs;
+      inner=`<div class="kind">🔒 sealed subsystem · encrypted</div>
+         <div class="proc">specs · ${sp.surfaces} surfaces · Δ${sp.delay_us}us</div>
+         <div class="cap"><span>cap ${fmt(sp.cap_fps)} fps</span><span>${esc(n.zone||"")}</span></div>`;
+    } else if(n.collapsed){
+      inner=`<div class="kind">▨ black box · ${n.kind}${pc.steps?` · ${pc.steps} ops hidden`:""}</div>
+         <div class="cap"><span>cap ${fmt(cap)} fps</span><span>${esc(n.zone||"")}</span></div>`;
+    } else {
+      inner=`<div class="kind">${n.kind} · ${n.layer||"python"}${n.fanout?" · "+FANOUT[n.fanout]:""}</div>
+         ${pc.steps?`<div class="proc">⛭ ${pc.steps} ops · Δ${pc.delayUs}µs</div>`:""}
+         <div class="surfs">${surfs||'<span class="kind">no crypto surface</span>'}</div>
+         <div class="cap"><span>cap ${fmt(cap)} fps</span><span>${esc(n.zone||"")}</span></div>`;
+    }
+    s+=`<foreignObject x="${x}" y="${y}" width="${NW}" height="${NH}">
+       <div class="node ${STATE.sel===id?"sel":""} ${warn?"warn":""} ${n.sealed?"blackbox sealed":((n.collapsed||isG)?"blackbox":"")}" data-id="${id}" tabindex="0" role="button" aria-label="${esc(n.label)}">
+         <div class="lbl">${warn?'<span class="warnglyph" title="non-PQ surface remains">⚠</span> ':''}${isG?"▨ ":""}${esc(n.label)}${n.count>1?`<span class="badge">×${fmt(n.count)}</span>`:""}${tgl}</div>
+         ${inner}
+       </div></foreignObject>`;
+    // ports: inlet (left) + outlet (right), draggable to connect
+    s+=`<circle class="porthalo" cx="${x}" cy="${y+NH/2}" r="9"/><circle class="port in" data-id="${id}" cx="${x}" cy="${y+NH/2}" r="6"/>`;
+    s+=`<circle class="porthalo" cx="${x+NW}" cy="${y+NH/2}" r="9"/><circle class="port out" data-id="${id}" cx="${x+NW}" cy="${y+NH/2}" r="6"/>`;
+  }
+  svg.innerHTML='<g id="vp">'+s+'</g>';
+  if(!VIEW.inited) fitView(); else applyView();
+  NODE_IX=null; LINK_IX=null;                        // clear derived indices (sim etc. use the real model)
+  svg.querySelectorAll(".node").forEach(el=>{
+    const pick=()=>{STATE.sel=el.dataset.id; renderGraph(); renderInspector();};
+    el.addEventListener("click",e=>{ if(svg._drag) return;
+      const ex=e.target.closest&&e.target.closest("[data-gexpand]");
+      if(ex){ toggleGroupCollapse(ex.dataset.gexpand); return; }               // merged box -> expand
+      const c=e.target.closest&&e.target.closest(".collapse");
+      if(c){const n=STATE.sys.nodes.find(x=>x.id===c.dataset.collapse); if(n){commit("black-box");n.collapsed=!n.collapsed; renderAll();} return;}
+      if(el.dataset.id.indexOf("grp:")===0) return;                            // group box: no inspect (use ▸/menu)
+      pick(); });
+    el.addEventListener("keydown",e=>{if(e.key==="Enter"||e.key===" "){e.preventDefault();pick();}});
+  });
+  svg.querySelectorAll("[data-gungroup]").forEach(b=>b.addEventListener("click",()=>{ if(!svg._drag) ungroupPath(b.dataset.gungroup); }));
+  svg.querySelectorAll("[data-gcollapse]").forEach(b=>b.addEventListener("click",()=>{ if(!svg._drag) toggleGroupCollapse(b.dataset.gcollapse); }));
+}
+function carrierOf(S,n){ const l=S.links.find(x=>x.to===n.id)||S.links.find(x=>x.from===n.id); return l&&l.carrier; }
+
+/* ---- editor vocab + helpers ---- */
+const ROLES=["transit","at-rest","auth-device","auth-user","code-signing","pki","kms"];
+const KINDS=["system","host","gateway","sensor","service","store","human"];
+const RISKS=["high","medium","low"];
+const FANS=["one_to_one","all_to_one","sharded","round_robin","hierarchical"];
+const CARRIERS=Object.keys(TRANSPORT);
+const LAYERS=["c-native","cpp","c","mojo","python-cython","julia","rust","zig","nim","csharp",
+  "go","java","typescript","lua-luajit","swift","python","ruby","perl","cobol","python-client"];
+function esc(v){return String(v==null?"":v).replace(/&/g,"&amp;").replace(/"/g,"&quot;").replace(/</g,"&lt;");}
+// SP3: a clickable comparison bar chart (log-scaled) — pick a design option by clicking a row
+function barChart(items, curKey, act){
+  const mx=Math.max(...items.map(i=>i.val),1), lm=Math.log10(mx+1);
+  return `<div class="cmp">`+items.map(it=>{
+    const w=Math.max(2,Math.round(100*Math.log10(it.val+1)/(lm||1))), cur=it.key===curKey;
+    return `<div class="cmprow" data-${act}="${esc(it.key)}" title="${fmt(it.val)}${it.note?' · '+esc(it.note):''}">
+      <span class="cmpk ${cur?'cur':''}">${esc(it.label)}</span>
+      <span class="cmpbar"><i style="width:${w}%${cur?';background:var(--signal)':''}"></i></span>
+      <span class="cmpv">${fmt(it.val)}</span></div>`; }).join("")+`</div>`;
+}
+function opt(list,cur,fmtfn){return list.map(v=>`<option value="${esc(v)}" ${v===cur?"selected":""}>${fmtfn?fmtfn(v):esc(v)}</option>`).join("");}
+function nid(p){let i=1;const S=STATE.sys;while(S.nodes.find(x=>x.id===p+i))i++;return p+i;}
+function addNode(){commit("add component"); const S=STATE.sys; if(!S.tiers||!S.tiers.length)S.tiers=["tier"];
+  const id=nid("node"); S.nodes.push({id,label:"New component",kind:"host",zone:"",tier:S.tiers[0],count:1,layer:"c-native",surfaces:[]});
+  STATE.sel=id; renderAll();}
+function deleteNode(id){commit("delete component"); const S=STATE.sys; S.nodes=S.nodes.filter(x=>x.id!==id);
+  S.links=S.links.filter(l=>l.from!==id&&l.to!==id); STATE.sel=null; renderAll();}
+function duplicateNode(id){const S=STATE.sys; const n=S.nodes.find(x=>x.id===id); if(!n)return; commit("duplicate component");
+  const c=clone(n); c.id=nid("node"); c.label=(n.label||"node")+" copy"; c.x=(n.x!=null?n.x:posOf(n).x)+28; c.y=(n.y!=null?n.y:posOf(n).y)+28;
+  S.nodes.push(c); STATE.sel=c.id; renderAll();}
+function addSurface(n){commit("add surface"); (n.surfaces=n.surfaces||[]).push({role:"transit",protocol:"",where:"",today:"",risk:"medium",rationale:""}); renderAll();}
+function addLink(fromId){commit("add link"); const S=STATE.sys; const other=S.nodes.find(x=>x.id!==fromId)||{id:fromId};
+  S.links.push({from:fromId,to:other.id,carrier:"tcp",rate:10,payload:256,fan:"one_to_one",reconnect_per_day:24}); renderAll();}
+// ---- groups (machine/container hulls) as first-class objects: drag / ungroup / collapse / make ----
+function groupMembers(path){ return STATE.sys.nodes.filter(n=>n.machine && (n.machine===path || n.machine.startsWith(path+"/"))); }
+function ungroupPath(path){ commit("ungroup"); const depth=path.split("/").length;      // dissolve this level, keep nodes + inner nesting
+  groupMembers(path).forEach(n=>{ const parts=n.machine.split("/"); parts.splice(depth-1,1); n.machine=parts.join("/")||undefined; });
+  const S=STATE.sys; if(S.collapsedGroups) S.collapsedGroups=S.collapsedGroups.filter(p=>p!==path && !p.startsWith(path+"/"));
+  renderAll(); }
+function toggleGroupCollapse(path){ const S=STATE.sys; S.collapsedGroups=S.collapsedGroups||[];   // compose group -> ONE merged black box
+  const on=S.collapsedGroups.includes(path); commit(on?"expand group":"collapse group");
+  S.collapsedGroups = on ? S.collapsedGroups.filter(p=>p!==path) : S.collapsedGroups.concat(path);
+  if(STATE.sel && S.nodes.find(n=>n.id===STATE.sel)===undefined) STATE.sel=null;
+  renderAll(); }
+function wrapInGroup(nodeId){ const n=STATE.sys.nodes.find(x=>x.id===nodeId); if(!n) return;
+  const name=prompt("Group / machine for this component (nest with a/b/c). Give other components the same name to group them.", n.machine||"group1");
+  if(name==null) return; commit("group"); n.machine=name.trim()||undefined; renderAll(); }
+
+/* ===================================================================================
+   Real-time simulator: animate tokens along the spokes at rates derived from the modelled
+   throughput, drop at saturated links, and be honest about the dilation (one host, many systems).
+   =================================================================================== */
+const SVGNS="http://www.w3.org/2000/svg";
+const SIM={running:false,raf:0,last:0,clock:0,delivered:0,drops:0,acc:[],tokens:[],D:1,scope:null};
+function reachableFrom(id){ const seen=new Set([id]), q=[id];   // forward subgraph from a node (partial sim)
+  while(q.length){ const cur=q.shift(); STATE.sys.links.forEach(l=>{ if(l.from===cur&&!seen.has(l.to)){seen.add(l.to);q.push(l.to);} }); }
+  return seen; }
+function segHitsRect(x1,y1,x2,y2,r,m){       // sampled segment vs rect (expanded by margin m)
+  const rx=r.x-m, ry=r.y-m, rw=r.w+2*m, rh=r.h+2*m;
+  for(let i=0;i<=24;i++){const t=i/24, px=x1+(x2-x1)*t, py=y1+(y2-y1)*t;
+    if(px>=rx&&px<=rx+rw&&py>=ry&&py<=ry+rh) return true;} return false; }
+// obstacle-aware routing: a clear cubic when the straight shot misses every other node, else an
+// orthogonal detour through a lane above/below the blockers so the spoke never crosses a node box.
+// ---- derived display: collapsed groups become a single merged black box; external links re-route
+//      to its boundary; internal links are hidden. Rendering + geometry run over this derived set. ----
+let NODE_IX=null, LINK_IX=null;
+function resolveNode(id){ return (NODE_IX&&NODE_IX[id]) || STATE.sys.nodes.find(n=>n.id===id); }
+function displayNodes(){ return NODE_IX ? Object.values(NODE_IX) : STATE.sys.nodes; }
+function displayLinks(){ return LINK_IX || STATE.sys.links; }
+function deriveDisplay(){
+  const S=STATE.sys, collapsed=(S.collapsedGroups||[]).filter(p=>groupMembers(p).length);
+  if(!collapsed.length) return {DN:S.nodes.slice(), DL:S.links.slice()};
+  const collSet=new Set(collapsed);
+  const grpOf=n=>{ if(!n.machine) return null; const parts=n.machine.split("/"); let acc="";
+    for(const seg of parts){ acc=acc?acc+"/"+seg:seg; if(collSet.has(acc)) return acc; } return null; };
+  const hidden=new Map(); S.nodes.forEach(n=>{ const g=grpOf(n); if(g) hidden.set(n.id,g); });
+  const lay=layoutPositions(S);
+  const bpos=n=>({x:(n.x!=null?n.x:(lay[n.id]||{x:PADX}).x), y:(n.y!=null?n.y:(lay[n.id]||{y:PADY}).y)});
+  const synth={};
+  for(const path of collapsed){ const mem=groupMembers(path); if(!mem.length) continue;
+    let x0=1e9,ysum=0,cnt=0,cap=Infinity,nonpq=false,surf=0;
+    mem.forEach(n=>{ const p=bpos(n); x0=Math.min(x0,p.x); ysum+=p.y; cnt+=n.count||1;
+      cap=Math.min(cap,nodeCapacity(n,carrierOf(S,n))); if(surfaceNonPQ(n))nonpq=true; surf+=(n.surfaces||[]).length; });
+    synth["grp:"+path]={_group:path,id:"grp:"+path,label:path.split("/").pop(),kind:"group",
+      x:Math.round(x0), y:Math.round(ysum/mem.length), count:cnt, cap:isFinite(cap)?cap:0,
+      nonpq, memberCount:mem.length, surfCount:surf, machine:path.split("/").slice(0,-1).join("/")||undefined, zone:""};
+  }
+  const mapId=id=>{ const g=hidden.get(id); return g?("grp:"+g):id; };
+  const DN=S.nodes.filter(n=>!hidden.has(n.id)).concat(Object.values(synth));
+  const agg={};
+  S.links.forEach(l=>{ const a=mapId(l.from), b=mapId(l.to); if(a===b) return; const k=a+">"+b;
+    if(!agg[k]) agg[k]={from:a,to:b,carrier:l.carrier,fan:l.fan,fanout:l.fanout,_util:l._util||0,_load:l._load||0};
+    else { agg[k]._util=Math.max(agg[k]._util,l._util||0); agg[k]._load=(agg[k]._load||0)+(l._load||0); } });
+  return {DN, DL:Object.values(agg)};
+}
+function linkPath(l){
+  const A=resolveNode(l.from), B=resolveNode(l.to);
+  if(!A||!B) return null;
+  const S=STATE.sys;
+  const a=posOf(A), b=posOf(B), x1=a.x+NW,y1=a.y+NH/2,x2=b.x,y2=b.y+NH/2, mx=(x1+x2)/2;
+  const M=16, lay=layoutPositions(S);
+  const npos=n=>({x:(n.x!=null?n.x:(lay[n.id]||{x:0}).x), y:(n.y!=null?n.y:(lay[n.id]||{y:0}).y)});
+  const DNL=displayNodes();
+  if(x2 < x1-4){ // feedback loop: route over the top of EVERY node in the horizontal span, not a fixed offset
+    const lo=Math.min(x2,x1)-M, hi=Math.max(x2,x1)+M; let spanTop=Math.min(y1,y2);
+    DNL.forEach(n=>{const p=npos(n); if(p.x+NW>lo && p.x<hi) spanTop=Math.min(spanTop,p.y);});
+    const topY=spanTop-M-26, ex=Math.min(44,GAPX*0.44);
+    const pts=[[x1,y1],[x1+ex,y1],[x1+ex,topY],[x2-ex,topY],[x2-ex,y2],[x2,y2]];
+    let d=`M${pts[0][0]},${pts[0][1]}`; for(let i=1;i<pts.length;i++) d+=` L${pts[i][0].toFixed(1)},${pts[i][1].toFixed(1)}`;
+    return {kind:"poly",pts,feedback:true,lx:(x1+x2)/2,ly:topY-4,d}; }
+  const blockers=[];
+  DNL.forEach(n=>{ if(n.id===A.id||n.id===B.id) return;
+    const p={x:(n.x!=null?n.x:(lay[n.id]||{x:0}).x), y:(n.y!=null?n.y:(lay[n.id]||{y:0}).y)}, r={x:p.x,y:p.y,w:NW,h:NH};
+    if(segHitsRect(x1,y1,x2,y2,r,M) && r.x+NW>Math.min(x1,x2) && r.x<Math.max(x1,x2)) blockers.push(r); });
+  const hasRev=displayLinks().some(k=>k!==l && k.from===l.to && k.to===l.from);
+  const sep=hasRev ? ((l.from<l.to?1:-1)*14) : 0;   // bidirectional pairs: separate their elbows
+  if(!blockers.length){                             // orthogonal elbow (no curves — consistent circuit style)
+    if(Math.abs(y1-y2)<2 && !sep){ const pts=[[x1,y1],[x2,y2]];
+      return {kind:"poly",pts,feedback:false,lx:mx,ly:y1-6,d:polyD(pts)}; }
+    const xm=mx+sep, pts=[[x1,y1],[xm,y1],[xm,y2],[x2,y2]];
+    return {kind:"poly",pts,feedback:false,lx:xm,ly:(y1+y2)/2-6,d:polyD(pts)}; }
+  let top=1e9,bot=-1e9; blockers.forEach(r=>{top=Math.min(top,r.y);bot=Math.max(bot,r.y+r.h);});
+  const laneY = ((Math.abs((top-M-12)-(y1+y2)/2) <= Math.abs((bot+M+12)-(y1+y2)/2)) ? top-M-12 : bot+M+12)+sep;
+  const ex=Math.min(42,GAPX*0.42);
+  const pts=[[x1,y1],[x1+ex,y1],[x1+ex,laneY],[x2-ex,laneY],[x2-ex,y2],[x2,y2]];
+  return {kind:"poly",pts,feedback:false,lx:(x1+x2)/2,ly:laneY-4,d:polyD(pts)}; }
+function polyD(pts){ let d=`M${pts[0][0].toFixed(1)},${pts[0][1].toFixed(1)}`;
+  for(let i=1;i<pts.length;i++) d+=` L${pts[i][0].toFixed(1)},${pts[i][1].toFixed(1)}`; return d; }
+function samplePath(lp,t){
+  if(lp.kind==="bezier"){ const g=lp.g,u=1-t,a=u*u*u,b=3*u*u*t,c=3*u*t*t,d=t*t*t;
+    return {x:a*g.x1+b*g.c1x+c*g.c2x+d*g.x2, y:a*g.y1+b*g.c1y+c*g.c2y+d*g.y2}; }
+  const pts=lp.pts, seg=[]; let tot=0;
+  for(let i=1;i<pts.length;i++){const L=Math.hypot(pts[i][0]-pts[i-1][0],pts[i][1]-pts[i-1][1]);seg.push(L);tot+=L;}
+  let target=t*tot, acc=0;
+  for(let i=0;i<seg.length;i++){ if(acc+seg[i]>=target){ const f=(target-acc)/(seg[i]||1);
+    return {x:pts[i][0]+(pts[i+1][0]-pts[i][0])*f, y:pts[i][1]+(pts[i+1][1]-pts[i][1])*f}; } acc+=seg[i]; }
+  return {x:pts[pts.length-1][0],y:pts[pts.length-1][1]}; }
+function busiestLoad(){let m=1; STATE.sys.links.forEach(l=>m=Math.max(m,l._load||0)); return m;}
+function stopSim(){ SIM.running=false; SIM.scope=null; if(SIM.raf)cancelAnimationFrame(SIM.raf);
+  const t=document.getElementById("tokens"); if(t)t.remove();
+  const b=document.getElementById("simBtn"); if(b){b.textContent="▶ Simulate";b.setAttribute("aria-pressed","false");}
+  const h=document.getElementById("simhud"); if(h)h.style.display="none"; }
+function playSim(scope){ if(SIM.running){ stopSim(); if(scope===undefined) return; }   // top-bar toggles; scoped call restarts
+  computeRollup(STATE.scenario);                       // refresh l._load / l._util
+  Object.assign(SIM,{running:true,clock:0,delivered:0,drops:0,tokens:[],acc:STATE.sys.links.map(()=>0),scope:scope||null});
+  SIM.D=Math.max(1, busiestLoad()/6);                  // busiest link ~6 tokens/s on screen
+  SIM.last=performance.now();
+  const b=document.getElementById("simBtn"); b.textContent="⏸ Stop"; b.setAttribute("aria-pressed","true");
+  SIM.raf=requestAnimationFrame(stepSim); }
+function stepSim(now){ if(!SIM.running) return;
+  const dt=Math.min(0.05,(now-SIM.last)/1000); SIM.last=now; SIM.clock+=dt*SIM.D;
+  const links=STATE.sys.links, geoms=links.map(linkPath);   // routed paths, once per frame
+  links.forEach((l,i)=>{ const load=l._load||0; if(load<=0) return;
+    if(SIM.scope && !(SIM.scope.has(l.from)&&SIM.scope.has(l.to))) return;   // partial sim: only the focus subgraph
+    SIM.acc[i]+=(load/SIM.D)*dt;
+    while(SIM.acc[i]>=1 && SIM.tokens.length<350){ SIM.acc[i]-=1;
+      const util=l._util||0, drop=util>1 && Math.random()<(1-1/util);
+      SIM.tokens.push({i,born:now,dur:800+Math.random()*300,drop}); } });
+  let s="";
+  SIM.tokens=SIM.tokens.filter(tk=>{ const p=(now-tk.born)/tk.dur;
+    if(tk.drop && p>0.6){ SIM.drops++; return false; }
+    if(p>=1){ SIM.delivered++; return false; }
+    const g=geoms[tk.i]; if(!g) return false; const pt=samplePath(g,p);
+    s+=`<circle cx="${pt.x.toFixed(1)}" cy="${pt.y.toFixed(1)}" r="3.2" fill="${tk.drop?'var(--risk-hi)':'var(--signal)'}" opacity="${tk.drop?(1-p).toFixed(2):0.95}"/>`;
+    return true; });
+  let tl=document.getElementById("tokens");
+  if(!tl){ const g=document.getElementById("vp"); if(g){tl=document.createElementNS(SVGNS,"g");tl.id="tokens";g.appendChild(tl);} }
+  if(tl) tl.innerHTML=s;
+  const hud=document.getElementById("simhud"); if(hud){ hud.style.display="block";
+    const rt = SIM.D<=1?"real-time":(1/SIM.D<0.001?"«0.001":(1/SIM.D).toFixed(3))+"× real-time";
+    const scope = SIM.scope?` · <span style="color:var(--signal)">partial ${SIM.scope.size}/${STATE.sys.nodes.length} nodes</span>`:"";
+    hud.innerHTML=`▶ ${SIM.clock.toFixed(1)}s · 1 token ≈ ${fmt(SIM.D)} msgs · delivered ${fmt(SIM.delivered)} · <span style="color:var(--risk-hi)">drops ${fmt(SIM.drops)}</span> · ${rt}${scope}`; }
+  SIM.raf=requestAnimationFrame(stepSim); }
+
+function renderInspector(){
+  const el=document.getElementById("inspector");
+  const n=STATE.sys.nodes.find(x=>x.id===STATE.sel);
+  if(!n){el.innerHTML='<div class="empty">Select a component to inspect and edit its crypto surfaces — or use <b>+ Node</b> to add one. Drag the canvas to pan, pinch / ⌘-scroll to zoom.</div>';return;}
+  if(n.sealed){ const sp=n.sealed.specs;
+    el.innerHTML=`<div class="insp"><div class="hrow"><h3>🔒 ${esc(n._sealedLabel||n.label||"sealed")}</h3>
+      <button class="mini del" data-act="delnode">✕</button></div>
+      <div class="sub">classified subsystem · internals encrypted (AES-256-GCM · PBKDF2)</div>
+      <div class="field"><div class="k">public specs (simulation runs on these)</div>
+        <div class="surface"><div class="line mono">capacity ${fmt(sp.cap_fps)} fps · Δ${sp.delay_us}us</div>
+        <div class="line mono">${sp.surfaces} surfaces · ${sp.upgradable} PQC-upgradable · ${sp.residual_high} residual-high</div></div></div>
+      <div class="field"><div class="k">unseal (passphrase)</div>
+        <input class="ed mono" id="unsealpass" type="password" placeholder="passphrase" autocomplete="off">
+        <button class="mini" id="unsealbtn" style="width:100%;margin-top:6px">unlock internals ▸</button></div>
+      <div class="note">Simulation uses these specs without decrypting. The raw internals stay encrypted and
+        cannot be read or used to drive systems until unsealed with the correct key.</div></div>`;
+    el.querySelector('[data-act="delnode"]').addEventListener("click",()=>deleteNode(n.id));
+    el.querySelector("#unsealbtn").addEventListener("click",()=>unsealNode(n, el.querySelector("#unsealpass").value));
+    return; }
+  const cap=nodeCapacity(n, carrierOf(STATE.sys,n));
+  const tgt=STATE.scenario==="target";
+  const allNodes=STATE.sys.nodes.map(x=>x.id);
+  const links=STATE.sys.links.map((l,i)=>({l,i})).filter(({l})=>l.from===n.id||l.to===n.id);
+  let s=`<div class="insp">
+    <div class="hrow"><input class="ed" data-node="label" value="${esc(n.label)}" aria-label="label" style="font-weight:650">
+      <button class="mini del" data-act="delnode" title="delete component">✕</button></div>
+    <div class="three">
+      <div><div class="lab">kind</div><select class="ed" data-node="kind">${opt(KINDS,n.kind)}</select></div>
+      <div><div class="lab">count</div><input class="ed mono" type="number" min="1" data-node="count" value="${n.count||1}"></div>
+      <div><div class="lab">zone</div><input class="ed" data-node="zone" value="${esc(n.zone||"")}"></div>
+    </div>
+    <div class="two" style="margin-top:6px">
+      <div><div class="lab">tier / column</div><input class="ed" data-node="tier" value="${esc(n.tier||"")}" list="tierlist"></div>
+      <div><div class="lab">impl layer</div><select class="ed" data-node="layer">${opt(LAYERS,n.layer||"python",v=>v+((v in LANG)?" · "+fmt(LANG[v])+" ops/s":""))}</select></div>
+    </div>
+    <div class="two" style="margin-top:6px">
+      <div><div class="lab">outlet handling (right-side fanout)</div><select class="ed" data-node="fanout">${opt(Object.keys(FANOUT),n.fanout||"pubsub",v=>FANOUT[v])}</select></div>
+      <div><div class="lab">machine / container (a/b/c nests) <span class="grp-link" data-act="wrapgroup" title="name a group; give others the same name to group them">＋group</span></div><input class="ed mono" data-node="machine" value="${esc(n.machine||"")}" placeholder="e.g. dc1/host2/vm"></div>
+    </div>
+    <div class="lab" style="margin-top:6px">&nbsp;</div><button class="mini" data-act="autolayout" style="width:100%">auto-layout ⇄ (reset to left→right)</button>
+    <button class="mini" data-act="simsub" style="width:100%;margin-top:6px" title="simulate only this component's forward subgraph">▶ simulate this subgraph (partial)</button>
+    <button class="mini" data-act="seal" style="width:100%;margin-top:6px" title="encrypt internals; keep public specs for simulation">🔒 seal as classified black box</button>
+    <datalist id="tierlist">${(STATE.sys.tiers||[]).map(t=>`<option value="${esc(t)}">`).join("")}</datalist>
+    <div class="delta flat mono" style="margin-top:7px">sealed-frame capacity ≈ ${fmt(cap)} fps (${capLabel(n.layer)})</div>
+    <div class="delta flat" style="margin-top:3px">No single floor: COBOL ${fmt(LANG.cobol)} &lt; Python ${fmt(LANG.python)} &lt; C ${fmt(LANG.c)} &lt; Mojo ${fmt(LANG.mojo)} ops/s; no-native langs bridge via FFI.</div>`;
+  {const raw=L=> L==="c-native"?NATIVE.aead_seal_fps : L==="python-client"?TRANSPORT.bus : (LANG[L]||computeCeiling(L));
+   const cmp=LAYERS.map(L=>({key:L,label:L,val:raw(L)})).sort((a,b)=>b.val-a.val);
+   s+=`<div class="lab" style="margin-top:12px">compare impl layer · codec ops/s — full range (click to apply)</div>`
+     +barChart(cmp,n.layer||"python","layerpick")
+     +`<div class="delta flat" style="margin-top:3px">the C ring caps delivered frames at ${fmt(NATIVE.ring_copy)} fps regardless; a node is also bounded by its carrier + pipeline.</div>`;}
+
+  const pcN=processCost(n);
+  s+=`<div class="lab" style="margin-top:14px">internal process · ${pcN.steps} ops · Δ${pcN.delayUs}us · ceiling ${pcN.perMsgNs?fmt(1e9/pcN.perMsgNs):"—"} fps</div>`;
+  (n.process||[]).forEach((st,i)=>{
+    s+=`<div class="linkcard"><div class="three">
+      <div><div class="lab">op</div><input class="ed" data-proc="name" data-i="${i}" value="${esc(st.name||"")}"></div>
+      <div><div class="lab">ns/msg</div><input class="ed mono" type="number" min="0" data-proc="per_msg_ns" data-i="${i}" value="${st.per_msg_ns||0}"></div>
+      <div><div class="lab">delay us</div><input class="ed mono" type="number" min="0" data-proc="delay_us" data-i="${i}" value="${st.delay_us||0}"></div>
+    </div><button class="mini del" data-act="delproc" data-i="${i}" style="margin-top:6px">✕</button></div>`;
+  });
+  s+=`<button class="mini addbtn" data-act="addproc">+ operation</button>
+      <button class="mini" data-act="collapse" style="width:100%;margin-top:6px">${n.collapsed?"expand internals ▾":"collapse to black box ▸"}</button>`;
+  s+=`<div class="lab" style="margin-top:14px">crypto surfaces · ${STATE.scenario}</div>`;
+  (n.surfaces||[]).forEach((su,i)=>{
+    const r=resolve(su.role,su.protocol);
+    s+=`<div class="surface" data-si="${i}">
+      <div class="top">
+        <select class="ed" data-surf="role" data-i="${i}" style="width:auto">${opt(ROLES,su.role)}</select>
+        <select class="ed" data-surf="risk" data-i="${i}" style="width:auto">${opt(RISKS,su.risk)}</select>
+        <button class="mini ${su.keep_classical?'del':''}" data-act="togpq" data-i="${i}" title="toggle PQC upgrade vs keep classical (non-PQ)">${su.keep_classical?'non-PQ ⚠':'PQC'}</button>
+        <button class="mini del" data-act="delsurf" data-i="${i}" style="margin-left:auto">✕</button></div>
+      <div class="two">
+        <div><div class="lab">adapter</div><input class="ed mono" data-surf="protocol" data-i="${i}" value="${esc(su.protocol||"")}" placeholder="tls, dds, modbus…"></div>
+        <div><div class="lab">where</div><input class="ed" data-surf="where" data-i="${i}" value="${esc(su.where||"")}"></div>
+      </div>
+      <div class="lab">today (classical)</div><input class="ed mono" data-surf="today" data-i="${i}" value="${esc(su.today||"")}">
+      <div class="lab">risk rationale</div><input class="ed" data-surf="rationale" data-i="${i}" value="${esc(su.rationale||"")}">
+      ${tgt?`<div class="line" style="margin-top:6px"><b>robobus</b> <span class="arrow">→</span> <span style="color:${MODE_COL[r.mode]}">${r.mode} · phase ${r.phase}</span><br><span class="mono" style="color:${MODE_COL[r.mode]}">${r.mech}</span></div>`:``}
+    </div>`;
+  });
+  s+=`<button class="mini addbtn" data-act="addsurf">+ crypto surface</button>`;
+
+  s+=`<div class="lab" style="margin-top:14px">links (spokes)</div>`;
+  if(!links.length) s+=`<div class="delta flat">none — add one below</div>`;
+  links.forEach(({l,i})=>{
+    s+=`<div class="linkcard">
+      <div class="three">
+        <div><div class="lab">from</div><select class="ed" data-link="from" data-i="${i}">${opt(allNodes,l.from)}</select></div>
+        <div><div class="lab">to</div><select class="ed" data-link="to" data-i="${i}">${opt(allNodes,l.to)}</select></div>
+        <div><div class="lab">carrier</div><select class="ed" data-link="carrier" data-i="${i}">${opt(CARRIERS,l.carrier)}</select></div>
+      </div>
+      <div class="three" style="margin-top:6px">
+        <div><div class="lab">rate Hz</div><input class="ed mono" type="number" min="0" step="any" data-link="rate" data-i="${i}" value="${l.rate}"></div>
+        <div><div class="lab">payload B</div><input class="ed mono" type="number" min="0" data-link="payload" data-i="${i}" value="${l.payload}"></div>
+        <div><div class="lab">reconn/day</div><input class="ed mono" type="number" min="0" data-link="reconnect_per_day" data-i="${i}" value="${l.reconnect_per_day||24}"></div>
+      </div>
+      <div class="hrow" style="margin-top:6px;margin-bottom:0">
+        <select class="ed" data-link="fan" data-i="${i}">${opt(FANS,l.fan||"one_to_one")}</select>
+        <button class="mini del" data-act="dellink" data-i="${i}">✕</button></div>
+      <div class="delta ${l._util>0.8?'up':'flat'} mono" style="margin-top:4px">util ${(100*(l._util||0)).toFixed((l._util||0)<0.01?3:1)}% · load ${fmt(l._load||0)} fps</div>
+      <div class="lab" style="margin-top:6px">compare carrier · throughput (click to apply)</div>
+      ${barChart(CARRIERS.map(c=>({key:c,label:(LOCAL_CARRIERS.has(c)?"⌂ ":"")+c,val:TRANSPORT[c]})).sort((a,b)=>b.val-a.val),l.carrier,"carrierpick").replace(/data-carrierpick=/g,`data-li="${i}" data-carrierpick=`)}
+    </div>`;
+  });
+  s+=`<button class="mini addbtn" data-act="addlink">+ link from this node</button>`;
+  s+=`<div class="note">Values are yours to edit — every number recomputes the rollup live. Throughput,
+    ring &amp; codec figures are robobus's measured corpus (Apple M-series/arm64); PQC sizes are FIPS
+    203/204/205; cost is an editable estimate (${STATE.price}). Regimes compose (CNSA 2.0 also needs
+    FIPS-validated modules; CSfC = two layers).</div></div>`;
+  el.innerHTML=s;
+
+  // wire edits (change = commit on blur/enter, so typing never loses focus mid-keystroke)
+  const num=new Set(["count","rate","payload","reconnect_per_day","per_msg_ns","delay_us"]);
+  el.querySelectorAll("[data-node]").forEach(inp=>inp.addEventListener("change",()=>{
+    const f=inp.dataset.node, v=num.has(f)?(+inp.value||0):inp.value; commit("edit "+f);
+    if(f==="tier"&&v&&!(STATE.sys.tiers||[]).includes(v)) STATE.sys.tiers.push(v);
+    n[f]=v; renderAll();}));
+  el.querySelectorAll("[data-proc]").forEach(inp=>inp.addEventListener("change",()=>{ commit("edit process");
+    const f=inp.dataset.proc; (n.process=n.process||[])[+inp.dataset.i][f]=num.has(f)?(+inp.value||0):inp.value; renderAll();}));
+  el.querySelectorAll("[data-layerpick]").forEach(b=>b.addEventListener("click",()=>{commit("set impl layer");n.layer=b.dataset.layerpick;renderAll();}));
+  el.querySelectorAll("[data-carrierpick]").forEach(b=>b.addEventListener("click",()=>{commit("set carrier");
+    STATE.sys.links[+b.dataset.li].carrier=b.dataset.carrierpick;renderAll();}));
+  el.querySelectorAll("[data-surf]").forEach(inp=>inp.addEventListener("change",()=>{ commit("edit surface");
+    n.surfaces[+inp.dataset.i][inp.dataset.surf]=inp.value; renderAll();}));
+  el.querySelectorAll("[data-link]").forEach(inp=>inp.addEventListener("change",()=>{ commit("edit link");
+    const f=inp.dataset.link; STATE.sys.links[+inp.dataset.i][f]=num.has(f)?(+inp.value||0):inp.value; renderAll();}));
+  el.querySelectorAll("[data-act]").forEach(b=>b.addEventListener("click",()=>{
+    const a=b.dataset.act, i=+b.dataset.i;
+    if(a==="delnode")deleteNode(n.id);
+    else if(a==="addsurf")addSurface(n);
+    else if(a==="delsurf"){commit("delete surface");n.surfaces.splice(i,1);renderAll();}
+    else if(a==="togpq"){commit("toggle PQC");n.surfaces[i].keep_classical=!n.surfaces[i].keep_classical;renderAll();}
+    else if(a==="addlink")addLink(n.id);
+    else if(a==="dellink"){commit("delete link");STATE.sys.links.splice(i,1);renderAll();}
+    else if(a==="autolayout")autoLayout();
+    else if(a==="addproc"){commit("add process op");(n.process=n.process||[]).push({name:"op",per_msg_ns:100,delay_us:0});renderAll();}
+    else if(a==="delproc"){commit("delete process op");n.process.splice(i,1);renderAll();}
+    else if(a==="collapse"){commit("black-box");n.collapsed=!n.collapsed;renderAll();}
+    else if(a==="seal"){sealNode(n);}
+    else if(a==="wrapgroup"){wrapInGroup(n.id);}
+    else if(a==="simsub"){playSim(reachableFrom(n.id));}}));
+}
+
+function renderAll(){ renderRollup(); renderGraph(); renderInspector(); persist(); }
+
+/* ---- controls ---- */
+function initControls(){
+  const sysSel=document.getElementById("sysSel");
+  sysSel.innerHTML=SYSTEMS.map((s,i)=>`<option value="${i}">${s.title}</option>`).join("");
+  sysSel.addEventListener("change",()=>{stopSim();const ref=SYSTEMS[+sysSel.value];const saved=restoreSys(ref.id);
+    STATE.sys=clone(saved||ref);STATE.sel=null;VIEW.inited=false;renderAll();});
+  const pS=document.getElementById("priceSel");
+  pS.innerHTML=Object.keys(PRICING).map(k=>`<option>${k}</option>`).join("");
+  pS.addEventListener("change",()=>{STATE.price=pS.value;renderAll();});
+  const base=document.getElementById("scBase"), tgt=document.getElementById("scTgt");
+  function setSc(v){STATE.scenario=v;base.setAttribute("aria-pressed",v==="baseline");tgt.setAttribute("aria-pressed",v==="target");renderAll();}
+  base.onclick=()=>setSc("baseline"); tgt.onclick=()=>setSc("target");
+  document.getElementById("stdChips").addEventListener("click",e=>{const b=e.target.closest("button[data-std]");if(!b)return;
+    const std=b.dataset.std, on=b.getAttribute("aria-pressed")==="true";
+    if(on)STATE.standards.delete(std); else STATE.standards.add(std);
+    b.setAttribute("aria-pressed",String(!on)); renderAll();});
+  document.getElementById("addNode").onclick=addNode;
+  document.getElementById("simBtn").onclick=()=>playSim();
+  document.getElementById("undoBtn").onclick=undo;
+  document.getElementById("redoBtn").onclick=redo;
+  document.getElementById("histBtn").onclick=toggleHistPop;
+  document.getElementById("themeBtn").onclick=()=>{
+    const r=document.documentElement, cur=r.getAttribute("data-theme")==="light"?"dark":"light";
+    r.setAttribute("data-theme",cur);};
+  document.getElementById("expBtn").onclick=()=>{
+    const blob=new Blob([JSON.stringify({schema:"robobus-systems-model/1",system:STATE.sys},null,2)],{type:"application/json"});
+    const a=document.createElement("a");a.href=URL.createObjectURL(blob);a.download=STATE.sys.id+".robobus-system.json";a.click();};
+  const impFile=document.getElementById("impFile");
+  document.getElementById("impBtn").onclick=()=>impFile.click();
+  document.getElementById("clearBtn").onclick=clearAllSaved;
+  impFile.addEventListener("change",()=>{const f=impFile.files[0];if(!f)return;
+    const rd=new FileReader();rd.onload=()=>{try{const d=JSON.parse(rd.result);const sys=d.system||d;
+      if(!sys.nodes||!sys.tiers)throw 0; sys.title=sys.title||"imported"; SYSTEMS.push(sys);
+      const i=SYSTEMS.length-1; sysSel.innerHTML=SYSTEMS.map((s,j)=>`<option value="${j}">${s.title}</option>`).join("");
+      sysSel.value=i; STATE.sys=clone(sys); STATE.sel=null; VIEW.inited=false; renderAll();
+    }catch(e){alert("Not a valid robobus-systems-model JSON.");}};rd.readAsText(f);});
+}
+initControls();
+{ const saved=restoreSys(STATE.sys.id); if(saved) STATE.sys=clone(saved); }   // restore last edits (offline)
+_persistReady=true;
+renderAll(); initGraphInteractions();
+window.addEventListener("keydown",e=>{ const t=(e.target.tagName||"").toLowerCase();
+  if(t==="input"||t==="select"||t==="textarea") return;      // let native text editing handle keys in fields
+  const meta=e.metaKey||e.ctrlKey;
+  if(meta && (e.key==="z"||e.key==="Z")){ e.preventDefault(); if(e.shiftKey) redo(); else undo(); return; }
+  if(meta && (e.key==="y"||e.key==="Y")){ e.preventDefault(); redo(); return; }
+  if((e.key==="Delete"||e.key==="Backspace")&&STATE.sel){ e.preventDefault(); deleteNode(STATE.sel); }
+  if(e.key==="Escape"){ hideCtxMenu(); const p=document.getElementById("histPop"); if(p)p.style.display="none"; } });
+try{ probeHost();
+  if(HOST&&HOST.reliable&&HOST.jsOps){ LANG["this-browser"]=HOST.jsOps;     // only trust an un-clamped probe
+    if(!LAYERS.includes("this-browser")) LAYERS.splice(LAYERS.indexOf("python"),0,"this-browser"); }
+  renderAll(); }catch(e){}
+(function(){ const h=new URLSearchParams(location.hash.slice(1));   // shareable deep-link: #sys=telecom-5g&sel=ran&sc=target
+  if(h.get("sys")){const i=SYSTEMS.findIndex(s=>s.id===h.get("sys"));
+    if(i>=0){STATE.sys=clone(SYSTEMS[i]);VIEW.inited=false;const ss=document.getElementById("sysSel");if(ss)ss.value=i;}}
+  if(h.get("sc")==="target"){STATE.scenario="target";
+    document.getElementById("scBase").setAttribute("aria-pressed","false");
+    document.getElementById("scTgt").setAttribute("aria-pressed","true");}
+  if(h.get("sel")) STATE.sel=h.get("sel");
+  if(h.get("sys")||h.get("sel")||h.get("sc")) renderAll();
+  if(h.get("collapse")){ STATE.sys.collapsedGroups=(STATE.sys.collapsedGroups||[]).concat(h.get("collapse").split(",")); }
+  if(h.get("untangle")) untangle();                // shareable/testing: auto-arrange on load
+  if(h.get("sim")) setTimeout(playSim,200);       // shareable: #sim=1 auto-starts the simulation
+  if(h.get("selftest")) runSelfTest();            // in-page behavioural test (headless-verifiable via title)
+})();
+window.addEventListener("resize",()=>renderGraph());
+
+// in-page behavioural self-test: exercises the REAL page logic, reports via document.title so a
+// headless --dump-dom run can assert it. Not part of the normal UI.
+function runSelfTest(){
+  const fails=[]; const ok=(c,m)=>{ if(!c) fails.push(m); };
+  // 1) PQC resolution: role/protocol -> mode + phase
+  STATE.standards=new Set(["cnsa20"]);
+  ok(resolve("code-signing").mode==="sig-graft" && resolve("code-signing").phase===1, "sig-graft phase1");
+  ok(resolve("transit","tls").mode==="kex-graft" && resolve("transit","tls").phase===2, "kex-graft phase2");
+  ok(/ML-KEM-1024/.test(resolve("transit","tls").mech) && /browser/i.test(resolve("transit","tls").mech), "TLS kex-graft names both PQC-TLS tiers");
+  ok(resolve("at-rest").mode==="wrap" && resolve("at-rest").phase===3, "wrap phase3");
+  ok(resolve("transit","bgp").mode==="observe" && resolve("transit","bgp").phase===0, "observe transit");
+  ok(resolve("code-signing","dns").mode==="sig-graft", "DNSSEC signing stays sig-graft (not observe)");
+  ok(resolve("transit","dns").mode==="observe", "raw DNS transit is observe");
+  // 2) capacity model: c-native == AEAD ceiling; python is mid-pack < C; carrier caps effective cap
+  ok(nodeCapacity({layer:"c-native"})===NATIVE.aead_seal_fps, "c-native ceiling");
+  ok(computeCeiling("python")<computeCeiling("c") && computeCeiling("cobol")<computeCeiling("python"), "no single floor");
+  ok(nodeCapacity({layer:"c-native"},"redis")===TRANSPORT.redis, "wire caps compute");
+  // 3) undo/redo round-trip on a real edit
+  const before=STATE.sys.nodes[0].label; commit("t"); STATE.sys.nodes[0].label="__T__";
+  ok(HISTORY.undo.length>0, "history pushed"); undo(); ok(STATE.sys.nodes[0].label===before, "undo restores"); redo();
+  ok(STATE.sys.nodes[0].label==="__T__", "redo reapplies"); undo();
+  // 4) serial excludes transient underscore fields
+  STATE.sys.links[0]._util=0.9; ok(serial(STATE.sys).indexOf("_util")<0, "serial drops transient");
+  // 5) merged group collapse -> synthetic box + hidden members + rerouted link
+  const S=STATE.sys, g=S.nodes.find(n=>n.machine);
+  if(g){ const path=g.machine.split("/")[0]; S.collapsedGroups=[path]; const {DN,DL}=deriveDisplay();
+    ok(DN.some(n=>n._group===path), "collapse yields group box");
+    ok(!DN.some(n=>n.machine&&(n.machine===path||n.machine.startsWith(path+"/"))&&!n._group), "members hidden");
+    ok(!DL.some(l=>l.from&&l.from.indexOf&&false), "links aggregated"); S.collapsedGroups=[]; }
+  else fails.push("no group node to test collapse");
+  const passed=fails.length===0;
+  document.title = passed ? "SELFTEST PASS" : "SELFTEST FAIL: "+fails.join("; ");
+  return passed;
+}
+
+/* ===================================================================================
+   The reference-system library (exhaustive-ish; every surface names a real adapter).
+   =================================================================================== */
+function systemsLibrary(){
+ return [
+ { id:"robot-fleet", title:"Autonomous robot fleet", domain:"robotics",
+   tiers:["edge","robot","site","cloud","ops"],
+   nodes:[
+    {id:"robot",label:"Robot",kind:"system",zone:"onboard",tier:"robot",count:10000,layer:"cpp",surfaces:[
+      {role:"transit",protocol:"dds",risk:"medium",where:"onboard sensor/actuator bus (DDS)",today:"DDS-Security AES-GCM, RSA-2048 identity certs",rationale:"authentication is RSA/ECDSA — forgeable by a CRQC"},
+      {role:"transit",protocol:"dtls",risk:"high",where:"teleop / command link to site",today:"DTLS 1.3, X25519 + ECDSA-P256",rationale:"harvest-now-decrypt-later on long-lived control traffic"},
+      {role:"code-signing",protocol:"tpm2",risk:"high",where:"secure boot + firmware image",today:"ECDSA-P256 verified boot",rationale:"signature forgery lets an attacker flash malicious firmware — fix first (CNSA 2.0)"},
+      {role:"at-rest",protocol:null,risk:"medium",where:"onboard flight-recorder / logs",today:"AES-256 disk encryption, classical KEK",rationale:"exfiltrated ciphertext decryptable once the KEK wrap is broken"},
+      {role:"auth-device",protocol:null,risk:"high",where:"device identity certificate",today:"ECDSA-P256 client cert",rationale:"impersonation via forged device cert"}]},
+    {id:"sensors",label:"Sensor suite",kind:"sensor",zone:"edge",tier:"edge",count:80000,layer:"c",surfaces:[
+      {role:"transit",protocol:"can",risk:"low",where:"CAN / serial to onboard compute",today:"plaintext CAN frames",rationale:"no crypto today; recognized + sealed at the gateway"}]},
+    {id:"gw",label:"Site gateway",kind:"host",zone:"site",tier:"site",count:50,layer:"rust",surfaces:[
+      {role:"transit",protocol:"mqtt",risk:"high",where:"aggregates 200 robots → cloud",today:"MQTT over TLS 1.2, RSA-2048",rationale:"aggregation choke point; HNDL on all fleet telemetry"},
+      {role:"auth-device",protocol:null,risk:"high",where:"gateway mTLS identity",today:"RSA-2048 cert",rationale:"forgeable identity at a high-value aggregation node"},
+      {role:"at-rest",protocol:null,risk:"medium",where:"store-and-forward buffer",today:"AES-256, classical KEK",rationale:"buffered fleet data at rest"}]},
+    {id:"cloud",label:"Fleet cloud",kind:"host",zone:"cloud",tier:"cloud",count:1,layer:"go",machine:"fleet-dc",surfaces:[
+      {role:"transit",protocol:"kafka",risk:"high",where:"ingest of the whole fleet",today:"Kafka over TLS 1.3, X25519+RSA",rationale:"every byte of the fleet converges here — HNDL"},
+      {role:"at-rest",protocol:null,risk:"high",where:"long-term telemetry archive",today:"AES-256 at rest, classical KEK",rationale:"multi-year retention → long HNDL window"},
+      {role:"auth-user",protocol:null,risk:"high",where:"operator SSO / API auth",today:"OIDC + RSA-signed JWT",rationale:"token forgery via broken RSA"},
+      {role:"pki",protocol:null,risk:"high",where:"fleet certificate authority",today:"RSA-4096 root CA",rationale:"the whole trust root is quantum-vulnerable"},
+      {role:"kms",protocol:null,risk:"high",where:"key management / HSM",today:"classical key wrap",rationale:"key hierarchy root of trust"}]},
+    {id:"ota",label:"OTA build server",kind:"host",zone:"cloud",tier:"cloud",count:1,layer:"python",machine:"fleet-dc/build-vm",surfaces:[
+      {role:"code-signing",protocol:null,risk:"high",where:"OTA update signing",today:"ECDSA-P256 release signing",objects_per_day:50,rationale:"forged updates = fleet-wide compromise — sign first"}]},
+    {id:"op",label:"Operator console",kind:"host",zone:"ops",tier:"ops",count:20,layer:"typescript",surfaces:[
+      {role:"auth-user",protocol:"ssh",risk:"high",where:"operator SSH / admin",today:"SSH ed25519 + RSA",rationale:"admin access via forgeable keys"},
+      {role:"transit",protocol:"tls",risk:"medium",where:"dashboard TLS",today:"TLS 1.3 X25519",rationale:"HNDL on operator sessions"}]}],
+   links:[
+    {from:"sensors",to:"robot",carrier:"can",rate:200,payload:64,fan:"all_to_one",reconnect_per_day:1},
+    {from:"robot",to:"gw",carrier:"mqtt",rate:10,payload:512,fan:"all_to_one",reconnect_per_day:24},
+    {from:"gw",to:"cloud",carrier:"kafka",rate:2000,payload:1024,fan:"all_to_one",reconnect_per_day:2},
+    {from:"ota",to:"robot",carrier:"tcp",rate:0.01,payload:4096,fan:"one_to_one",reconnect_per_day:1},
+    {from:"ota",to:"cloud",carrier:"shm",rate:0.05,payload:8192,fan:"one_to_one",reconnect_per_day:1},
+    {from:"op",to:"cloud",carrier:"tls",rate:5,payload:256,fan:"all_to_one",reconnect_per_day:8},
+    {from:"cloud",to:"robot",carrier:"tls",rate:1,payload:128,fan:"broadcast",reconnect_per_day:24}]},
+
+ { id:"scada", title:"Industrial / SCADA plant", domain:"ics",
+   tiers:["field","plc","scada","hist","ent"],
+   nodes:[
+    {id:"field",label:"Field sensors",kind:"sensor",zone:"field",tier:"field",count:2000,layer:"c",surfaces:[
+      {role:"transit",protocol:"hartip",risk:"low",where:"Modbus / HART-IP to PLC",today:"plaintext Modbus/HART",rationale:"OT protocols carry no crypto — sealed by a robobus gateway"}]},
+    {id:"plc",label:"PLC",kind:"host",zone:"cell",tier:"plc",count:40,layer:"c-native",surfaces:[
+      {role:"transit",protocol:"opcua",risk:"medium",where:"S7comm / EtherNet-IP / OPC-UA",today:"OPC-UA Basic256Sha256, RSA certs",rationale:"RSA key exchange + certs vulnerable"},
+      {role:"code-signing",protocol:null,risk:"high",where:"PLC firmware",today:"vendor RSA-2048 signing",objects_per_day:2,rationale:"forged PLC firmware = physical-process compromise"},
+      {role:"at-rest",protocol:null,risk:"low",where:"local recipe/config",today:"AES-128",rationale:"local config store"}]},
+    {id:"scada",label:"SCADA / OPC-UA server",kind:"host",zone:"dmz",tier:"scada",count:2,layer:"csharp",machine:"control-room",
+     process:[{name:"deserialize",per_msg_ns:220,delay_us:0},{name:"validate tag",per_msg_ns:180,delay_us:0},{name:"seal (AES-GCM)",per_msg_ns:13,delay_us:0},{name:"serialize",per_msg_ns:200,delay_us:0},{name:"tx queue",per_msg_ns:0,delay_us:400}],surfaces:[
+      {role:"transit",protocol:"opcua",risk:"high",where:"supervisory OPC-UA",today:"OPC-UA, RSA-2048",rationale:"HNDL on process data + setpoints"},
+      {role:"auth-user",protocol:null,risk:"high",where:"engineer workstation auth",today:"AD / Kerberos RSA",rationale:"forgeable operator identity"}]},
+    {id:"hist",label:"Historian",kind:"host",zone:"dmz",tier:"hist",count:1,layer:"java",machine:"control-room/storage",surfaces:[
+      {role:"at-rest",protocol:null,risk:"high",where:"multi-year process historian",today:"AES-256, classical KEK",rationale:"decades of retention → long HNDL window"}]},
+    {id:"vpn",label:"Remote-access VPN",kind:"host",zone:"edge",tier:"ent",count:2,layer:"rust",surfaces:[
+      {role:"transit",protocol:"wireguard",risk:"high",where:"vendor / remote engineer access",today:"WireGuard Curve25519",rationale:"remote OT access — prime HNDL target"},
+      {role:"pki",protocol:null,risk:"high",where:"site PKI",today:"RSA CA",rationale:"trust root"}]}],
+   links:[
+    {from:"field",to:"plc",carrier:"serial",rate:50,payload:64,fan:"all_to_one",reconnect_per_day:1},
+    {from:"plc",to:"scada",carrier:"tcp",rate:100,payload:256,fan:"all_to_one",reconnect_per_day:4},
+    {from:"scada",to:"hist",carrier:"shm",rate:200,payload:512,fan:"all_to_one",reconnect_per_day:2},
+    {from:"vpn",to:"scada",carrier:"tcp",rate:5,payload:256,fan:"one_to_one",reconnect_per_day:12}]},
+
+ { id:"spacecraft", title:"Spacecraft ground segment", domain:"space",
+   tiers:["build","uplink","ground","ops","archive"],
+   nodes:[
+    {id:"build",label:"Flight-SW build/sign",kind:"host",zone:"secure",tier:"build",count:1,layer:"rust",surfaces:[
+      {role:"code-signing",protocol:null,risk:"high",where:"flight software image signing",today:"RSA-3072 / ECDSA-P384",objects_per_day:5,rationale:"a forged flight image is catastrophic — sign first (CNSA 2.0)"}]},
+    {id:"sat",label:"Spacecraft",kind:"system",zone:"orbit",tier:"uplink",count:6,layer:"c",surfaces:[
+      {role:"transit",protocol:"sdls",risk:"high",where:"TT&C uplink (CCSDS / SDLS)",today:"SDLS AES-GCM, classical key mgmt",rationale:"command link; HNDL + long mission lifetime"},
+      {role:"code-signing",protocol:null,risk:"high",where:"onboard boot/patch verify",today:"ECDSA-P384",rationale:"forged patch uplink"}]},
+    {id:"ground",label:"Ground station",kind:"host",zone:"ground",tier:"ground",count:3,layer:"cpp",surfaces:[
+      {role:"transit",protocol:"ipsec",risk:"high",where:"station ↔ mission-ops IPsec",today:"IKEv2, ECDH-P384",rationale:"HNDL on all TT&C"},
+      {role:"auth-device",protocol:null,risk:"high",where:"station identity",today:"ECDSA-P384 cert",rationale:"forgeable station identity"}]},
+    {id:"ops",label:"Mission ops net",kind:"host",zone:"ops",tier:"ops",count:1,layer:"go",surfaces:[
+      {role:"transit",protocol:"ssh",risk:"high",where:"operator SSH to ops systems",today:"SSH ed25519+RSA",rationale:"admin path"},
+      {role:"auth-user",protocol:null,risk:"high",where:"operator PKI",today:"smartcard RSA",rationale:"forgeable operator identity"},
+      {role:"kms",protocol:null,risk:"high",where:"mission key management",today:"classical HSM wrap",rationale:"key hierarchy root"}]},
+    {id:"arch",label:"Data archive",kind:"host",zone:"ops",tier:"archive",count:1,layer:"java",surfaces:[
+      {role:"at-rest",protocol:null,risk:"high",where:"science + telemetry archive",today:"AES-256, classical KEK",rationale:"permanent retention → indefinite HNDL window"}]}],
+   links:[
+    {from:"build",to:"sat",carrier:"tcp",rate:0.001,payload:4096,fan:"one_to_one",reconnect_per_day:1},
+    {from:"sat",to:"ground",carrier:"udp",rate:20,payload:1115,fan:"all_to_one",reconnect_per_day:6},
+    {from:"ground",to:"ops",carrier:"tcp",rate:50,payload:512,fan:"all_to_one",reconnect_per_day:2},
+    {from:"ops",to:"arch",carrier:"tcp",rate:100,payload:2048,fan:"one_to_one",reconnect_per_day:1}]},
+
+ { id:"automotive-v2x", title:"Connected vehicle fleet (V2X)", domain:"automotive",
+   tiers:["ecu","vehicle","edge","cloud"],
+   nodes:[
+    {id:"ecu",label:"ECU mesh",kind:"sensor",zone:"in-vehicle",tier:"ecu",count:160000000,layer:"c",surfaces:[
+      {role:"transit",protocol:"j1939",risk:"low",where:"in-vehicle CAN / J1939 bus",today:"plaintext CAN frames",rationale:"no crypto on the bus; recognized + sealed at the vehicle gateway"}]},
+    {id:"vehicle",label:"Vehicle",kind:"system",zone:"vehicle",tier:"vehicle",count:2000000,layer:"cpp",surfaces:[
+      {role:"transit",protocol:"someip",risk:"medium",where:"SOME/IP service bus (zonal)",today:"SOME/IP-SD, no message auth",rationale:"unauthenticated service discovery + RPC"},
+      {role:"code-signing",protocol:"uds",risk:"high",where:"ECU reflash over UDS",today:"vendor RSA-2048 signing",objects_per_day:1,rationale:"forged ECU firmware = safety compromise — sign first"},
+      {role:"transit",protocol:"tls",risk:"high",where:"telematics backend link",today:"TLS 1.3 X25519 + ECDSA-P256",rationale:"harvest-now-decrypt-later on connected-car traffic"},
+      {role:"auth-device",protocol:null,risk:"high",where:"vehicle identity certificate",today:"ECDSA-P256",rationale:"impersonation via forged vehicle cert"},
+      {role:"at-rest",protocol:null,risk:"medium",where:"event data recorder",today:"AES-256 classical KEK",rationale:"forensic data at rest"}]},
+    {id:"edge",label:"V2X roadside / edge",kind:"gateway",zone:"edge",tier:"edge",count:20000,layer:"rust",surfaces:[
+      {role:"transit",protocol:"dtls",risk:"high",where:"V2X (IEEE 1609.2) messaging",today:"DTLS + ECDSA 1609.2 certs",rationale:"HNDL + forgeable safety messages"},
+      {role:"auth-device",protocol:null,risk:"high",where:"1609.2 pseudonym certs",today:"ECDSA-P256",rationale:"forgeable roadside identity"}]},
+    {id:"acloud",label:"OEM cloud",kind:"host",zone:"cloud",tier:"cloud",count:1,layer:"go",surfaces:[
+      {role:"transit",protocol:"kafka",risk:"high",where:"fleet telemetry ingest",today:"Kafka TLS 1.3",rationale:"whole-fleet convergence — HNDL"},
+      {role:"at-rest",protocol:null,risk:"high",where:"connected-car data lake",today:"AES-256 classical KEK",rationale:"long-retention HNDL window"},
+      {role:"auth-user",protocol:null,risk:"high",where:"backend SSO",today:"OIDC RSA JWT",rationale:"token forgery"},
+      {role:"pki",protocol:null,risk:"high",where:"vehicle PKI / SCMS",today:"RSA/ECDSA CA",rationale:"trust root"},
+      {role:"kms",protocol:null,risk:"high",where:"key management / HSM",today:"classical wrap",rationale:"key hierarchy root"}]},
+    {id:"aota",label:"OTA campaign server",kind:"host",zone:"cloud",tier:"cloud",count:1,layer:"python",surfaces:[
+      {role:"code-signing",protocol:null,risk:"high",where:"OTA package signing (Uptane)",today:"ECDSA/RSA release signing",objects_per_day:20,rationale:"forged OTA = fleet-wide compromise"}]}],
+   links:[
+    {from:"ecu",to:"vehicle",carrier:"can",rate:500,payload:8,fan:"all_to_one",reconnect_per_day:1},
+    {from:"vehicle",to:"edge",carrier:"udp",rate:2,payload:300,fan:"all_to_one",reconnect_per_day:48},
+    {from:"edge",to:"acloud",carrier:"kafka",rate:5000,payload:512,fan:"all_to_one",reconnect_per_day:2},
+    {from:"vehicle",to:"acloud",carrier:"tcp",rate:0.1,payload:1024,fan:"all_to_one",reconnect_per_day:24},
+    {from:"aota",to:"vehicle",carrier:"tcp",rate:0.001,payload:4096,fan:"one_to_one",reconnect_per_day:1}]},
+
+ { id:"finance-rails", title:"Financial messaging rails", domain:"finance",
+   tiers:["endpoint","gateway","network","clearing","archive"],
+   nodes:[
+    {id:"fendp",label:"Trading / order endpoints",kind:"host",zone:"enterprise",tier:"endpoint",count:5000,layer:"java",surfaces:[
+      {role:"transit",protocol:"fix",risk:"high",where:"FIX order sessions",today:"FIXS over TLS 1.2, RSA-2048",rationale:"HNDL on order flow; RSA key exchange"},
+      {role:"auth-user",protocol:null,risk:"high",where:"trader authentication",today:"RSA-signed session",rationale:"forgeable trader identity"}]},
+    {id:"pgw",label:"Payment gateway",kind:"gateway",zone:"dmz",tier:"gateway",count:20,layer:"csharp",surfaces:[
+      {role:"transit",protocol:"iso8583",risk:"high",where:"card authorization network",today:"TLS + 3DES/RSA",rationale:"HNDL on payment auth"},
+      {role:"at-rest",protocol:null,risk:"high",where:"PAN / token vault",today:"AES-256 classical KEK",rationale:"cardholder data at rest"},
+      {role:"kms",protocol:null,risk:"high",where:"payment HSM",today:"classical key wrap",rationale:"key root of trust"}]},
+    {id:"fnet",label:"Interbank messaging",kind:"host",zone:"network",tier:"network",count:4,layer:"cpp",surfaces:[
+      {role:"transit",protocol:"swift_mt",risk:"high",where:"SWIFT MT/MX",today:"TLS + PKI over SWIFTNet",rationale:"HNDL on settlement instructions"},
+      {role:"transit",protocol:"iso20022",risk:"high",where:"ISO 20022 payments",today:"TLS 1.3",rationale:"HNDL on payment messages"},
+      {role:"auth-device",protocol:null,risk:"high",where:"BIC identity",today:"RSA PKI",rationale:"forgeable institution identity"}]},
+    {id:"clear",label:"Clearing & settlement",kind:"host",zone:"core",tier:"clearing",count:2,layer:"rust",surfaces:[
+      {role:"transit",protocol:"tls",risk:"high",where:"CCP / RTGS links",today:"TLS 1.3 X25519+RSA",rationale:"HNDL on settlement"},
+      {role:"pki",protocol:null,risk:"high",where:"settlement CA",today:"RSA-4096",rationale:"trust root"}]},
+    {id:"farch",label:"Regulated archive (WORM)",kind:"store",zone:"core",tier:"archive",count:1,layer:"go",surfaces:[
+      {role:"at-rest",protocol:null,risk:"high",where:"7-year regulated retention",today:"AES-256 classical KEK",rationale:"long HNDL window under retention mandates"},
+      {role:"code-signing",protocol:null,risk:"high",where:"WORM integrity seals",today:"RSA-2048 per-record",objects_per_day:100000,rationale:"forged integrity seals defeat non-repudiation"}]}],
+   links:[
+    {from:"fendp",to:"fnet",carrier:"tcp",rate:500,payload:256,fan:"all_to_one",reconnect_per_day:4},
+    {from:"pgw",to:"fnet",carrier:"tcp",rate:2000,payload:200,fan:"all_to_one",reconnect_per_day:2},
+    {from:"fnet",to:"clear",carrier:"amqp",rate:1000,payload:512,fan:"all_to_one",reconnect_per_day:1},
+    {from:"clear",to:"farch",carrier:"tcp",rate:500,payload:1024,fan:"one_to_one",reconnect_per_day:1}]},
+
+ { id:"telecom-5g", title:"Telecom 5G network", domain:"telecom",
+   tiers:["ran","transport","core","oss"],
+   nodes:[
+    {id:"ran",label:"5G RAN (gNodeB)",kind:"host",zone:"edge",tier:"ran",count:50000,layer:"cpp",surfaces:[
+      {role:"transit",protocol:"ipsec",risk:"high",where:"F1 / backhaul (IKEv2)",today:"IPsec IKEv2 ECDH-P256",rationale:"HNDL on all subscriber traffic"},
+      {role:"auth-device",protocol:null,risk:"high",where:"gNB identity",today:"ECDSA cert",rationale:"forgeable base-station identity"},
+      {role:"code-signing",protocol:null,risk:"high",where:"RAN firmware",today:"RSA-2048 signing",objects_per_day:1,rationale:"forged RAN firmware — sign first"}]},
+    {id:"xhaul",label:"Transport / fronthaul",kind:"gateway",zone:"metro",tier:"transport",count:2000,layer:"c-native",surfaces:[
+      {role:"transit",protocol:"macsec",risk:"high",where:"MACsec (802.1AE) links",today:"MKA, classical key agreement",rationale:"HNDL on aggregated transport"}]},
+    {id:"5gc",label:"5G core (SBA)",kind:"host",zone:"cloud",tier:"core",count:10,layer:"go",surfaces:[
+      {role:"transit",protocol:"tls",risk:"high",where:"SBI service mesh (NF↔NF)",today:"TLS 1.3 X25519",rationale:"HNDL on control plane"},
+      {role:"auth-user",protocol:null,risk:"high",where:"NF authentication (OAuth2)",today:"RSA-signed tokens",rationale:"NF impersonation via token forgery"},
+      {role:"at-rest",protocol:null,risk:"high",where:"subscriber DB (UDM/UDR)",today:"AES-256 classical KEK",rationale:"subscriber identity data at rest"},
+      {role:"kms",protocol:null,risk:"high",where:"core key management",today:"classical HSM wrap",rationale:"key hierarchy root"}]},
+    {id:"oss",label:"OSS/BSS + EMS",kind:"host",zone:"ops",tier:"oss",count:3,layer:"java",surfaces:[
+      {role:"transit",protocol:"netconf",risk:"high",where:"element management (NETCONF)",today:"NETCONF over SSH RSA",rationale:"forgeable management channel"},
+      {role:"transit",protocol:"ssh",risk:"high",where:"operator SSH",today:"SSH ed25519+RSA",rationale:"admin access"},
+      {role:"pki",protocol:null,risk:"high",where:"operator PKI",today:"RSA CA",rationale:"trust root"}]}],
+   links:[
+    {from:"ran",to:"xhaul",carrier:"udp",rate:100,payload:1200,fan:"all_to_one",reconnect_per_day:6},
+    {from:"xhaul",to:"5gc",carrier:"tcp",rate:10000,payload:1024,fan:"all_to_one",reconnect_per_day:1},
+    {from:"oss",to:"ran",carrier:"tcp",rate:1,payload:512,fan:"all_to_one",reconnect_per_day:12},
+    {from:"oss",to:"5gc",carrier:"tcp",rate:20,payload:512,fan:"one_to_one",reconnect_per_day:4}]},
+
+ { id:"avionics", title:"Avionics data-load & bus", domain:"avionics",
+   tiers:["lru","aircraft","ground","maint"],
+   nodes:[
+    {id:"lru",label:"LRUs / avionics units",kind:"sensor",zone:"aircraft",tier:"lru",count:5000,layer:"c",surfaces:[
+      {role:"transit",protocol:"arinc429",risk:"low",where:"ARINC 429 word bus",today:"A429 plaintext",rationale:"no crypto on the bus; sealed by an onboard gateway"},
+      {role:"transit",protocol:"arinc825",risk:"low",where:"ARINC 825 (CAN) bus",today:"plaintext CAN",rationale:"no crypto on the bus"}]},
+    {id:"tail",label:"Aircraft (tail)",kind:"system",zone:"aircraft",tier:"aircraft",count:20,layer:"c-native",surfaces:[
+      {role:"code-signing",protocol:"arinc615a",risk:"high",where:"loadable software (ARINC 665/615A)",today:"ECDSA per DO-326A/ED-202A",objects_per_day:1,rationale:"forged loadable software = airworthiness compromise — sign first"},
+      {role:"at-rest",protocol:null,risk:"medium",where:"FDR / CVR recorder",today:"AES-256",rationale:"flight-recorder data at rest"}]},
+    {id:"gload",label:"Ground data-load",kind:"host",zone:"ground",tier:"ground",count:5,layer:"rust",surfaces:[
+      {role:"code-signing",protocol:"arinc615a",risk:"high",where:"software part signing",today:"ECDSA-P384 (DO-326A)",objects_per_day:10,rationale:"the supply-chain root for loadable software"},
+      {role:"transit",protocol:"tls",risk:"high",where:"data-load uplink",today:"TLS 1.3",rationale:"HNDL on data-load channel"}]},
+    {id:"mro",label:"Maintenance / MRO",kind:"host",zone:"ops",tier:"maint",count:10,layer:"java",surfaces:[
+      {role:"transit",protocol:"ssh",risk:"high",where:"maintenance access",today:"SSH RSA",rationale:"admin access"},
+      {role:"auth-user",protocol:null,risk:"high",where:"technician auth",today:"smartcard RSA",rationale:"forgeable technician identity"},
+      {role:"pki",protocol:null,risk:"high",where:"airline PKI",today:"RSA CA",rationale:"trust root"}]}],
+   links:[
+    {from:"lru",to:"tail",carrier:"can",rate:100,payload:8,fan:"all_to_one",reconnect_per_day:1},
+    {from:"gload",to:"tail",carrier:"tcp",rate:0.001,payload:4096,fan:"all_to_one",reconnect_per_day:1},
+    {from:"mro",to:"gload",carrier:"tcp",rate:5,payload:512,fan:"all_to_one",reconnect_per_day:8}]},
+
+ { id:"tactical-c2", title:"Tactical C2 / defense", domain:"defense",
+   tiers:["radio","gateway","c2","satcom","partner"],
+   nodes:[
+    {id:"radio",label:"Tactical radios",kind:"sensor",zone:"field",tier:"radio",count:20000,layer:"c-native",surfaces:[
+      {role:"transit",protocol:"tdl",risk:"high",where:"tactical data link (Link-16/VMF)",today:"TRANSEC + classical COMSEC",rationale:"HNDL on mission traffic; long-lived key material"},
+      {role:"code-signing",protocol:null,risk:"high",where:"radio firmware",today:"ECDSA signing",objects_per_day:1,rationale:"forged radio firmware — sign first"},
+      {role:"kms",protocol:null,risk:"high",where:"crypto-ignition key (CIK)",today:"classical key fill",rationale:"key material root of trust"}]},
+    {id:"cgw",label:"Crypto gateway / CDS",kind:"gateway",zone:"tactical",tier:"gateway",count:100,layer:"rust",surfaces:[
+      {role:"transit",protocol:"ipsec",risk:"high",where:"enclave-to-enclave IPsec",today:"IKEv2 ECDH-P384",rationale:"HNDL across the tactical WAN"},
+      {role:"auth-device",protocol:null,risk:"high",where:"gateway identity",today:"ECDSA-P384",rationale:"forgeable enclave identity"}]},
+    {id:"c2",label:"C2 server",kind:"host",zone:"hq",tier:"c2",count:5,layer:"cpp",surfaces:[
+      {role:"transit",protocol:"cot",risk:"high",where:"Cursor-on-Target feeds",today:"TLS 1.3",rationale:"HNDL on the common operating picture"},
+      {role:"transit",protocol:"gmsec",risk:"high",where:"mission bus (GMSEC)",today:"TLS",rationale:"HNDL on mission messaging"},
+      {role:"at-rest",protocol:null,risk:"high",where:"mission data store",today:"AES-256 classical KEK",rationale:"classified data at rest"},
+      {role:"pki",protocol:null,risk:"high",where:"mission PKI",today:"RSA/ECDSA CA",rationale:"trust root"}]},
+    {id:"satcom",label:"SATCOM link",kind:"host",zone:"space",tier:"satcom",count:3,layer:"c",surfaces:[
+      {role:"transit",protocol:"sdls",risk:"high",where:"CCSDS SDLS uplink/downlink",today:"SDLS AES-GCM, classical key mgmt",rationale:"HNDL + long satellite lifetime"},
+      {role:"transit",protocol:"dvbs2x",risk:"medium",where:"DVB-S2X broadcast carrier",today:"scrambling only",rationale:"recognized + sealed where confidentiality is required"}]},
+    {id:"partner",label:"Coalition partner",kind:"host",zone:"partner",tier:"partner",count:4,layer:"go",surfaces:[
+      {role:"transit",protocol:"tls",risk:"high",where:"cross-domain coalition link",today:"TLS 1.3 X25519+RSA",rationale:"HNDL on shared intelligence"},
+      {role:"auth-device",protocol:null,risk:"high",where:"partner identity",today:"RSA PKI",rationale:"forgeable partner identity"}]}],
+   links:[
+    {from:"radio",to:"cgw",carrier:"udp",rate:50,payload:200,fan:"all_to_one",reconnect_per_day:6},
+    {from:"cgw",to:"c2",carrier:"tcp",rate:500,payload:512,fan:"all_to_one",reconnect_per_day:2},
+    {from:"c2",to:"satcom",carrier:"udp",rate:100,payload:1024,fan:"all_to_one",reconnect_per_day:4},
+    {from:"satcom",to:"partner",carrier:"tcp",rate:50,payload:512,fan:"one_to_one",reconnect_per_day:2}]}
+ ];
+}
+</script>
+</body>
+</html>
