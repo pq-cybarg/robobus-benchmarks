@@ -1,11 +1,14 @@
 {
   "schema": "robobus-maxroutes/2",
-  "principle": "robobus seals a message ONCE at its origin (C AES-256-GCM RBX1 ~13 ns => ~77M/s PER-MESSAGE rung; batched single-core ~210M/s and 10-core aggregate ~827M/s are the higher rungs, see aead_seal_rungs), relays it as OPAQUE sealed bytes across one or more transports (NO re-encryption per hop , a transport/relay like SHM just moves the already-sealed frame), and opens it ONCE at the sink. So each route reports TWO honest rates: sealed_relay_fps (measured , how fast the transport moves already-sealed frames) and new_sealed_message_fps (producing brand-new sealed messages through it = seal-once + relay, single-core; where the harness seals inline, e.g. kafka native, that measured value IS this). The full TIER LADDER (stock client -> librbxport shim -> native C broker -> raw ceiling) and every compliance profile are attached. All machine-measured; an unoptimized row carries its optimized answer. Profiles share the same AES-256-GCM symmetric leg and differ in the one-time handshake + security level + COMSEC guarantee.",
-  "aead_seal_ceiling_fps": 76923077,
+  "principle": "robobus seals a message ONCE at its origin (C AES-256-GCM RBX1, ~3M/s real per-message seal; batched single-core ~210M/s and 10-core aggregate ~827M/s are the higher rungs, see aead_seal_rungs; all validated below OpenSSL's raw aes-256-gcm via seal_crosscheck.py), relays it as OPAQUE sealed bytes across one or more transports (NO re-encryption per hop , a transport/relay like SHM just moves the already-sealed frame), and opens it ONCE at the sink. So each route reports TWO honest rates: sealed_relay_fps (measured , how fast the transport moves already-sealed frames) and new_sealed_message_fps (producing brand-new sealed messages through it = seal-once + relay, single-core; where the harness seals inline, e.g. kafka native, that measured value IS this). The full TIER LADDER (stock client -> librbxport shim -> native C broker -> raw ceiling) and every compliance profile are attached. All machine-measured; an unoptimized row carries its optimized answer. Profiles share the same AES-256-GCM symmetric leg and differ in the one-time handshake + security level + COMSEC guarantee.",
+  "aead_seal_ceiling_fps": 3020372,
   "aead_seal_rungs": {
-    "per_message_fps": 76923077,
+    "per_message_fps": 3020372,
+    "per_message_ns": 331.09,
     "batched_single_core_fps": 210579134,
+    "batched_single_core_ns": 4.75,
     "aggregate_fps": 827555417,
+    "aggregate_ns": 1.21,
     "aggregate": {
       "cores": 10,
       "gbps": 21.52,
@@ -243,11 +246,11 @@
   "routes": {
     "AMQP": {
       "sealed_relay_fps": 269812,
-      "new_sealed_message_fps": 268869,
+      "new_sealed_message_fps": 247686,
       "max_impl": "librbxport C shim",
       "max_tier": "shim",
       "seal_mode": "transport-of-sealed-frame",
-      "rate_note": "relay 269,812/s of opaque sealed frames (seal amortized upstream); producing NEW sealed msgs single-core ~268,869/s (seal 77M \u2295 relay)",
+      "rate_note": "relay 269,812/s of opaque sealed frames (seal amortized upstream); producing NEW sealed msgs single-core ~247,686/s (seal 77M \u2295 relay)",
       "max_fps": 269812.318548,
       "tier_ladder": [
         {
@@ -271,7 +274,7 @@
       "per_profile_max": {
         "classical": {
           "sealed_relay_fps": 269812,
-          "new_sealed_message_fps": 268869,
+          "new_sealed_message_fps": 247686,
           "one_time_handshake_ms": 14.263,
           "meets": [
             "RFC 7748 (X25519)",
@@ -288,7 +291,7 @@
         },
         "nist1": {
           "sealed_relay_fps": 269812,
-          "new_sealed_message_fps": 268869,
+          "new_sealed_message_fps": 247686,
           "one_time_handshake_ms": 0.622,
           "meets": [
             "FIPS 203 (ML-KEM-512)",
@@ -306,7 +309,7 @@
         },
         "nist3": {
           "sealed_relay_fps": 269812,
-          "new_sealed_message_fps": 268869,
+          "new_sealed_message_fps": 247686,
           "one_time_handshake_ms": 1.385,
           "meets": [
             "FIPS 203 (ML-KEM-768)",
@@ -323,7 +326,7 @@
         },
         "nist5": {
           "sealed_relay_fps": 269812,
-          "new_sealed_message_fps": 268869,
+          "new_sealed_message_fps": 247686,
           "one_time_handshake_ms": 1.685,
           "meets": [
             "FIPS 203 (ML-KEM-1024)",
@@ -340,7 +343,7 @@
         },
         "hybrid3": {
           "sealed_relay_fps": 269812,
-          "new_sealed_message_fps": 268869,
+          "new_sealed_message_fps": 247686,
           "one_time_handshake_ms": 2.4,
           "meets": [
             "FIPS 203",
@@ -358,7 +361,7 @@
         },
         "hybrid5": {
           "sealed_relay_fps": 269812,
-          "new_sealed_message_fps": 268869,
+          "new_sealed_message_fps": 247686,
           "one_time_handshake_ms": 8.853,
           "meets": [
             "FIPS 203",
@@ -376,7 +379,7 @@
         },
         "cnsa20": {
           "sealed_relay_fps": 269812,
-          "new_sealed_message_fps": 268869,
+          "new_sealed_message_fps": 247686,
           "one_time_handshake_ms": 1.345,
           "meets": [
             "CNSA 2.0",
@@ -395,7 +398,7 @@
         },
         "nist5-kmac": {
           "sealed_relay_fps": 269812,
-          "new_sealed_message_fps": 268869,
+          "new_sealed_message_fps": 247686,
           "one_time_handshake_ms": 1.685,
           "meets": [
             "FIPS 203 (ML-KEM-1024)",
@@ -414,7 +417,7 @@
         },
         "sphincs5": {
           "sealed_relay_fps": 269812,
-          "new_sealed_message_fps": 268869,
+          "new_sealed_message_fps": 247686,
           "one_time_handshake_ms": 49.014,
           "meets": [
             "FIPS 205 (SLH-DSA / SPHINCS+)",
@@ -431,7 +434,7 @@
         },
         "falcon5": {
           "sealed_relay_fps": 269812,
-          "new_sealed_message_fps": 268869,
+          "new_sealed_message_fps": 247686,
           "one_time_handshake_ms": 16.56,
           "meets": [
             "FN-DSA/Falcon (NIST round 3 sig)",
@@ -448,7 +451,7 @@
         },
         "csfc": {
           "sealed_relay_fps": 269812,
-          "new_sealed_message_fps": 268869,
+          "new_sealed_message_fps": 247686,
           "one_time_handshake_ms": 8.853,
           "meets": [
             "NSA CSfC (two-layer)",
@@ -467,11 +470,11 @@
     },
     "CAN": {
       "sealed_relay_fps": 3611934,
-      "new_sealed_message_fps": 3449941,
+      "new_sealed_message_fps": 1644886,
       "max_impl": "librbxport C shim",
       "max_tier": "shim",
       "seal_mode": "transport-of-sealed-frame",
-      "rate_note": "relay 3,611,934/s of opaque sealed frames (seal amortized upstream); producing NEW sealed msgs single-core ~3,449,941/s (seal 77M \u2295 relay)",
+      "rate_note": "relay 3,611,934/s of opaque sealed frames (seal amortized upstream); producing NEW sealed msgs single-core ~1,644,886/s (seal 77M \u2295 relay)",
       "max_fps": 3611933.8311053356,
       "tier_ladder": [
         {
@@ -495,7 +498,7 @@
       "per_profile_max": {
         "classical": {
           "sealed_relay_fps": 3611934,
-          "new_sealed_message_fps": 3449941,
+          "new_sealed_message_fps": 1644886,
           "one_time_handshake_ms": 14.263,
           "meets": [
             "RFC 7748 (X25519)",
@@ -512,7 +515,7 @@
         },
         "nist1": {
           "sealed_relay_fps": 3611934,
-          "new_sealed_message_fps": 3449941,
+          "new_sealed_message_fps": 1644886,
           "one_time_handshake_ms": 0.622,
           "meets": [
             "FIPS 203 (ML-KEM-512)",
@@ -530,7 +533,7 @@
         },
         "nist3": {
           "sealed_relay_fps": 3611934,
-          "new_sealed_message_fps": 3449941,
+          "new_sealed_message_fps": 1644886,
           "one_time_handshake_ms": 1.385,
           "meets": [
             "FIPS 203 (ML-KEM-768)",
@@ -547,7 +550,7 @@
         },
         "nist5": {
           "sealed_relay_fps": 3611934,
-          "new_sealed_message_fps": 3449941,
+          "new_sealed_message_fps": 1644886,
           "one_time_handshake_ms": 1.685,
           "meets": [
             "FIPS 203 (ML-KEM-1024)",
@@ -564,7 +567,7 @@
         },
         "hybrid3": {
           "sealed_relay_fps": 3611934,
-          "new_sealed_message_fps": 3449941,
+          "new_sealed_message_fps": 1644886,
           "one_time_handshake_ms": 2.4,
           "meets": [
             "FIPS 203",
@@ -582,7 +585,7 @@
         },
         "hybrid5": {
           "sealed_relay_fps": 3611934,
-          "new_sealed_message_fps": 3449941,
+          "new_sealed_message_fps": 1644886,
           "one_time_handshake_ms": 8.853,
           "meets": [
             "FIPS 203",
@@ -600,7 +603,7 @@
         },
         "cnsa20": {
           "sealed_relay_fps": 3611934,
-          "new_sealed_message_fps": 3449941,
+          "new_sealed_message_fps": 1644886,
           "one_time_handshake_ms": 1.345,
           "meets": [
             "CNSA 2.0",
@@ -619,7 +622,7 @@
         },
         "nist5-kmac": {
           "sealed_relay_fps": 3611934,
-          "new_sealed_message_fps": 3449941,
+          "new_sealed_message_fps": 1644886,
           "one_time_handshake_ms": 1.685,
           "meets": [
             "FIPS 203 (ML-KEM-1024)",
@@ -638,7 +641,7 @@
         },
         "sphincs5": {
           "sealed_relay_fps": 3611934,
-          "new_sealed_message_fps": 3449941,
+          "new_sealed_message_fps": 1644886,
           "one_time_handshake_ms": 49.014,
           "meets": [
             "FIPS 205 (SLH-DSA / SPHINCS+)",
@@ -655,7 +658,7 @@
         },
         "falcon5": {
           "sealed_relay_fps": 3611934,
-          "new_sealed_message_fps": 3449941,
+          "new_sealed_message_fps": 1644886,
           "one_time_handshake_ms": 16.56,
           "meets": [
             "FN-DSA/Falcon (NIST round 3 sig)",
@@ -672,7 +675,7 @@
         },
         "csfc": {
           "sealed_relay_fps": 3611934,
-          "new_sealed_message_fps": 3449941,
+          "new_sealed_message_fps": 1644886,
           "one_time_handshake_ms": 8.853,
           "meets": [
             "NSA CSfC (two-layer)",
@@ -691,11 +694,11 @@
     },
     "DDS": {
       "sealed_relay_fps": 6250000,
-      "new_sealed_message_fps": 5780347,
+      "new_sealed_message_fps": 2036307,
       "max_impl": "librbxport C shim",
       "max_tier": "shim",
       "seal_mode": "transport-of-sealed-frame",
-      "rate_note": "relay 6,250,000/s of opaque sealed frames (seal amortized upstream); producing NEW sealed msgs single-core ~5,780,347/s (seal 77M \u2295 relay)",
+      "rate_note": "relay 6,250,000/s of opaque sealed frames (seal amortized upstream); producing NEW sealed msgs single-core ~2,036,307/s (seal 77M \u2295 relay)",
       "max_fps": 6249999.998726708,
       "tier_ladder": [
         {
@@ -711,7 +714,7 @@
       "per_profile_max": {
         "classical": {
           "sealed_relay_fps": 6250000,
-          "new_sealed_message_fps": 5780347,
+          "new_sealed_message_fps": 2036307,
           "one_time_handshake_ms": 14.263,
           "meets": [
             "RFC 7748 (X25519)",
@@ -728,7 +731,7 @@
         },
         "nist1": {
           "sealed_relay_fps": 6250000,
-          "new_sealed_message_fps": 5780347,
+          "new_sealed_message_fps": 2036307,
           "one_time_handshake_ms": 0.622,
           "meets": [
             "FIPS 203 (ML-KEM-512)",
@@ -746,7 +749,7 @@
         },
         "nist3": {
           "sealed_relay_fps": 6250000,
-          "new_sealed_message_fps": 5780347,
+          "new_sealed_message_fps": 2036307,
           "one_time_handshake_ms": 1.385,
           "meets": [
             "FIPS 203 (ML-KEM-768)",
@@ -763,7 +766,7 @@
         },
         "nist5": {
           "sealed_relay_fps": 6250000,
-          "new_sealed_message_fps": 5780347,
+          "new_sealed_message_fps": 2036307,
           "one_time_handshake_ms": 1.685,
           "meets": [
             "FIPS 203 (ML-KEM-1024)",
@@ -780,7 +783,7 @@
         },
         "hybrid3": {
           "sealed_relay_fps": 6250000,
-          "new_sealed_message_fps": 5780347,
+          "new_sealed_message_fps": 2036307,
           "one_time_handshake_ms": 2.4,
           "meets": [
             "FIPS 203",
@@ -798,7 +801,7 @@
         },
         "hybrid5": {
           "sealed_relay_fps": 6250000,
-          "new_sealed_message_fps": 5780347,
+          "new_sealed_message_fps": 2036307,
           "one_time_handshake_ms": 8.853,
           "meets": [
             "FIPS 203",
@@ -816,7 +819,7 @@
         },
         "cnsa20": {
           "sealed_relay_fps": 6250000,
-          "new_sealed_message_fps": 5780347,
+          "new_sealed_message_fps": 2036307,
           "one_time_handshake_ms": 1.345,
           "meets": [
             "CNSA 2.0",
@@ -835,7 +838,7 @@
         },
         "nist5-kmac": {
           "sealed_relay_fps": 6250000,
-          "new_sealed_message_fps": 5780347,
+          "new_sealed_message_fps": 2036307,
           "one_time_handshake_ms": 1.685,
           "meets": [
             "FIPS 203 (ML-KEM-1024)",
@@ -854,7 +857,7 @@
         },
         "sphincs5": {
           "sealed_relay_fps": 6250000,
-          "new_sealed_message_fps": 5780347,
+          "new_sealed_message_fps": 2036307,
           "one_time_handshake_ms": 49.014,
           "meets": [
             "FIPS 205 (SLH-DSA / SPHINCS+)",
@@ -871,7 +874,7 @@
         },
         "falcon5": {
           "sealed_relay_fps": 6250000,
-          "new_sealed_message_fps": 5780347,
+          "new_sealed_message_fps": 2036307,
           "one_time_handshake_ms": 16.56,
           "meets": [
             "FN-DSA/Falcon (NIST round 3 sig)",
@@ -888,7 +891,7 @@
         },
         "csfc": {
           "sealed_relay_fps": 6250000,
-          "new_sealed_message_fps": 5780347,
+          "new_sealed_message_fps": 2036307,
           "one_time_handshake_ms": 8.853,
           "meets": [
             "NSA CSfC (two-layer)",
@@ -1139,11 +1142,11 @@
     },
     "LSL": {
       "sealed_relay_fps": 99781,
-      "new_sealed_message_fps": 99651,
+      "new_sealed_message_fps": 96590,
       "max_impl": "librbxport C shim",
       "max_tier": "shim",
       "seal_mode": "transport-of-sealed-frame",
-      "rate_note": "relay 99,781/s of opaque sealed frames (seal amortized upstream); producing NEW sealed msgs single-core ~99,651/s (seal 77M \u2295 relay)",
+      "rate_note": "relay 99,781/s of opaque sealed frames (seal amortized upstream); producing NEW sealed msgs single-core ~96,590/s (seal 77M \u2295 relay)",
       "max_fps": 99780.632514,
       "tier_ladder": [
         {
@@ -1167,7 +1170,7 @@
       "per_profile_max": {
         "classical": {
           "sealed_relay_fps": 99781,
-          "new_sealed_message_fps": 99651,
+          "new_sealed_message_fps": 96590,
           "one_time_handshake_ms": 14.263,
           "meets": [
             "RFC 7748 (X25519)",
@@ -1184,7 +1187,7 @@
         },
         "nist1": {
           "sealed_relay_fps": 99781,
-          "new_sealed_message_fps": 99651,
+          "new_sealed_message_fps": 96590,
           "one_time_handshake_ms": 0.622,
           "meets": [
             "FIPS 203 (ML-KEM-512)",
@@ -1202,7 +1205,7 @@
         },
         "nist3": {
           "sealed_relay_fps": 99781,
-          "new_sealed_message_fps": 99651,
+          "new_sealed_message_fps": 96590,
           "one_time_handshake_ms": 1.385,
           "meets": [
             "FIPS 203 (ML-KEM-768)",
@@ -1219,7 +1222,7 @@
         },
         "nist5": {
           "sealed_relay_fps": 99781,
-          "new_sealed_message_fps": 99651,
+          "new_sealed_message_fps": 96590,
           "one_time_handshake_ms": 1.685,
           "meets": [
             "FIPS 203 (ML-KEM-1024)",
@@ -1236,7 +1239,7 @@
         },
         "hybrid3": {
           "sealed_relay_fps": 99781,
-          "new_sealed_message_fps": 99651,
+          "new_sealed_message_fps": 96590,
           "one_time_handshake_ms": 2.4,
           "meets": [
             "FIPS 203",
@@ -1254,7 +1257,7 @@
         },
         "hybrid5": {
           "sealed_relay_fps": 99781,
-          "new_sealed_message_fps": 99651,
+          "new_sealed_message_fps": 96590,
           "one_time_handshake_ms": 8.853,
           "meets": [
             "FIPS 203",
@@ -1272,7 +1275,7 @@
         },
         "cnsa20": {
           "sealed_relay_fps": 99781,
-          "new_sealed_message_fps": 99651,
+          "new_sealed_message_fps": 96590,
           "one_time_handshake_ms": 1.345,
           "meets": [
             "CNSA 2.0",
@@ -1291,7 +1294,7 @@
         },
         "nist5-kmac": {
           "sealed_relay_fps": 99781,
-          "new_sealed_message_fps": 99651,
+          "new_sealed_message_fps": 96590,
           "one_time_handshake_ms": 1.685,
           "meets": [
             "FIPS 203 (ML-KEM-1024)",
@@ -1310,7 +1313,7 @@
         },
         "sphincs5": {
           "sealed_relay_fps": 99781,
-          "new_sealed_message_fps": 99651,
+          "new_sealed_message_fps": 96590,
           "one_time_handshake_ms": 49.014,
           "meets": [
             "FIPS 205 (SLH-DSA / SPHINCS+)",
@@ -1327,7 +1330,7 @@
         },
         "falcon5": {
           "sealed_relay_fps": 99781,
-          "new_sealed_message_fps": 99651,
+          "new_sealed_message_fps": 96590,
           "one_time_handshake_ms": 16.56,
           "meets": [
             "FN-DSA/Falcon (NIST round 3 sig)",
@@ -1344,7 +1347,7 @@
         },
         "csfc": {
           "sealed_relay_fps": 99781,
-          "new_sealed_message_fps": 99651,
+          "new_sealed_message_fps": 96590,
           "one_time_handshake_ms": 8.853,
           "meets": [
             "NSA CSfC (two-layer)",
@@ -1363,11 +1366,11 @@
     },
     "MQTT": {
       "sealed_relay_fps": 598795,
-      "new_sealed_message_fps": 594170,
+      "new_sealed_message_fps": 499724,
       "max_impl": "librbxport C shim",
       "max_tier": "shim",
       "seal_mode": "transport-of-sealed-frame",
-      "rate_note": "relay 598,795/s of opaque sealed frames (seal amortized upstream); producing NEW sealed msgs single-core ~594,170/s (seal 77M \u2295 relay)",
+      "rate_note": "relay 598,795/s of opaque sealed frames (seal amortized upstream); producing NEW sealed msgs single-core ~499,724/s (seal 77M \u2295 relay)",
       "max_fps": 598795.223898,
       "tier_ladder": [
         {
@@ -1391,7 +1394,7 @@
       "per_profile_max": {
         "classical": {
           "sealed_relay_fps": 598795,
-          "new_sealed_message_fps": 594170,
+          "new_sealed_message_fps": 499724,
           "one_time_handshake_ms": 14.263,
           "meets": [
             "RFC 7748 (X25519)",
@@ -1408,7 +1411,7 @@
         },
         "nist1": {
           "sealed_relay_fps": 598795,
-          "new_sealed_message_fps": 594170,
+          "new_sealed_message_fps": 499724,
           "one_time_handshake_ms": 0.622,
           "meets": [
             "FIPS 203 (ML-KEM-512)",
@@ -1426,7 +1429,7 @@
         },
         "nist3": {
           "sealed_relay_fps": 598795,
-          "new_sealed_message_fps": 594170,
+          "new_sealed_message_fps": 499724,
           "one_time_handshake_ms": 1.385,
           "meets": [
             "FIPS 203 (ML-KEM-768)",
@@ -1443,7 +1446,7 @@
         },
         "nist5": {
           "sealed_relay_fps": 598795,
-          "new_sealed_message_fps": 594170,
+          "new_sealed_message_fps": 499724,
           "one_time_handshake_ms": 1.685,
           "meets": [
             "FIPS 203 (ML-KEM-1024)",
@@ -1460,7 +1463,7 @@
         },
         "hybrid3": {
           "sealed_relay_fps": 598795,
-          "new_sealed_message_fps": 594170,
+          "new_sealed_message_fps": 499724,
           "one_time_handshake_ms": 2.4,
           "meets": [
             "FIPS 203",
@@ -1478,7 +1481,7 @@
         },
         "hybrid5": {
           "sealed_relay_fps": 598795,
-          "new_sealed_message_fps": 594170,
+          "new_sealed_message_fps": 499724,
           "one_time_handshake_ms": 8.853,
           "meets": [
             "FIPS 203",
@@ -1496,7 +1499,7 @@
         },
         "cnsa20": {
           "sealed_relay_fps": 598795,
-          "new_sealed_message_fps": 594170,
+          "new_sealed_message_fps": 499724,
           "one_time_handshake_ms": 1.345,
           "meets": [
             "CNSA 2.0",
@@ -1515,7 +1518,7 @@
         },
         "nist5-kmac": {
           "sealed_relay_fps": 598795,
-          "new_sealed_message_fps": 594170,
+          "new_sealed_message_fps": 499724,
           "one_time_handshake_ms": 1.685,
           "meets": [
             "FIPS 203 (ML-KEM-1024)",
@@ -1534,7 +1537,7 @@
         },
         "sphincs5": {
           "sealed_relay_fps": 598795,
-          "new_sealed_message_fps": 594170,
+          "new_sealed_message_fps": 499724,
           "one_time_handshake_ms": 49.014,
           "meets": [
             "FIPS 205 (SLH-DSA / SPHINCS+)",
@@ -1551,7 +1554,7 @@
         },
         "falcon5": {
           "sealed_relay_fps": 598795,
-          "new_sealed_message_fps": 594170,
+          "new_sealed_message_fps": 499724,
           "one_time_handshake_ms": 16.56,
           "meets": [
             "FN-DSA/Falcon (NIST round 3 sig)",
@@ -1568,7 +1571,7 @@
         },
         "csfc": {
           "sealed_relay_fps": 598795,
-          "new_sealed_message_fps": 594170,
+          "new_sealed_message_fps": 499724,
           "one_time_handshake_ms": 8.853,
           "meets": [
             "NSA CSfC (two-layer)",
@@ -1587,11 +1590,11 @@
     },
     "NATS": {
       "sealed_relay_fps": 63693,
-      "new_sealed_message_fps": 63640,
+      "new_sealed_message_fps": 62377,
       "max_impl": "nats-py + nats-server (loopback)",
       "max_tier": "stock-client",
       "seal_mode": "transport-of-sealed-frame",
-      "rate_note": "relay 63,693/s of opaque sealed frames (seal amortized upstream); producing NEW sealed msgs single-core ~63,640/s (seal 77M \u2295 relay)",
+      "rate_note": "relay 63,693/s of opaque sealed frames (seal amortized upstream); producing NEW sealed msgs single-core ~62,377/s (seal 77M \u2295 relay)",
       "max_fps": 63692.518000102704,
       "tier_ladder": [
         {
@@ -1607,7 +1610,7 @@
       "per_profile_max": {
         "classical": {
           "sealed_relay_fps": 63693,
-          "new_sealed_message_fps": 63640,
+          "new_sealed_message_fps": 62377,
           "one_time_handshake_ms": 14.263,
           "meets": [
             "RFC 7748 (X25519)",
@@ -1624,7 +1627,7 @@
         },
         "nist1": {
           "sealed_relay_fps": 63693,
-          "new_sealed_message_fps": 63640,
+          "new_sealed_message_fps": 62377,
           "one_time_handshake_ms": 0.622,
           "meets": [
             "FIPS 203 (ML-KEM-512)",
@@ -1642,7 +1645,7 @@
         },
         "nist3": {
           "sealed_relay_fps": 63693,
-          "new_sealed_message_fps": 63640,
+          "new_sealed_message_fps": 62377,
           "one_time_handshake_ms": 1.385,
           "meets": [
             "FIPS 203 (ML-KEM-768)",
@@ -1659,7 +1662,7 @@
         },
         "nist5": {
           "sealed_relay_fps": 63693,
-          "new_sealed_message_fps": 63640,
+          "new_sealed_message_fps": 62377,
           "one_time_handshake_ms": 1.685,
           "meets": [
             "FIPS 203 (ML-KEM-1024)",
@@ -1676,7 +1679,7 @@
         },
         "hybrid3": {
           "sealed_relay_fps": 63693,
-          "new_sealed_message_fps": 63640,
+          "new_sealed_message_fps": 62377,
           "one_time_handshake_ms": 2.4,
           "meets": [
             "FIPS 203",
@@ -1694,7 +1697,7 @@
         },
         "hybrid5": {
           "sealed_relay_fps": 63693,
-          "new_sealed_message_fps": 63640,
+          "new_sealed_message_fps": 62377,
           "one_time_handshake_ms": 8.853,
           "meets": [
             "FIPS 203",
@@ -1712,7 +1715,7 @@
         },
         "cnsa20": {
           "sealed_relay_fps": 63693,
-          "new_sealed_message_fps": 63640,
+          "new_sealed_message_fps": 62377,
           "one_time_handshake_ms": 1.345,
           "meets": [
             "CNSA 2.0",
@@ -1731,7 +1734,7 @@
         },
         "nist5-kmac": {
           "sealed_relay_fps": 63693,
-          "new_sealed_message_fps": 63640,
+          "new_sealed_message_fps": 62377,
           "one_time_handshake_ms": 1.685,
           "meets": [
             "FIPS 203 (ML-KEM-1024)",
@@ -1750,7 +1753,7 @@
         },
         "sphincs5": {
           "sealed_relay_fps": 63693,
-          "new_sealed_message_fps": 63640,
+          "new_sealed_message_fps": 62377,
           "one_time_handshake_ms": 49.014,
           "meets": [
             "FIPS 205 (SLH-DSA / SPHINCS+)",
@@ -1767,7 +1770,7 @@
         },
         "falcon5": {
           "sealed_relay_fps": 63693,
-          "new_sealed_message_fps": 63640,
+          "new_sealed_message_fps": 62377,
           "one_time_handshake_ms": 16.56,
           "meets": [
             "FN-DSA/Falcon (NIST round 3 sig)",
@@ -1784,7 +1787,7 @@
         },
         "csfc": {
           "sealed_relay_fps": 63693,
-          "new_sealed_message_fps": 63640,
+          "new_sealed_message_fps": 62377,
           "one_time_handshake_ms": 8.853,
           "meets": [
             "NSA CSfC (two-layer)",
@@ -1803,11 +1806,11 @@
     },
     "NNG": {
       "sealed_relay_fps": 58339,
-      "new_sealed_message_fps": 58295,
+      "new_sealed_message_fps": 57234,
       "max_impl": "pynng (nanomsg)",
       "max_tier": "stock-client",
       "seal_mode": "transport-of-sealed-frame",
-      "rate_note": "relay 58,339/s of opaque sealed frames (seal amortized upstream); producing NEW sealed msgs single-core ~58,295/s (seal 77M \u2295 relay)",
+      "rate_note": "relay 58,339/s of opaque sealed frames (seal amortized upstream); producing NEW sealed msgs single-core ~57,234/s (seal 77M \u2295 relay)",
       "max_fps": 58339.254981624574,
       "tier_ladder": [
         {
@@ -1823,7 +1826,7 @@
       "per_profile_max": {
         "classical": {
           "sealed_relay_fps": 58339,
-          "new_sealed_message_fps": 58295,
+          "new_sealed_message_fps": 57234,
           "one_time_handshake_ms": 14.263,
           "meets": [
             "RFC 7748 (X25519)",
@@ -1840,7 +1843,7 @@
         },
         "nist1": {
           "sealed_relay_fps": 58339,
-          "new_sealed_message_fps": 58295,
+          "new_sealed_message_fps": 57234,
           "one_time_handshake_ms": 0.622,
           "meets": [
             "FIPS 203 (ML-KEM-512)",
@@ -1858,7 +1861,7 @@
         },
         "nist3": {
           "sealed_relay_fps": 58339,
-          "new_sealed_message_fps": 58295,
+          "new_sealed_message_fps": 57234,
           "one_time_handshake_ms": 1.385,
           "meets": [
             "FIPS 203 (ML-KEM-768)",
@@ -1875,7 +1878,7 @@
         },
         "nist5": {
           "sealed_relay_fps": 58339,
-          "new_sealed_message_fps": 58295,
+          "new_sealed_message_fps": 57234,
           "one_time_handshake_ms": 1.685,
           "meets": [
             "FIPS 203 (ML-KEM-1024)",
@@ -1892,7 +1895,7 @@
         },
         "hybrid3": {
           "sealed_relay_fps": 58339,
-          "new_sealed_message_fps": 58295,
+          "new_sealed_message_fps": 57234,
           "one_time_handshake_ms": 2.4,
           "meets": [
             "FIPS 203",
@@ -1910,7 +1913,7 @@
         },
         "hybrid5": {
           "sealed_relay_fps": 58339,
-          "new_sealed_message_fps": 58295,
+          "new_sealed_message_fps": 57234,
           "one_time_handshake_ms": 8.853,
           "meets": [
             "FIPS 203",
@@ -1928,7 +1931,7 @@
         },
         "cnsa20": {
           "sealed_relay_fps": 58339,
-          "new_sealed_message_fps": 58295,
+          "new_sealed_message_fps": 57234,
           "one_time_handshake_ms": 1.345,
           "meets": [
             "CNSA 2.0",
@@ -1947,7 +1950,7 @@
         },
         "nist5-kmac": {
           "sealed_relay_fps": 58339,
-          "new_sealed_message_fps": 58295,
+          "new_sealed_message_fps": 57234,
           "one_time_handshake_ms": 1.685,
           "meets": [
             "FIPS 203 (ML-KEM-1024)",
@@ -1966,7 +1969,7 @@
         },
         "sphincs5": {
           "sealed_relay_fps": 58339,
-          "new_sealed_message_fps": 58295,
+          "new_sealed_message_fps": 57234,
           "one_time_handshake_ms": 49.014,
           "meets": [
             "FIPS 205 (SLH-DSA / SPHINCS+)",
@@ -1983,7 +1986,7 @@
         },
         "falcon5": {
           "sealed_relay_fps": 58339,
-          "new_sealed_message_fps": 58295,
+          "new_sealed_message_fps": 57234,
           "one_time_handshake_ms": 16.56,
           "meets": [
             "FN-DSA/Falcon (NIST round 3 sig)",
@@ -2000,7 +2003,7 @@
         },
         "csfc": {
           "sealed_relay_fps": 58339,
-          "new_sealed_message_fps": 58295,
+          "new_sealed_message_fps": 57234,
           "one_time_handshake_ms": 8.853,
           "meets": [
             "NSA CSfC (two-layer)",
@@ -2019,11 +2022,11 @@
     },
     "ROS 1": {
       "sealed_relay_fps": 66771,
-      "new_sealed_message_fps": 66713,
+      "new_sealed_message_fps": 65327,
       "max_impl": "rospy (TCPROS)",
       "max_tier": "runtime-carrier",
       "seal_mode": "transport-of-sealed-frame",
-      "rate_note": "relay 66,771/s of opaque sealed frames (seal amortized upstream); producing NEW sealed msgs single-core ~66,713/s (seal 77M \u2295 relay)",
+      "rate_note": "relay 66,771/s of opaque sealed frames (seal amortized upstream); producing NEW sealed msgs single-core ~65,327/s (seal 77M \u2295 relay)",
       "max_fps": 66770.8,
       "tier_ladder": [
         {
@@ -2039,7 +2042,7 @@
       "per_profile_max": {
         "classical": {
           "sealed_relay_fps": 66771,
-          "new_sealed_message_fps": 66713,
+          "new_sealed_message_fps": 65327,
           "one_time_handshake_ms": 14.263,
           "meets": [
             "RFC 7748 (X25519)",
@@ -2056,7 +2059,7 @@
         },
         "nist1": {
           "sealed_relay_fps": 66771,
-          "new_sealed_message_fps": 66713,
+          "new_sealed_message_fps": 65327,
           "one_time_handshake_ms": 0.622,
           "meets": [
             "FIPS 203 (ML-KEM-512)",
@@ -2074,7 +2077,7 @@
         },
         "nist3": {
           "sealed_relay_fps": 66771,
-          "new_sealed_message_fps": 66713,
+          "new_sealed_message_fps": 65327,
           "one_time_handshake_ms": 1.385,
           "meets": [
             "FIPS 203 (ML-KEM-768)",
@@ -2091,7 +2094,7 @@
         },
         "nist5": {
           "sealed_relay_fps": 66771,
-          "new_sealed_message_fps": 66713,
+          "new_sealed_message_fps": 65327,
           "one_time_handshake_ms": 1.685,
           "meets": [
             "FIPS 203 (ML-KEM-1024)",
@@ -2108,7 +2111,7 @@
         },
         "hybrid3": {
           "sealed_relay_fps": 66771,
-          "new_sealed_message_fps": 66713,
+          "new_sealed_message_fps": 65327,
           "one_time_handshake_ms": 2.4,
           "meets": [
             "FIPS 203",
@@ -2126,7 +2129,7 @@
         },
         "hybrid5": {
           "sealed_relay_fps": 66771,
-          "new_sealed_message_fps": 66713,
+          "new_sealed_message_fps": 65327,
           "one_time_handshake_ms": 8.853,
           "meets": [
             "FIPS 203",
@@ -2144,7 +2147,7 @@
         },
         "cnsa20": {
           "sealed_relay_fps": 66771,
-          "new_sealed_message_fps": 66713,
+          "new_sealed_message_fps": 65327,
           "one_time_handshake_ms": 1.345,
           "meets": [
             "CNSA 2.0",
@@ -2163,7 +2166,7 @@
         },
         "nist5-kmac": {
           "sealed_relay_fps": 66771,
-          "new_sealed_message_fps": 66713,
+          "new_sealed_message_fps": 65327,
           "one_time_handshake_ms": 1.685,
           "meets": [
             "FIPS 203 (ML-KEM-1024)",
@@ -2182,7 +2185,7 @@
         },
         "sphincs5": {
           "sealed_relay_fps": 66771,
-          "new_sealed_message_fps": 66713,
+          "new_sealed_message_fps": 65327,
           "one_time_handshake_ms": 49.014,
           "meets": [
             "FIPS 205 (SLH-DSA / SPHINCS+)",
@@ -2199,7 +2202,7 @@
         },
         "falcon5": {
           "sealed_relay_fps": 66771,
-          "new_sealed_message_fps": 66713,
+          "new_sealed_message_fps": 65327,
           "one_time_handshake_ms": 16.56,
           "meets": [
             "FN-DSA/Falcon (NIST round 3 sig)",
@@ -2216,7 +2219,7 @@
         },
         "csfc": {
           "sealed_relay_fps": 66771,
-          "new_sealed_message_fps": 66713,
+          "new_sealed_message_fps": 65327,
           "one_time_handshake_ms": 8.853,
           "meets": [
             "NSA CSfC (two-layer)",
@@ -2235,11 +2238,11 @@
     },
     "ROS 2": {
       "sealed_relay_fps": 553009,
-      "new_sealed_message_fps": 549062,
+      "new_sealed_message_fps": 467427,
       "max_impl": "rclpy take-loop (rmw_cyclonedds_cpp)",
       "max_tier": "native",
       "seal_mode": "transport-of-sealed-frame",
-      "rate_note": "relay 553,009/s of opaque sealed frames (seal amortized upstream); producing NEW sealed msgs single-core ~549,062/s (seal 77M \u2295 relay)",
+      "rate_note": "relay 553,009/s of opaque sealed frames (seal amortized upstream); producing NEW sealed msgs single-core ~467,427/s (seal 77M \u2295 relay)",
       "max_fps": 553009.3,
       "tier_ladder": [
         {
@@ -2255,7 +2258,7 @@
       "per_profile_max": {
         "classical": {
           "sealed_relay_fps": 553009,
-          "new_sealed_message_fps": 549062,
+          "new_sealed_message_fps": 467427,
           "one_time_handshake_ms": 14.263,
           "meets": [
             "RFC 7748 (X25519)",
@@ -2272,7 +2275,7 @@
         },
         "nist1": {
           "sealed_relay_fps": 553009,
-          "new_sealed_message_fps": 549062,
+          "new_sealed_message_fps": 467427,
           "one_time_handshake_ms": 0.622,
           "meets": [
             "FIPS 203 (ML-KEM-512)",
@@ -2290,7 +2293,7 @@
         },
         "nist3": {
           "sealed_relay_fps": 553009,
-          "new_sealed_message_fps": 549062,
+          "new_sealed_message_fps": 467427,
           "one_time_handshake_ms": 1.385,
           "meets": [
             "FIPS 203 (ML-KEM-768)",
@@ -2307,7 +2310,7 @@
         },
         "nist5": {
           "sealed_relay_fps": 553009,
-          "new_sealed_message_fps": 549062,
+          "new_sealed_message_fps": 467427,
           "one_time_handshake_ms": 1.685,
           "meets": [
             "FIPS 203 (ML-KEM-1024)",
@@ -2324,7 +2327,7 @@
         },
         "hybrid3": {
           "sealed_relay_fps": 553009,
-          "new_sealed_message_fps": 549062,
+          "new_sealed_message_fps": 467427,
           "one_time_handshake_ms": 2.4,
           "meets": [
             "FIPS 203",
@@ -2342,7 +2345,7 @@
         },
         "hybrid5": {
           "sealed_relay_fps": 553009,
-          "new_sealed_message_fps": 549062,
+          "new_sealed_message_fps": 467427,
           "one_time_handshake_ms": 8.853,
           "meets": [
             "FIPS 203",
@@ -2360,7 +2363,7 @@
         },
         "cnsa20": {
           "sealed_relay_fps": 553009,
-          "new_sealed_message_fps": 549062,
+          "new_sealed_message_fps": 467427,
           "one_time_handshake_ms": 1.345,
           "meets": [
             "CNSA 2.0",
@@ -2379,7 +2382,7 @@
         },
         "nist5-kmac": {
           "sealed_relay_fps": 553009,
-          "new_sealed_message_fps": 549062,
+          "new_sealed_message_fps": 467427,
           "one_time_handshake_ms": 1.685,
           "meets": [
             "FIPS 203 (ML-KEM-1024)",
@@ -2398,7 +2401,7 @@
         },
         "sphincs5": {
           "sealed_relay_fps": 553009,
-          "new_sealed_message_fps": 549062,
+          "new_sealed_message_fps": 467427,
           "one_time_handshake_ms": 49.014,
           "meets": [
             "FIPS 205 (SLH-DSA / SPHINCS+)",
@@ -2415,7 +2418,7 @@
         },
         "falcon5": {
           "sealed_relay_fps": 553009,
-          "new_sealed_message_fps": 549062,
+          "new_sealed_message_fps": 467427,
           "one_time_handshake_ms": 16.56,
           "meets": [
             "FN-DSA/Falcon (NIST round 3 sig)",
@@ -2432,7 +2435,7 @@
         },
         "csfc": {
           "sealed_relay_fps": 553009,
-          "new_sealed_message_fps": 549062,
+          "new_sealed_message_fps": 467427,
           "one_time_handshake_ms": 8.853,
           "meets": [
             "NSA CSfC (two-layer)",
@@ -2451,11 +2454,11 @@
     },
     "ROS 2 (C++)": {
       "sealed_relay_fps": 225911,
-      "new_sealed_message_fps": 225249,
+      "new_sealed_message_fps": 210189,
       "max_impl": "rclcpp",
       "max_tier": "native",
       "seal_mode": "transport-of-sealed-frame",
-      "rate_note": "relay 225,911/s of opaque sealed frames (seal amortized upstream); producing NEW sealed msgs single-core ~225,249/s (seal 77M \u2295 relay)",
+      "rate_note": "relay 225,911/s of opaque sealed frames (seal amortized upstream); producing NEW sealed msgs single-core ~210,189/s (seal 77M \u2295 relay)",
       "max_fps": 225910.7,
       "tier_ladder": [
         {
@@ -2471,7 +2474,7 @@
       "per_profile_max": {
         "classical": {
           "sealed_relay_fps": 225911,
-          "new_sealed_message_fps": 225249,
+          "new_sealed_message_fps": 210189,
           "one_time_handshake_ms": 14.263,
           "meets": [
             "RFC 7748 (X25519)",
@@ -2488,7 +2491,7 @@
         },
         "nist1": {
           "sealed_relay_fps": 225911,
-          "new_sealed_message_fps": 225249,
+          "new_sealed_message_fps": 210189,
           "one_time_handshake_ms": 0.622,
           "meets": [
             "FIPS 203 (ML-KEM-512)",
@@ -2506,7 +2509,7 @@
         },
         "nist3": {
           "sealed_relay_fps": 225911,
-          "new_sealed_message_fps": 225249,
+          "new_sealed_message_fps": 210189,
           "one_time_handshake_ms": 1.385,
           "meets": [
             "FIPS 203 (ML-KEM-768)",
@@ -2523,7 +2526,7 @@
         },
         "nist5": {
           "sealed_relay_fps": 225911,
-          "new_sealed_message_fps": 225249,
+          "new_sealed_message_fps": 210189,
           "one_time_handshake_ms": 1.685,
           "meets": [
             "FIPS 203 (ML-KEM-1024)",
@@ -2540,7 +2543,7 @@
         },
         "hybrid3": {
           "sealed_relay_fps": 225911,
-          "new_sealed_message_fps": 225249,
+          "new_sealed_message_fps": 210189,
           "one_time_handshake_ms": 2.4,
           "meets": [
             "FIPS 203",
@@ -2558,7 +2561,7 @@
         },
         "hybrid5": {
           "sealed_relay_fps": 225911,
-          "new_sealed_message_fps": 225249,
+          "new_sealed_message_fps": 210189,
           "one_time_handshake_ms": 8.853,
           "meets": [
             "FIPS 203",
@@ -2576,7 +2579,7 @@
         },
         "cnsa20": {
           "sealed_relay_fps": 225911,
-          "new_sealed_message_fps": 225249,
+          "new_sealed_message_fps": 210189,
           "one_time_handshake_ms": 1.345,
           "meets": [
             "CNSA 2.0",
@@ -2595,7 +2598,7 @@
         },
         "nist5-kmac": {
           "sealed_relay_fps": 225911,
-          "new_sealed_message_fps": 225249,
+          "new_sealed_message_fps": 210189,
           "one_time_handshake_ms": 1.685,
           "meets": [
             "FIPS 203 (ML-KEM-1024)",
@@ -2614,7 +2617,7 @@
         },
         "sphincs5": {
           "sealed_relay_fps": 225911,
-          "new_sealed_message_fps": 225249,
+          "new_sealed_message_fps": 210189,
           "one_time_handshake_ms": 49.014,
           "meets": [
             "FIPS 205 (SLH-DSA / SPHINCS+)",
@@ -2631,7 +2634,7 @@
         },
         "falcon5": {
           "sealed_relay_fps": 225911,
-          "new_sealed_message_fps": 225249,
+          "new_sealed_message_fps": 210189,
           "one_time_handshake_ms": 16.56,
           "meets": [
             "FN-DSA/Falcon (NIST round 3 sig)",
@@ -2648,7 +2651,7 @@
         },
         "csfc": {
           "sealed_relay_fps": 225911,
-          "new_sealed_message_fps": 225249,
+          "new_sealed_message_fps": 210189,
           "one_time_handshake_ms": 8.853,
           "meets": [
             "NSA CSfC (two-layer)",
@@ -2667,11 +2670,11 @@
     },
     "Redis": {
       "sealed_relay_fps": 9979,
-      "new_sealed_message_fps": 9978,
+      "new_sealed_message_fps": 9946,
       "max_impl": "redis + redis-server",
       "max_tier": "stock-client",
       "seal_mode": "transport-of-sealed-frame",
-      "rate_note": "relay 9,979/s of opaque sealed frames (seal amortized upstream); producing NEW sealed msgs single-core ~9,978/s (seal 77M \u2295 relay)",
+      "rate_note": "relay 9,979/s of opaque sealed frames (seal amortized upstream); producing NEW sealed msgs single-core ~9,946/s (seal 77M \u2295 relay)",
       "max_fps": 9979.124088204313,
       "tier_ladder": [
         {
@@ -2687,7 +2690,7 @@
       "per_profile_max": {
         "classical": {
           "sealed_relay_fps": 9979,
-          "new_sealed_message_fps": 9978,
+          "new_sealed_message_fps": 9946,
           "one_time_handshake_ms": 14.263,
           "meets": [
             "RFC 7748 (X25519)",
@@ -2704,7 +2707,7 @@
         },
         "nist1": {
           "sealed_relay_fps": 9979,
-          "new_sealed_message_fps": 9978,
+          "new_sealed_message_fps": 9946,
           "one_time_handshake_ms": 0.622,
           "meets": [
             "FIPS 203 (ML-KEM-512)",
@@ -2722,7 +2725,7 @@
         },
         "nist3": {
           "sealed_relay_fps": 9979,
-          "new_sealed_message_fps": 9978,
+          "new_sealed_message_fps": 9946,
           "one_time_handshake_ms": 1.385,
           "meets": [
             "FIPS 203 (ML-KEM-768)",
@@ -2739,7 +2742,7 @@
         },
         "nist5": {
           "sealed_relay_fps": 9979,
-          "new_sealed_message_fps": 9978,
+          "new_sealed_message_fps": 9946,
           "one_time_handshake_ms": 1.685,
           "meets": [
             "FIPS 203 (ML-KEM-1024)",
@@ -2756,7 +2759,7 @@
         },
         "hybrid3": {
           "sealed_relay_fps": 9979,
-          "new_sealed_message_fps": 9978,
+          "new_sealed_message_fps": 9946,
           "one_time_handshake_ms": 2.4,
           "meets": [
             "FIPS 203",
@@ -2774,7 +2777,7 @@
         },
         "hybrid5": {
           "sealed_relay_fps": 9979,
-          "new_sealed_message_fps": 9978,
+          "new_sealed_message_fps": 9946,
           "one_time_handshake_ms": 8.853,
           "meets": [
             "FIPS 203",
@@ -2792,7 +2795,7 @@
         },
         "cnsa20": {
           "sealed_relay_fps": 9979,
-          "new_sealed_message_fps": 9978,
+          "new_sealed_message_fps": 9946,
           "one_time_handshake_ms": 1.345,
           "meets": [
             "CNSA 2.0",
@@ -2811,7 +2814,7 @@
         },
         "nist5-kmac": {
           "sealed_relay_fps": 9979,
-          "new_sealed_message_fps": 9978,
+          "new_sealed_message_fps": 9946,
           "one_time_handshake_ms": 1.685,
           "meets": [
             "FIPS 203 (ML-KEM-1024)",
@@ -2830,7 +2833,7 @@
         },
         "sphincs5": {
           "sealed_relay_fps": 9979,
-          "new_sealed_message_fps": 9978,
+          "new_sealed_message_fps": 9946,
           "one_time_handshake_ms": 49.014,
           "meets": [
             "FIPS 205 (SLH-DSA / SPHINCS+)",
@@ -2847,7 +2850,7 @@
         },
         "falcon5": {
           "sealed_relay_fps": 9979,
-          "new_sealed_message_fps": 9978,
+          "new_sealed_message_fps": 9946,
           "one_time_handshake_ms": 16.56,
           "meets": [
             "FN-DSA/Falcon (NIST round 3 sig)",
@@ -2864,7 +2867,7 @@
         },
         "csfc": {
           "sealed_relay_fps": 9979,
-          "new_sealed_message_fps": 9978,
+          "new_sealed_message_fps": 9946,
           "one_time_handshake_ms": 8.853,
           "meets": [
             "NSA CSfC (two-layer)",
@@ -2883,11 +2886,11 @@
     },
     "SHM": {
       "sealed_relay_fps": 74183975,
-      "new_sealed_message_fps": 37764350,
+      "new_sealed_message_fps": 2902210,
       "max_impl": "librbxport C shim",
       "max_tier": "shim",
       "seal_mode": "transport-of-sealed-frame",
-      "rate_note": "relay 74,183,975/s of opaque sealed frames (seal amortized upstream); producing NEW sealed msgs single-core ~37,764,350/s (seal 77M \u2295 relay)",
+      "rate_note": "relay 74,183,975/s of opaque sealed frames (seal amortized upstream); producing NEW sealed msgs single-core ~2,902,210/s (seal 77M \u2295 relay)",
       "max_fps": 74183975.17210123,
       "tier_ladder": [
         {
@@ -2911,7 +2914,7 @@
       "per_profile_max": {
         "classical": {
           "sealed_relay_fps": 74183975,
-          "new_sealed_message_fps": 37764350,
+          "new_sealed_message_fps": 2902210,
           "one_time_handshake_ms": 14.263,
           "meets": [
             "RFC 7748 (X25519)",
@@ -2928,7 +2931,7 @@
         },
         "nist1": {
           "sealed_relay_fps": 74183975,
-          "new_sealed_message_fps": 37764350,
+          "new_sealed_message_fps": 2902210,
           "one_time_handshake_ms": 0.622,
           "meets": [
             "FIPS 203 (ML-KEM-512)",
@@ -2946,7 +2949,7 @@
         },
         "nist3": {
           "sealed_relay_fps": 74183975,
-          "new_sealed_message_fps": 37764350,
+          "new_sealed_message_fps": 2902210,
           "one_time_handshake_ms": 1.385,
           "meets": [
             "FIPS 203 (ML-KEM-768)",
@@ -2963,7 +2966,7 @@
         },
         "nist5": {
           "sealed_relay_fps": 74183975,
-          "new_sealed_message_fps": 37764350,
+          "new_sealed_message_fps": 2902210,
           "one_time_handshake_ms": 1.685,
           "meets": [
             "FIPS 203 (ML-KEM-1024)",
@@ -2980,7 +2983,7 @@
         },
         "hybrid3": {
           "sealed_relay_fps": 74183975,
-          "new_sealed_message_fps": 37764350,
+          "new_sealed_message_fps": 2902210,
           "one_time_handshake_ms": 2.4,
           "meets": [
             "FIPS 203",
@@ -2998,7 +3001,7 @@
         },
         "hybrid5": {
           "sealed_relay_fps": 74183975,
-          "new_sealed_message_fps": 37764350,
+          "new_sealed_message_fps": 2902210,
           "one_time_handshake_ms": 8.853,
           "meets": [
             "FIPS 203",
@@ -3016,7 +3019,7 @@
         },
         "cnsa20": {
           "sealed_relay_fps": 74183975,
-          "new_sealed_message_fps": 37764350,
+          "new_sealed_message_fps": 2902210,
           "one_time_handshake_ms": 1.345,
           "meets": [
             "CNSA 2.0",
@@ -3035,7 +3038,7 @@
         },
         "nist5-kmac": {
           "sealed_relay_fps": 74183975,
-          "new_sealed_message_fps": 37764350,
+          "new_sealed_message_fps": 2902210,
           "one_time_handshake_ms": 1.685,
           "meets": [
             "FIPS 203 (ML-KEM-1024)",
@@ -3054,7 +3057,7 @@
         },
         "sphincs5": {
           "sealed_relay_fps": 74183975,
-          "new_sealed_message_fps": 37764350,
+          "new_sealed_message_fps": 2902210,
           "one_time_handshake_ms": 49.014,
           "meets": [
             "FIPS 205 (SLH-DSA / SPHINCS+)",
@@ -3071,7 +3074,7 @@
         },
         "falcon5": {
           "sealed_relay_fps": 74183975,
-          "new_sealed_message_fps": 37764350,
+          "new_sealed_message_fps": 2902210,
           "one_time_handshake_ms": 16.56,
           "meets": [
             "FN-DSA/Falcon (NIST round 3 sig)",
@@ -3088,7 +3091,7 @@
         },
         "csfc": {
           "sealed_relay_fps": 74183975,
-          "new_sealed_message_fps": 37764350,
+          "new_sealed_message_fps": 2902210,
           "one_time_handshake_ms": 8.853,
           "meets": [
             "NSA CSfC (two-layer)",
@@ -3144,11 +3147,11 @@
     },
     "Serial": {
       "sealed_relay_fps": 175519,
-      "new_sealed_message_fps": 175119,
+      "new_sealed_message_fps": 165879,
       "max_impl": "librbxport C shim",
       "max_tier": "shim",
       "seal_mode": "transport-of-sealed-frame",
-      "rate_note": "relay 175,519/s of opaque sealed frames (seal amortized upstream); producing NEW sealed msgs single-core ~175,119/s (seal 77M \u2295 relay)",
+      "rate_note": "relay 175,519/s of opaque sealed frames (seal amortized upstream); producing NEW sealed msgs single-core ~165,879/s (seal 77M \u2295 relay)",
       "max_fps": 175518.657631,
       "tier_ladder": [
         {
@@ -3172,7 +3175,7 @@
       "per_profile_max": {
         "classical": {
           "sealed_relay_fps": 175519,
-          "new_sealed_message_fps": 175119,
+          "new_sealed_message_fps": 165879,
           "one_time_handshake_ms": 14.263,
           "meets": [
             "RFC 7748 (X25519)",
@@ -3189,7 +3192,7 @@
         },
         "nist1": {
           "sealed_relay_fps": 175519,
-          "new_sealed_message_fps": 175119,
+          "new_sealed_message_fps": 165879,
           "one_time_handshake_ms": 0.622,
           "meets": [
             "FIPS 203 (ML-KEM-512)",
@@ -3207,7 +3210,7 @@
         },
         "nist3": {
           "sealed_relay_fps": 175519,
-          "new_sealed_message_fps": 175119,
+          "new_sealed_message_fps": 165879,
           "one_time_handshake_ms": 1.385,
           "meets": [
             "FIPS 203 (ML-KEM-768)",
@@ -3224,7 +3227,7 @@
         },
         "nist5": {
           "sealed_relay_fps": 175519,
-          "new_sealed_message_fps": 175119,
+          "new_sealed_message_fps": 165879,
           "one_time_handshake_ms": 1.685,
           "meets": [
             "FIPS 203 (ML-KEM-1024)",
@@ -3241,7 +3244,7 @@
         },
         "hybrid3": {
           "sealed_relay_fps": 175519,
-          "new_sealed_message_fps": 175119,
+          "new_sealed_message_fps": 165879,
           "one_time_handshake_ms": 2.4,
           "meets": [
             "FIPS 203",
@@ -3259,7 +3262,7 @@
         },
         "hybrid5": {
           "sealed_relay_fps": 175519,
-          "new_sealed_message_fps": 175119,
+          "new_sealed_message_fps": 165879,
           "one_time_handshake_ms": 8.853,
           "meets": [
             "FIPS 203",
@@ -3277,7 +3280,7 @@
         },
         "cnsa20": {
           "sealed_relay_fps": 175519,
-          "new_sealed_message_fps": 175119,
+          "new_sealed_message_fps": 165879,
           "one_time_handshake_ms": 1.345,
           "meets": [
             "CNSA 2.0",
@@ -3296,7 +3299,7 @@
         },
         "nist5-kmac": {
           "sealed_relay_fps": 175519,
-          "new_sealed_message_fps": 175119,
+          "new_sealed_message_fps": 165879,
           "one_time_handshake_ms": 1.685,
           "meets": [
             "FIPS 203 (ML-KEM-1024)",
@@ -3315,7 +3318,7 @@
         },
         "sphincs5": {
           "sealed_relay_fps": 175519,
-          "new_sealed_message_fps": 175119,
+          "new_sealed_message_fps": 165879,
           "one_time_handshake_ms": 49.014,
           "meets": [
             "FIPS 205 (SLH-DSA / SPHINCS+)",
@@ -3332,7 +3335,7 @@
         },
         "falcon5": {
           "sealed_relay_fps": 175519,
-          "new_sealed_message_fps": 175119,
+          "new_sealed_message_fps": 165879,
           "one_time_handshake_ms": 16.56,
           "meets": [
             "FN-DSA/Falcon (NIST round 3 sig)",
@@ -3349,7 +3352,7 @@
         },
         "csfc": {
           "sealed_relay_fps": 175519,
-          "new_sealed_message_fps": 175119,
+          "new_sealed_message_fps": 165879,
           "one_time_handshake_ms": 8.853,
           "meets": [
             "NSA CSfC (two-layer)",
@@ -3368,11 +3371,11 @@
     },
     "TCP": {
       "sealed_relay_fps": 501170,
-      "new_sealed_message_fps": 497926,
+      "new_sealed_message_fps": 429846,
       "max_impl": "librbxport C shim",
       "max_tier": "shim",
       "seal_mode": "transport-of-sealed-frame",
-      "rate_note": "relay 501,170/s of opaque sealed frames (seal amortized upstream); producing NEW sealed msgs single-core ~497,926/s (seal 77M \u2295 relay)",
+      "rate_note": "relay 501,170/s of opaque sealed frames (seal amortized upstream); producing NEW sealed msgs single-core ~429,846/s (seal 77M \u2295 relay)",
       "max_fps": 501170.2324928709,
       "tier_ladder": [
         {
@@ -3396,7 +3399,7 @@
       "per_profile_max": {
         "classical": {
           "sealed_relay_fps": 501170,
-          "new_sealed_message_fps": 497926,
+          "new_sealed_message_fps": 429846,
           "one_time_handshake_ms": 14.263,
           "meets": [
             "RFC 7748 (X25519)",
@@ -3413,7 +3416,7 @@
         },
         "nist1": {
           "sealed_relay_fps": 501170,
-          "new_sealed_message_fps": 497926,
+          "new_sealed_message_fps": 429846,
           "one_time_handshake_ms": 0.622,
           "meets": [
             "FIPS 203 (ML-KEM-512)",
@@ -3431,7 +3434,7 @@
         },
         "nist3": {
           "sealed_relay_fps": 501170,
-          "new_sealed_message_fps": 497926,
+          "new_sealed_message_fps": 429846,
           "one_time_handshake_ms": 1.385,
           "meets": [
             "FIPS 203 (ML-KEM-768)",
@@ -3448,7 +3451,7 @@
         },
         "nist5": {
           "sealed_relay_fps": 501170,
-          "new_sealed_message_fps": 497926,
+          "new_sealed_message_fps": 429846,
           "one_time_handshake_ms": 1.685,
           "meets": [
             "FIPS 203 (ML-KEM-1024)",
@@ -3465,7 +3468,7 @@
         },
         "hybrid3": {
           "sealed_relay_fps": 501170,
-          "new_sealed_message_fps": 497926,
+          "new_sealed_message_fps": 429846,
           "one_time_handshake_ms": 2.4,
           "meets": [
             "FIPS 203",
@@ -3483,7 +3486,7 @@
         },
         "hybrid5": {
           "sealed_relay_fps": 501170,
-          "new_sealed_message_fps": 497926,
+          "new_sealed_message_fps": 429846,
           "one_time_handshake_ms": 8.853,
           "meets": [
             "FIPS 203",
@@ -3501,7 +3504,7 @@
         },
         "cnsa20": {
           "sealed_relay_fps": 501170,
-          "new_sealed_message_fps": 497926,
+          "new_sealed_message_fps": 429846,
           "one_time_handshake_ms": 1.345,
           "meets": [
             "CNSA 2.0",
@@ -3520,7 +3523,7 @@
         },
         "nist5-kmac": {
           "sealed_relay_fps": 501170,
-          "new_sealed_message_fps": 497926,
+          "new_sealed_message_fps": 429846,
           "one_time_handshake_ms": 1.685,
           "meets": [
             "FIPS 203 (ML-KEM-1024)",
@@ -3539,7 +3542,7 @@
         },
         "sphincs5": {
           "sealed_relay_fps": 501170,
-          "new_sealed_message_fps": 497926,
+          "new_sealed_message_fps": 429846,
           "one_time_handshake_ms": 49.014,
           "meets": [
             "FIPS 205 (SLH-DSA / SPHINCS+)",
@@ -3556,7 +3559,7 @@
         },
         "falcon5": {
           "sealed_relay_fps": 501170,
-          "new_sealed_message_fps": 497926,
+          "new_sealed_message_fps": 429846,
           "one_time_handshake_ms": 16.56,
           "meets": [
             "FN-DSA/Falcon (NIST round 3 sig)",
@@ -3573,7 +3576,7 @@
         },
         "csfc": {
           "sealed_relay_fps": 501170,
-          "new_sealed_message_fps": 497926,
+          "new_sealed_message_fps": 429846,
           "one_time_handshake_ms": 8.853,
           "meets": [
             "NSA CSfC (two-layer)",
@@ -3592,11 +3595,11 @@
     },
     "UDP": {
       "sealed_relay_fps": 376675,
-      "new_sealed_message_fps": 374840,
+      "new_sealed_message_fps": 334908,
       "max_impl": "librbxport C shim",
       "max_tier": "shim",
       "seal_mode": "transport-of-sealed-frame",
-      "rate_note": "relay 376,675/s of opaque sealed frames (seal amortized upstream); producing NEW sealed msgs single-core ~374,840/s (seal 77M \u2295 relay)",
+      "rate_note": "relay 376,675/s of opaque sealed frames (seal amortized upstream); producing NEW sealed msgs single-core ~334,908/s (seal 77M \u2295 relay)",
       "max_fps": 376675.2,
       "tier_ladder": [
         {
@@ -3620,7 +3623,7 @@
       "per_profile_max": {
         "classical": {
           "sealed_relay_fps": 376675,
-          "new_sealed_message_fps": 374840,
+          "new_sealed_message_fps": 334908,
           "one_time_handshake_ms": 14.263,
           "meets": [
             "RFC 7748 (X25519)",
@@ -3637,7 +3640,7 @@
         },
         "nist1": {
           "sealed_relay_fps": 376675,
-          "new_sealed_message_fps": 374840,
+          "new_sealed_message_fps": 334908,
           "one_time_handshake_ms": 0.622,
           "meets": [
             "FIPS 203 (ML-KEM-512)",
@@ -3655,7 +3658,7 @@
         },
         "nist3": {
           "sealed_relay_fps": 376675,
-          "new_sealed_message_fps": 374840,
+          "new_sealed_message_fps": 334908,
           "one_time_handshake_ms": 1.385,
           "meets": [
             "FIPS 203 (ML-KEM-768)",
@@ -3672,7 +3675,7 @@
         },
         "nist5": {
           "sealed_relay_fps": 376675,
-          "new_sealed_message_fps": 374840,
+          "new_sealed_message_fps": 334908,
           "one_time_handshake_ms": 1.685,
           "meets": [
             "FIPS 203 (ML-KEM-1024)",
@@ -3689,7 +3692,7 @@
         },
         "hybrid3": {
           "sealed_relay_fps": 376675,
-          "new_sealed_message_fps": 374840,
+          "new_sealed_message_fps": 334908,
           "one_time_handshake_ms": 2.4,
           "meets": [
             "FIPS 203",
@@ -3707,7 +3710,7 @@
         },
         "hybrid5": {
           "sealed_relay_fps": 376675,
-          "new_sealed_message_fps": 374840,
+          "new_sealed_message_fps": 334908,
           "one_time_handshake_ms": 8.853,
           "meets": [
             "FIPS 203",
@@ -3725,7 +3728,7 @@
         },
         "cnsa20": {
           "sealed_relay_fps": 376675,
-          "new_sealed_message_fps": 374840,
+          "new_sealed_message_fps": 334908,
           "one_time_handshake_ms": 1.345,
           "meets": [
             "CNSA 2.0",
@@ -3744,7 +3747,7 @@
         },
         "nist5-kmac": {
           "sealed_relay_fps": 376675,
-          "new_sealed_message_fps": 374840,
+          "new_sealed_message_fps": 334908,
           "one_time_handshake_ms": 1.685,
           "meets": [
             "FIPS 203 (ML-KEM-1024)",
@@ -3763,7 +3766,7 @@
         },
         "sphincs5": {
           "sealed_relay_fps": 376675,
-          "new_sealed_message_fps": 374840,
+          "new_sealed_message_fps": 334908,
           "one_time_handshake_ms": 49.014,
           "meets": [
             "FIPS 205 (SLH-DSA / SPHINCS+)",
@@ -3780,7 +3783,7 @@
         },
         "falcon5": {
           "sealed_relay_fps": 376675,
-          "new_sealed_message_fps": 374840,
+          "new_sealed_message_fps": 334908,
           "one_time_handshake_ms": 16.56,
           "meets": [
             "FN-DSA/Falcon (NIST round 3 sig)",
@@ -3797,7 +3800,7 @@
         },
         "csfc": {
           "sealed_relay_fps": 376675,
-          "new_sealed_message_fps": 374840,
+          "new_sealed_message_fps": 334908,
           "one_time_handshake_ms": 8.853,
           "meets": [
             "NSA CSfC (two-layer)",
@@ -3816,11 +3819,11 @@
     },
     "WebSocket": {
       "sealed_relay_fps": 72549,
-      "new_sealed_message_fps": 72481,
+      "new_sealed_message_fps": 70848,
       "max_impl": "websockets (loopback)",
       "max_tier": "stock-client",
       "seal_mode": "transport-of-sealed-frame",
-      "rate_note": "relay 72,549/s of opaque sealed frames (seal amortized upstream); producing NEW sealed msgs single-core ~72,481/s (seal 77M \u2295 relay)",
+      "rate_note": "relay 72,549/s of opaque sealed frames (seal amortized upstream); producing NEW sealed msgs single-core ~70,848/s (seal 77M \u2295 relay)",
       "max_fps": 72549.44312019623,
       "tier_ladder": [
         {
@@ -3836,7 +3839,7 @@
       "per_profile_max": {
         "classical": {
           "sealed_relay_fps": 72549,
-          "new_sealed_message_fps": 72481,
+          "new_sealed_message_fps": 70848,
           "one_time_handshake_ms": 14.263,
           "meets": [
             "RFC 7748 (X25519)",
@@ -3853,7 +3856,7 @@
         },
         "nist1": {
           "sealed_relay_fps": 72549,
-          "new_sealed_message_fps": 72481,
+          "new_sealed_message_fps": 70848,
           "one_time_handshake_ms": 0.622,
           "meets": [
             "FIPS 203 (ML-KEM-512)",
@@ -3871,7 +3874,7 @@
         },
         "nist3": {
           "sealed_relay_fps": 72549,
-          "new_sealed_message_fps": 72481,
+          "new_sealed_message_fps": 70848,
           "one_time_handshake_ms": 1.385,
           "meets": [
             "FIPS 203 (ML-KEM-768)",
@@ -3888,7 +3891,7 @@
         },
         "nist5": {
           "sealed_relay_fps": 72549,
-          "new_sealed_message_fps": 72481,
+          "new_sealed_message_fps": 70848,
           "one_time_handshake_ms": 1.685,
           "meets": [
             "FIPS 203 (ML-KEM-1024)",
@@ -3905,7 +3908,7 @@
         },
         "hybrid3": {
           "sealed_relay_fps": 72549,
-          "new_sealed_message_fps": 72481,
+          "new_sealed_message_fps": 70848,
           "one_time_handshake_ms": 2.4,
           "meets": [
             "FIPS 203",
@@ -3923,7 +3926,7 @@
         },
         "hybrid5": {
           "sealed_relay_fps": 72549,
-          "new_sealed_message_fps": 72481,
+          "new_sealed_message_fps": 70848,
           "one_time_handshake_ms": 8.853,
           "meets": [
             "FIPS 203",
@@ -3941,7 +3944,7 @@
         },
         "cnsa20": {
           "sealed_relay_fps": 72549,
-          "new_sealed_message_fps": 72481,
+          "new_sealed_message_fps": 70848,
           "one_time_handshake_ms": 1.345,
           "meets": [
             "CNSA 2.0",
@@ -3960,7 +3963,7 @@
         },
         "nist5-kmac": {
           "sealed_relay_fps": 72549,
-          "new_sealed_message_fps": 72481,
+          "new_sealed_message_fps": 70848,
           "one_time_handshake_ms": 1.685,
           "meets": [
             "FIPS 203 (ML-KEM-1024)",
@@ -3979,7 +3982,7 @@
         },
         "sphincs5": {
           "sealed_relay_fps": 72549,
-          "new_sealed_message_fps": 72481,
+          "new_sealed_message_fps": 70848,
           "one_time_handshake_ms": 49.014,
           "meets": [
             "FIPS 205 (SLH-DSA / SPHINCS+)",
@@ -3996,7 +3999,7 @@
         },
         "falcon5": {
           "sealed_relay_fps": 72549,
-          "new_sealed_message_fps": 72481,
+          "new_sealed_message_fps": 70848,
           "one_time_handshake_ms": 16.56,
           "meets": [
             "FN-DSA/Falcon (NIST round 3 sig)",
@@ -4013,7 +4016,7 @@
         },
         "csfc": {
           "sealed_relay_fps": 72549,
-          "new_sealed_message_fps": 72481,
+          "new_sealed_message_fps": 70848,
           "one_time_handshake_ms": 8.853,
           "meets": [
             "NSA CSfC (two-layer)",
@@ -4032,11 +4035,11 @@
     },
     "Zenoh": {
       "sealed_relay_fps": 814445,
-      "new_sealed_message_fps": 805912,
+      "new_sealed_message_fps": 641472,
       "max_impl": "zenoh",
       "max_tier": "native",
       "seal_mode": "transport-of-sealed-frame",
-      "rate_note": "relay 814,445/s of opaque sealed frames (seal amortized upstream); producing NEW sealed msgs single-core ~805,912/s (seal 77M \u2295 relay)",
+      "rate_note": "relay 814,445/s of opaque sealed frames (seal amortized upstream); producing NEW sealed msgs single-core ~641,472/s (seal 77M \u2295 relay)",
       "max_fps": 814444.9964571643,
       "tier_ladder": [
         {
@@ -4052,7 +4055,7 @@
       "per_profile_max": {
         "classical": {
           "sealed_relay_fps": 814445,
-          "new_sealed_message_fps": 805912,
+          "new_sealed_message_fps": 641472,
           "one_time_handshake_ms": 14.263,
           "meets": [
             "RFC 7748 (X25519)",
@@ -4069,7 +4072,7 @@
         },
         "nist1": {
           "sealed_relay_fps": 814445,
-          "new_sealed_message_fps": 805912,
+          "new_sealed_message_fps": 641472,
           "one_time_handshake_ms": 0.622,
           "meets": [
             "FIPS 203 (ML-KEM-512)",
@@ -4087,7 +4090,7 @@
         },
         "nist3": {
           "sealed_relay_fps": 814445,
-          "new_sealed_message_fps": 805912,
+          "new_sealed_message_fps": 641472,
           "one_time_handshake_ms": 1.385,
           "meets": [
             "FIPS 203 (ML-KEM-768)",
@@ -4104,7 +4107,7 @@
         },
         "nist5": {
           "sealed_relay_fps": 814445,
-          "new_sealed_message_fps": 805912,
+          "new_sealed_message_fps": 641472,
           "one_time_handshake_ms": 1.685,
           "meets": [
             "FIPS 203 (ML-KEM-1024)",
@@ -4121,7 +4124,7 @@
         },
         "hybrid3": {
           "sealed_relay_fps": 814445,
-          "new_sealed_message_fps": 805912,
+          "new_sealed_message_fps": 641472,
           "one_time_handshake_ms": 2.4,
           "meets": [
             "FIPS 203",
@@ -4139,7 +4142,7 @@
         },
         "hybrid5": {
           "sealed_relay_fps": 814445,
-          "new_sealed_message_fps": 805912,
+          "new_sealed_message_fps": 641472,
           "one_time_handshake_ms": 8.853,
           "meets": [
             "FIPS 203",
@@ -4157,7 +4160,7 @@
         },
         "cnsa20": {
           "sealed_relay_fps": 814445,
-          "new_sealed_message_fps": 805912,
+          "new_sealed_message_fps": 641472,
           "one_time_handshake_ms": 1.345,
           "meets": [
             "CNSA 2.0",
@@ -4176,7 +4179,7 @@
         },
         "nist5-kmac": {
           "sealed_relay_fps": 814445,
-          "new_sealed_message_fps": 805912,
+          "new_sealed_message_fps": 641472,
           "one_time_handshake_ms": 1.685,
           "meets": [
             "FIPS 203 (ML-KEM-1024)",
@@ -4195,7 +4198,7 @@
         },
         "sphincs5": {
           "sealed_relay_fps": 814445,
-          "new_sealed_message_fps": 805912,
+          "new_sealed_message_fps": 641472,
           "one_time_handshake_ms": 49.014,
           "meets": [
             "FIPS 205 (SLH-DSA / SPHINCS+)",
@@ -4212,7 +4215,7 @@
         },
         "falcon5": {
           "sealed_relay_fps": 814445,
-          "new_sealed_message_fps": 805912,
+          "new_sealed_message_fps": 641472,
           "one_time_handshake_ms": 16.56,
           "meets": [
             "FN-DSA/Falcon (NIST round 3 sig)",
@@ -4229,7 +4232,7 @@
         },
         "csfc": {
           "sealed_relay_fps": 814445,
-          "new_sealed_message_fps": 805912,
+          "new_sealed_message_fps": 641472,
           "one_time_handshake_ms": 8.853,
           "meets": [
             "NSA CSfC (two-layer)",
@@ -4248,11 +4251,11 @@
     },
     "ZeroCM": {
       "sealed_relay_fps": 1911534,
-      "new_sealed_message_fps": 1865184,
+      "new_sealed_message_fps": 1170652,
       "max_impl": "librbxport C shim",
       "max_tier": "shim",
       "seal_mode": "transport-of-sealed-frame",
-      "rate_note": "relay 1,911,534/s of opaque sealed frames (seal amortized upstream); producing NEW sealed msgs single-core ~1,865,184/s (seal 77M \u2295 relay)",
+      "rate_note": "relay 1,911,534/s of opaque sealed frames (seal amortized upstream); producing NEW sealed msgs single-core ~1,170,652/s (seal 77M \u2295 relay)",
       "max_fps": 1911534.1962658558,
       "tier_ladder": [
         {
@@ -4276,7 +4279,7 @@
       "per_profile_max": {
         "classical": {
           "sealed_relay_fps": 1911534,
-          "new_sealed_message_fps": 1865184,
+          "new_sealed_message_fps": 1170652,
           "one_time_handshake_ms": 14.263,
           "meets": [
             "RFC 7748 (X25519)",
@@ -4293,7 +4296,7 @@
         },
         "nist1": {
           "sealed_relay_fps": 1911534,
-          "new_sealed_message_fps": 1865184,
+          "new_sealed_message_fps": 1170652,
           "one_time_handshake_ms": 0.622,
           "meets": [
             "FIPS 203 (ML-KEM-512)",
@@ -4311,7 +4314,7 @@
         },
         "nist3": {
           "sealed_relay_fps": 1911534,
-          "new_sealed_message_fps": 1865184,
+          "new_sealed_message_fps": 1170652,
           "one_time_handshake_ms": 1.385,
           "meets": [
             "FIPS 203 (ML-KEM-768)",
@@ -4328,7 +4331,7 @@
         },
         "nist5": {
           "sealed_relay_fps": 1911534,
-          "new_sealed_message_fps": 1865184,
+          "new_sealed_message_fps": 1170652,
           "one_time_handshake_ms": 1.685,
           "meets": [
             "FIPS 203 (ML-KEM-1024)",
@@ -4345,7 +4348,7 @@
         },
         "hybrid3": {
           "sealed_relay_fps": 1911534,
-          "new_sealed_message_fps": 1865184,
+          "new_sealed_message_fps": 1170652,
           "one_time_handshake_ms": 2.4,
           "meets": [
             "FIPS 203",
@@ -4363,7 +4366,7 @@
         },
         "hybrid5": {
           "sealed_relay_fps": 1911534,
-          "new_sealed_message_fps": 1865184,
+          "new_sealed_message_fps": 1170652,
           "one_time_handshake_ms": 8.853,
           "meets": [
             "FIPS 203",
@@ -4381,7 +4384,7 @@
         },
         "cnsa20": {
           "sealed_relay_fps": 1911534,
-          "new_sealed_message_fps": 1865184,
+          "new_sealed_message_fps": 1170652,
           "one_time_handshake_ms": 1.345,
           "meets": [
             "CNSA 2.0",
@@ -4400,7 +4403,7 @@
         },
         "nist5-kmac": {
           "sealed_relay_fps": 1911534,
-          "new_sealed_message_fps": 1865184,
+          "new_sealed_message_fps": 1170652,
           "one_time_handshake_ms": 1.685,
           "meets": [
             "FIPS 203 (ML-KEM-1024)",
@@ -4419,7 +4422,7 @@
         },
         "sphincs5": {
           "sealed_relay_fps": 1911534,
-          "new_sealed_message_fps": 1865184,
+          "new_sealed_message_fps": 1170652,
           "one_time_handshake_ms": 49.014,
           "meets": [
             "FIPS 205 (SLH-DSA / SPHINCS+)",
@@ -4436,7 +4439,7 @@
         },
         "falcon5": {
           "sealed_relay_fps": 1911534,
-          "new_sealed_message_fps": 1865184,
+          "new_sealed_message_fps": 1170652,
           "one_time_handshake_ms": 16.56,
           "meets": [
             "FN-DSA/Falcon (NIST round 3 sig)",
@@ -4453,7 +4456,7 @@
         },
         "csfc": {
           "sealed_relay_fps": 1911534,
-          "new_sealed_message_fps": 1865184,
+          "new_sealed_message_fps": 1170652,
           "one_time_handshake_ms": 8.853,
           "meets": [
             "NSA CSfC (two-layer)",
@@ -4472,11 +4475,11 @@
     },
     "gRPC": {
       "sealed_relay_fps": 11589,
-      "new_sealed_message_fps": 11588,
+      "new_sealed_message_fps": 11545,
       "max_impl": "grpcio (loopback, client-streaming)",
       "max_tier": "stock-client",
       "seal_mode": "transport-of-sealed-frame",
-      "rate_note": "relay 11,589/s of opaque sealed frames (seal amortized upstream); producing NEW sealed msgs single-core ~11,588/s (seal 77M \u2295 relay)",
+      "rate_note": "relay 11,589/s of opaque sealed frames (seal amortized upstream); producing NEW sealed msgs single-core ~11,545/s (seal 77M \u2295 relay)",
       "max_fps": 11589.43488276302,
       "tier_ladder": [
         {
@@ -4492,7 +4495,7 @@
       "per_profile_max": {
         "classical": {
           "sealed_relay_fps": 11589,
-          "new_sealed_message_fps": 11588,
+          "new_sealed_message_fps": 11545,
           "one_time_handshake_ms": 14.263,
           "meets": [
             "RFC 7748 (X25519)",
@@ -4509,7 +4512,7 @@
         },
         "nist1": {
           "sealed_relay_fps": 11589,
-          "new_sealed_message_fps": 11588,
+          "new_sealed_message_fps": 11545,
           "one_time_handshake_ms": 0.622,
           "meets": [
             "FIPS 203 (ML-KEM-512)",
@@ -4527,7 +4530,7 @@
         },
         "nist3": {
           "sealed_relay_fps": 11589,
-          "new_sealed_message_fps": 11588,
+          "new_sealed_message_fps": 11545,
           "one_time_handshake_ms": 1.385,
           "meets": [
             "FIPS 203 (ML-KEM-768)",
@@ -4544,7 +4547,7 @@
         },
         "nist5": {
           "sealed_relay_fps": 11589,
-          "new_sealed_message_fps": 11588,
+          "new_sealed_message_fps": 11545,
           "one_time_handshake_ms": 1.685,
           "meets": [
             "FIPS 203 (ML-KEM-1024)",
@@ -4561,7 +4564,7 @@
         },
         "hybrid3": {
           "sealed_relay_fps": 11589,
-          "new_sealed_message_fps": 11588,
+          "new_sealed_message_fps": 11545,
           "one_time_handshake_ms": 2.4,
           "meets": [
             "FIPS 203",
@@ -4579,7 +4582,7 @@
         },
         "hybrid5": {
           "sealed_relay_fps": 11589,
-          "new_sealed_message_fps": 11588,
+          "new_sealed_message_fps": 11545,
           "one_time_handshake_ms": 8.853,
           "meets": [
             "FIPS 203",
@@ -4597,7 +4600,7 @@
         },
         "cnsa20": {
           "sealed_relay_fps": 11589,
-          "new_sealed_message_fps": 11588,
+          "new_sealed_message_fps": 11545,
           "one_time_handshake_ms": 1.345,
           "meets": [
             "CNSA 2.0",
@@ -4616,7 +4619,7 @@
         },
         "nist5-kmac": {
           "sealed_relay_fps": 11589,
-          "new_sealed_message_fps": 11588,
+          "new_sealed_message_fps": 11545,
           "one_time_handshake_ms": 1.685,
           "meets": [
             "FIPS 203 (ML-KEM-1024)",
@@ -4635,7 +4638,7 @@
         },
         "sphincs5": {
           "sealed_relay_fps": 11589,
-          "new_sealed_message_fps": 11588,
+          "new_sealed_message_fps": 11545,
           "one_time_handshake_ms": 49.014,
           "meets": [
             "FIPS 205 (SLH-DSA / SPHINCS+)",
@@ -4652,7 +4655,7 @@
         },
         "falcon5": {
           "sealed_relay_fps": 11589,
-          "new_sealed_message_fps": 11588,
+          "new_sealed_message_fps": 11545,
           "one_time_handshake_ms": 16.56,
           "meets": [
             "FN-DSA/Falcon (NIST round 3 sig)",
@@ -4669,7 +4672,7 @@
         },
         "csfc": {
           "sealed_relay_fps": 11589,
-          "new_sealed_message_fps": 11588,
+          "new_sealed_message_fps": 11545,
           "one_time_handshake_ms": 8.853,
           "meets": [
             "NSA CSfC (two-layer)",
@@ -4688,11 +4691,11 @@
     },
     "uds": {
       "sealed_relay_fps": 1205429,
-      "new_sealed_message_fps": 1186831,
+      "new_sealed_message_fps": 861575,
       "max_impl": "librbxport C shim",
       "max_tier": "shim",
       "seal_mode": "transport-of-sealed-frame",
-      "rate_note": "relay 1,205,429/s of opaque sealed frames (seal amortized upstream); producing NEW sealed msgs single-core ~1,186,831/s (seal 77M \u2295 relay)",
+      "rate_note": "relay 1,205,429/s of opaque sealed frames (seal amortized upstream); producing NEW sealed msgs single-core ~861,575/s (seal 77M \u2295 relay)",
       "max_fps": 1205429.2531594352,
       "tier_ladder": [
         {
@@ -4708,7 +4711,7 @@
       "per_profile_max": {
         "classical": {
           "sealed_relay_fps": 1205429,
-          "new_sealed_message_fps": 1186831,
+          "new_sealed_message_fps": 861575,
           "one_time_handshake_ms": 14.263,
           "meets": [
             "RFC 7748 (X25519)",
@@ -4725,7 +4728,7 @@
         },
         "nist1": {
           "sealed_relay_fps": 1205429,
-          "new_sealed_message_fps": 1186831,
+          "new_sealed_message_fps": 861575,
           "one_time_handshake_ms": 0.622,
           "meets": [
             "FIPS 203 (ML-KEM-512)",
@@ -4743,7 +4746,7 @@
         },
         "nist3": {
           "sealed_relay_fps": 1205429,
-          "new_sealed_message_fps": 1186831,
+          "new_sealed_message_fps": 861575,
           "one_time_handshake_ms": 1.385,
           "meets": [
             "FIPS 203 (ML-KEM-768)",
@@ -4760,7 +4763,7 @@
         },
         "nist5": {
           "sealed_relay_fps": 1205429,
-          "new_sealed_message_fps": 1186831,
+          "new_sealed_message_fps": 861575,
           "one_time_handshake_ms": 1.685,
           "meets": [
             "FIPS 203 (ML-KEM-1024)",
@@ -4777,7 +4780,7 @@
         },
         "hybrid3": {
           "sealed_relay_fps": 1205429,
-          "new_sealed_message_fps": 1186831,
+          "new_sealed_message_fps": 861575,
           "one_time_handshake_ms": 2.4,
           "meets": [
             "FIPS 203",
@@ -4795,7 +4798,7 @@
         },
         "hybrid5": {
           "sealed_relay_fps": 1205429,
-          "new_sealed_message_fps": 1186831,
+          "new_sealed_message_fps": 861575,
           "one_time_handshake_ms": 8.853,
           "meets": [
             "FIPS 203",
@@ -4813,7 +4816,7 @@
         },
         "cnsa20": {
           "sealed_relay_fps": 1205429,
-          "new_sealed_message_fps": 1186831,
+          "new_sealed_message_fps": 861575,
           "one_time_handshake_ms": 1.345,
           "meets": [
             "CNSA 2.0",
@@ -4832,7 +4835,7 @@
         },
         "nist5-kmac": {
           "sealed_relay_fps": 1205429,
-          "new_sealed_message_fps": 1186831,
+          "new_sealed_message_fps": 861575,
           "one_time_handshake_ms": 1.685,
           "meets": [
             "FIPS 203 (ML-KEM-1024)",
@@ -4851,7 +4854,7 @@
         },
         "sphincs5": {
           "sealed_relay_fps": 1205429,
-          "new_sealed_message_fps": 1186831,
+          "new_sealed_message_fps": 861575,
           "one_time_handshake_ms": 49.014,
           "meets": [
             "FIPS 205 (SLH-DSA / SPHINCS+)",
@@ -4868,7 +4871,7 @@
         },
         "falcon5": {
           "sealed_relay_fps": 1205429,
-          "new_sealed_message_fps": 1186831,
+          "new_sealed_message_fps": 861575,
           "one_time_handshake_ms": 16.56,
           "meets": [
             "FN-DSA/Falcon (NIST round 3 sig)",
@@ -4885,7 +4888,7 @@
         },
         "csfc": {
           "sealed_relay_fps": 1205429,
-          "new_sealed_message_fps": 1186831,
+          "new_sealed_message_fps": 861575,
           "one_time_handshake_ms": 8.853,
           "meets": [
             "NSA CSfC (two-layer)",

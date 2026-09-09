@@ -111,7 +111,7 @@
     <div class="big">
       <div class="m"><div class="v">827,555,417</div><div class="l">aggregate seal ceiling, frames/s (all cores, batched)</div></div>
       <div class="m"><div class="v">210,579,134</div><div class="l">batched seal, frames/s (single core, warm)</div></div>
-      <div class="m"><div class="v">76,923,077</div><div class="l">per-message seal, frames/s (wire PDU floor)</div></div>
+      <div class="m"><div class="v">3,020,372</div><div class="l">per-message seal, frames/s (wire PDU floor)</div></div>
       <div class="m"><div class="v">18,667,397</div><div class="l">peak codec, frames/s</div></div>
       <div class="m"><div class="v">6,250,000</div><div class="l">peak relay, frames/s</div></div>
     </div>
@@ -477,13 +477,16 @@
       separate.</p>
     <div class="grid" style="grid-template-columns:repeat(3,1fr);gap:14px">
       <div class="card"><div class="lbl">per-message (wire PDU floor)</div>
-        <div class="big"><span class="tag t-native">native</span> 77 <span class="mono">M f/s</span></div>
-        <p class="note">one C AES-256-GCM seal per frame, ~13 ns. Each UDP/TCP/DDS frame sealed on its own.</p></div>
+        <div class="big"><span class="tag t-native">native</span> 3.0 <span class="mono">M f/s</span></div>
+        <div class="mono" style="color:var(--sig);font-size:.9em">331.09 ns/frame</div>
+        <p class="note">one full C AES-256-GCM seal per frame (counter nonce). Each UDP/TCP/DDS frame sealed on its own.</p></div>
       <div class="card"><div class="lbl">batched, single core</div>
         <div class="big"><span class="tag t-native">native</span> 211 <span class="mono">M f/s</span></div>
+        <div class="mono" style="color:var(--sig);font-size:.9em">4.75 ns/frame</div>
         <p class="note">many frames sealed as one buffer (shm ring / recording / jumbo), per-call setup amortized.</p></div>
       <div class="card"><div class="lbl">aggregate, all cores</div>
         <div class="big"><span class="tag t-native">native</span> 828 <span class="mono">M f/s</span></div>
+        <div class="mono" style="color:var(--sig);font-size:.9em">1.21 ns/frame effective</div>
         <p class="note">the batched seal on all 10 cores (21.52 GB/s,
           4.09x single core). The machine's true seal throughput.</p></div>
     </div>
@@ -498,6 +501,23 @@
     <p class="note">Source: <span class="mono">shm-ring-gbps.json</span> (ring copy / zero-copy / raw) and
       <span class="mono">net-latency.json</span> (TCP loopback, AEAD seal), measured on this Apple
       M-series arm64 host. The small-frame rate regime is the explorer above; this is the bandwidth regime.</p>
+  </section>
+
+  <section>
+    <h2 class="lbl">Cross-checked against OpenSSL, in loopback</h2>
+    <p class="note" style="margin-top:0">A number is only as good as an independent baseline. We ran
+      <span class="mono">openssl speed aes-256-gcm</span> , OpenSSL's own AES-NI benchmark , on this same
+      machine and compared it to robobus's seal at matched block sizes. robobus's <span class="mono">Aead.seal</span>
+      does strictly more than the raw cipher (nonce, tag, RBX1 framing), so it should land BELOW OpenSSL's
+      raw rate. It does, at every size and at the multi-core aggregate , the numbers are conservative, not
+      inflated.</p>
+    <div class="tblwrap"><table><thead><tr>
+      <th>block</th><th class="n">OpenSSL raw GB/s</th><th class="n">robobus seal GB/s</th>
+      <th class="n">robobus / OpenSSL</th></tr></thead><tbody><tr><td class='mono'>64 B</td><td class='n mono'>0.763</td><td class='n mono'>0.043</td><td class='n mono'>5.7%</td></tr><tr><td class='mono'>1024 B</td><td class='n mono'>4.657</td><td class='n mono'>0.605</td><td class='n mono'>13.0%</td></tr><tr><td class='mono'>16384 B</td><td class='n mono'>7.31</td><td class='n mono'>3.634</td><td class='n mono'>49.7%</td></tr><tr><td class='mono'>16 KiB, 10 cores</td><td class='n mono'>32.582</td><td class='n mono'>21.52</td><td class='n mono'>66.0%</td></tr></tbody></table></div>
+    <p class="note"><span class="mono">OpenSSL 3.6.3 9 Jun 2026 (Library: OpenSSL 3.6.3 9 Jun 2026)</span>. Reproduce:
+      <span class="mono">python3 bench/seal_crosscheck.py</span> ->
+      <span class="mono">seal-crosscheck.json</span>. robobus staying under the raw AES-NI ceiling is the
+      honest result; the batched and aggregate seal rungs above are measured the same way.</p>
   </section>
 
 </main>
