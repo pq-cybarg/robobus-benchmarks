@@ -9,6 +9,12 @@ name: benchmarks
 # those columns accordingly — good for cross-platform coverage + relative comparison, not for
 # bare-metal nanosecond claims.
 
+# DISPATCH-ONLY. The live site at docs/ is now the amber four-door overhaul (built in the core robobus
+# repo by bench/build_pages.py, published here as a static tree). The publish job below rebuilds the OLD
+# lab-report site with build_site.py and `cp -r bench/site/. docs/`, which would CLOBBER the overhaul, so
+# the auto push/schedule triggers are removed: this workflow runs ONLY when a human dispatches it. Before
+# re-enabling any auto-refresh, the publish step must be repointed at docs/legacy/original/ (the archived
+# lab-report site) instead of docs/ root. (This whole pipeline is consolidated in the fresh-repo migration.)
 on:
   workflow_dispatch:
     inputs:
@@ -16,11 +22,6 @@ on:
         description: "Also run the opt-in discrete-GPU / bare-metal self-hosted job"
         type: boolean
         default: false
-  push:
-    branches: [main]
-    paths: ["bench/**", ".github/workflows/benchmarks.yml"]
-  schedule:
-    - cron: "0 6 * * 1"   # weekly refresh
 
 permissions:
   contents: write
