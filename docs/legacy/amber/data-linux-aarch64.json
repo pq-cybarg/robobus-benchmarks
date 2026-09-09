@@ -1,0 +1,1852 @@
+{
+  "schema": "robobus-bench/1",
+  "generated_unix": 1788109961,
+  "label": "native linux/arm64 (colima Apple-Silicon VM)",
+  "quick": true,
+  "platform": {
+    "python_version": "3.12.14",
+    "python_impl": "CPython",
+    "system": "Linux",
+    "release": "6.8.0-117-generic",
+    "version": "#117-Ubuntu SMP PREEMPT_DYNAMIC Thu May  7 17:26:37 UTC 2026",
+    "machine": "aarch64",
+    "processor": "",
+    "platform": "Linux-6.8.0-117-generic-aarch64-with-glibc2.41",
+    "cpu_count_logical": 6,
+    "environment": {
+      "virtualized": false,
+      "self_hosted": false
+    },
+    "measurement": {
+      "pinned_cpus": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5
+      ],
+      "pinned": false,
+      "cpu_governor": null,
+      "turbo": null,
+      "smt_active": false,
+      "isolated_cpus": "",
+      "aslr": "full",
+      "pmu_perf_available": false,
+      "uncontrolled_noise": [
+        "no isolated cores (isolcpus=) -> scheduler + IRQ noise"
+      ],
+      "fidelity_tier": "2-baremetal-untuned (real hardware, default OS noise)"
+    },
+    "dependencies": {
+      "available": {
+        "cryptography": "50.0.1"
+      },
+      "missing": {
+        "oqs": "ModuleNotFoundError: No module named 'oqs'",
+        "argon2": "ModuleNotFoundError: No module named 'argon2'",
+        "psutil": "ModuleNotFoundError: No module named 'psutil'"
+      }
+    }
+  },
+  "results": [
+    {
+      "group": "bus",
+      "name": "ring_op_amortized",
+      "config": {},
+      "unit": "",
+      "dependency": "C compiler",
+      "status": "skipped",
+      "note": "no cc/clang/gcc on PATH",
+      "metrics": {}
+    },
+    {
+      "group": "bus",
+      "name": "oneway_latency",
+      "config": {},
+      "unit": "",
+      "dependency": "C compiler",
+      "status": "skipped",
+      "note": "no cc/clang/gcc on PATH",
+      "metrics": {}
+    },
+    {
+      "group": "kem",
+      "name": "X25519",
+      "config": {
+        "op": "keygen"
+      },
+      "unit": "ops/s",
+      "dependency": "cryptography",
+      "status": "ok",
+      "note": "",
+      "metrics": {
+        "iters": 9317,
+        "elapsed_s": 0.150007716,
+        "ops_per_s": 62110.13838781466,
+        "n": 4000,
+        "min_ns": 12256,
+        "p50_ns": 12965.0,
+        "p90_ns": 19134.0,
+        "p99_ns": 46867.41999999975,
+        "max_ns": 159496,
+        "mean_ns": 15082.534,
+        "stdev_ns": 6913.523900142676
+      }
+    },
+    {
+      "group": "kem",
+      "name": "X25519",
+      "config": {
+        "op": "derive"
+      },
+      "unit": "ops/s",
+      "dependency": "cryptography",
+      "status": "ok",
+      "note": "",
+      "metrics": {
+        "iters": 7417,
+        "elapsed_s": 0.150016721,
+        "ops_per_s": 49441.15529628194,
+        "n": 4000,
+        "min_ns": 18050,
+        "p50_ns": 18967.0,
+        "p90_ns": 20265.099999999995,
+        "p99_ns": 59530.40999999999,
+        "max_ns": 125313,
+        "mean_ns": 20291.85125,
+        "stdev_ns": 7349.732519631136
+      }
+    },
+    {
+      "group": "kem",
+      "name": "ECDH-P256",
+      "config": {
+        "op": "keygen"
+      },
+      "unit": "ops/s",
+      "dependency": "cryptography",
+      "status": "ok",
+      "note": "",
+      "metrics": {
+        "iters": 21319,
+        "elapsed_s": 0.150004673,
+        "ops_per_s": 142122.23908517836,
+        "n": 4000,
+        "min_ns": 6212,
+        "p50_ns": 6503.0,
+        "p90_ns": 6878.0,
+        "p99_ns": 20765.839999999862,
+        "max_ns": 106219,
+        "mean_ns": 7067.241,
+        "stdev_ns": 3937.181835135253
+      }
+    },
+    {
+      "group": "kem",
+      "name": "ECDH-P256",
+      "config": {
+        "op": "derive"
+      },
+      "unit": "ops/s",
+      "dependency": "cryptography",
+      "status": "ok",
+      "note": "",
+      "metrics": {
+        "iters": 5470,
+        "elapsed_s": 0.150011843,
+        "ops_per_s": 36463.78772907949,
+        "n": 4000,
+        "min_ns": 25054,
+        "p50_ns": 26180.0,
+        "p90_ns": 26638.0,
+        "p99_ns": 63201.339999999924,
+        "max_ns": 119726,
+        "mean_ns": 27194.353,
+        "stdev_ns": 6886.564022129686
+      }
+    },
+    {
+      "group": "kem",
+      "name": "ML-KEM-512",
+      "config": {},
+      "unit": "",
+      "dependency": "oqs",
+      "status": "skipped",
+      "note": "ModuleNotFoundError: No module named 'oqs'",
+      "metrics": {}
+    },
+    {
+      "group": "kem",
+      "name": "ML-KEM-768",
+      "config": {},
+      "unit": "",
+      "dependency": "oqs",
+      "status": "skipped",
+      "note": "ModuleNotFoundError: No module named 'oqs'",
+      "metrics": {}
+    },
+    {
+      "group": "kem",
+      "name": "ML-KEM-1024",
+      "config": {},
+      "unit": "",
+      "dependency": "oqs",
+      "status": "skipped",
+      "note": "ModuleNotFoundError: No module named 'oqs'",
+      "metrics": {}
+    },
+    {
+      "group": "hybrid_kem",
+      "name": "ECDH-P256+ML-KEM-768",
+      "config": {},
+      "unit": "",
+      "dependency": "cryptography+oqs",
+      "status": "skipped",
+      "note": "ModuleNotFoundError: No module named 'oqs'",
+      "metrics": {}
+    },
+    {
+      "group": "hybrid_kem",
+      "name": "ECDH-P256+ML-KEM-1024",
+      "config": {},
+      "unit": "",
+      "dependency": "cryptography+oqs",
+      "status": "skipped",
+      "note": "ModuleNotFoundError: No module named 'oqs'",
+      "metrics": {}
+    },
+    {
+      "group": "handshake",
+      "name": "auth handshake",
+      "config": {},
+      "unit": "",
+      "dependency": "cryptography+oqs",
+      "status": "skipped",
+      "note": "ModuleNotFoundError: No module named 'oqs'",
+      "metrics": {}
+    },
+    {
+      "group": "sig",
+      "name": "Ed25519",
+      "config": {
+        "op": "keygen"
+      },
+      "unit": "ops/s",
+      "dependency": "cryptography",
+      "status": "ok",
+      "note": "",
+      "metrics": {
+        "iters": 10392,
+        "elapsed_s": 0.150023766,
+        "ops_per_s": 69269.02501567651,
+        "n": 4000,
+        "min_ns": 12673,
+        "p50_ns": 13048.0,
+        "p90_ns": 18430.099999999995,
+        "p99_ns": 41824.24999999973,
+        "max_ns": 142280,
+        "mean_ns": 15007.81825,
+        "stdev_ns": 6255.075846919599
+      }
+    },
+    {
+      "group": "sig",
+      "name": "Ed25519",
+      "config": {
+        "op": "sign"
+      },
+      "unit": "ops/s",
+      "dependency": "cryptography",
+      "status": "ok",
+      "note": "",
+      "metrics": {
+        "iters": 9999,
+        "elapsed_s": 0.150003964,
+        "ops_per_s": 66658.23844495203,
+        "n": 4000,
+        "min_ns": 13881,
+        "p50_ns": 14133.0,
+        "p90_ns": 14716.0,
+        "p99_ns": 33976.66999999996,
+        "max_ns": 71702,
+        "mean_ns": 14910.0375,
+        "stdev_ns": 3957.123055970556
+      }
+    },
+    {
+      "group": "sig",
+      "name": "Ed25519",
+      "config": {
+        "op": "verify"
+      },
+      "unit": "ops/s",
+      "dependency": "cryptography",
+      "status": "ok",
+      "note": "",
+      "metrics": {
+        "iters": 3531,
+        "elapsed_s": 0.150011302,
+        "ops_per_s": 23538.226473096005,
+        "n": 3531,
+        "min_ns": 38019,
+        "p50_ns": 39436.0,
+        "p90_ns": 43813.0,
+        "p99_ns": 118513.29999999987,
+        "max_ns": 234784,
+        "mean_ns": 42234.85018408383,
+        "stdev_ns": 12851.086886889501
+      }
+    },
+    {
+      "group": "sig",
+      "name": "ECDSA-P256",
+      "config": {
+        "op": "sign"
+      },
+      "unit": "ops/s",
+      "dependency": "cryptography",
+      "status": "ok",
+      "note": "",
+      "metrics": {
+        "iters": 9656,
+        "elapsed_s": 0.150000087,
+        "ops_per_s": 64373.29599682165,
+        "n": 4000,
+        "min_ns": 12839,
+        "p50_ns": 13382.0,
+        "p90_ns": 21765.199999999997,
+        "p99_ns": 72578.0,
+        "max_ns": 124104,
+        "mean_ns": 16435.915,
+        "stdev_ns": 10753.890189311727
+      }
+    },
+    {
+      "group": "sig",
+      "name": "ECDSA-P256",
+      "config": {
+        "op": "verify"
+      },
+      "unit": "ops/s",
+      "dependency": "cryptography",
+      "status": "ok",
+      "note": "",
+      "metrics": {
+        "iters": 3851,
+        "elapsed_s": 0.150004548,
+        "ops_per_s": 25672.55494146751,
+        "n": 3851,
+        "min_ns": 33891,
+        "p50_ns": 35435.0,
+        "p90_ns": 41562.0,
+        "p99_ns": 103447.5,
+        "max_ns": 209688,
+        "mean_ns": 38727.786289275515,
+        "stdev_ns": 12563.00287564525
+      }
+    },
+    {
+      "group": "sig",
+      "name": "RSA-3072-PSS",
+      "config": {
+        "op": "sign"
+      },
+      "unit": "ops/s",
+      "dependency": "cryptography",
+      "status": "ok",
+      "note": "",
+      "metrics": {
+        "iters": 308,
+        "elapsed_s": 0.400898307,
+        "ops_per_s": 768.2746337963457,
+        "n": 200,
+        "min_ns": 969901,
+        "p50_ns": 1061176.5,
+        "p90_ns": 1470450.7999999998,
+        "p99_ns": 2284052.1099999985,
+        "max_ns": 2581915,
+        "mean_ns": 1166546.95,
+        "stdev_ns": 270901.72369458544
+      }
+    },
+    {
+      "group": "sig",
+      "name": "RSA-3072-PSS",
+      "config": {
+        "op": "verify"
+      },
+      "unit": "ops/s",
+      "dependency": "cryptography",
+      "status": "ok",
+      "note": "",
+      "metrics": {
+        "iters": 6224,
+        "elapsed_s": 0.15000459,
+        "ops_per_s": 41492.063676184844,
+        "n": 4000,
+        "min_ns": 21761,
+        "p50_ns": 22136.0,
+        "p90_ns": 23220.0,
+        "p99_ns": 47620.9099999997,
+        "max_ns": 1489828,
+        "mean_ns": 24030.77675,
+        "stdev_ns": 31774.743840342904
+      }
+    },
+    {
+      "group": "sig",
+      "name": "ML-DSA-44",
+      "config": {},
+      "unit": "",
+      "dependency": "oqs",
+      "status": "skipped",
+      "note": "ModuleNotFoundError: No module named 'oqs'",
+      "metrics": {}
+    },
+    {
+      "group": "sig",
+      "name": "ML-DSA-65",
+      "config": {},
+      "unit": "",
+      "dependency": "oqs",
+      "status": "skipped",
+      "note": "ModuleNotFoundError: No module named 'oqs'",
+      "metrics": {}
+    },
+    {
+      "group": "sig",
+      "name": "ML-DSA-87",
+      "config": {},
+      "unit": "",
+      "dependency": "oqs",
+      "status": "skipped",
+      "note": "ModuleNotFoundError: No module named 'oqs'",
+      "metrics": {}
+    },
+    {
+      "group": "aead",
+      "name": "AES-256-GCM",
+      "config": {
+        "op": "encrypt",
+        "input_bytes": 64
+      },
+      "unit": "MB/s",
+      "dependency": "cryptography",
+      "status": "ok",
+      "note": "",
+      "metrics": {
+        "iters": 453343,
+        "elapsed_s": 0.150001797,
+        "ops_per_s": 3022250.460106155,
+        "bytes": 29013952,
+        "mb_per_s": 193.4240294467939,
+        "mib_per_s": 184.46352905921356
+      }
+    },
+    {
+      "group": "aead",
+      "name": "AES-256-GCM",
+      "config": {
+        "op": "decrypt",
+        "input_bytes": 64
+      },
+      "unit": "MB/s",
+      "dependency": "cryptography",
+      "status": "ok",
+      "note": "",
+      "metrics": {
+        "iters": 448101,
+        "elapsed_s": 0.15001893,
+        "ops_per_s": 2986963.0452636876,
+        "bytes": 28678464,
+        "mb_per_s": 191.16563489687604,
+        "mib_per_s": 182.309756180645
+      }
+    },
+    {
+      "group": "aead",
+      "name": "AES-256-GCM",
+      "config": {
+        "op": "encrypt",
+        "input_bytes": 1024
+      },
+      "unit": "MB/s",
+      "dependency": "cryptography",
+      "status": "ok",
+      "note": "",
+      "metrics": {
+        "iters": 307565,
+        "elapsed_s": 0.15000038,
+        "ops_per_s": 2050428.1389153816,
+        "bytes": 314946560,
+        "mb_per_s": 2099.6384142493507,
+        "mib_per_s": 2002.3712294095524
+      }
+    },
+    {
+      "group": "aead",
+      "name": "AES-256-GCM",
+      "config": {
+        "op": "decrypt",
+        "input_bytes": 1024
+      },
+      "unit": "MB/s",
+      "dependency": "cryptography",
+      "status": "ok",
+      "note": "",
+      "metrics": {
+        "iters": 311513,
+        "elapsed_s": 0.150000254,
+        "ops_per_s": 2076749.8167036436,
+        "bytes": 318989312,
+        "mb_per_s": 2126.5918123045312,
+        "mib_per_s": 2028.075992874652
+      }
+    },
+    {
+      "group": "aead",
+      "name": "AES-256-GCM",
+      "config": {
+        "op": "encrypt",
+        "input_bytes": 65536
+      },
+      "unit": "MB/s",
+      "dependency": "cryptography",
+      "status": "ok",
+      "note": "",
+      "metrics": {
+        "iters": 14921,
+        "elapsed_s": 0.150004214,
+        "ops_per_s": 99470.53887432789,
+        "bytes": 977862656,
+        "mb_per_s": 6518.901235667953,
+        "mib_per_s": 6216.908679645493
+      }
+    },
+    {
+      "group": "aead",
+      "name": "AES-256-GCM",
+      "config": {
+        "op": "decrypt",
+        "input_bytes": 65536
+      },
+      "unit": "MB/s",
+      "dependency": "cryptography",
+      "status": "ok",
+      "note": "",
+      "metrics": {
+        "iters": 14896,
+        "elapsed_s": 0.150001088,
+        "ops_per_s": 99305.94636753568,
+        "bytes": 976224256,
+        "mb_per_s": 6508.114501142818,
+        "mib_per_s": 6206.62164797098
+      }
+    },
+    {
+      "group": "aead",
+      "name": "AES-128-GCM",
+      "config": {
+        "op": "encrypt",
+        "input_bytes": 64
+      },
+      "unit": "MB/s",
+      "dependency": "cryptography",
+      "status": "ok",
+      "note": "",
+      "metrics": {
+        "iters": 448336,
+        "elapsed_s": 0.150000588,
+        "ops_per_s": 2988894.9501984622,
+        "bytes": 28693504,
+        "mb_per_s": 191.2892768127016,
+        "mib_per_s": 182.4276703001991
+      }
+    },
+    {
+      "group": "aead",
+      "name": "AES-128-GCM",
+      "config": {
+        "op": "decrypt",
+        "input_bytes": 64
+      },
+      "unit": "MB/s",
+      "dependency": "cryptography",
+      "status": "ok",
+      "note": "",
+      "metrics": {
+        "iters": 440837,
+        "elapsed_s": 0.150000504,
+        "ops_per_s": 2938903.4586177124,
+        "bytes": 28213568,
+        "mb_per_s": 188.08982135153357,
+        "mib_per_s": 179.37643180039748
+      }
+    },
+    {
+      "group": "aead",
+      "name": "AES-128-GCM",
+      "config": {
+        "op": "encrypt",
+        "input_bytes": 1024
+      },
+      "unit": "MB/s",
+      "dependency": "cryptography",
+      "status": "ok",
+      "note": "",
+      "metrics": {
+        "iters": 287040,
+        "elapsed_s": 0.150000337,
+        "ops_per_s": 1913595.7007883254,
+        "bytes": 293928960,
+        "mb_per_s": 1959.5219976072453,
+        "mib_per_s": 1868.745801551099
+      }
+    },
+    {
+      "group": "aead",
+      "name": "AES-128-GCM",
+      "config": {
+        "op": "decrypt",
+        "input_bytes": 1024
+      },
+      "unit": "MB/s",
+      "dependency": "cryptography",
+      "status": "ok",
+      "note": "",
+      "metrics": {
+        "iters": 309123,
+        "elapsed_s": 0.150000504,
+        "ops_per_s": 2060813.0756680656,
+        "bytes": 316541952,
+        "mb_per_s": 2110.272589484099,
+        "mib_per_s": 2012.5127692070953
+      }
+    },
+    {
+      "group": "aead",
+      "name": "AES-128-GCM",
+      "config": {
+        "op": "encrypt",
+        "input_bytes": 65536
+      },
+      "unit": "MB/s",
+      "dependency": "cryptography",
+      "status": "ok",
+      "note": "",
+      "metrics": {
+        "iters": 15951,
+        "elapsed_s": 0.150005841,
+        "ops_per_s": 106335.85928163957,
+        "bytes": 1045364736,
+        "mb_per_s": 6968.826873881531,
+        "mib_per_s": 6645.991205102473
+      }
+    },
+    {
+      "group": "aead",
+      "name": "AES-128-GCM",
+      "config": {
+        "op": "decrypt",
+        "input_bytes": 65536
+      },
+      "unit": "MB/s",
+      "dependency": "cryptography",
+      "status": "ok",
+      "note": "",
+      "metrics": {
+        "iters": 15390,
+        "elapsed_s": 0.150008467,
+        "ops_per_s": 102594.20889888835,
+        "bytes": 1008599040,
+        "mb_per_s": 6723.614074397547,
+        "mib_per_s": 6412.138056180522
+      }
+    },
+    {
+      "group": "aead",
+      "name": "ChaCha20-Poly1305",
+      "config": {
+        "op": "encrypt",
+        "input_bytes": 64
+      },
+      "unit": "MB/s",
+      "dependency": "cryptography",
+      "status": "ok",
+      "note": "",
+      "metrics": {
+        "iters": 321625,
+        "elapsed_s": 0.150000338,
+        "ops_per_s": 2144161.835155331,
+        "bytes": 20584000,
+        "mb_per_s": 137.2263574499412,
+        "mib_per_s": 130.86925263399237
+      }
+    },
+    {
+      "group": "aead",
+      "name": "ChaCha20-Poly1305",
+      "config": {
+        "op": "decrypt",
+        "input_bytes": 64
+      },
+      "unit": "MB/s",
+      "dependency": "cryptography",
+      "status": "ok",
+      "note": "",
+      "metrics": {
+        "iters": 309337,
+        "elapsed_s": 0.150000421,
+        "ops_per_s": 2062240.878643934,
+        "bytes": 19797568,
+        "mb_per_s": 131.98341623321176,
+        "mib_per_s": 125.8691942531698
+      }
+    },
+    {
+      "group": "aead",
+      "name": "ChaCha20-Poly1305",
+      "config": {
+        "op": "encrypt",
+        "input_bytes": 1024
+      },
+      "unit": "MB/s",
+      "dependency": "cryptography",
+      "status": "ok",
+      "note": "",
+      "metrics": {
+        "iters": 158182,
+        "elapsed_s": 0.150000504,
+        "ops_per_s": 1054543.123401772,
+        "bytes": 161978368,
+        "mb_per_s": 1079.8521583634144,
+        "mib_per_s": 1029.827268947043
+      }
+    },
+    {
+      "group": "aead",
+      "name": "ChaCha20-Poly1305",
+      "config": {
+        "op": "decrypt",
+        "input_bytes": 1024
+      },
+      "unit": "MB/s",
+      "dependency": "cryptography",
+      "status": "ok",
+      "note": "",
+      "metrics": {
+        "iters": 154768,
+        "elapsed_s": 0.150000379,
+        "ops_per_s": 1031784.059692276,
+        "bytes": 158482432,
+        "mb_per_s": 1056.5468771248904,
+        "mib_per_s": 1007.6016207932382
+      }
+    },
+    {
+      "group": "aead",
+      "name": "ChaCha20-Poly1305",
+      "config": {
+        "op": "encrypt",
+        "input_bytes": 65536
+      },
+      "unit": "MB/s",
+      "dependency": "cryptography",
+      "status": "ok",
+      "note": "",
+      "metrics": {
+        "iters": 3964,
+        "elapsed_s": 0.150016429,
+        "ops_per_s": 26423.772558937526,
+        "bytes": 259784704,
+        "mb_per_s": 1731.7083584225295,
+        "mib_per_s": 1651.4857849335954
+      }
+    },
+    {
+      "group": "aead",
+      "name": "ChaCha20-Poly1305",
+      "config": {
+        "op": "decrypt",
+        "input_bytes": 65536
+      },
+      "unit": "MB/s",
+      "dependency": "cryptography",
+      "status": "ok",
+      "note": "",
+      "metrics": {
+        "iters": 4273,
+        "elapsed_s": 0.150005548,
+        "ops_per_s": 28485.613078790928,
+        "bytes": 280035328,
+        "mb_per_s": 1866.8331387316423,
+        "mib_per_s": 1780.350817424433
+      }
+    },
+    {
+      "group": "hash",
+      "name": "sha256",
+      "config": {
+        "input_bytes": 64
+      },
+      "unit": "MB/s",
+      "dependency": "hashlib",
+      "status": "ok",
+      "note": "",
+      "metrics": {
+        "iters": 334036,
+        "elapsed_s": 0.150000379,
+        "ops_per_s": 2226901.040030039,
+        "bytes": 21378304,
+        "mb_per_s": 142.5216665619225,
+        "mib_per_s": 135.91925293152093
+      }
+    },
+    {
+      "group": "hash",
+      "name": "sha256",
+      "config": {
+        "input_bytes": 1024
+      },
+      "unit": "MB/s",
+      "dependency": "hashlib",
+      "status": "ok",
+      "note": "",
+      "metrics": {
+        "iters": 178135,
+        "elapsed_s": 0.150009175,
+        "ops_per_s": 1187494.0316150663,
+        "bytes": 182410240,
+        "mb_per_s": 1215.9938883738278,
+        "mib_per_s": 1159.6621402490882
+      }
+    },
+    {
+      "group": "hash",
+      "name": "sha256",
+      "config": {
+        "input_bytes": 65536
+      },
+      "unit": "MB/s",
+      "dependency": "hashlib",
+      "status": "ok",
+      "note": "",
+      "metrics": {
+        "iters": 6184,
+        "elapsed_s": 0.150024642,
+        "ops_per_s": 41219.895062305826,
+        "bytes": 405274624,
+        "mb_per_s": 2701.3870428032747,
+        "mib_per_s": 2576.243441394114
+      }
+    },
+    {
+      "group": "hash",
+      "name": "sha384",
+      "config": {
+        "input_bytes": 64
+      },
+      "unit": "MB/s",
+      "dependency": "hashlib",
+      "status": "ok",
+      "note": "",
+      "metrics": {
+        "iters": 296311,
+        "elapsed_s": 0.150000255,
+        "ops_per_s": 1975403.3084810423,
+        "bytes": 18963904,
+        "mb_per_s": 126.4258117427867,
+        "mib_per_s": 120.56904958990737
+      }
+    },
+    {
+      "group": "hash",
+      "name": "sha384",
+      "config": {
+        "input_bytes": 1024
+      },
+      "unit": "MB/s",
+      "dependency": "hashlib",
+      "status": "ok",
+      "note": "",
+      "metrics": {
+        "iters": 138304,
+        "elapsed_s": 0.150000546,
+        "ops_per_s": 922023.3105018163,
+        "bytes": 141623296,
+        "mb_per_s": 944.15186995386,
+        "mib_per_s": 900.41338916193
+      }
+    },
+    {
+      "group": "hash",
+      "name": "sha384",
+      "config": {
+        "input_bytes": 65536
+      },
+      "unit": "MB/s",
+      "dependency": "hashlib",
+      "status": "ok",
+      "note": "",
+      "metrics": {
+        "iters": 3543,
+        "elapsed_s": 0.150005173,
+        "ops_per_s": 23619.185453024344,
+        "bytes": 232194048,
+        "mb_per_s": 1547.9069378494034,
+        "mib_per_s": 1476.1990908140215
+      }
+    },
+    {
+      "group": "hash",
+      "name": "sha512",
+      "config": {
+        "input_bytes": 64
+      },
+      "unit": "MB/s",
+      "dependency": "hashlib",
+      "status": "ok",
+      "note": "",
+      "metrics": {
+        "iters": 353355,
+        "elapsed_s": 0.150000213,
+        "ops_per_s": 2355696.65491075,
+        "bytes": 22614720,
+        "mb_per_s": 150.764585914288,
+        "mib_per_s": 143.78031341007997
+      }
+    },
+    {
+      "group": "hash",
+      "name": "sha512",
+      "config": {
+        "input_bytes": 1024
+      },
+      "unit": "MB/s",
+      "dependency": "hashlib",
+      "status": "ok",
+      "note": "",
+      "metrics": {
+        "iters": 143389,
+        "elapsed_s": 0.150000213,
+        "ops_per_s": 955925.3092527275,
+        "bytes": 146830336,
+        "mb_per_s": 978.8675166747929,
+        "mib_per_s": 933.5208098171167
+      }
+    },
+    {
+      "group": "hash",
+      "name": "sha512",
+      "config": {
+        "input_bytes": 65536
+      },
+      "unit": "MB/s",
+      "dependency": "hashlib",
+      "status": "ok",
+      "note": "",
+      "metrics": {
+        "iters": 3698,
+        "elapsed_s": 0.150030394,
+        "ops_per_s": 24648.33892257858,
+        "bytes": 242352128,
+        "mb_per_s": 1615.3535396301097,
+        "mib_per_s": 1540.5211826611612
+      }
+    },
+    {
+      "group": "hash",
+      "name": "sha3_256",
+      "config": {
+        "input_bytes": 64
+      },
+      "unit": "MB/s",
+      "dependency": "hashlib",
+      "status": "ok",
+      "note": "",
+      "metrics": {
+        "iters": 285178,
+        "elapsed_s": 0.150000212,
+        "ops_per_s": 1901183.9796599755,
+        "bytes": 18251392,
+        "mb_per_s": 121.67577469823843,
+        "mib_per_s": 116.03906125854343
+      }
+    },
+    {
+      "group": "hash",
+      "name": "sha3_256",
+      "config": {
+        "input_bytes": 1024
+      },
+      "unit": "MB/s",
+      "dependency": "hashlib",
+      "status": "ok",
+      "note": "",
+      "metrics": {
+        "iters": 97928,
+        "elapsed_s": 0.15000138,
+        "ops_per_s": 652847.3271379237,
+        "bytes": 100278272,
+        "mb_per_s": 668.5156629892339,
+        "mib_per_s": 637.5462179081286
+      }
+    },
+    {
+      "group": "hash",
+      "name": "sha3_256",
+      "config": {
+        "input_bytes": 65536
+      },
+      "unit": "MB/s",
+      "dependency": "hashlib",
+      "status": "ok",
+      "note": "",
+      "metrics": {
+        "iters": 2114,
+        "elapsed_s": 0.150021557,
+        "ops_per_s": 14091.308224457369,
+        "bytes": 138543104,
+        "mb_per_s": 923.4879757980382,
+        "mib_per_s": 880.7067640285856
+      }
+    },
+    {
+      "group": "hash",
+      "name": "sha3_512",
+      "config": {
+        "input_bytes": 64
+      },
+      "unit": "MB/s",
+      "dependency": "hashlib",
+      "status": "ok",
+      "note": "",
+      "metrics": {
+        "iters": 288281,
+        "elapsed_s": 0.150000087,
+        "ops_per_s": 1921872.2186474465,
+        "bytes": 18449984,
+        "mb_per_s": 122.99982199343658,
+        "mib_per_s": 117.30177115768106
+      }
+    },
+    {
+      "group": "hash",
+      "name": "sha3_512",
+      "config": {
+        "input_bytes": 1024
+      },
+      "unit": "MB/s",
+      "dependency": "hashlib",
+      "status": "ok",
+      "note": "",
+      "metrics": {
+        "iters": 58340,
+        "elapsed_s": 0.150002089,
+        "ops_per_s": 388927.9168638778,
+        "bytes": 59740160,
+        "mb_per_s": 398.2621868686109,
+        "mib_per_s": 379.81241881238066
+      }
+    },
+    {
+      "group": "hash",
+      "name": "sha3_512",
+      "config": {
+        "input_bytes": 65536
+      },
+      "unit": "MB/s",
+      "dependency": "hashlib",
+      "status": "ok",
+      "note": "",
+      "metrics": {
+        "iters": 1133,
+        "elapsed_s": 0.150046611,
+        "ops_per_s": 7550.986939651706,
+        "bytes": 74252288,
+        "mb_per_s": 494.86148007701416,
+        "mib_per_s": 471.9366837282316
+      }
+    },
+    {
+      "group": "hash",
+      "name": "blake2b",
+      "config": {
+        "input_bytes": 64
+      },
+      "unit": "MB/s",
+      "dependency": "hashlib",
+      "status": "ok",
+      "note": "",
+      "metrics": {
+        "iters": 323302,
+        "elapsed_s": 0.150000045,
+        "ops_per_s": 2155346.0200628606,
+        "bytes": 20691328,
+        "mb_per_s": 137.94214528402307,
+        "mib_per_s": 131.55188110735233
+      }
+    },
+    {
+      "group": "hash",
+      "name": "blake2b",
+      "config": {
+        "input_bytes": 1024
+      },
+      "unit": "MB/s",
+      "dependency": "hashlib",
+      "status": "ok",
+      "note": "",
+      "metrics": {
+        "iters": 144336,
+        "elapsed_s": 0.15000038,
+        "ops_per_s": 962237.5623315088,
+        "bytes": 147800064,
+        "mb_per_s": 985.331263827465,
+        "mib_per_s": 939.6851194643641
+      }
+    },
+    {
+      "group": "hash",
+      "name": "blake2b",
+      "config": {
+        "input_bytes": 65536
+      },
+      "unit": "MB/s",
+      "dependency": "hashlib",
+      "status": "ok",
+      "note": "",
+      "metrics": {
+        "iters": 2864,
+        "elapsed_s": 0.15001076,
+        "ops_per_s": 19091.963803129856,
+        "bytes": 187695104,
+        "mb_per_s": 1251.2109398019181,
+        "mib_per_s": 1193.247737695616
+      }
+    },
+    {
+      "group": "hash",
+      "name": "blake2s",
+      "config": {
+        "input_bytes": 64
+      },
+      "unit": "MB/s",
+      "dependency": "hashlib",
+      "status": "ok",
+      "note": "",
+      "metrics": {
+        "iters": 492917,
+        "elapsed_s": 0.150000338,
+        "ops_per_s": 3286105.928641307,
+        "bytes": 31546688,
+        "mb_per_s": 210.31077943304365,
+        "mib_per_s": 200.56798880867353
+      }
+    },
+    {
+      "group": "hash",
+      "name": "blake2s",
+      "config": {
+        "input_bytes": 1024
+      },
+      "unit": "MB/s",
+      "dependency": "hashlib",
+      "status": "ok",
+      "note": "",
+      "metrics": {
+        "iters": 91586,
+        "elapsed_s": 0.15000088,
+        "ops_per_s": 610569.7513241256,
+        "bytes": 93784064,
+        "mb_per_s": 625.2234253559046,
+        "mib_per_s": 596.2595227774664
+      }
+    },
+    {
+      "group": "hash",
+      "name": "blake2s",
+      "config": {
+        "input_bytes": 65536
+      },
+      "unit": "MB/s",
+      "dependency": "hashlib",
+      "status": "ok",
+      "note": "",
+      "metrics": {
+        "iters": 1675,
+        "elapsed_s": 0.150040567,
+        "ops_per_s": 11163.64749541369,
+        "bytes": 109772800,
+        "mb_per_s": 731.6208022594316,
+        "mib_per_s": 697.7279684633556
+      }
+    },
+    {
+      "group": "hash",
+      "name": "blake3",
+      "config": {},
+      "unit": "",
+      "dependency": "blake3",
+      "status": "skipped",
+      "note": "pip install blake3 (BLAKE3 is not in stdlib hashlib)",
+      "metrics": {}
+    },
+    {
+      "group": "mac",
+      "name": "HMAC-SHA256",
+      "config": {
+        "input_bytes": 64
+      },
+      "unit": "MB/s",
+      "dependency": "hmac",
+      "status": "ok",
+      "note": "",
+      "metrics": {
+        "iters": 170635,
+        "elapsed_s": 0.150000171,
+        "ops_per_s": 1137565.3698421451,
+        "bytes": 10920640,
+        "mb_per_s": 72.8041836698973,
+        "mib_per_s": 69.43148009290437
+      }
+    },
+    {
+      "group": "mac",
+      "name": "HMAC-SHA256",
+      "config": {
+        "input_bytes": 1024
+      },
+      "unit": "MB/s",
+      "dependency": "hmac",
+      "status": "ok",
+      "note": "",
+      "metrics": {
+        "iters": 118141,
+        "elapsed_s": 0.150000338,
+        "ops_per_s": 787604.8919303102,
+        "bytes": 120976384,
+        "mb_per_s": 806.5074093366376,
+        "mib_per_s": 769.1454022756935
+      }
+    },
+    {
+      "group": "mac",
+      "name": "HMAC-SHA256",
+      "config": {
+        "input_bytes": 65536
+      },
+      "unit": "MB/s",
+      "dependency": "hmac",
+      "status": "ok",
+      "note": "",
+      "metrics": {
+        "iters": 6029,
+        "elapsed_s": 0.150004215,
+        "ops_per_s": 40192.20393240284,
+        "bytes": 395116544,
+        "mb_per_s": 2634.036276913952,
+        "mib_per_s": 2512.0127457751773
+      }
+    },
+    {
+      "group": "mac",
+      "name": "HMAC-SHA384",
+      "config": {
+        "input_bytes": 64
+      },
+      "unit": "MB/s",
+      "dependency": "hmac",
+      "status": "ok",
+      "note": "",
+      "metrics": {
+        "iters": 131220,
+        "elapsed_s": 0.150008467,
+        "ops_per_s": 874750.6232431533,
+        "bytes": 8398080,
+        "mb_per_s": 55.98403988756181,
+        "mib_per_s": 53.390540969430745
+      }
+    },
+    {
+      "group": "mac",
+      "name": "HMAC-SHA384",
+      "config": {
+        "input_bytes": 1024
+      },
+      "unit": "MB/s",
+      "dependency": "hmac",
+      "status": "ok",
+      "note": "",
+      "metrics": {
+        "iters": 82827,
+        "elapsed_s": 0.15000088,
+        "ops_per_s": 552176.7605630046,
+        "bytes": 84814848,
+        "mb_per_s": 565.4290028165168,
+        "mib_per_s": 539.2351177373092
+      }
+    },
+    {
+      "group": "mac",
+      "name": "HMAC-SHA384",
+      "config": {
+        "input_bytes": 65536
+      },
+      "unit": "MB/s",
+      "dependency": "hmac",
+      "status": "ok",
+      "note": "",
+      "metrics": {
+        "iters": 3426,
+        "elapsed_s": 0.150017596,
+        "ops_per_s": 22837.321029994375,
+        "bytes": 224526336,
+        "mb_per_s": 1496.6666710217112,
+        "mib_per_s": 1427.3325643746484
+      }
+    },
+    {
+      "group": "mac",
+      "name": "HMAC-SHA512",
+      "config": {
+        "input_bytes": 64
+      },
+      "unit": "MB/s",
+      "dependency": "hmac",
+      "status": "ok",
+      "note": "",
+      "metrics": {
+        "iters": 135234,
+        "elapsed_s": 0.150000838,
+        "ops_per_s": 901554.9633129383,
+        "bytes": 8654976,
+        "mb_per_s": 57.69951765202805,
+        "mib_per_s": 55.02654805376821
+      }
+    },
+    {
+      "group": "mac",
+      "name": "HMAC-SHA512",
+      "config": {
+        "input_bytes": 1024
+      },
+      "unit": "MB/s",
+      "dependency": "hmac",
+      "status": "ok",
+      "note": "",
+      "metrics": {
+        "iters": 88071,
+        "elapsed_s": 0.150000088,
+        "ops_per_s": 587139.6555447354,
+        "bytes": 90184704,
+        "mb_per_s": 601.231007277809,
+        "mib_per_s": 573.3785698679056
+      }
+    },
+    {
+      "group": "mac",
+      "name": "HMAC-SHA512",
+      "config": {
+        "input_bytes": 65536
+      },
+      "unit": "MB/s",
+      "dependency": "hmac",
+      "status": "ok",
+      "note": "",
+      "metrics": {
+        "iters": 3526,
+        "elapsed_s": 0.150030061,
+        "ops_per_s": 23501.956717860696,
+        "bytes": 231079936,
+        "mb_per_s": 1540.2242354617188,
+        "mib_per_s": 1468.8722948662935
+      }
+    },
+    {
+      "group": "mac",
+      "name": "Poly1305",
+      "config": {
+        "input_bytes": 64
+      },
+      "unit": "MB/s",
+      "dependency": "cryptography",
+      "status": "ok",
+      "note": "",
+      "metrics": {
+        "iters": 108115,
+        "elapsed_s": 0.150000462,
+        "ops_per_s": 720764.4467121708,
+        "bytes": 6919360,
+        "mb_per_s": 46.12892458957893,
+        "mib_per_s": 43.991970624522146
+      }
+    },
+    {
+      "group": "mac",
+      "name": "Poly1305",
+      "config": {
+        "input_bytes": 1024
+      },
+      "unit": "MB/s",
+      "dependency": "cryptography",
+      "status": "ok",
+      "note": "",
+      "metrics": {
+        "iters": 101680,
+        "elapsed_s": 0.150000838,
+        "ops_per_s": 677862.8796727123,
+        "bytes": 104120320,
+        "mb_per_s": 694.1315887848574,
+        "mib_per_s": 661.9754684303831
+      }
+    },
+    {
+      "group": "mac",
+      "name": "Poly1305",
+      "config": {
+        "input_bytes": 65536
+      },
+      "unit": "MB/s",
+      "dependency": "cryptography",
+      "status": "ok",
+      "note": "",
+      "metrics": {
+        "iters": 14454,
+        "elapsed_s": 0.150008467,
+        "ops_per_s": 96354.56110620742,
+        "bytes": 947257344,
+        "mb_per_s": 6314.69251665641,
+        "mib_per_s": 6022.160069137964
+      }
+    },
+    {
+      "group": "kdf",
+      "name": "PBKDF2-HMAC-SHA256",
+      "config": {
+        "iterations": 10000
+      },
+      "unit": "ops/s",
+      "dependency": "hashlib",
+      "status": "ok",
+      "note": "",
+      "metrics": {
+        "iters": 338,
+        "elapsed_s": 0.400734976,
+        "ops_per_s": 843.4502108445856,
+        "n": 200,
+        "min_ns": 941595,
+        "p50_ns": 1050629.5,
+        "p90_ns": 2023657.6,
+        "p99_ns": 2714915.049999998,
+        "max_ns": 5097339,
+        "mean_ns": 1298426.62,
+        "stdev_ns": 508976.6074979631
+      }
+    },
+    {
+      "group": "kdf",
+      "name": "PBKDF2-HMAC-SHA256",
+      "config": {
+        "iterations": 100000
+      },
+      "unit": "ops/s",
+      "dependency": "hashlib",
+      "status": "ok",
+      "note": "",
+      "metrics": {
+        "iters": 40,
+        "elapsed_s": 0.409070725,
+        "ops_per_s": 97.78260226272607,
+        "n": 40,
+        "min_ns": 9603966,
+        "p50_ns": 10120141.0,
+        "p90_ns": 10837454.1,
+        "p99_ns": 11371868.28,
+        "max_ns": 11435340,
+        "mean_ns": 10223110.125,
+        "stdev_ns": 448172.8999863327
+      }
+    },
+    {
+      "group": "kdf",
+      "name": "PBKDF2-HMAC-SHA256",
+      "config": {
+        "iterations": 600000
+      },
+      "unit": "ops/s",
+      "dependency": "hashlib",
+      "status": "ok",
+      "note": "",
+      "metrics": {
+        "iters": 7,
+        "elapsed_s": 0.433936401,
+        "ops_per_s": 16.131396176648476,
+        "n": 7,
+        "min_ns": 60059181,
+        "p50_ns": 61922446.0,
+        "p90_ns": 62861139.6,
+        "p99_ns": 63203558.46,
+        "max_ns": 63241605,
+        "mean_ns": 61986316.85714286,
+        "stdev_ns": 937912.5676763614
+      }
+    },
+    {
+      "group": "kdf",
+      "name": "HKDF-SHA256",
+      "config": {
+        "ikm_bytes": 64,
+        "out_bytes": 32
+      },
+      "unit": "ops/s",
+      "dependency": "cryptography",
+      "status": "ok",
+      "note": "",
+      "metrics": {
+        "iters": 83450,
+        "elapsed_s": 0.150001589,
+        "ops_per_s": 556327.4399713193,
+        "n": 4000,
+        "min_ns": 1375,
+        "p50_ns": 1501.0,
+        "p90_ns": 1625.0,
+        "p99_ns": 1751.4099999999903,
+        "max_ns": 36602,
+        "mean_ns": 1579.73225,
+        "stdev_ns": 919.6996901488754
+      }
+    },
+    {
+      "group": "kdf",
+      "name": "HKDF-SHA384",
+      "config": {
+        "ikm_bytes": 64,
+        "out_bytes": 32
+      },
+      "unit": "ops/s",
+      "dependency": "cryptography",
+      "status": "ok",
+      "note": "",
+      "metrics": {
+        "iters": 67938,
+        "elapsed_s": 0.150000296,
+        "ops_per_s": 452919.1062396303,
+        "n": 4000,
+        "min_ns": 1834,
+        "p50_ns": 1959.0,
+        "p90_ns": 2001.0,
+        "p99_ns": 4044.0,
+        "max_ns": 19593,
+        "mean_ns": 2026.824,
+        "stdev_ns": 674.8626967939479
+      }
+    },
+    {
+      "group": "kdf",
+      "name": "Argon2id",
+      "config": {},
+      "unit": "",
+      "dependency": "argon2",
+      "status": "skipped",
+      "note": "ModuleNotFoundError: No module named 'argon2'",
+      "metrics": {}
+    },
+    {
+      "group": "dds_handshake",
+      "name": "CycloneDDS classical (RSA id \u00b7 ECDH P-256)",
+      "config": {},
+      "unit": "",
+      "dependency": "cunit_security_core",
+      "status": "skipped",
+      "note": "test did not pass on this host",
+      "metrics": {}
+    },
+    {
+      "group": "dds_handshake",
+      "name": "CycloneDDS hybrid ECDH+ML-KEM-768",
+      "config": {},
+      "unit": "",
+      "dependency": "cunit_security_core",
+      "status": "skipped",
+      "note": "test did not pass on this host",
+      "metrics": {}
+    },
+    {
+      "group": "dds_handshake",
+      "name": "CycloneDDS hybrid ECDH+ML-KEM-1024",
+      "config": {},
+      "unit": "",
+      "dependency": "cunit_security_core",
+      "status": "skipped",
+      "note": "test did not pass on this host",
+      "metrics": {}
+    },
+    {
+      "group": "dds_handshake",
+      "name": "CycloneDDS ML-DSA-87 identity (PQ auth)",
+      "config": {},
+      "unit": "",
+      "dependency": "cunit_security_core",
+      "status": "skipped",
+      "note": "test did not pass on this host",
+      "metrics": {}
+    },
+    {
+      "group": "dds_handshake",
+      "name": "CycloneDDS full CNSA 2.0 (ML-DSA-87 \u00b7 ML-KEM-1024)",
+      "config": {},
+      "unit": "",
+      "dependency": "cunit_security_core",
+      "status": "skipped",
+      "note": "test did not pass on this host",
+      "metrics": {}
+    },
+    {
+      "group": "dds_handshake",
+      "name": "FastDDS PKI-DH local-identity validate",
+      "config": {},
+      "unit": "",
+      "dependency": "BuiltinPKIDH",
+      "status": "skipped",
+      "note": "test did not pass on this host",
+      "metrics": {}
+    },
+    {
+      "group": "gpu",
+      "name": "swapover \u2014 Apple M5 (unified memory) (modeled)",
+      "config": {
+        "device": "Apple M5 (unified memory)",
+        "modeled": true,
+        "dispatch_us": 204.0
+      },
+      "unit": "ns",
+      "dependency": "analytical model",
+      "status": "ok",
+      "note": "projected dispatch+sync = 204 us. CALIBRATED: GPU saturates ~120 GB/s unified LPDDR5; numpy CPU ~17.5 GB/s effective -> reproduces the measured ~4 MiB crossover",
+      "metrics": {
+        "p50_ns": 204000.0,
+        "mean_ns": 204000.0
+      }
+    },
+    {
+      "group": "gpu",
+      "name": "crossover batch \u2014 Apple M5 (unified memory) (modeled)",
+      "config": {
+        "device": "Apple M5 (unified memory)",
+        "modeled": true
+      },
+      "unit": "bytes",
+      "dependency": "analytical model",
+      "status": "ok",
+      "note": "GPU overtakes CPU above ~4.0 MiB resident / 4.0 MiB cold (host<->device copy each batch); ~4,081 concurrent 1-KiB streams. Roofline projection \u2014 see GPGPU-Sim/Accel-Sim for cycle-accurate. CALIBRATED: GPU saturates ~120 GB/s unified LPDDR5; numpy CPU ~17.5 GB/s effective -> reproduces the measured ~4 MiB crossover",
+      "metrics": {
+        "crossover_bytes_resident": 4179512.1951219514,
+        "crossover_bytes_cold": 4179512.1951219514,
+        "gpu_GBps": 120.0,
+        "cpu_GBps": 17.5,
+        "link_GBps": null
+      }
+    },
+    {
+      "group": "gpu",
+      "name": "swapover \u2014 NVIDIA A100 80GB (PCIe4 x16) (modeled)",
+      "config": {
+        "device": "NVIDIA A100 80GB (PCIe4 x16)",
+        "modeled": true,
+        "dispatch_us": 8.0
+      },
+      "unit": "ns",
+      "dependency": "analytical model",
+      "status": "ok",
+      "note": "projected dispatch+sync = 8 us. PROJECTED: HBM2e 1.94 TB/s, PCIe4 x16 ~25 GB/s effective, ~8 us launch",
+      "metrics": {
+        "p50_ns": 8000.0,
+        "mean_ns": 8000.0
+      }
+    },
+    {
+      "group": "gpu",
+      "name": "crossover batch \u2014 NVIDIA A100 80GB (PCIe4 x16) (modeled)",
+      "config": {
+        "device": "NVIDIA A100 80GB (PCIe4 x16)",
+        "modeled": true
+      },
+      "unit": "bytes",
+      "dependency": "analytical model",
+      "status": "ok",
+      "note": "GPU overtakes CPU above ~319 KiB resident / never (per-byte slower) cold (host<->device copy each batch); ~319 concurrent 1-KiB streams. Roofline projection \u2014 see GPGPU-Sim/Accel-Sim for cycle-accurate. PROJECTED: HBM2e 1.94 TB/s, PCIe4 x16 ~25 GB/s effective, ~8 us launch",
+      "metrics": {
+        "crossover_bytes_resident": 326754.617414248,
+        "crossover_bytes_cold": null,
+        "gpu_GBps": 1935.0,
+        "cpu_GBps": 40.0,
+        "link_GBps": 25.0
+      }
+    },
+    {
+      "group": "gpu",
+      "name": "swapover \u2014 NVIDIA H100 (PCIe5 x16) (modeled)",
+      "config": {
+        "device": "NVIDIA H100 (PCIe5 x16)",
+        "modeled": true,
+        "dispatch_us": 6.0
+      },
+      "unit": "ns",
+      "dependency": "analytical model",
+      "status": "ok",
+      "note": "projected dispatch+sync = 6 us. PROJECTED: HBM3 3.35 TB/s, PCIe5 x16 ~55 GB/s effective, ~6 us launch",
+      "metrics": {
+        "p50_ns": 6000.0,
+        "mean_ns": 6000.0
+      }
+    },
+    {
+      "group": "gpu",
+      "name": "crossover batch \u2014 NVIDIA H100 (PCIe5 x16) (modeled)",
+      "config": {
+        "device": "NVIDIA H100 (PCIe5 x16)",
+        "modeled": true
+      },
+      "unit": "bytes",
+      "dependency": "analytical model",
+      "status": "ok",
+      "note": "GPU overtakes CPU above ~237 KiB resident / never (per-byte slower) cold (host<->device copy each batch); ~237 concurrent 1-KiB streams. Roofline projection \u2014 see GPGPU-Sim/Accel-Sim for cycle-accurate. PROJECTED: HBM3 3.35 TB/s, PCIe5 x16 ~55 GB/s effective, ~6 us launch",
+      "metrics": {
+        "crossover_bytes_resident": 242900.3021148036,
+        "crossover_bytes_cold": null,
+        "gpu_GBps": 3350.0,
+        "cpu_GBps": 40.0,
+        "link_GBps": 55.0
+      }
+    },
+    {
+      "group": "gpu",
+      "name": "swapover \u2014 NVIDIA H100 (NVLink) (modeled)",
+      "config": {
+        "device": "NVIDIA H100 (NVLink)",
+        "modeled": true,
+        "dispatch_us": 6.0
+      },
+      "unit": "ns",
+      "dependency": "analytical model",
+      "status": "ok",
+      "note": "projected dispatch+sync = 6 us. PROJECTED: HBM3 3.35 TB/s, NVLink ~450 GB/s effective, ~6 us launch",
+      "metrics": {
+        "p50_ns": 6000.0,
+        "mean_ns": 6000.0
+      }
+    },
+    {
+      "group": "gpu",
+      "name": "crossover batch \u2014 NVIDIA H100 (NVLink) (modeled)",
+      "config": {
+        "device": "NVIDIA H100 (NVLink)",
+        "modeled": true
+      },
+      "unit": "bytes",
+      "dependency": "analytical model",
+      "status": "ok",
+      "note": "GPU overtakes CPU above ~237 KiB resident / 289 KiB cold (host<->device copy each batch); ~237 concurrent 1-KiB streams. Roofline projection \u2014 see GPGPU-Sim/Accel-Sim for cycle-accurate. PROJECTED: HBM3 3.35 TB/s, NVLink ~450 GB/s effective, ~6 us launch",
+      "metrics": {
+        "crossover_bytes_resident": 242900.3021148036,
+        "crossover_bytes_cold": 296193.20507572655,
+        "gpu_GBps": 3350.0,
+        "cpu_GBps": 40.0,
+        "link_GBps": 450.0
+      }
+    },
+    {
+      "group": "gpu",
+      "name": "swapover \u2014 AMD MI250 (PCIe4 x16) (modeled)",
+      "config": {
+        "device": "AMD MI250 (PCIe4 x16)",
+        "modeled": true,
+        "dispatch_us": 8.0
+      },
+      "unit": "ns",
+      "dependency": "analytical model",
+      "status": "ok",
+      "note": "projected dispatch+sync = 8 us. PROJECTED: HBM2e ~3.2 TB/s (per-GCD aggregate), PCIe4 x16 ~25 GB/s, ~8 us launch",
+      "metrics": {
+        "p50_ns": 8000.0,
+        "mean_ns": 8000.0
+      }
+    },
+    {
+      "group": "gpu",
+      "name": "crossover batch \u2014 AMD MI250 (PCIe4 x16) (modeled)",
+      "config": {
+        "device": "AMD MI250 (PCIe4 x16)",
+        "modeled": true
+      },
+      "unit": "bytes",
+      "dependency": "analytical model",
+      "status": "ok",
+      "note": "GPU overtakes CPU above ~316 KiB resident / never (per-byte slower) cold (host<->device copy each batch); ~316 concurrent 1-KiB streams. Roofline projection \u2014 see GPGPU-Sim/Accel-Sim for cycle-accurate. PROJECTED: HBM2e ~3.2 TB/s (per-GCD aggregate), PCIe4 x16 ~25 GB/s, ~8 us launch",
+      "metrics": {
+        "crossover_bytes_resident": 324050.6329113924,
+        "crossover_bytes_cold": null,
+        "gpu_GBps": 3200.0,
+        "cpu_GBps": 40.0,
+        "link_GBps": 25.0
+      }
+    },
+    {
+      "group": "gpu",
+      "name": "swapover",
+      "config": {},
+      "unit": "",
+      "dependency": "mlx/cupy/torch",
+      "status": "skipped",
+      "note": "no GPU on this runner \u2014 the GPU swapover/crossover is measured on the Apple-Silicon host",
+      "metrics": {}
+    },
+    {
+      "group": "gpu",
+      "name": "throughput_crossover",
+      "config": {},
+      "unit": "",
+      "dependency": "mlx/cupy/torch",
+      "status": "skipped",
+      "note": "no GPU on this runner \u2014 the GPU swapover/crossover is measured on the Apple-Silicon host",
+      "metrics": {}
+    },
+    {
+      "group": "robobus",
+      "name": "determinism_probe",
+      "config": {},
+      "unit": "report",
+      "dependency": "robobus",
+      "status": "ok",
+      "note": "adaptive determinism probe output",
+      "metrics": {
+        "result": "determinism capabilities \u2014 ?  (Linux/aarch64, 6 cores)\n  core_isolation   False\n  preempt_rt       False\n  cache_pseudolock False\n  hugepages        True\n  umwait           False\n  wfe              True\n  time_constraint  False\n  constant_tsc     False\n  hedge_capable    True\n  numa_nodes       1\n  wait_strategy   wfe\nrecommendations:\n  - boot a PREEMPT_RT kernel for a hard scheduler bound\n  - add"
+      }
+    },
+    {
+      "group": "robobus",
+      "name": "bus_latency",
+      "config": {
+        "n": 20000,
+        "width_bytes": 8
+      },
+      "unit": "ns",
+      "dependency": "robobus",
+      "status": "ok",
+      "note": "robobus package cross-process mmap ring \u2014 isolated one-way latency (us->ns)",
+      "metrics": {
+        "min_ns": 1042.0,
+        "p50_ns": 1376.0,
+        "p90_ns": 3752.0,
+        "p99_ns": 27055.0,
+        "p99_9_ns": 352051.0,
+        "max_ns": 1040228.0000000001,
+        "mean_ns": 3426.1817499999997,
+        "n": 20000
+      }
+    }
+  ],
+  "note": "Measured on this host only. Numbers are platform/CPU/build-specific. Re-run the identical script on each target OS to compare. Skipped rows indicate a capability/dependency absent on THIS platform, not a failure."
+}

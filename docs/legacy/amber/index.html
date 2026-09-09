@@ -17,19 +17,18 @@
   .wrap{max-width:1040px;margin:0 auto;padding:0 22px}
   header{border-bottom:1px solid var(--line);position:sticky;top:0;background:color-mix(in srgb,var(--bg) 88%,transparent);backdrop-filter:blur(6px);z-index:10}
   .bar{display:flex;align-items:center;justify-content:space-between;height:58px}
-  .brand{font-weight:700;letter-spacing:.02em;text-decoration:none;color:var(--ink)}.brand .dot{color:var(--sig)}
+  .brand{font-weight:700;letter-spacing:.02em}.brand .dot{color:var(--sig)}
   nav a{color:var(--mut);text-decoration:none;font-size:14px;margin-left:20px}
   nav a:hover{color:var(--ink)}
-  nav a.on{color:var(--ink)}
   .theme{background:none;border:1px solid var(--line);color:var(--mut);border-radius:6px;padding:5px 9px;font-size:12px;cursor:pointer;margin-left:20px}
-  .hero{padding:60px 0 26px}
+  .hero{padding:64px 0 30px}
   .eyebrow{font-size:12px;letter-spacing:.18em;text-transform:uppercase;color:var(--mut);margin:0 0 16px}
   h1{font-size:clamp(30px,5vw,52px);line-height:1.06;margin:0 0 18px;font-weight:750;text-wrap:balance;letter-spacing:-.01em}
-  .sub{font-size:clamp(16px,2.2vw,20px);color:var(--mut);max-width:62ch;margin:0 0 26px}
+  .sub{font-size:clamp(16px,2.2vw,20px);color:var(--mut);max-width:60ch;margin:0 0 26px}
   .chips{display:flex;flex-wrap:wrap;gap:8px 10px;margin:0 0 8px}
   .chip{border:1px solid var(--line);border-radius:999px;padding:6px 12px;font-size:13px;background:var(--panel)}
   .chip b{color:var(--sig);font-weight:650}
-  .note{color:var(--mut);font-size:13px;margin-top:14px;max-width:72ch}
+  .note{color:var(--mut);font-size:13px;margin-top:14px;max-width:70ch}
   section{padding:30px 0}
   h2.lbl{font-size:13px;letter-spacing:.16em;text-transform:uppercase;color:var(--mut);margin:0 0 16px;font-weight:600}
   .grid{display:grid;grid-template-columns:repeat(2,1fr);gap:14px}
@@ -52,11 +51,6 @@
   .row{display:grid;grid-template-columns:190px 1fr;gap:18px;padding:15px 0;border-bottom:1px solid var(--line);align-items:baseline}
   @media (max-width:620px){.row{grid-template-columns:1fr;gap:4px}}
   .row .k{color:var(--mut);font-size:13px}.row .v{font-size:15px}.row .v b{color:var(--sig)}
-  .two{display:grid;grid-template-columns:1fr 1fr;gap:14px}
-  @media (max-width:720px){.two{grid-template-columns:1fr}}
-  .card{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:20px}
-  .card h4{margin:0 0 6px;font-size:16px}
-  .card p{color:var(--mut);font-size:14px;margin:0 0 12px}
   .foot{border-top:1px solid var(--line);padding:26px 0 60px;color:var(--mut);font-size:13px}
   .foot a{color:var(--ink);text-decoration:none;border-bottom:1px solid var(--line)}
   .foot a:hover{border-color:var(--sig)}
@@ -64,9 +58,17 @@
 </style>
 </head>
 <body>
-<header><div class="wrap bar"><a class="brand mono" href="index.html">robobus<span class="dot">.</span></a><nav><a href="index.html#doors" class="on">Start here</a><a href="speed.html">Speed matrix</a><a href="legacy/flight-manual/index.html">Flight manual</a><a href="legacy/index.html">Archive</a><button class="theme" id="theme">theme</button></nav></div></header>
-<main class="wrap">
+<header><div class="wrap bar">
+  <div class="brand mono">robobus<span class="dot">.</span></div>
+  <nav>
+    <a href="#doors">Start here</a>
+    
+    <a href="../index.html">Lab data</a>
+    <button class="theme" id="theme">theme</button>
+  </nav>
+</div></header>
 
+<main class="wrap">
   <section class="hero">
     <p class="eyebrow">post-quantum message bus</p>
     <h1>Nobody else does all of this at once.</h1>
@@ -92,48 +94,83 @@
         <p class="q">I move data between machines and robots</p>
         <p class="d">Link ROS 1, ROS 2, LSL, DDS, MQTT, Kafka, serial, CAN and more onto one shared bus,
           then record and visualize it with no framework installed.</p>
-        <span class="go">Show me &rarr;</span>
+        <span class="go">Show me &darr;</span>
       </a>
       <a class="door" href="door-secure.html">
         <p class="q">I have to keep it secure or compliant</p>
         <p class="d">Full-stack post-quantum crypto for any regime: CNSA 2.0, a FIPS 140-3 boundary,
           CSfC two-layer, NIST levels 1 to 5. Wrap, key-exchange graft, signature graft or observe.</p>
-        <span class="go">Show me &rarr;</span>
+        <span class="go">Show me &darr;</span>
       </a>
       <a class="door" href="door-fleet.html">
         <p class="q">I run this across a fleet or a business</p>
         <p class="d">Configure a system, get its real numbers, and prove the security posture, composed
           from the measured corpus into your exact mix.</p>
-        <span class="go">Show me &rarr;</span>
+        <span class="go">Show me &darr;</span>
       </a>
       <a class="door" href="door-fast.html">
         <p class="q">I just want to know if it is fast and safe</p>
         <p class="d">Machine-measured numbers on real hardware, every claim traced to a data file with a
           provenance tag. No synthetic benchmarks, no marketing math.</p>
-        <span class="go">Show me &rarr;</span>
+        <span class="go">Show me &darr;</span>
       </a>
     </div>
   </section>
 
-  <section id="bridge">
-    <h2 class="lbl">Two ways in, one set of numbers</h2>
-    <div class="two">
-      <div class="card">
-        <h4>Start from your problem</h4>
-        <p>The four doors are the plain-language way in. Each one leads to what robobus does for that
-          job, then down to the measured evidence when you want it.</p>
-        <a class="cta" href="#doors">The four doors</a>
-      </div>
-      <div class="card">
-        <h4>Start from the numbers</h4>
-        <p>The speed matrix and the archive are the engineering way in: every protocol, transport,
-          language, chip and crypto suite, at the true measured maximum, each with a provenance tag.</p>
-        <a class="cta p" href="speed.html">Open the speed matrix</a>
-        <a class="cta" href="legacy/index.html">Archive and lab data</a>
-      </div>
-    </div>
-    <p class="note">The audience site and the lab-data site are the same truth seen two ways. Nothing on
-      the doors is a claim the archive cannot back with a machine-measured number.</p>
+  <section class="detail" id="door-move">
+    <h3>Move data between machines and robots</h3>
+    <p>robobus is one shared-memory bus that every protocol plugs into, so a stream from one world
+      reaches another without a bespoke gateway. Bridges you did not have to write link the fabric.</p>
+    <ul class="f">
+      <li>108 protocol adapters: ROS 1 / ROS 2 / LSL, DDS, MQTT, Kafka, Zenoh, ZeroCM, serial, CAN, and more</li>
+      <li>Record and replay with no framework installed: rosbag2, ROS 1 bag, XDF, MCAP (Foxglove), EDF (BioSig)</li>
+      <li>Visualize live in the browser: typed ROS 2 messages stream into Foxglove or a built-in 3D viewer</li>
+      <li>Every recording is sealable at rest under the same post-quantum chain</li>
+    </ul>
+    <a class="cta p" href="../index.html">See the transports and measured interop</a>
+    
+  </section>
+
+  <section class="detail" id="door-secure">
+    <h3>Keep it secure or compliant</h3>
+    <p>One post-quantum engine, four insertion points. Greenfield systems adopt the native sealed wire;
+      deployed systems that cannot change get the same protection grafted in or simply inventoried.</p>
+    <ul class="f">
+      <li>CNSA 2.0 (ML-KEM-1024 + ML-DSA-87), FIPS 203 / 204 / 205, verified against liboqs and OpenSSL 3.6</li>
+      <li>Regimes: CNSA 2.0 / NSS, FIPS 140-3 boundary via the sidecar, CSfC two-layer, NIST levels 1 to 5</li>
+      <li>Modes: wrap (bump-in-the-wire), key-exchange graft, signature graft, observe (crypto inventory)</li>
+      <li>Retrofit path for legacy PLC, SCADA, avionics, space and financial rails</li>
+    </ul>
+    
+    <a class="cta" href="../index.html">See the crypto matrix</a>
+  </section>
+
+  <section class="detail" id="door-fleet">
+    <h3>Run it across a fleet or a business</h3>
+    <p>Pick your operating system, chip, language, protocol and compliance regime and get the real
+      numbers for that exact configuration, versus the option you would otherwise use.</p>
+    <ul class="f">
+      <li>The Studio composes the measured corpus into your specific mix, with provenance on every value</li>
+      <li>CI-gated compliance: a single command returns an exit code your pipeline can enforce</li>
+      <li>Crypto-agility: swap KEM, signature, AEAD, hash or backend without touching the transport</li>
+      <li>Runs on any OS and chip, from a microcontroller to a server</li>
+    </ul>
+    
+    <a class="cta" href="../index.html">Browse the full matrix</a>
+  </section>
+
+  <section class="detail" id="door-fast">
+    <h3>Is it fast and safe</h3>
+    <p>Yes, and you do not have to take our word for it. Every headline number is machine-measured on
+      real hardware and traces to a data file with a provenance tag.</p>
+    <ul class="f">
+      <li>Near-baremetal on a consumer machine; the native ring runs in the tens of millions of frames per second</li>
+      <li>Post-quantum sealing adds a fixed cost per session, not per message</li>
+      <li>Correctness proven across 7 CPU architectures under emulation</li>
+      <li>Composed configurations are always labeled as composed, never shown as directly measured</li>
+    </ul>
+    <a class="cta p" href="../index.html">See the measured results</a>
+    
   </section>
 
   <section class="detail" id="proof">
@@ -143,13 +180,31 @@
       <div class="row"><span class="k">protocols</span><span class="v"><b>108</b> adapters, each with a codec conformance vector</span></div>
       <div class="row"><span class="k">portability</span><span class="v"><b>7</b> CPU architectures, correctness proven under emulation</span></div>
       <div class="row"><span class="k">post-quantum</span><span class="v">ML-KEM-1024 and ML-DSA-87, verified against liboqs and OpenSSL 3.6</span></div>
-      <div class="row"><span class="k">speed</span><span class="v">near-baremetal; AEAD seal ceiling measured at <b>76,923,077</b> frames per second</span></div>
-      <div class="row"><span class="k">flight manual</span><span class="v">the operator datasheet, specification and FIPS-sidecar sheet live in the <a href="legacy/flight-manual/index.html" style="color:var(--sig)">archive</a></span></div>
+      <div class="row"><span class="k">speed</span><span class="v">near-baremetal; the native ring runs in the tens of millions of frames per second</span></div>
+      <div class="row"><span class="k">honesty</span><span class="v">every number carries a provenance tag; composed is never shown as directly measured</span></div>
     </div>
   </section>
 
+  <div class="foot">
+    <div class="flinks">
+      
+      <a href="../index.html">Lab data and benchmarks</a>
+      <a href="#doors">Start here</a>
+    </div>
+    <div>Loopback-only, no third-party calls, no phone-home. The live ground-control demo (Moorebot
+      Scout sim, drive and map in the browser) runs separately: <span class="mono">python3
+      demos/scout-gcs/robobus/main.py</span> then open <span class="mono">http://127.0.0.1:8766</span>.</div>
+  </div>
 </main>
-<div class="foot"><div class="flinks"><a href="speed.html">Speed matrix</a><a href="legacy/index.html">Archive and lab data</a><a href="legacy/flight-manual/index.html">Operator flight manual</a><a href="index.html#doors">Start here</a></div><div>Loopback only, no third-party calls, no phone-home. The live ground-control demo (Moorebot Scout sim, drive and map in the browser) runs separately: <span class="mono">python3 demos/scout-gcs/robobus/main.py</span> then open <span class="mono">http://127.0.0.1:8766</span>.</div></div>
-<script>const root=document.documentElement,btn=document.getElementById("theme");const s=localStorage.getItem("rb_theme");if(s)root.setAttribute("data-theme",s);if(btn)btn.addEventListener("click",()=>{const c=root.getAttribute("data-theme")||(matchMedia("(prefers-color-scheme: light)").matches?"light":"dark");const n=c==="dark"?"light":"dark";root.setAttribute("data-theme",n);localStorage.setItem("rb_theme",n);});</script>
+
+<script>
+  const root=document.documentElement, btn=document.getElementById("theme");
+  const saved=localStorage.getItem("rb_theme"); if(saved) root.setAttribute("data-theme",saved);
+  btn.addEventListener("click",()=>{
+    const cur=root.getAttribute("data-theme")|| (matchMedia("(prefers-color-scheme: light)").matches?"light":"dark");
+    const next=cur==="dark"?"light":"dark";
+    root.setAttribute("data-theme",next); localStorage.setItem("rb_theme",next);
+  });
+</script>
 </body>
 </html>
