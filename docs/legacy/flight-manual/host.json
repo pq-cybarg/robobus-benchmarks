@@ -1,1 +1,0 @@
-{"ok": true, "host": {"system": "Darwin", "release": "25.1.0", "machine": "arm64", "python": "3.14.6", "executable": "python3.14", "root": ".", "shared_rbcodec": "librbcodec.dylib", "shared_robobus": "librobobus.dylib", "java_home": "openjdk", "darwin": true, "win32": false, "linux": false}}
