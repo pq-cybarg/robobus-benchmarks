@@ -1,0 +1,54 @@
+<!doctype html><html lang="en" data-theme="dark"><head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Keep it secure or compliant · robobus</title>
+<style>
+ :root{--bg:#0B0E12;--panel:#141A21;--line:#233040;--ink:#E6ECF2;--mut:#7C8B9A;--sig:#E8B04B;}
+ :root[data-theme="light"]{--bg:#F5F7FA;--panel:#FFFFFF;--line:#d3dbe3;--ink:#111820;--mut:#54606c;--sig:#9a6b12;}
+ @media(prefers-color-scheme:light){:root:not([data-theme="dark"]){--bg:#F5F7FA;--panel:#FFFFFF;--line:#d3dbe3;--ink:#111820;--mut:#54606c;--sig:#9a6b12;}}
+ *{box-sizing:border-box}html{scroll-behavior:smooth}
+ body{margin:0;background:var(--bg);color:var(--ink);font-family:ui-sans-serif,system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;line-height:1.55}
+ .mono{font-family:ui-monospace,Menlo,Consolas,monospace;font-variant-numeric:tabular-nums}
+ a{color:inherit}.wrap{max-width:900px;margin:0 auto;padding:0 22px}
+ header{border-bottom:1px solid var(--line)}.bar{display:flex;align-items:center;justify-content:space-between;height:58px}
+ .brand{font-weight:700}.brand .dot{color:var(--sig)}nav a{color:var(--mut);text-decoration:none;font-size:14px;margin-left:18px}nav a:hover{color:var(--ink)}
+ .crumb{color:var(--mut);font-size:13px;margin:26px 0 6px}.crumb a{color:var(--mut);text-decoration:none;border-bottom:1px solid var(--line)}
+ .eyebrow{font-size:12px;letter-spacing:.16em;text-transform:uppercase;color:var(--sig);margin:22px 0 10px}
+ h1{font-size:clamp(26px,4vw,40px);line-height:1.1;margin:0 0 14px;letter-spacing:-.01em;text-wrap:balance}
+ .lead{font-size:19px;color:var(--mut);max-width:66ch;margin:0 0 26px}
+ h2{font-size:15px;letter-spacing:.14em;text-transform:uppercase;color:var(--mut);margin:34px 0 12px}
+ ul.f{list-style:none;padding:0;margin:0 0 18px}ul.f li{padding:8px 0 8px 24px;position:relative;color:var(--ink);border-bottom:1px solid var(--line)}
+ ul.f li:before{content:"\2713";color:var(--sig);position:absolute;left:0}ul.f li b{color:var(--sig);font-weight:600}
+ ul.f li span{display:block;color:var(--mut);font-size:14px;margin-top:2px}
+ .cta{display:inline-block;text-decoration:none;border:1px solid var(--line);border-radius:8px;padding:10px 16px;font-size:14px;margin:10px 8px 0 0}
+ .cta.p{background:var(--sig);color:#0B0E12;border-color:var(--sig);font-weight:650}.cta:hover{border-color:var(--sig)}
+ .foot{border-top:1px solid var(--line);margin-top:40px;padding:22px 0 60px;color:var(--mut);font-size:13px}
+ .limit{color:var(--mut);font-size:13px;border-left:2px solid var(--line);padding:2px 0 2px 14px;margin:22px 0;max-width:66ch}
+</style></head><body>
+<header><div class="wrap bar"><a class="brand mono" href="index.html" style="text-decoration:none">robobus<span class="dot">.</span></a>
+<nav><a href="index.html">Home</a><a href="speed.html">Speed</a><a href="../flight-manual/index.html">Flight manual</a><a href="../index.html">Archive</a></nav></div></header>
+<main class="wrap"><div class="crumb"><a href="index.html#doors">Start here</a> / Keep it secure</div>
+<p class="eyebrow">security and compliance</p>
+<h1>Keep it secure or compliant</h1>
+<p class="lead">One post-quantum engine, four insertion points. Greenfield systems adopt the native
+sealed wire; deployed systems that cannot change get the same protection grafted in, or simply
+inventoried.</p>
+<h2>The four modes</h2>
+<ul class="f">
+ <li><b>wrap</b><span>An outer RBX1 PQC-sealed envelope carried by the bus or a gateway. The bump-in-the-wire retrofit for crypto-less protocols (Modbus, CCSDS, financial rails).</span></li>
+ <li><b>kex-graft</b><span>A hybrid or PQC key exchange grafted into the protocol's own handshake, no second cipher (TLS X25519MLKEM768, SSH, IKEv2 RFC 9370, SDLS, SRTP).</span></li>
+ <li><b>sig-graft</b><span>Swap the signature to ML-DSA or SLH-DSA (FIPS 204/205) for firmware, PKI and DNSSEC surfaces.</span></li>
+ <li><b>observe</b><span>Recognize on the wire and report crypto posture (the CISA/NSA cryptographic inventory), no carry, no keys.</span></li>
+</ul>
+<h2>Regimes and algorithms</h2>
+<ul class="f">
+ <li><b>CNSA 2.0</b> ML-KEM-1024 + ML-DSA-87, verified against liboqs and OpenSSL 3.6</li>
+ <li><b>FIPS 140-3 boundary</b> via the validated-module sidecar</li>
+ <li><b>CSfC two-layer</b> and <b>NIST levels 1 to 5</b></li>
+</ul>
+
+<a class="cta" href="../index.html">See the crypto matrix</a>
+<div class="limit">Honest limit: robobus is not itself a CMVP-validated module; it targets a FIPS 140-3 boundary via the sidecar and reports COMPLIANT-READY, not validated.</div>
+<div class="foot">robobus is loopback-only here, no third-party calls. <a href="index.html" style="color:var(--ink)">Back to the four doors</a> &middot; <a href="../index.html" style="color:var(--ink)">Lab data</a></div>
+</main>
+<script>const r=document.documentElement;const s=localStorage.getItem("rb_theme");if(s)r.setAttribute("data-theme",s);</script>
+</body></html>

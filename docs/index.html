@@ -1,0 +1,155 @@
+<!doctype html>
+<html lang="en" data-theme="dark">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>robobus - one bus, every language, every protocol, quantum-safe</title>
+<meta name="description" content="robobus is a post-quantum message bus that links 34 languages and 108 protocols across any chip, retrofits half-migrated systems, and runs near-baremetal on hardware you already own.">
+<style>
+  :root{--bg:#0B0E12;--panel:#141A21;--panel2:#10161d;--line:#233040;--ink:#E6ECF2;--mut:#7C8B9A;--sig:#E8B04B;--ok:#3FB950;}
+  :root[data-theme="light"]{--bg:#F5F7FA;--panel:#FFFFFF;--panel2:#eef2f6;--line:#d3dbe3;--ink:#111820;--mut:#54606c;--sig:#9a6b12;}
+  @media (prefers-color-scheme: light){:root:not([data-theme="dark"]){--bg:#F5F7FA;--panel:#FFFFFF;--panel2:#eef2f6;--line:#d3dbe3;--ink:#111820;--mut:#54606c;--sig:#9a6b12;}}
+  *{box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  body{margin:0;background:var(--bg);color:var(--ink);font-family:ui-sans-serif,system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;line-height:1.55}
+  .mono{font-family:ui-monospace,"SF Mono",Menlo,Consolas,monospace;font-variant-numeric:tabular-nums}
+  a{color:inherit}
+  .wrap{max-width:1040px;margin:0 auto;padding:0 22px}
+  header{border-bottom:1px solid var(--line);position:sticky;top:0;background:color-mix(in srgb,var(--bg) 88%,transparent);backdrop-filter:blur(6px);z-index:10}
+  .bar{display:flex;align-items:center;justify-content:space-between;height:58px}
+  .brand{font-weight:700;letter-spacing:.02em;text-decoration:none;color:var(--ink)}.brand .dot{color:var(--sig)}
+  nav a{color:var(--mut);text-decoration:none;font-size:14px;margin-left:20px}
+  nav a:hover{color:var(--ink)}
+  nav a.on{color:var(--ink)}
+  .theme{background:none;border:1px solid var(--line);color:var(--mut);border-radius:6px;padding:5px 9px;font-size:12px;cursor:pointer;margin-left:20px}
+  .hero{padding:60px 0 26px}
+  .eyebrow{font-size:12px;letter-spacing:.18em;text-transform:uppercase;color:var(--mut);margin:0 0 16px}
+  h1{font-size:clamp(30px,5vw,52px);line-height:1.06;margin:0 0 18px;font-weight:750;text-wrap:balance;letter-spacing:-.01em}
+  .sub{font-size:clamp(16px,2.2vw,20px);color:var(--mut);max-width:62ch;margin:0 0 26px}
+  .chips{display:flex;flex-wrap:wrap;gap:8px 10px;margin:0 0 8px}
+  .chip{border:1px solid var(--line);border-radius:999px;padding:6px 12px;font-size:13px;background:var(--panel)}
+  .chip b{color:var(--sig);font-weight:650}
+  .note{color:var(--mut);font-size:13px;margin-top:14px;max-width:72ch}
+  section{padding:30px 0}
+  h2.lbl{font-size:13px;letter-spacing:.16em;text-transform:uppercase;color:var(--mut);margin:0 0 16px;font-weight:600}
+  .grid{display:grid;grid-template-columns:repeat(2,1fr);gap:14px}
+  @media (max-width:720px){.grid{grid-template-columns:1fr}}
+  .door{display:block;text-decoration:none;background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:22px;transition:border-color .15s,transform .15s}
+  .door:hover{border-color:var(--sig);transform:translateY(-2px)}
+  .door .q{font-size:19px;font-weight:650;margin:0 0 8px;letter-spacing:-.01em}
+  .door .d{color:var(--mut);font-size:14.5px;margin:0 0 14px}
+  .door .go{color:var(--sig);font-size:13px;font-weight:600}
+  .detail{border-top:1px solid var(--line);scroll-margin-top:70px}
+  .detail h3{font-size:24px;margin:22px 0 8px;letter-spacing:-.01em}
+  .detail p{color:var(--mut);max-width:72ch;margin:0 0 16px}
+  .cta{display:inline-block;text-decoration:none;border:1px solid var(--line);border-radius:8px;padding:9px 15px;font-size:14px;margin:0 8px 8px 0}
+  .cta.p{background:var(--sig);color:#0B0E12;border-color:var(--sig);font-weight:650}
+  .cta:hover{border-color:var(--sig)}
+  ul.f{list-style:none;padding:0;margin:0 0 18px;color:var(--ink)}
+  ul.f li{padding:6px 0 6px 22px;position:relative;color:var(--mut);font-size:14.5px}
+  ul.f li:before{content:"\2713";color:var(--sig);position:absolute;left:0}
+  .rows{border-top:1px solid var(--line)}
+  .row{display:grid;grid-template-columns:190px 1fr;gap:18px;padding:15px 0;border-bottom:1px solid var(--line);align-items:baseline}
+  @media (max-width:620px){.row{grid-template-columns:1fr;gap:4px}}
+  .row .k{color:var(--mut);font-size:13px}.row .v{font-size:15px}.row .v b{color:var(--sig)}
+  .two{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+  @media (max-width:720px){.two{grid-template-columns:1fr}}
+  .card{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:20px}
+  .card h4{margin:0 0 6px;font-size:16px}
+  .card p{color:var(--mut);font-size:14px;margin:0 0 12px}
+  .foot{border-top:1px solid var(--line);padding:26px 0 60px;color:var(--mut);font-size:13px}
+  .foot a{color:var(--ink);text-decoration:none;border-bottom:1px solid var(--line)}
+  .foot a:hover{border-color:var(--sig)}
+  .flinks{display:flex;flex-wrap:wrap;gap:22px;margin-bottom:16px}
+</style>
+</head>
+<body>
+<header><div class="wrap bar"><a class="brand mono" href="index.html">robobus<span class="dot">.</span></a><nav><a href="index.html#doors" class="on">Start here</a><a href="speed.html">Speed matrix</a><a href="legacy/flight-manual/index.html">Flight manual</a><a href="legacy/index.html">Archive</a><button class="theme" id="theme">theme</button></nav></div></header>
+<main class="wrap">
+
+  <section class="hero">
+    <p class="eyebrow">post-quantum message bus</p>
+    <h1>Nobody else does all of this at once.</h1>
+    <p class="sub">One bus. Every language, every protocol, every chip. Quantum-safe, even when your
+      systems are only half migrated. Near-baremetal on hardware you already own.</p>
+    <div class="chips mono">
+      <span class="chip"><b>34</b> languages</span>
+      <span class="chip"><b>108</b> protocols and message types</span>
+      <span class="chip"><b>7</b> CPU architectures</span>
+      <span class="chip">CNSA 2.0 / FIPS 203-205</span>
+      <span class="chip">any-to-any interop</span>
+      <span class="chip">retrofits legacy</span>
+    </div>
+    <p class="note">Speed is a proof point, not the boast. The moat is the combination: nobody else
+      spans this many languages, protocols and chips at once, with full-stack post-quantum security and
+      a retrofit path for systems that cannot be replaced yet.</p>
+  </section>
+
+  <section id="doors">
+    <h2 class="lbl">Find yourself in it</h2>
+    <div class="grid">
+      <a class="door" href="door-move.html">
+        <p class="q">I move data between machines and robots</p>
+        <p class="d">Link ROS 1, ROS 2, LSL, DDS, MQTT, Kafka, serial, CAN and more onto one shared bus,
+          then record and visualize it with no framework installed.</p>
+        <span class="go">Show me &rarr;</span>
+      </a>
+      <a class="door" href="door-secure.html">
+        <p class="q">I have to keep it secure or compliant</p>
+        <p class="d">Full-stack post-quantum crypto for any regime: CNSA 2.0, a FIPS 140-3 boundary,
+          CSfC two-layer, NIST levels 1 to 5. Wrap, key-exchange graft, signature graft or observe.</p>
+        <span class="go">Show me &rarr;</span>
+      </a>
+      <a class="door" href="door-fleet.html">
+        <p class="q">I run this across a fleet or a business</p>
+        <p class="d">Configure a system, get its real numbers, and prove the security posture, composed
+          from the measured corpus into your exact mix.</p>
+        <span class="go">Show me &rarr;</span>
+      </a>
+      <a class="door" href="door-fast.html">
+        <p class="q">I just want to know if it is fast and safe</p>
+        <p class="d">Machine-measured numbers on real hardware, every claim traced to a data file with a
+          provenance tag. No synthetic benchmarks, no marketing math.</p>
+        <span class="go">Show me &rarr;</span>
+      </a>
+    </div>
+  </section>
+
+  <section id="bridge">
+    <h2 class="lbl">Two ways in, one set of numbers</h2>
+    <div class="two">
+      <div class="card">
+        <h4>Start from your problem</h4>
+        <p>The four doors are the plain-language way in. Each one leads to what robobus does for that
+          job, then down to the measured evidence when you want it.</p>
+        <a class="cta" href="#doors">The four doors</a>
+      </div>
+      <div class="card">
+        <h4>Start from the numbers</h4>
+        <p>The speed matrix and the archive are the engineering way in: every protocol, transport,
+          language, chip and crypto suite, at the true measured maximum, each with a provenance tag.</p>
+        <a class="cta p" href="speed.html">Open the speed matrix</a>
+        <a class="cta" href="legacy/index.html">Archive and lab data</a>
+      </div>
+    </div>
+    <p class="note">The audience site and the lab-data site are the same truth seen two ways. Nothing on
+      the doors is a claim the archive cannot back with a machine-measured number.</p>
+  </section>
+
+  <section class="detail" id="proof">
+    <h2 class="lbl" style="padding-top:22px">What is proven</h2>
+    <div class="rows mono">
+      <div class="row"><span class="k">languages</span><span class="v"><b>34</b> reproduce the full CNSA 2.0 chain with their own native crypto, 0 skips</span></div>
+      <div class="row"><span class="k">protocols</span><span class="v"><b>108</b> adapters, each with a codec conformance vector</span></div>
+      <div class="row"><span class="k">portability</span><span class="v"><b>7</b> CPU architectures, correctness proven under emulation</span></div>
+      <div class="row"><span class="k">post-quantum</span><span class="v">ML-KEM-1024 and ML-DSA-87, verified against liboqs and OpenSSL 3.6</span></div>
+      <div class="row"><span class="k">speed</span><span class="v">near-baremetal; AES-256-GCM seal from <b>77M</b> frames/s per-message to <b>828M</b> frames/s aggregate across all cores</span></div>
+      <div class="row"><span class="k">flight manual</span><span class="v">the operator datasheet, specification and FIPS-sidecar sheet live in the <a href="legacy/flight-manual/index.html" style="color:var(--sig)">archive</a></span></div>
+    </div>
+  </section>
+
+</main>
+<div class="foot"><div class="flinks"><a href="speed.html">Speed matrix</a><a href="legacy/index.html">Archive and lab data</a><a href="legacy/flight-manual/index.html">Operator flight manual</a><a href="index.html#doors">Start here</a></div><div>Loopback only, no third-party calls, no phone-home. The live ground-control demo (Moorebot Scout sim, drive and map in the browser) runs separately: <span class="mono">python3 demos/scout-gcs/robobus/main.py</span> then open <span class="mono">http://127.0.0.1:8766</span>.</div></div>
+<script>const root=document.documentElement,btn=document.getElementById("theme");const s=localStorage.getItem("rb_theme");if(s)root.setAttribute("data-theme",s);if(btn)btn.addEventListener("click",()=>{const c=root.getAttribute("data-theme")||(matchMedia("(prefers-color-scheme: light)").matches?"light":"dark");const n=c==="dark"?"light":"dark";root.setAttribute("data-theme",n);localStorage.setItem("rb_theme",n);});</script>
+</body>
+</html>
