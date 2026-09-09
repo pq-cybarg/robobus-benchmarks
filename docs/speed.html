@@ -440,6 +440,39 @@
       engineering archive under <a href="legacy/index.html" style="color:var(--sig)">Archive</a>.</p>
   </section>
 
+  <section>
+    <h2 class="lbl">Two regimes: small-frame rate, and bulk bandwidth</h2>
+    <p class="note" style="margin-top:0">A bus has two ceilings, and robobus is measured at both. At tiny
+      frames the limit is FRAME RATE (overhead-bound): the shm ring moves about 74 million 75-byte
+      frames/s, roughly 5.6 GB/s. At large frames the limit is BANDWIDTH (memory-bound): the same ring
+      streams at <b>52 GB/s</b> zero-copy, against a raw-memcpy silicon ceiling near
+      82 GB/s. Both are the true maximum on this machine, not a portable floor.</p>
+    <div class="two">
+      <div class="card">
+        <div class="lbl">shm ring, bulk bandwidth</div>
+        <div class="big"><span class="tag t-native">native</span> 52 <span class="mono">GB/s</span></div>
+        <p class="note">zero-copy at 16 KiB. Copy path
+          31 GB/s. Raw memcpy ceiling 82 GB/s.</p>
+      </div>
+      <div class="card">
+        <div class="lbl">shm ring, frame rate</div>
+        <div class="big"><span class="tag t-native">native</span> 74 <span class="mono">M f/s</span></div>
+        <p class="note">75-byte frames, overhead-bound (~5.6 GB/s). The AEAD seal ceiling is ~77 M f/s.</p>
+      </div>
+    </div>
+    <h3 class="lbl" style="margin-top:22px">Bulk bandwidth, moving big payloads (GB/s)</h3>
+    <div class="tblwrap"><table><thead><tr>
+      <th>path</th><th class="n">GB/s</th><th>provenance</th><th>notes</th></tr></thead>
+      <tbody><tr><td>raw memcpy (silicon ceiling)</td><td class='n mono' data-v='81.8'>81.8</td><td><span class='tag t-measured'>measured-here</span></td><td class='note'>memory-bandwidth bound</td></tr><tr><td>robobus shm ring, zero-copy</td><td class='n mono' data-v='52.0'>52.0</td><td><span class='tag t-native'>native</span></td><td class='note'>16 KiB</td></tr><tr><td>robobus shm ring, copy</td><td class='n mono' data-v='30.8'>30.8</td><td><span class='tag t-native'>native</span></td><td class='note'>4 KiB</td></tr><tr><td>TCP loopback (kernel)</td><td class='n mono' data-v='12.82'>12.8</td><td><span class='tag t-measured'>measured-here</span></td><td class='note'>stock sockets, one host</td></tr><tr><td>robobus AEAD seal (CNSA 2.0)</td><td class='n mono' data-v='8.92'>8.9</td><td><span class='tag t-measured'>measured-here</span></td><td class='note'>sealed bytes/s, per-message crypto</td></tr></tbody></table></div>
+    <h3 class="lbl" style="margin-top:22px">The ring across frame sizes (GB/s)</h3>
+    <div class="tblwrap"><table><thead><tr>
+      <th>frame</th><th class="n">copy</th><th class="n">zero-copy</th>
+      <th class="n">raw memcpy</th></tr></thead><tbody><tr><td class='mono'>4 KiB</td><td class='n mono'>30.8</td><td class='n mono'>47.7</td><td class='n mono'>81.8</td></tr><tr><td class='mono'>16 KiB</td><td class='n mono'>20.1</td><td class='n mono'>52.0</td><td class='n mono'>78.1</td></tr><tr><td class='mono'>64 KiB</td><td class='n mono'>22.4</td><td class='n mono'>35.4</td><td class='n mono'>73.2</td></tr><tr><td class='mono'>256 KiB</td><td class='n mono'>20.3</td><td class='n mono'>31.2</td><td class='n mono'>71.6</td></tr><tr><td class='mono'>1 MiB</td><td class='n mono'>16.0</td><td class='n mono'>20.0</td><td class='n mono'>69.6</td></tr></tbody></table></div>
+    <p class="note">Source: <span class="mono">shm-ring-gbps.json</span> (ring copy / zero-copy / raw) and
+      <span class="mono">net-latency.json</span> (TCP loopback, AEAD seal), measured on this Apple
+      M-series arm64 host. The small-frame rate regime is the explorer above; this is the bandwidth regime.</p>
+  </section>
+
 </main>
 <div class="foot"><div class="flinks"><a href="speed.html">Speed matrix</a><a href="legacy/index.html">Archive and lab data</a><a href="legacy/flight-manual/index.html">Operator flight manual</a><a href="index.html#doors">Start here</a></div><div>Loopback only, no third-party calls, no phone-home. The live ground-control demo (Moorebot Scout sim, drive and map in the browser) runs separately: <span class="mono">python3 demos/scout-gcs/robobus/main.py</span> then open <span class="mono">http://127.0.0.1:8766</span>.</div></div>
 <script>const root=document.documentElement,btn=document.getElementById("theme");const s=localStorage.getItem("rb_theme");if(s)root.setAttribute("data-theme",s);if(btn)btn.addEventListener("click",()=>{const c=root.getAttribute("data-theme")||(matchMedia("(prefers-color-scheme: light)").matches?"light":"dark");const n=c==="dark"?"light":"dark";root.setAttribute("data-theme",n);localStorage.setItem("rb_theme",n);});</script>
