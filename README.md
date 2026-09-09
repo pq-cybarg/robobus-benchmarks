@@ -60,6 +60,6 @@ comparison — not bare-metal nanosecond claims.
 ---
 
 Source & full project: `pq-cybarg/robobus`. This benchmarks repository's own harness and site code are
-presently **All Rights Reserved**. robobus itself is **source-available under the Business Source License 1.1** (free for
-academic, self-hosting, and government use; a commercial license is required only to offer it as a hosted
-service) , see the robobus repository's `LICENSE` / `LICENSING.md`.
+presently **All Rights Reserved**. robobus itself is presently **All Rights Reserved**; a source-available
+license (the Business Source License 1.1) is under consideration. See the robobus repository's `LICENSE` /
+`LICENSING.md`.
