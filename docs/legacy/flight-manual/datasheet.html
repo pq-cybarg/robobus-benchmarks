@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>robobus datasheet RB-DS-001</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body class="doc">
+  <header>
+    <div>
+      <div class="eyebrow">product datasheet</div>
+      <h1>robobus</h1>
+      <nav class="site-nav" aria-label="site">
+        <a href="index.html">Flight manual</a>
+        <a href="datasheet.html" aria-current="page">Datasheet</a>
+        <a href="specification.html">Specification</a>
+        <a href="fips-sidecar.html">FIPS sidecar</a>
+      </nav>
+    </div>
+  </header>
+  <nav class="toc" aria-label="on this sheet">
+    <a href="#what">what</a>
+    <a href="#numbers">numbers</a>
+    <a href="#abi">ABIs</a>
+    <a href="#ship">ship-sets</a>
+    <a href="#crypto">crypto</a>
+    <a href="#plat">platforms</a>
+    <a href="#install">install</a>
+  </nav>
+  <main>
+    <div class="doc-ctl">
+      <div>doc</div><div>RB-DS-001</div>
+      <div>rev</div><div>0.1.0 / 2026-08-22</div>
+      <div>class</div><div>unclassified / public clone</div>
+      <div>supersedes</div><div>README slogans; believe live census</div>
+    </div>
+
+    <section id="what">
+      <h2>What it is</h2>
+      <p>
+        A host-local shared-memory bus that links ROS 1, ROS 2, LabStreamingLayer,
+        16 wire transports, and 108 protocol codecs. Optional post-quantum
+        seal (ML-KEM / ML-DSA / AES-256-GCM). The public clone is the
+        <strong>lab / hobbyist</strong> ship-set: optional crypto, laptop skips allowed.
+        Production, CSfC, NASA/space, ICS, and avionics slices are opt-in subsets.
+      </p>
+      <p class="warn">
+        Not a CMVP-validated cryptographic module. Approved algorithms plus a FIPS
+        sidecar architecture; a CST lab issues certificates. See
+        <a href="fips-sidecar.html">FIPS sidecar</a>.
+      </p>
+    </section>
+
+    <section id="numbers">
+      <h2>Headline numbers (this checkout)</h2>
+      <table>
+        <thead><tr><th>item</th><th>value</th><th>source of truth</th></tr></thead>
+        <tbody>
+          <tr><td>Protocol adapters</td><td>108 Python + 108 C ports</td><td><code>robobus adapters</code> / <code>native/embedded/rb_*.c</code></td></tr>
+          <tr><td>Codec FFI languages</td><td>34 (librbcodec identity)</td><td><code>bench/lang_conformance.py</code></td></tr>
+          <tr><td>Struct codegen languages</td><td>14</td><td><code>Schema.render</code> / <code>tests/test_codegen.py</code></td></tr>
+          <tr><td>Packaged seal bindings</td><td>Rust, JS, Java</td><td><code>bindings/</code></td></tr>
+          <tr><td>Transports</td><td>16 (UDP/TCP stdlib; rest extras)</td><td><code>robobus/transports/</code></td></tr>
+          <tr><td>Crypto suites</td><td>11 (default <code>hybrid3</code>)</td><td><code>robobus.crypto.suites</code></td></tr>
+          <tr><td>Canonical ship-sets</td><td>7 (+ aliases hobbyist, cypherpunk, nasa, cnsa)</td><td><code>robobus shipsets</code></td></tr>
+          <tr><td>NASA fragment</td><td>13 codecs, not 108</td><td><code>space</code> ship-set</td></tr>
+          <tr><td>C product ABIs</td><td>2 (librobobus, librbcodec). Two bench shims are not product.</td><td>ADOPT.md §1</td></tr>
+          <tr><td>Raw shm hop</td><td>~0.5 µs class on the dogfooded Mac</td><td><code>robobus bench</code></td></tr>
+          <tr><td>Core pip deps</td><td>none (stdlib bus + codec)</td><td><code>pyproject.toml</code></td></tr>
+        </tbody>
+      </table>
+    </section>
+
+    <section id="abi">
+      <h2>Four C libraries (do not conflate)</h2>
+      <table>
+        <thead><tr><th>library</th><th>job</th><th>not</th></tr></thead>
+        <tbody>
+          <tr><td><code>librobobus</code></td><td>RBX1 seal/open + FLOAT64</td><td>108 codecs, PQC KEM</td></tr>
+          <tr><td><code>librbcodec</code></td><td>108 protocol codecs (FFI/MCU)</td><td>RBX1 seal</td></tr>
+          <tr><td><code>librbxport</code></td><td>bench throughput shim</td><td>product ABI</td></tr>
+          <tr><td><code>librbcrypto</code></td><td>bench primitive timing</td><td>session handshake</td></tr>
+        </tbody>
+      </table>
+      <p>Host names: <code>librbcodec.dylib</code> / <code>.so</code> / <code>rbcodec.dll</code>. MCU builds are static <code>rb_*.c</code> via <code>rb_config.h</code>.</p>
+    </section>
+
+    <section id="ship">
+      <h2>Ship-sets</h2>
+      <table>
+        <thead><tr><th>name</th><th>aliases</th><th>crypto</th><th>fail-closed</th><th>audience</th></tr></thead>
+        <tbody>
+          <tr><td>lab</td><td>hobbyist</td><td>optional</td><td>no</td><td>default clone</td></tr>
+          <tr><td>privacy</td><td>cypherpunk</td><td>required (any local)</td><td>yes</td><td>Whonix/Tails/Qubes</td></tr>
+          <tr><td>csfc</td><td>cnsa</td><td>required-evp</td><td>yes</td><td>gov / enterprise</td></tr>
+          <tr><td>crypto-toe</td><td>-</td><td>required-evp</td><td>yes</td><td>CMVP/NIAP module = librobobus + OpenSSL</td></tr>
+          <tr><td>ics</td><td>-</td><td>required</td><td>yes</td><td>OT / Modbus/DNP3/...</td></tr>
+          <tr><td>avionics</td><td>-</td><td>required</td><td>yes</td><td>ARINC + 1553</td></tr>
+          <tr><td>space</td><td>nasa</td><td>required</td><td>yes</td><td>13-codec NASA/CCSDS fragment</td></tr>
+          <tr><td>telecom</td><td>ccaas, liberty, voip</td><td>required</td><td>yes</td><td>SIP + RTP + SRTP (RFC 3711) CCaaS</td></tr>
+        </tbody>
+      </table>
+    </section>
+
+    <section id="crypto">
+      <h2>Crypto (honest)</h2>
+      <ul>
+        <li>Per-message AEAD: AES-256-GCM (RBX1). Handshake: ML-KEM + ML-DSA (suite-selected).</li>
+        <li>CNSA 2.0 suite <code>cnsa20</code>: ML-KEM-1024 + ML-DSA-87 + AES-256 + SHA-384. SHA-256 is interop, not CNSA 2.0.</li>
+        <li>Release hashes: policy <code>cnsa20</code> writes SHA384SUMS + SHA512SUMS only. Policy <code>all</code> also emits SHA-3 and SHA-256.</li>
+        <li>FIPS sidecar isolates AEAD keys in a separate process. That is the module boundary sketch, not a certificate.</li>
+      </ul>
+    </section>
+
+    <section id="plat">
+      <h2>Platforms</h2>
+      <p>
+        Bus + PQC: macOS arm64/x64, Linux x86_64/aarch64/armv7, Windows x64, Raspberry Pi,
+        Termux/Android, iOS a-Shell/embed, Alpine musl, QEMU ppc64le/riscv64/s390x (LE wire
+        even on BE CPU). ROS 1/2 + LSL: desktop + Pi via conda/RoboStack. MCU: ESP32, STM32,
+        nRF52, RP2040, Cortex-M, RISC-V (static codecs). PLC: IEC-61131 ST under
+        <code>native/plc61131/</code>. Override the flight-manual target selector to read
+        each ABI without leaving this site.
+      </p>
+    </section>
+
+    <section id="install">
+      <h2>Install / operator console</h2>
+      <pre>pip install -e ".[crypto]"
+python3 -m robobus.cli doctor --profile lab
+python3 operator/server.py          # http://127.0.0.1:8765/  local only</pre>
+      <p>
+        Full specification: <a href="specification.html">RB-SPEC-001</a>.
+        FIPS sidecar: <a href="fips-sidecar.html">RB-FIPS-SIDECAR-001</a>.
+        Personas: <code>docs/ADOPT.md</code>.
+      </p>
+    </section>
+  </main>
+  <footer>RB-DS-001 rev 0.1.0 - lab stays default - not a CMVP certificate</footer>
+</body>
+</html>
