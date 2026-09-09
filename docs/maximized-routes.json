@@ -2237,13 +2237,13 @@
       }
     },
     "ROS 2": {
-      "sealed_relay_fps": 553009,
-      "new_sealed_message_fps": 467427,
-      "max_impl": "rclpy take-loop (rmw_cyclonedds_cpp)",
-      "max_tier": "native",
+      "sealed_relay_fps": 4433646,
+      "new_sealed_message_fps": 1796516,
+      "max_impl": "rclpy batched K=256",
+      "max_tier": "batched-delivered",
       "seal_mode": "transport-of-sealed-frame",
-      "rate_note": "relay 553,009/s of opaque sealed frames (seal amortized upstream); producing NEW sealed msgs single-core ~467,427/s (seal 77M \u2295 relay)",
-      "max_fps": 553009.3,
+      "rate_note": "relay 4,433,646/s of opaque sealed frames (seal amortized upstream); producing NEW sealed msgs single-core ~1,796,516/s (seal 77M \u2295 relay)",
+      "max_fps": 4433645.8,
       "tier_ladder": [
         {
           "tier": "native",
@@ -2252,13 +2252,21 @@
           "transport_fps": 553009,
           "seal_mode": "transport-of-sealed-frame",
           "src": "transport-matrix.json"
+        },
+        {
+          "tier": "batched-delivered",
+          "impl": "rclpy batched K=256",
+          "lang": "python",
+          "transport_fps": 4433646,
+          "seal_mode": "transport-of-sealed-frame",
+          "src": "transport-matrix.json"
         }
       ],
       "raw_ceiling_gbps": null,
       "per_profile_max": {
         "classical": {
-          "sealed_relay_fps": 553009,
-          "new_sealed_message_fps": 467427,
+          "sealed_relay_fps": 4433646,
+          "new_sealed_message_fps": 1796516,
           "one_time_handshake_ms": 14.263,
           "meets": [
             "RFC 7748 (X25519)",
@@ -2274,8 +2282,8 @@
           "comsec": "payload AEAD (aes256-gcm) + authenticated PQC/hybrid handshake (ed25519 over x25519); key establishment is the COMSEC boundary, TRANSEC is the carrier's concern"
         },
         "nist1": {
-          "sealed_relay_fps": 553009,
-          "new_sealed_message_fps": 467427,
+          "sealed_relay_fps": 4433646,
+          "new_sealed_message_fps": 1796516,
           "one_time_handshake_ms": 0.622,
           "meets": [
             "FIPS 203 (ML-KEM-512)",
@@ -2292,8 +2300,8 @@
           "comsec": "payload AEAD (aes256-gcm) + authenticated PQC/hybrid handshake (ml-dsa-44 over ml-kem-512); key establishment is the COMSEC boundary, TRANSEC is the carrier's concern"
         },
         "nist3": {
-          "sealed_relay_fps": 553009,
-          "new_sealed_message_fps": 467427,
+          "sealed_relay_fps": 4433646,
+          "new_sealed_message_fps": 1796516,
           "one_time_handshake_ms": 1.385,
           "meets": [
             "FIPS 203 (ML-KEM-768)",
@@ -2309,8 +2317,8 @@
           "comsec": "payload AEAD (aes256-gcm) + authenticated PQC/hybrid handshake (ml-dsa-65 over ml-kem-768); key establishment is the COMSEC boundary, TRANSEC is the carrier's concern"
         },
         "nist5": {
-          "sealed_relay_fps": 553009,
-          "new_sealed_message_fps": 467427,
+          "sealed_relay_fps": 4433646,
+          "new_sealed_message_fps": 1796516,
           "one_time_handshake_ms": 1.685,
           "meets": [
             "FIPS 203 (ML-KEM-1024)",
@@ -2326,8 +2334,8 @@
           "comsec": "payload AEAD (aes256-gcm) + authenticated PQC/hybrid handshake (ml-dsa-87 over ml-kem-1024); key establishment is the COMSEC boundary, TRANSEC is the carrier's concern"
         },
         "hybrid3": {
-          "sealed_relay_fps": 553009,
-          "new_sealed_message_fps": 467427,
+          "sealed_relay_fps": 4433646,
+          "new_sealed_message_fps": 1796516,
           "one_time_handshake_ms": 2.4,
           "meets": [
             "FIPS 203",
@@ -2344,8 +2352,8 @@
           "comsec": "payload AEAD (aes256-gcm) + authenticated PQC/hybrid handshake (ml-dsa-65 over x25519+ml-kem-768); key establishment is the COMSEC boundary, TRANSEC is the carrier's concern"
         },
         "hybrid5": {
-          "sealed_relay_fps": 553009,
-          "new_sealed_message_fps": 467427,
+          "sealed_relay_fps": 4433646,
+          "new_sealed_message_fps": 1796516,
           "one_time_handshake_ms": 8.853,
           "meets": [
             "FIPS 203",
@@ -2362,8 +2370,8 @@
           "comsec": "payload AEAD (aes256-gcm) + authenticated PQC/hybrid handshake (ml-dsa-87 over x448+ml-kem-1024); key establishment is the COMSEC boundary, TRANSEC is the carrier's concern"
         },
         "cnsa20": {
-          "sealed_relay_fps": 553009,
-          "new_sealed_message_fps": 467427,
+          "sealed_relay_fps": 4433646,
+          "new_sealed_message_fps": 1796516,
           "one_time_handshake_ms": 1.345,
           "meets": [
             "CNSA 2.0",
@@ -2381,8 +2389,8 @@
           "comsec": "payload AEAD (aes256-gcm) + authenticated PQC/hybrid handshake (ml-dsa-87 over ml-kem-1024); key establishment is the COMSEC boundary, TRANSEC is the carrier's concern"
         },
         "nist5-kmac": {
-          "sealed_relay_fps": 553009,
-          "new_sealed_message_fps": 467427,
+          "sealed_relay_fps": 4433646,
+          "new_sealed_message_fps": 1796516,
           "one_time_handshake_ms": 1.685,
           "meets": [
             "FIPS 203 (ML-KEM-1024)",
@@ -2400,8 +2408,8 @@
           "comsec": "payload AEAD (aes256-gcm) + authenticated PQC/hybrid handshake (ml-dsa-87 over ml-kem-1024); key establishment is the COMSEC boundary, TRANSEC is the carrier's concern"
         },
         "sphincs5": {
-          "sealed_relay_fps": 553009,
-          "new_sealed_message_fps": 467427,
+          "sealed_relay_fps": 4433646,
+          "new_sealed_message_fps": 1796516,
           "one_time_handshake_ms": 49.014,
           "meets": [
             "FIPS 205 (SLH-DSA / SPHINCS+)",
@@ -2417,8 +2425,8 @@
           "comsec": "payload AEAD (aes256-gcm) + authenticated PQC/hybrid handshake (sphincs-sha2-256f over ml-kem-1024); key establishment is the COMSEC boundary, TRANSEC is the carrier's concern"
         },
         "falcon5": {
-          "sealed_relay_fps": 553009,
-          "new_sealed_message_fps": 467427,
+          "sealed_relay_fps": 4433646,
+          "new_sealed_message_fps": 1796516,
           "one_time_handshake_ms": 16.56,
           "meets": [
             "FN-DSA/Falcon (NIST round 3 sig)",
@@ -2434,8 +2442,8 @@
           "comsec": "payload AEAD (aes256-gcm) + authenticated PQC/hybrid handshake (falcon-1024 over ml-kem-1024); key establishment is the COMSEC boundary, TRANSEC is the carrier's concern"
         },
         "csfc": {
-          "sealed_relay_fps": 553009,
-          "new_sealed_message_fps": 467427,
+          "sealed_relay_fps": 4433646,
+          "new_sealed_message_fps": 1796516,
           "one_time_handshake_ms": 8.853,
           "meets": [
             "NSA CSfC (two-layer)",
