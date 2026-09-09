@@ -1,59 +1,45 @@
 {
   "schema": "robobus-bench/1",
-  "generated_unix": 1786345871,
-  "label": "GitHub Actions ubuntu-latest",
+  "generated_unix": 1783165493,
+  "label": "GitHub Actions windows-latest",
   "quick": true,
   "platform": {
-    "python_version": "3.12.13",
+    "python_version": "3.12.10",
     "python_impl": "CPython",
-    "system": "Linux",
-    "release": "6.17.0-1020-azure",
-    "version": "#20~24.04.1-Ubuntu SMP Fri Jun 19 20:09:14 UTC 2026",
-    "machine": "x86_64",
-    "processor": "x86_64",
-    "platform": "Linux-6.17.0-1020-azure-x86_64-with-glibc2.39",
+    "system": "Windows",
+    "release": "2025Server",
+    "version": "10.0.26100",
+    "machine": "AMD64",
+    "processor": "AMD64 Family 25 Model 1 Stepping 1, AuthenticAMD",
+    "platform": "Windows-2025Server-10.0.26100-SP0",
     "cpu_count_logical": 4,
     "cpu_count_physical": 2,
-    "mem_total_bytes": 16766423040,
+    "mem_total_bytes": 17174360064,
     "cpu_freq_mhz": {
-      "current": 2888.3247499999998,
+      "current": 2445.0,
       "min": 0.0,
-      "max": 0.0
+      "max": 2445.0
     },
     "environment": {
       "ci": "GitHub Actions",
-      "runner_os": "Linux",
+      "runner_os": "Windows",
       "runner_arch": "X64",
-      "runner_name": "GitHub Actions 1000003580",
+      "runner_name": "GitHub Actions 1000002163",
       "runner_environment": "github-hosted",
       "virtualized": true,
       "self_hosted": false,
       "caveat": "virtualized CI runner: shared vCPUs, noisy neighbours, no real-time scheduling -- absolute latency (esp. tails) is worse and noisier than bare metal; use for cross-platform coverage and relative comparison."
     },
     "measurement": {
-      "pinned_cpus": [
-        0,
-        1,
-        2,
-        3
-      ],
-      "pinned": false,
-      "cpu_governor": null,
-      "turbo": null,
-      "smt_active": true,
-      "isolated_cpus": "",
-      "aslr": "full",
-      "pmu_perf_available": true,
-      "uncontrolled_noise": [
-        "SMT/hyperthreading active (sibling-core contention)",
-        "no isolated cores (isolcpus=) -> scheduler + IRQ noise"
-      ],
-      "fidelity_tier": "1-virtualized (GitHub-hosted VM \u2014 coverage only)"
+      "pinned": null,
+      "pmu_perf_available": false,
+      "uncontrolled_noise": [],
+      "fidelity_tier": "1-virtualized (GitHub-hosted VM, coverage only)"
     },
     "dependencies": {
       "available": {
-        "cryptography": "50.0.0",
-        "oqs": "0.16.0",
+        "cryptography": "49.0.0",
+        "oqs": "0.15.0",
         "argon2": "25.1.0",
         "psutil": "7.2.2"
       },
@@ -66,15 +52,15 @@
       "name": "ring put+get, amortized 1-core",
       "config": {
         "realtime": "off",
-        "clock_ns_per_tick": 1.0
+        "clock_ns_per_tick": 100.0
       },
       "unit": "ns/op",
       "dependency": "native/nsbus.c",
       "status": "ok",
-      "note": "pure ring op cost; clock CLOCK_MONOTONIC_RAW res 1.0 ns",
+      "note": "pure ring op cost; clock QueryPerformanceCounter res 100.0 ns",
       "metrics": {
-        "mean_ns": 1.826536,
-        "ops_per_s": 547484300.0,
+        "mean_ns": 1.86834,
+        "ops_per_s": 535234500.0,
         "n": 5000000
       }
     },
@@ -83,27 +69,27 @@
       "name": "cross-thread one-way latency",
       "config": {
         "realtime": "off",
-        "ipc": "fork+mmap(MAP_SHARED)",
+        "ipc": "CreateProcess+CreateFileMapping",
         "warmup_msgs": 20000
       },
       "unit": "ns",
       "dependency": "native/nsbus.c",
       "status": "ok",
-      "note": "0.0% <100 ns; max at 32% of run (mid-run scheduler jitter); no RT",
+      "note": "1.9% <100 ns; max at 89% of run (mid-run scheduler jitter); no RT",
       "metrics": {
         "n": 99936,
-        "min_ns": 89.0,
-        "p50_ns": 120.0,
-        "p90_ns": 120.0,
-        "p99_ns": 130.0,
-        "p999_ns": 1562.0,
-        "max_ns": 10245.0,
-        "mean_ns": 125.0902,
-        "frac_under_100ns": 7.004483e-05,
-        "frac_under_1us": 0.9978086,
-        "spike_rate": 0.002191402,
-        "stable_max_ns": 991.0,
-        "max_position_frac": 0.323417
+        "min_ns": 0.0,
+        "p50_ns": 100.0,
+        "p90_ns": 100.0,
+        "p99_ns": 300.0,
+        "p999_ns": 15500.0,
+        "max_ns": 29600.0,
+        "mean_ns": 171.807,
+        "frac_under_100ns": 0.01897214,
+        "frac_under_1us": 0.9912244,
+        "spike_rate": 0.00862552,
+        "stable_max_ns": 1000.0,
+        "max_position_frac": 0.8908101
       }
     },
     {
@@ -111,27 +97,27 @@
       "name": "cross-process one-way latency",
       "config": {
         "realtime": "off",
-        "ipc": "fork+mmap(MAP_SHARED)",
+        "ipc": "CreateProcess+CreateFileMapping",
         "warmup_msgs": 20000
       },
       "unit": "ns",
       "dependency": "native/nsbus.c",
       "status": "ok",
-      "note": "0.0% <100 ns; max at 88% of run (mid-run scheduler jitter); no RT",
+      "note": "0.4% <100 ns; max at 27% of run (mid-run scheduler jitter); no RT",
       "metrics": {
         "n": 99936,
-        "min_ns": 100.0,
-        "p50_ns": 130.0,
-        "p90_ns": 131.0,
-        "p99_ns": 140.0,
-        "p999_ns": 2664.0,
-        "max_ns": 11988.0,
-        "mean_ns": 141.0615,
-        "frac_under_100ns": 0.0,
-        "frac_under_1us": 0.9956972,
-        "spike_rate": 0.004302754,
-        "stable_max_ns": 982.0,
-        "max_position_frac": 0.882835
+        "min_ns": 0.0,
+        "p50_ns": 100.0,
+        "p90_ns": 100.0,
+        "p99_ns": 600.0,
+        "p999_ns": 14600.0,
+        "max_ns": 51700.0,
+        "mean_ns": 176.0887,
+        "frac_under_100ns": 0.004212696,
+        "frac_under_1us": 0.9910142,
+        "spike_rate": 0.0089057,
+        "stable_max_ns": 1000.0,
+        "max_position_frac": 0.2696226
       }
     },
     {
@@ -139,15 +125,15 @@
       "name": "ring put+get, amortized 1-core (RT)",
       "config": {
         "realtime": "on",
-        "clock_ns_per_tick": 1.0
+        "clock_ns_per_tick": 100.0
       },
       "unit": "ns/op",
       "dependency": "native/nsbus.c",
       "status": "ok",
-      "note": "pure ring op cost; clock CLOCK_MONOTONIC_RAW res 1.0 ns",
+      "note": "pure ring op cost; clock QueryPerformanceCounter res 100.0 ns",
       "metrics": {
-        "mean_ns": 1.82498,
-        "ops_per_s": 547951200.0,
+        "mean_ns": 1.89334,
+        "ops_per_s": 528167200.0,
         "n": 5000000
       }
     },
@@ -156,27 +142,27 @@
       "name": "cross-thread one-way latency (RT)",
       "config": {
         "realtime": "on",
-        "ipc": "fork+mmap(MAP_SHARED)",
+        "ipc": "CreateProcess+CreateFileMapping",
         "warmup_msgs": 20000
       },
       "unit": "ns",
       "dependency": "native/nsbus.c",
       "status": "ok",
-      "note": "0.0% <100 ns; max at 11% of run (mid-run scheduler jitter); RT hardened",
+      "note": "1.3% <100 ns; max at 69% of run (mid-run scheduler jitter); RT hardened",
       "metrics": {
         "n": 99936,
-        "min_ns": 89.0,
-        "p50_ns": 120.0,
-        "p90_ns": 120.0,
-        "p99_ns": 130.0,
-        "p999_ns": 2143.0,
-        "max_ns": 34801.0,
-        "mean_ns": 132.0891,
-        "frac_under_100ns": 0.000100064,
-        "frac_under_1us": 0.9973983,
-        "spike_rate": 0.002601665,
-        "stable_max_ns": 982.0,
-        "max_position_frac": 0.1112412
+        "min_ns": 0.0,
+        "p50_ns": 100.0,
+        "p90_ns": 100.0,
+        "p99_ns": 400.0,
+        "p999_ns": 6600.0,
+        "max_ns": 18300.0,
+        "mean_ns": 132.2707,
+        "frac_under_100ns": 0.01293828,
+        "frac_under_1us": 0.9915146,
+        "spike_rate": 0.008285303,
+        "stable_max_ns": 1000.0,
+        "max_position_frac": 0.6946546
       }
     },
     {
@@ -184,27 +170,27 @@
       "name": "cross-process one-way latency (RT)",
       "config": {
         "realtime": "on",
-        "ipc": "fork+mmap(MAP_SHARED)",
+        "ipc": "CreateProcess+CreateFileMapping",
         "warmup_msgs": 20000
       },
       "unit": "ns",
       "dependency": "native/nsbus.c",
       "status": "ok",
-      "note": "0.0% <100 ns; max at 60% of run (mid-run scheduler jitter); RT hardened",
+      "note": "0.3% <100 ns; max at 93% of run (mid-run scheduler jitter); RT hardened",
       "metrics": {
         "n": 99936,
-        "min_ns": 100.0,
-        "p50_ns": 130.0,
-        "p90_ns": 131.0,
-        "p99_ns": 140.0,
-        "p999_ns": 1102.0,
-        "max_ns": 10335.0,
-        "mean_ns": 134.0515,
-        "frac_under_100ns": 0.0,
-        "frac_under_1us": 0.9987892,
-        "spike_rate": 0.001210775,
-        "stable_max_ns": 992.0,
-        "max_position_frac": 0.6013048
+        "min_ns": 0.0,
+        "p50_ns": 100.0,
+        "p90_ns": 100.0,
+        "p99_ns": 1800.0,
+        "p999_ns": 18000.0,
+        "max_ns": 41000.0,
+        "mean_ns": 180.1063,
+        "frac_under_100ns": 0.003432197,
+        "frac_under_1us": 0.9880223,
+        "spike_rate": 0.01174752,
+        "stable_max_ns": 1000.0,
+        "max_position_frac": 0.9346682
       }
     },
     {
@@ -218,17 +204,17 @@
       "status": "ok",
       "note": "",
       "metrics": {
-        "iters": 3636,
-        "elapsed_s": 0.15001444,
-        "ops_per_s": 24237.666720617028,
-        "n": 3636,
-        "min_ns": 40120,
-        "p50_ns": 40361.0,
-        "p90_ns": 40631.5,
-        "p99_ns": 50796.0,
-        "max_ns": 73040,
-        "mean_ns": 40832.47882288229,
-        "stdev_ns": 2119.122312152831
+        "iters": 3607,
+        "elapsed_s": 0.1500332,
+        "ops_per_s": 24041.345515525896,
+        "n": 3607,
+        "min_ns": 40200,
+        "p50_ns": 40400.0,
+        "p90_ns": 40600.0,
+        "p99_ns": 71500.0,
+        "max_ns": 82500,
+        "mean_ns": 41158.83005267535,
+        "stdev_ns": 4649.02922822091
       }
     },
     {
@@ -242,17 +228,17 @@
       "status": "ok",
       "note": "",
       "metrics": {
-        "iters": 3781,
-        "elapsed_s": 0.150036083,
-        "ops_per_s": 25200.6045772336,
-        "n": 3781,
-        "min_ns": 38828,
-        "p50_ns": 38899.0,
-        "p90_ns": 39139.0,
-        "p99_ns": 48365.0,
-        "max_ns": 83927,
-        "mean_ns": 39359.020100502516,
-        "stdev_ns": 2123.2871219380286
+        "iters": 3717,
+        "elapsed_s": 0.1500087,
+        "ops_per_s": 24778.562843355085,
+        "n": 3717,
+        "min_ns": 38200,
+        "p50_ns": 39300.0,
+        "p90_ns": 39300.0,
+        "p99_ns": 64884.000000000015,
+        "max_ns": 119100,
+        "mean_ns": 39940.05918751682,
+        "stdev_ns": 4057.084769545042
       }
     },
     {
@@ -266,17 +252,17 @@
       "status": "ok",
       "note": "",
       "metrics": {
-        "iters": 9409,
-        "elapsed_s": 0.15000136,
-        "ops_per_s": 62726.09795004525,
+        "iters": 7717,
+        "elapsed_s": 0.1500113,
+        "ops_per_s": 51442.79130972134,
         "n": 4000,
-        "min_ns": 15273,
-        "p50_ns": 15443.0,
-        "p90_ns": 15584.9,
-        "p99_ns": 23545.01,
-        "max_ns": 42924,
-        "mean_ns": 15630.63575,
-        "stdev_ns": 1243.8015937326732
+        "min_ns": 18200,
+        "p50_ns": 18500.0,
+        "p90_ns": 18800.0,
+        "p99_ns": 37300.0,
+        "max_ns": 122200,
+        "mean_ns": 19085.05,
+        "stdev_ns": 3515.9431874676247
       }
     },
     {
@@ -290,17 +276,17 @@
       "status": "ok",
       "note": "",
       "metrics": {
-        "iters": 2461,
-        "elapsed_s": 0.150016572,
-        "ops_per_s": 16404.854258368203,
-        "n": 2461,
-        "min_ns": 59520,
-        "p50_ns": 59930.0,
-        "p90_ns": 60401.0,
-        "p99_ns": 69711.40000000001,
-        "max_ns": 89444,
-        "mean_ns": 60540.724095895974,
-        "stdev_ns": 2264.406882367992
+        "iters": 2640,
+        "elapsed_s": 0.150041,
+        "ops_per_s": 17595.190647889576,
+        "n": 2640,
+        "min_ns": 54800,
+        "p50_ns": 55300.0,
+        "p90_ns": 56300.0,
+        "p99_ns": 75400.0,
+        "max_ns": 182600,
+        "mean_ns": 56434.88636363636,
+        "stdev_ns": 4904.469860066315
       }
     },
     {
@@ -314,17 +300,17 @@
       "status": "ok",
       "note": "",
       "metrics": {
-        "iters": 7591,
-        "elapsed_s": 0.150004184,
-        "ops_per_s": 50605.255117417255,
-        "n": 4000,
-        "min_ns": 18888,
-        "p50_ns": 19198.0,
-        "p90_ns": 19790.0,
-        "p99_ns": 27772.1,
-        "max_ns": 41363,
-        "mean_ns": 19469.1155,
-        "stdev_ns": 1374.9250521973006
+        "iters": 775,
+        "elapsed_s": 0.1501096,
+        "ops_per_s": 5162.894311889446,
+        "n": 775,
+        "min_ns": 184600,
+        "p50_ns": 187000.0,
+        "p90_ns": 211700.0,
+        "p99_ns": 235043.99999999997,
+        "max_ns": 279200,
+        "mean_ns": 192963.48387096773,
+        "stdev_ns": 12987.37533858261
       }
     },
     {
@@ -338,17 +324,17 @@
       "status": "ok",
       "note": "",
       "metrics": {
-        "iters": 7272,
-        "elapsed_s": 0.150009645,
-        "ops_per_s": 48476.88293642719,
-        "n": 4000,
-        "min_ns": 19849,
-        "p50_ns": 20101.0,
-        "p90_ns": 20421.0,
-        "p99_ns": 28723.1,
-        "max_ns": 35033,
-        "mean_ns": 20343.87175,
-        "stdev_ns": 1312.7175458955128
+        "iters": 606,
+        "elapsed_s": 0.150048,
+        "ops_per_s": 4038.70761356366,
+        "n": 606,
+        "min_ns": 233600,
+        "p50_ns": 235800.0,
+        "p90_ns": 273550.0,
+        "p99_ns": 388280.0000000001,
+        "max_ns": 958500,
+        "mean_ns": 246977.55775577558,
+        "stdev_ns": 42611.494110616135
       }
     },
     {
@@ -362,17 +348,17 @@
       "status": "ok",
       "note": "",
       "metrics": {
-        "iters": 10426,
-        "elapsed_s": 0.150009596,
-        "ops_per_s": 69502.22037795502,
-        "n": 4000,
-        "min_ns": 13781,
-        "p50_ns": 13941.0,
-        "p90_ns": 14081.0,
-        "p99_ns": 22043.699999999983,
-        "max_ns": 35934,
-        "mean_ns": 14105.20075,
-        "stdev_ns": 1161.692968236202
+        "iters": 506,
+        "elapsed_s": 0.1503057,
+        "ops_per_s": 3366.4724624548508,
+        "n": 506,
+        "min_ns": 288200,
+        "p50_ns": 289600.0,
+        "p90_ns": 324000.0,
+        "p99_ns": 351159.99999999994,
+        "max_ns": 380500,
+        "mean_ns": 296424.70355731226,
+        "stdev_ns": 14901.687121340301
       }
     },
     {
@@ -386,17 +372,17 @@
       "status": "ok",
       "note": "",
       "metrics": {
-        "iters": 5855,
-        "elapsed_s": 0.150006591,
-        "ops_per_s": 39031.618284025935,
-        "n": 4000,
-        "min_ns": 24567,
-        "p50_ns": 24977.0,
-        "p90_ns": 25598.1,
-        "p99_ns": 34202.48999999999,
-        "max_ns": 59209,
-        "mean_ns": 25350.585,
-        "stdev_ns": 1761.4056731130963
+        "iters": 490,
+        "elapsed_s": 0.1501793,
+        "ops_per_s": 3262.766573023047,
+        "n": 490,
+        "min_ns": 294000,
+        "p50_ns": 297700.0,
+        "p90_ns": 332220.0,
+        "p99_ns": 352574.00000000006,
+        "max_ns": 383500,
+        "mean_ns": 305848.5714285714,
+        "stdev_ns": 15223.296057593534
       }
     },
     {
@@ -410,17 +396,17 @@
       "status": "ok",
       "note": "",
       "metrics": {
-        "iters": 5709,
-        "elapsed_s": 0.15001271,
-        "ops_per_s": 38056.775322571004,
-        "n": 4000,
-        "min_ns": 25228,
-        "p50_ns": 25629.0,
-        "p90_ns": 26039.0,
-        "p99_ns": 35164.19999999997,
-        "max_ns": 43645,
-        "mean_ns": 25980.3155,
-        "stdev_ns": 1702.5135466303198
+        "iters": 420,
+        "elapsed_s": 0.1502663,
+        "ops_per_s": 2795.0378760906474,
+        "n": 420,
+        "min_ns": 345200,
+        "p50_ns": 348250.0,
+        "p90_ns": 382720.0,
+        "p99_ns": 404078.0,
+        "max_ns": 491000,
+        "mean_ns": 357070.4761904762,
+        "stdev_ns": 16909.646014765396
       }
     },
     {
@@ -434,17 +420,17 @@
       "status": "ok",
       "note": "",
       "metrics": {
-        "iters": 7190,
-        "elapsed_s": 0.150017067,
-        "ops_per_s": 47927.880099135655,
-        "n": 4000,
-        "min_ns": 20051,
-        "p50_ns": 20311.0,
-        "p90_ns": 20481.0,
-        "p99_ns": 28974.189999999995,
-        "max_ns": 77948,
-        "mean_ns": 20592.31125,
-        "stdev_ns": 1773.4903317676806
+        "iters": 351,
+        "elapsed_s": 0.1500534,
+        "ops_per_s": 2339.1672564567016,
+        "n": 351,
+        "min_ns": 415600,
+        "p50_ns": 418200.0,
+        "p90_ns": 454100.0,
+        "p99_ns": 472700.0,
+        "max_ns": 587400,
+        "mean_ns": 426894.5868945869,
+        "stdev_ns": 17879.59569476506
       }
     },
     {
@@ -458,17 +444,17 @@
       "status": "ok",
       "note": "",
       "metrics": {
-        "iters": 4781,
-        "elapsed_s": 0.150023817,
-        "ops_per_s": 31868.27328890052,
-        "n": 4000,
-        "min_ns": 30136,
-        "p50_ns": 30627.0,
-        "p90_ns": 31447.1,
-        "p99_ns": 39900.399999999994,
-        "max_ns": 50136,
-        "mean_ns": 31070.605,
-        "stdev_ns": 1764.752865127296
+        "iters": 344,
+        "elapsed_s": 0.1503015,
+        "ops_per_s": 2288.732980043446,
+        "n": 344,
+        "min_ns": 420200,
+        "p50_ns": 427600.0,
+        "p90_ns": 466500.0,
+        "p99_ns": 487741.0,
+        "max_ns": 507800,
+        "mean_ns": 436289.24418604653,
+        "stdev_ns": 18461.832895120406
       }
     },
     {
@@ -482,17 +468,17 @@
       "status": "ok",
       "note": "",
       "metrics": {
-        "iters": 4677,
-        "elapsed_s": 0.150026731,
-        "ops_per_s": 31174.444506159372,
-        "n": 4000,
-        "min_ns": 30957,
-        "p50_ns": 31367.0,
-        "p90_ns": 31838.0,
-        "p99_ns": 40921.609999999986,
-        "max_ns": 49965,
-        "mean_ns": 31752.832,
-        "stdev_ns": 1813.8890970166838
+        "iters": 303,
+        "elapsed_s": 0.1504286,
+        "ops_per_s": 2014.2446316724347,
+        "n": 303,
+        "min_ns": 479700,
+        "p50_ns": 487500.0,
+        "p90_ns": 518180.0,
+        "p99_ns": 542396.0,
+        "max_ns": 644100,
+        "mean_ns": 495774.58745874587,
+        "stdev_ns": 19425.33767123987
       }
     },
     {
@@ -506,17 +492,17 @@
       "status": "ok",
       "note": "",
       "metrics": {
-        "iters": 5332,
-        "elapsed_s": 0.150015154,
-        "ops_per_s": 35543.07586818862,
-        "n": 4000,
-        "min_ns": 27231,
-        "p50_ns": 27512.0,
-        "p90_ns": 27772.0,
-        "p99_ns": 36085.28999999999,
-        "max_ns": 40872,
-        "mean_ns": 27799.3985,
-        "stdev_ns": 1485.7892847566743
+        "iters": 258,
+        "elapsed_s": 0.1505578,
+        "ops_per_s": 1713.6275902012385,
+        "n": 258,
+        "min_ns": 567500,
+        "p50_ns": 572100.0,
+        "p90_ns": 606830.0,
+        "p99_ns": 660095.0,
+        "max_ns": 806100,
+        "mean_ns": 582903.4883720931,
+        "stdev_ns": 23201.945158738083
       }
     },
     {
@@ -530,17 +516,17 @@
       "status": "ok",
       "note": "ECDH P-256 + ML-KEM encaps/decaps + HKDF-SHA384 combine, both parties",
       "metrics": {
-        "iters": 525,
-        "elapsed_s": 0.150079942,
-        "ops_per_s": 3498.1356802496634,
-        "n": 525,
-        "min_ns": 275255,
-        "p50_ns": 281574.0,
-        "p90_ns": 297256.4,
-        "p99_ns": 308705.76,
-        "max_ns": 385922,
-        "mean_ns": 285234.80190476193,
-        "stdev_ns": 9797.976012120647
+        "iters": 111,
+        "elapsed_s": 0.1508568,
+        "ops_per_s": 735.7971268116518,
+        "n": 111,
+        "min_ns": 1311400,
+        "p50_ns": 1362800.0,
+        "p90_ns": 1376700.0,
+        "p99_ns": 1536440.0000000005,
+        "max_ns": 1568800,
+        "mean_ns": 1357527.9279279278,
+        "stdev_ns": 37293.65854644177
       }
     },
     {
@@ -554,17 +540,17 @@
       "status": "ok",
       "note": "ECDH P-256 + ML-KEM encaps/decaps + HKDF-SHA384 combine, both parties",
       "metrics": {
-        "iters": 491,
-        "elapsed_s": 0.150212952,
-        "ops_per_s": 3268.692835488647,
-        "n": 491,
-        "min_ns": 294153,
-        "p50_ns": 301085.0,
-        "p90_ns": 316047.0,
-        "p99_ns": 362205.3000000005,
-        "max_ns": 434224,
-        "mean_ns": 305272.45417515276,
-        "stdev_ns": 13364.72126489086
+        "iters": 84,
+        "elapsed_s": 0.1501635,
+        "ops_per_s": 559.3902646115733,
+        "n": 84,
+        "min_ns": 1732900,
+        "p50_ns": 1783550.0,
+        "p90_ns": 1820140.0,
+        "p99_ns": 1882112.0,
+        "max_ns": 1918300,
+        "mean_ns": 1786489.2857142857,
+        "stdev_ns": 27573.089096924537
       }
     },
     {
@@ -578,17 +564,17 @@
       "status": "ok",
       "note": "3 sign + 3 verify + ML-KEM + 2 ECDH + 2 HKDF, both parties; identities provisioned out-of-band (not timed); isolated from DDS transport",
       "metrics": {
-        "iters": 217,
-        "elapsed_s": 0.150303449,
-        "ops_per_s": 1443.7459781777861,
-        "n": 217,
-        "min_ns": 545102,
-        "p50_ns": 674657.0,
-        "p90_ns": 805770.8,
-        "p99_ns": 957327.92,
-        "max_ns": 1073599,
-        "mean_ns": 691716.6958525346,
-        "stdev_ns": 87752.81757136887
+        "iters": 21,
+        "elapsed_s": 0.1530834,
+        "ops_per_s": 137.18012534344024,
+        "n": 21,
+        "min_ns": 5802800,
+        "p50_ns": 7008500.0,
+        "p90_ns": 9051700.0,
+        "p99_ns": 10033380.0,
+        "max_ns": 10234400,
+        "mean_ns": 7288576.19047619,
+        "stdev_ns": 1224593.8261141593
       }
     },
     {
@@ -602,17 +588,17 @@
       "status": "ok",
       "note": "3 sign + 3 verify + ML-KEM + 2 ECDH + 2 HKDF, both parties; identities provisioned out-of-band (not timed); isolated from DDS transport",
       "metrics": {
-        "iters": 163,
-        "elapsed_s": 0.150366144,
-        "ops_per_s": 1084.0206157045563,
-        "n": 163,
-        "min_ns": 693686,
-        "p50_ns": 902711.0,
-        "p90_ns": 1114026.2000000002,
-        "p99_ns": 1307297.3399999999,
-        "max_ns": 1427974,
-        "mean_ns": 921591.9447852761,
-        "stdev_ns": 137057.26630848146
+        "iters": 20,
+        "elapsed_s": 0.226481,
+        "ops_per_s": 88.30762845448405,
+        "n": 20,
+        "min_ns": 7598900,
+        "p50_ns": 9982700.0,
+        "p90_ns": 14947470.000000002,
+        "p99_ns": 18479528.999999996,
+        "max_ns": 19148500,
+        "mean_ns": 11322865.0,
+        "stdev_ns": 3030455.883736802
       }
     },
     {
@@ -626,22 +612,22 @@
       "status": "ok",
       "note": "3 sign + 3 verify + ML-KEM + 2 ECDH + 2 HKDF, both parties; identities provisioned out-of-band (not timed); isolated from DDS transport",
       "metrics": {
-        "iters": 134,
-        "elapsed_s": 0.15056952,
-        "ops_per_s": 889.9543546396375,
-        "n": 134,
-        "min_ns": 901550,
-        "p50_ns": 1112608.0,
-        "p90_ns": 1270618.2,
-        "p99_ns": 1487237.96,
-        "max_ns": 1529356,
-        "mean_ns": 1122704.776119403,
-        "stdev_ns": 127555.35885257655
+        "iters": 20,
+        "elapsed_s": 0.320543,
+        "ops_per_s": 62.394124969192895,
+        "n": 20,
+        "min_ns": 11738800,
+        "p50_ns": 15235000.0,
+        "p90_ns": 21449340.0,
+        "p99_ns": 21599010.0,
+        "max_ns": 21610600,
+        "mean_ns": 16025940.0,
+        "stdev_ns": 3098576.1441991385
       }
     },
     {
       "group": "handshake",
-      "name": "key agreement only \u2014 hybrid ECDH+ML-KEM rekey (no identity sig)",
+      "name": "key agreement only, hybrid ECDH+ML-KEM rekey (no identity sig)",
       "config": {
         "note": "see hybrid_kem"
       },
@@ -662,17 +648,17 @@
       "status": "ok",
       "note": "",
       "metrics": {
-        "iters": 3628,
-        "elapsed_s": 0.150031629,
-        "ops_per_s": 24181.567741292736,
-        "n": 3628,
-        "min_ns": 40240,
-        "p50_ns": 40481.0,
-        "p90_ns": 40732.0,
-        "p99_ns": 50766.600000000006,
-        "max_ns": 61012,
-        "mean_ns": 40973.48346196251,
-        "stdev_ns": 2128.845725360014
+        "iters": 3563,
+        "elapsed_s": 0.1500112,
+        "ops_per_s": 23751.559883528695,
+        "n": 3563,
+        "min_ns": 40700,
+        "p50_ns": 40900.0,
+        "p90_ns": 41200.0,
+        "p99_ns": 57800.0,
+        "max_ns": 74000,
+        "mean_ns": 41678.27673309009,
+        "stdev_ns": 3389.4836048065854
       }
     },
     {
@@ -686,17 +672,17 @@
       "status": "ok",
       "note": "",
       "metrics": {
-        "iters": 3440,
-        "elapsed_s": 0.150029756,
-        "ops_per_s": 22928.78487384863,
-        "n": 3440,
-        "min_ns": 42544,
-        "p50_ns": 42765.0,
-        "p90_ns": 42985.0,
-        "p99_ns": 52274.71,
-        "max_ns": 80151,
-        "mean_ns": 43234.434011627905,
-        "stdev_ns": 2122.5842789455805
+        "iters": 3376,
+        "elapsed_s": 0.1500279,
+        "ops_per_s": 22502.48120516251,
+        "n": 3376,
+        "min_ns": 42900,
+        "p50_ns": 43100.0,
+        "p90_ns": 43800.0,
+        "p99_ns": 62325.0,
+        "max_ns": 171700,
+        "mean_ns": 44032.81990521327,
+        "stdev_ns": 4578.0586192315595
       }
     },
     {
@@ -710,17 +696,17 @@
       "status": "ok",
       "note": "",
       "metrics": {
-        "iters": 1114,
-        "elapsed_s": 0.15011143,
-        "ops_per_s": 7421.15373892581,
-        "n": 1114,
-        "min_ns": 131448,
-        "p50_ns": 132951.0,
-        "p90_ns": 141441.0,
-        "p99_ns": 144867.59999999998,
-        "max_ns": 176897,
-        "mean_ns": 134280.05475763016,
-        "stdev_ns": 3853.0233350138674
+        "iters": 1238,
+        "elapsed_s": 0.1500443,
+        "ops_per_s": 8250.896568546756,
+        "n": 1238,
+        "min_ns": 118000,
+        "p50_ns": 118400.0,
+        "p90_ns": 131730.0,
+        "p99_ns": 149088.99999999997,
+        "max_ns": 203900,
+        "mean_ns": 120767.20516962843,
+        "stdev_ns": 7044.357985395333
       }
     },
     {
@@ -734,17 +720,17 @@
       "status": "ok",
       "note": "",
       "metrics": {
-        "iters": 5066,
-        "elapsed_s": 0.150027903,
-        "ops_per_s": 33767.05198632284,
+        "iters": 4619,
+        "elapsed_s": 0.1500102,
+        "ops_per_s": 30791.239529045357,
         "n": 4000,
-        "min_ns": 28663,
-        "p50_ns": 28924.0,
-        "p90_ns": 29315.0,
-        "p99_ns": 38137.11,
-        "max_ns": 79610,
-        "mean_ns": 29312.54725,
-        "stdev_ns": 1916.8082626510763
+        "min_ns": 30600,
+        "p50_ns": 30900.0,
+        "p90_ns": 31800.0,
+        "p99_ns": 53100.0,
+        "max_ns": 105100,
+        "mean_ns": 31951.675,
+        "stdev_ns": 4395.075903141492
       }
     },
     {
@@ -758,17 +744,17 @@
       "status": "ok",
       "note": "",
       "metrics": {
-        "iters": 1847,
-        "elapsed_s": 0.150040532,
-        "ops_per_s": 12310.007005307072,
-        "n": 1847,
-        "min_ns": 79259,
-        "p50_ns": 79891.0,
-        "p90_ns": 81585.0,
-        "p99_ns": 91494.19999999998,
-        "max_ns": 131949,
-        "mean_ns": 80821.45641580941,
-        "stdev_ns": 3212.2032955655136
+        "iters": 1938,
+        "elapsed_s": 0.1500062,
+        "ops_per_s": 12919.465995405522,
+        "n": 1938,
+        "min_ns": 74700,
+        "p50_ns": 75200.0,
+        "p90_ns": 78900.0,
+        "p99_ns": 109125.99999999997,
+        "max_ns": 120800,
+        "mean_ns": 76936.27450980392,
+        "stdev_ns": 6327.756760919841
       }
     },
     {
@@ -782,17 +768,17 @@
       "status": "ok",
       "note": "",
       "metrics": {
-        "iters": 176,
-        "elapsed_s": 0.401737931,
-        "ops_per_s": 438.09654607894123,
-        "n": 176,
-        "min_ns": 2246569,
-        "p50_ns": 2258907.0,
-        "p90_ns": 2283664.0,
-        "p99_ns": 2917317.75,
-        "max_ns": 2927936,
-        "mean_ns": 2281836.4545454546,
-        "stdev_ns": 108872.26394238854
+        "iters": 193,
+        "elapsed_s": 0.4000092,
+        "ops_per_s": 482.4889027552366,
+        "n": 193,
+        "min_ns": 2011800,
+        "p50_ns": 2042400.0,
+        "p90_ns": 2060620.0,
+        "p99_ns": 2866815.9999999995,
+        "max_ns": 2917400,
+        "mean_ns": 2071604.6632124353,
+        "stdev_ns": 143819.61870471094
       }
     },
     {
@@ -806,17 +792,17 @@
       "status": "ok",
       "note": "",
       "metrics": {
-        "iters": 2716,
-        "elapsed_s": 0.15002543,
-        "ops_per_s": 18103.597503436584,
-        "n": 2716,
-        "min_ns": 53831,
-        "p50_ns": 54261.0,
-        "p90_ns": 54752.5,
-        "p99_ns": 63889.35,
-        "max_ns": 82094,
-        "mean_ns": 54820.32621502209,
-        "stdev_ns": 2250.0438178496775
+        "iters": 2711,
+        "elapsed_s": 0.1500177,
+        "ops_per_s": 18071.2009316234,
+        "n": 2711,
+        "min_ns": 53000,
+        "p50_ns": 53500.0,
+        "p90_ns": 54200.0,
+        "p99_ns": 87190.00000000001,
+        "max_ns": 201700,
+        "mean_ns": 54896.016230173365,
+        "stdev_ns": 6707.877765346001
       }
     },
     {
@@ -830,17 +816,17 @@
       "status": "ok",
       "note": "",
       "metrics": {
-        "iters": 3681,
-        "elapsed_s": 0.150023096,
-        "ops_per_s": 24536.222076099537,
-        "n": 3681,
-        "min_ns": 38027,
-        "p50_ns": 39940.0,
-        "p90_ns": 40501.0,
-        "p99_ns": 50321.999999999985,
-        "max_ns": 81483,
-        "mean_ns": 40405.120347731594,
-        "stdev_ns": 2395.4893642277384
+        "iters": 336,
+        "elapsed_s": 0.1500269,
+        "ops_per_s": 2239.5983653598123,
+        "n": 336,
+        "min_ns": 422300,
+        "p50_ns": 436850.0,
+        "p90_ns": 477250.0,
+        "p99_ns": 513939.99999999965,
+        "max_ns": 574300,
+        "mean_ns": 445862.20238095237,
+        "stdev_ns": 21305.076382715168
       }
     },
     {
@@ -854,17 +840,17 @@
       "status": "ok",
       "note": "",
       "metrics": {
-        "iters": 1618,
-        "elapsed_s": 0.150003216,
-        "ops_per_s": 10786.435405491573,
-        "n": 1618,
-        "min_ns": 46801,
-        "p50_ns": 75153.5,
-        "p90_ns": 161512.0,
-        "p99_ns": 289463.50999999966,
-        "max_ns": 423278,
-        "mean_ns": 92333.34857849196,
-        "stdev_ns": 52060.36927237356
+        "iters": 103,
+        "elapsed_s": 0.1500672,
+        "ops_per_s": 686.3591777550323,
+        "n": 103,
+        "min_ns": 700900,
+        "p50_ns": 1173600.0,
+        "p90_ns": 2536300.0,
+        "p99_ns": 4106166.000000001,
+        "max_ns": 4333800,
+        "mean_ns": 1456171.8446601941,
+        "stdev_ns": 828597.1472967112
       }
     },
     {
@@ -878,17 +864,17 @@
       "status": "ok",
       "note": "",
       "metrics": {
-        "iters": 3605,
-        "elapsed_s": 0.150008414,
-        "ops_per_s": 24031.985299171283,
-        "n": 3605,
-        "min_ns": 40230,
-        "p50_ns": 40782.0,
-        "p90_ns": 41342.0,
-        "p99_ns": 50324.8,
-        "max_ns": 61122,
-        "mean_ns": 41242.9306518724,
-        "stdev_ns": 1961.9540376054365
+        "iters": 293,
+        "elapsed_s": 0.1500872,
+        "ops_per_s": 1952.1984552979868,
+        "n": 293,
+        "min_ns": 494900,
+        "p50_ns": 501400.0,
+        "p90_ns": 537800.0,
+        "p99_ns": 579731.9999999991,
+        "max_ns": 759400,
+        "mean_ns": 511566.89419795224,
+        "stdev_ns": 25367.099225542104
       }
     },
     {
@@ -902,17 +888,17 @@
       "status": "ok",
       "note": "",
       "metrics": {
-        "iters": 2434,
-        "elapsed_s": 0.150009465,
-        "ops_per_s": 16225.642828604181,
-        "n": 2434,
-        "min_ns": 59710,
-        "p50_ns": 60591.0,
-        "p90_ns": 61423.0,
-        "p99_ns": 71465.60000000002,
-        "max_ns": 124467,
-        "mean_ns": 61291.3837304848,
-        "stdev_ns": 2866.169290184766
+        "iters": 191,
+        "elapsed_s": 0.1503676,
+        "ops_per_s": 1270.220446425959,
+        "n": 191,
+        "min_ns": 764700,
+        "p50_ns": 773800.0,
+        "p90_ns": 812700.0,
+        "p99_ns": 848469.9999999999,
+        "max_ns": 859700,
+        "mean_ns": 786465.9685863875,
+        "stdev_ns": 20693.860383449333
       }
     },
     {
@@ -926,17 +912,17 @@
       "status": "ok",
       "note": "",
       "metrics": {
-        "iters": 1083,
-        "elapsed_s": 0.150014784,
-        "ops_per_s": 7219.288466928699,
-        "n": 1083,
-        "min_ns": 67522,
-        "p50_ns": 115164.0,
-        "p90_ns": 238602.4000000001,
-        "p99_ns": 392853.92000000016,
-        "max_ns": 660887,
-        "mean_ns": 138121.17174515236,
-        "stdev_ns": 76593.22026307437
+        "iters": 58,
+        "elapsed_s": 0.1508627,
+        "ops_per_s": 384.4555347345633,
+        "n": 58,
+        "min_ns": 1077000,
+        "p50_ns": 2106300.0,
+        "p90_ns": 4792170.000000002,
+        "p99_ns": 7410399.0,
+        "max_ns": 7535400,
+        "mean_ns": 2600174.1379310344,
+        "stdev_ns": 1499419.8075118053
       }
     },
     {
@@ -950,17 +936,17 @@
       "status": "ok",
       "note": "",
       "metrics": {
-        "iters": 2461,
-        "elapsed_s": 0.150009626,
-        "ops_per_s": 16405.61386373965,
-        "n": 2461,
-        "min_ns": 59200,
-        "p50_ns": 59870.0,
-        "p90_ns": 60772.0,
-        "p99_ns": 71336.0,
-        "max_ns": 93742,
-        "mean_ns": 60606.9788703779,
-        "stdev_ns": 2754.9494801753203
+        "iters": 182,
+        "elapsed_s": 0.1503233,
+        "ops_per_s": 1210.7238199267845,
+        "n": 182,
+        "min_ns": 796800,
+        "p50_ns": 809750.0,
+        "p90_ns": 848050.0,
+        "p99_ns": 988074.9999999997,
+        "max_ns": 1150200,
+        "mean_ns": 825176.3736263736,
+        "stdev_ns": 39656.746194280066
       }
     },
     {
@@ -974,17 +960,17 @@
       "status": "ok",
       "note": "",
       "metrics": {
-        "iters": 1650,
-        "elapsed_s": 0.150035405,
-        "ops_per_s": 10997.404246017797,
-        "n": 1650,
-        "min_ns": 87672,
-        "p50_ns": 89615.0,
-        "p90_ns": 92563.0,
-        "p99_ns": 101783.4,
-        "max_ns": 121914,
-        "mean_ns": 90571.46606060606,
-        "stdev_ns": 3198.0067919839366
+        "iters": 118,
+        "elapsed_s": 0.1511257,
+        "ops_per_s": 780.8069706211452,
+        "n": 118,
+        "min_ns": 1238800,
+        "p50_ns": 1284500.0,
+        "p90_ns": 1299320.0,
+        "p99_ns": 1336681.0,
+        "max_ns": 1399000,
+        "mean_ns": 1279858.4745762711,
+        "stdev_ns": 23036.262225762654
       }
     },
     {
@@ -998,17 +984,17 @@
       "status": "ok",
       "note": "",
       "metrics": {
-        "iters": 896,
-        "elapsed_s": 0.150079851,
-        "ops_per_s": 5970.155180924321,
-        "n": 896,
-        "min_ns": 100051,
-        "p50_ns": 145595.0,
-        "p90_ns": 259631.5,
-        "p99_ns": 422360.6,
-        "max_ns": 724743,
-        "mean_ns": 167086.66517857142,
-        "stdev_ns": 74752.57893374005
+        "iters": 50,
+        "elapsed_s": 0.1509685,
+        "ops_per_s": 331.19491814517596,
+        "n": 50,
+        "min_ns": 1706900,
+        "p50_ns": 2518350.0,
+        "p90_ns": 5263410.000000001,
+        "p99_ns": 7255003.999999997,
+        "max_ns": 7921600,
+        "mean_ns": 3018422.0,
+        "stdev_ns": 1510203.0538030309
       }
     },
     {
@@ -1022,17 +1008,17 @@
       "status": "ok",
       "note": "",
       "metrics": {
-        "iters": 1686,
-        "elapsed_s": 0.150020302,
-        "ops_per_s": 11238.478909341218,
-        "n": 1686,
-        "min_ns": 86901,
-        "p50_ns": 87512.0,
-        "p90_ns": 89970.5,
-        "p99_ns": 100132.50000000001,
-        "max_ns": 153552,
-        "mean_ns": 88580.90510083036,
-        "stdev_ns": 3632.910065141901
+        "iters": 111,
+        "elapsed_s": 0.1503606,
+        "ops_per_s": 738.2253063635021,
+        "n": 111,
+        "min_ns": 1324600,
+        "p50_ns": 1361100.0,
+        "p90_ns": 1368300.0,
+        "p99_ns": 1408520.0,
+        "max_ns": 1413900,
+        "mean_ns": 1353743.2432432433,
+        "stdev_ns": 19287.75283181514
       }
     },
     {
@@ -1047,12 +1033,12 @@
       "status": "ok",
       "note": "",
       "metrics": {
-        "iters": 168766,
-        "elapsed_s": 0.150002004,
-        "ops_per_s": 1125091.635442417,
-        "bytes": 10801024,
-        "mb_per_s": 72.0058646683147,
-        "mib_per_s": 68.67014376479597
+        "iters": 123710,
+        "elapsed_s": 0.150001,
+        "ops_per_s": 824727.8351477657,
+        "bytes": 7917440,
+        "mb_per_s": 52.782581449457005,
+        "mib_per_s": 50.33739228196812
       }
     },
     {
@@ -1067,12 +1053,12 @@
       "status": "ok",
       "note": "",
       "metrics": {
-        "iters": 164460,
-        "elapsed_s": 0.150002175,
-        "ops_per_s": 1096384.1024305148,
-        "bytes": 10525440,
-        "mb_per_s": 70.16858255555294,
-        "mib_per_s": 66.91797500186247
+        "iters": 121223,
+        "elapsed_s": 0.1500013,
+        "ops_per_s": 808146.3293984785,
+        "bytes": 7758272,
+        "mb_per_s": 51.721365081502626,
+        "mib_per_s": 49.325337487700104
       }
     },
     {
@@ -1087,12 +1073,12 @@
       "status": "ok",
       "note": "",
       "metrics": {
-        "iters": 116131,
-        "elapsed_s": 0.150000873,
-        "ops_per_s": 774202.1608100907,
-        "bytes": 118918144,
-        "mb_per_s": 792.7830126695329,
-        "mib_per_s": 756.0567976661042
+        "iters": 97215,
+        "elapsed_s": 0.1500013,
+        "ops_per_s": 648094.3831820124,
+        "bytes": 99548160,
+        "mb_per_s": 663.6486483783807,
+        "mib_per_s": 632.904671076184
       }
     },
     {
@@ -1107,12 +1093,12 @@
       "status": "ok",
       "note": "",
       "metrics": {
-        "iters": 117242,
-        "elapsed_s": 0.150001052,
-        "ops_per_s": 781607.8516569338,
-        "bytes": 120055808,
-        "mb_per_s": 800.3664400967001,
-        "mib_per_s": 763.2889176337244
+        "iters": 96729,
+        "elapsed_s": 0.1500005,
+        "ops_per_s": 644857.8504738318,
+        "bytes": 99050496,
+        "mb_per_s": 660.3344388852037,
+        "mib_per_s": 629.7439946033513
       }
     },
     {
@@ -1127,12 +1113,12 @@
       "status": "ok",
       "note": "",
       "metrics": {
-        "iters": 7392,
-        "elapsed_s": 0.150005049,
-        "ops_per_s": 49278.34129103214,
-        "bytes": 484442112,
-        "mb_per_s": 3229.5053748490827,
-        "mib_per_s": 3079.896330689509
+        "iters": 7932,
+        "elapsed_s": 0.1500066,
+        "ops_per_s": 52877.67338237118,
+        "bytes": 519831552,
+        "mb_per_s": 3465.3912027870774,
+        "mib_per_s": 3304.8545863981985
       }
     },
     {
@@ -1147,12 +1133,12 @@
       "status": "ok",
       "note": "",
       "metrics": {
-        "iters": 7412,
-        "elapsed_s": 0.150012,
-        "ops_per_s": 49409.3805828867,
-        "bytes": 485752832,
-        "mb_per_s": 3238.0931658800628,
-        "mib_per_s": 3088.0862864304186
+        "iters": 7957,
+        "elapsed_s": 0.1500168,
+        "ops_per_s": 53040.72610534287,
+        "bytes": 521469952,
+        "mb_per_s": 3476.0770260397503,
+        "mib_per_s": 3315.045381583929
       }
     },
     {
@@ -1167,12 +1153,12 @@
       "status": "ok",
       "note": "",
       "metrics": {
-        "iters": 168776,
-        "elapsed_s": 0.150000332,
-        "ops_per_s": 1125170.842955201,
-        "bytes": 10801664,
-        "mb_per_s": 72.01093394913288,
-        "mib_per_s": 68.6749782077149
+        "iters": 124530,
+        "elapsed_s": 0.1500007,
+        "ops_per_s": 830196.1257514133,
+        "bytes": 7969920,
+        "mb_per_s": 53.132552048090446,
+        "mib_per_s": 50.67115025338216
       }
     },
     {
@@ -1187,12 +1173,12 @@
       "status": "ok",
       "note": "",
       "metrics": {
-        "iters": 165380,
-        "elapsed_s": 0.150000351,
-        "ops_per_s": 1102530.7534113703,
-        "bytes": 10584320,
-        "mb_per_s": 70.5619682183277,
-        "mib_per_s": 67.29313680489321
+        "iters": 120326,
+        "elapsed_s": 0.1500011,
+        "ops_per_s": 802167.4507720277,
+        "bytes": 7700864,
+        "mb_per_s": 51.33871684940977,
+        "mib_per_s": 48.960415696534895
       }
     },
     {
@@ -1207,12 +1193,12 @@
       "status": "ok",
       "note": "",
       "metrics": {
-        "iters": 119319,
-        "elapsed_s": 0.150000552,
-        "ops_per_s": 795457.0727179723,
-        "bytes": 122182656,
-        "mb_per_s": 814.5480424632036,
-        "mib_per_s": 776.8135475761449
+        "iters": 98704,
+        "elapsed_s": 0.1500015,
+        "ops_per_s": 658020.0864658019,
+        "bytes": 101072896,
+        "mb_per_s": 673.8125685409813,
+        "mib_per_s": 642.5977406892597
       }
     },
     {
@@ -1227,12 +1213,12 @@
       "status": "ok",
       "note": "",
       "metrics": {
-        "iters": 120228,
-        "elapsed_s": 0.150001093,
-        "ops_per_s": 801514.1596334901,
-        "bytes": 123113472,
-        "mb_per_s": 820.7504994646939,
-        "mib_per_s": 782.7286715170802
+        "iters": 97783,
+        "elapsed_s": 0.1500006,
+        "ops_per_s": 651884.0591304301,
+        "bytes": 100129792,
+        "mb_per_s": 667.5292765495603,
+        "mib_per_s": 636.6055264945606
       }
     },
     {
@@ -1247,12 +1233,12 @@
       "status": "ok",
       "note": "",
       "metrics": {
-        "iters": 7876,
-        "elapsed_s": 0.150006,
-        "ops_per_s": 52504.56648400731,
-        "bytes": 516161536,
-        "mb_per_s": 3440.9392690959025,
-        "mib_per_s": 3281.5354052504567
+        "iters": 8457,
+        "elapsed_s": 0.1500193,
+        "ops_per_s": 56372.74670659042,
+        "bytes": 554237952,
+        "mb_per_s": 3694.4443281631093,
+        "mib_per_s": 3523.2966691619013
       }
     },
     {
@@ -1267,12 +1253,12 @@
       "status": "ok",
       "note": "",
       "metrics": {
-        "iters": 7870,
-        "elapsed_s": 0.150004749,
-        "ops_per_s": 52465.00562458859,
-        "bytes": 515768320,
-        "mb_per_s": 3438.3466086130384,
-        "mib_per_s": 3279.062851536787
+        "iters": 8492,
+        "elapsed_s": 0.1500044,
+        "ops_per_s": 56611.67272426675,
+        "bytes": 556531712,
+        "mb_per_s": 3710.1025836575454,
+        "mib_per_s": 3538.2295452666717
       }
     },
     {
@@ -1287,12 +1273,12 @@
       "status": "ok",
       "note": "",
       "metrics": {
-        "iters": 136236,
-        "elapsed_s": 0.150001173,
-        "ops_per_s": 908232.8976187407,
-        "bytes": 8719104,
-        "mb_per_s": 58.126905447599405,
-        "mib_per_s": 55.43413681755009
+        "iters": 107909,
+        "elapsed_s": 0.1500008,
+        "ops_per_s": 719389.4965893516,
+        "bytes": 6906176,
+        "mb_per_s": 46.0409277817185,
+        "mib_per_s": 43.908050328939915
       }
     },
     {
@@ -1307,12 +1293,12 @@
       "status": "ok",
       "note": "",
       "metrics": {
-        "iters": 135859,
-        "elapsed_s": 0.150000542,
-        "ops_per_s": 905723.3939861364,
-        "bytes": 8694976,
-        "mb_per_s": 57.96629721511274,
-        "mib_per_s": 55.28096887122415
+        "iters": 107434,
+        "elapsed_s": 0.150001,
+        "ops_per_s": 716221.8918540543,
+        "bytes": 6875776,
+        "mb_per_s": 45.83820107865948,
+        "mib_per_s": 43.714715078982806
       }
     },
     {
@@ -1327,12 +1313,12 @@
       "status": "ok",
       "note": "",
       "metrics": {
-        "iters": 88725,
-        "elapsed_s": 0.150001794,
-        "ops_per_s": 591492.9257446082,
-        "bytes": 90854400,
-        "mb_per_s": 605.6887559624787,
-        "mib_per_s": 577.6298102974689
+        "iters": 80777,
+        "elapsed_s": 0.150001,
+        "ops_per_s": 538509.7432683782,
+        "bytes": 82715648,
+        "mb_per_s": 551.4339771068193,
+        "mib_per_s": 525.8884211605256
       }
     },
     {
@@ -1347,12 +1333,12 @@
       "status": "ok",
       "note": "",
       "metrics": {
-        "iters": 88331,
-        "elapsed_s": 0.150000592,
-        "ops_per_s": 588871.0092557502,
-        "bytes": 90450944,
-        "mb_per_s": 603.0039134778882,
-        "mib_per_s": 575.0693449763186
+        "iters": 80535,
+        "elapsed_s": 0.1500004,
+        "ops_per_s": 536898.5682704846,
+        "bytes": 82467840,
+        "mb_per_s": 549.7841339089762,
+        "mib_per_s": 524.3150080766451
       }
     },
     {
@@ -1367,12 +1353,12 @@
       "status": "ok",
       "note": "",
       "metrics": {
-        "iters": 3963,
-        "elapsed_s": 0.150016827,
-        "ops_per_s": 26417.0365368413,
-        "bytes": 259719168,
-        "mb_per_s": 1731.2669064784316,
-        "mib_per_s": 1651.0647835525813
+        "iters": 4613,
+        "elapsed_s": 0.1500316,
+        "ops_per_s": 30746.85599567025,
+        "bytes": 302317568,
+        "mb_per_s": 2015.0259545322454,
+        "mib_per_s": 1921.6784997293905
       }
     },
     {
@@ -1387,12 +1373,12 @@
       "status": "ok",
       "note": "",
       "metrics": {
-        "iters": 3925,
-        "elapsed_s": 0.150021674,
-        "ops_per_s": 26162.88630401498,
-        "bytes": 257228800,
-        "mb_per_s": 1714.6109168199255,
-        "mib_per_s": 1635.1803940009363
+        "iters": 4540,
+        "elapsed_s": 0.150032,
+        "ops_per_s": 30260.21115495361,
+        "bytes": 297533440,
+        "mb_per_s": 1983.1331982510396,
+        "mib_per_s": 1891.2631971846006
       }
     },
     {
@@ -1406,12 +1392,12 @@
       "status": "ok",
       "note": "",
       "metrics": {
-        "iters": 168795,
-        "elapsed_s": 0.150000833,
-        "ops_per_s": 1125293.7508687035,
-        "bytes": 10802880,
-        "mb_per_s": 72.01880005559703,
-        "mib_per_s": 68.68247991141989
+        "iters": 131139,
+        "elapsed_s": 0.1500008,
+        "ops_per_s": 874255.3373048678,
+        "bytes": 8392896,
+        "mb_per_s": 55.95234158751154,
+        "mib_per_s": 53.36031111479906
       }
     },
     {
@@ -1425,12 +1411,12 @@
       "status": "ok",
       "note": "",
       "metrics": {
-        "iters": 95216,
-        "elapsed_s": 0.150001172,
-        "ops_per_s": 634768.3736764404,
-        "bytes": 97501184,
-        "mb_per_s": 650.0028146446749,
-        "mib_per_s": 619.8909899183989
+        "iters": 86698,
+        "elapsed_s": 0.1500009,
+        "ops_per_s": 577983.198767474,
+        "bytes": 88778752,
+        "mb_per_s": 591.8547955378934,
+        "mib_per_s": 564.4367175463614
       }
     },
     {
@@ -1444,12 +1430,12 @@
       "status": "ok",
       "note": "",
       "metrics": {
-        "iters": 3150,
-        "elapsed_s": 0.150019077,
-        "ops_per_s": 20997.329559626607,
-        "bytes": 206438400,
-        "mb_per_s": 1376.0809900196894,
-        "mib_per_s": 1312.333097476663
+        "iters": 3525,
+        "elapsed_s": 0.1500031,
+        "ops_per_s": 23499.514343370236,
+        "bytes": 231014400,
+        "mb_per_s": 1540.064172007112,
+        "mib_per_s": 1468.7196464606398
       }
     },
     {
@@ -1463,12 +1449,12 @@
       "status": "ok",
       "note": "",
       "metrics": {
-        "iters": 133175,
-        "elapsed_s": 0.150000909,
-        "ops_per_s": 887827.9530959376,
-        "bytes": 8523200,
-        "mb_per_s": 56.82098899814,
-        "mib_per_s": 54.18871784032822
+        "iters": 114464,
+        "elapsed_s": 0.1500005,
+        "ops_per_s": 763090.7896973676,
+        "bytes": 7325696,
+        "mb_per_s": 48.83781054063153,
+        "mib_per_s": 46.57536558211472
       }
     },
     {
@@ -1482,12 +1468,12 @@
       "status": "ok",
       "note": "",
       "metrics": {
-        "iters": 56351,
-        "elapsed_s": 0.150000568,
-        "ops_per_s": 375671.9107890311,
-        "bytes": 57703424,
-        "mb_per_s": 384.68803664796786,
-        "mib_per_s": 366.8671003799132
+        "iters": 55590,
+        "elapsed_s": 0.150001,
+        "ops_per_s": 370597.52934980433,
+        "bytes": 56924160,
+        "mb_per_s": 379.49187005419964,
+        "mib_per_s": 361.9116497556683
       }
     },
     {
@@ -1501,12 +1487,12 @@
       "status": "ok",
       "note": "",
       "metrics": {
-        "iters": 1523,
-        "elapsed_s": 0.150050894,
-        "ops_per_s": 10149.889543477162,
-        "bytes": 99811328,
-        "mb_per_s": 665.1831611213194,
-        "mib_per_s": 634.3680964673226
+        "iters": 1697,
+        "elapsed_s": 0.1500572,
+        "ops_per_s": 11309.020826724742,
+        "bytes": 111214592,
+        "mb_per_s": 741.1479889002327,
+        "mib_per_s": 706.8138016702964
       }
     },
     {
@@ -1520,12 +1506,12 @@
       "status": "ok",
       "note": "",
       "metrics": {
-        "iters": 133745,
-        "elapsed_s": 0.150000348,
-        "ops_per_s": 891631.264748799,
-        "bytes": 8559680,
-        "mb_per_s": 57.06440094392314,
-        "mib_per_s": 54.420853561328066
+        "iters": 113874,
+        "elapsed_s": 0.1500009,
+        "ops_per_s": 759155.4450673297,
+        "bytes": 7287936,
+        "mb_per_s": 48.5859484843091,
+        "mib_per_s": 46.33517120772276
       }
     },
     {
@@ -1539,12 +1525,12 @@
       "status": "ok",
       "note": "",
       "metrics": {
-        "iters": 56631,
-        "elapsed_s": 0.150001891,
-        "ops_per_s": 377535.2405390676,
-        "bytes": 57990144,
-        "mb_per_s": 386.59608631200524,
-        "mib_per_s": 368.6867583389332
+        "iters": 55976,
+        "elapsed_s": 0.1500023,
+        "ops_per_s": 373167.6114299581,
+        "bytes": 57319424,
+        "mb_per_s": 382.123634104277,
+        "mib_per_s": 364.42149553706844
       }
     },
     {
@@ -1558,12 +1544,12 @@
       "status": "ok",
       "note": "",
       "metrics": {
-        "iters": 1524,
-        "elapsed_s": 0.150054509,
-        "ops_per_s": 10156.309264921856,
-        "bytes": 99876864,
-        "mb_per_s": 665.6038839859187,
-        "mib_per_s": 634.769329057616
+        "iters": 1694,
+        "elapsed_s": 0.1500451,
+        "ops_per_s": 11289.938825059933,
+        "bytes": 111017984,
+        "mb_per_s": 739.8974308391278,
+        "mib_per_s": 705.6211765662458
       }
     },
     {
@@ -1577,12 +1563,12 @@
       "status": "ok",
       "note": "",
       "metrics": {
-        "iters": 115991,
-        "elapsed_s": 0.150000448,
-        "ops_per_s": 773271.0238305421,
-        "bytes": 7423424,
-        "mb_per_s": 49.4893455251547,
-        "mib_per_s": 47.19671776309461
+        "iters": 103944,
+        "elapsed_s": 0.1500005,
+        "ops_per_s": 692957.6901410328,
+        "bytes": 6652416,
+        "mb_per_s": 44.3492921690261,
+        "mib_per_s": 42.29478089239702
       }
     },
     {
@@ -1596,12 +1582,12 @@
       "status": "ok",
       "note": "",
       "metrics": {
-        "iters": 40784,
-        "elapsed_s": 0.150000318,
-        "ops_per_s": 271892.75692068867,
-        "bytes": 41762816,
-        "mb_per_s": 278.41818308678523,
-        "mib_per_s": 265.52027043036003
+        "iters": 41537,
+        "elapsed_s": 0.1500027,
+        "ops_per_s": 276908.34898305166,
+        "bytes": 42533888,
+        "mb_per_s": 283.5541493586449,
+        "mib_per_s": 270.4183095537614
       }
     },
     {
@@ -1615,12 +1601,12 @@
       "status": "ok",
       "note": "",
       "metrics": {
-        "iters": 893,
-        "elapsed_s": 0.150132828,
-        "ops_per_s": 5948.066201750359,
-        "bytes": 58523648,
-        "mb_per_s": 389.81246659791157,
-        "mib_per_s": 371.75413760939745
+        "iters": 964,
+        "elapsed_s": 0.1500834,
+        "ops_per_s": 6423.095425610028,
+        "bytes": 63176704,
+        "mb_per_s": 420.94398181277876,
+        "mib_per_s": 401.4434641006267
       }
     },
     {
@@ -1634,12 +1620,12 @@
       "status": "ok",
       "note": "",
       "metrics": {
-        "iters": 116400,
-        "elapsed_s": 0.150000338,
-        "ops_per_s": 775998.2514172734,
-        "bytes": 7449600,
-        "mb_per_s": 49.6638880907055,
-        "mib_per_s": 47.36317452498007
+        "iters": 103530,
+        "elapsed_s": 0.1500006,
+        "ops_per_s": 690197.2392110431,
+        "bytes": 6625920,
+        "mb_per_s": 44.172623309506754,
+        "mib_per_s": 42.12629633856464
       }
     },
     {
@@ -1653,12 +1639,12 @@
       "status": "ok",
       "note": "",
       "metrics": {
-        "iters": 24902,
-        "elapsed_s": 0.15000149,
-        "ops_per_s": 166011.68428393613,
-        "bytes": 25499648,
-        "mb_per_s": 169.99596470675058,
-        "mib_per_s": 162.12078543353138
+        "iters": 26247,
+        "elapsed_s": 0.1500009,
+        "ops_per_s": 174978.95012629926,
+        "bytes": 26876928,
+        "mb_per_s": 179.17844492933042,
+        "mib_per_s": 170.87788098271412
       }
     },
     {
@@ -1672,12 +1658,12 @@
       "status": "ok",
       "note": "",
       "metrics": {
-        "iters": 485,
-        "elapsed_s": 0.150251918,
-        "ops_per_s": 3227.9122054202326,
-        "bytes": 31784960,
-        "mb_per_s": 211.54445429442038,
-        "mib_per_s": 201.74451283876454
+        "iters": 538,
+        "elapsed_s": 0.1500021,
+        "ops_per_s": 3586.61645403631,
+        "bytes": 35258368,
+        "mb_per_s": 235.0524959317236,
+        "mib_per_s": 224.1635283772694
       }
     },
     {
@@ -1691,12 +1677,12 @@
       "status": "ok",
       "note": "",
       "metrics": {
-        "iters": 199726,
-        "elapsed_s": 0.150000808,
-        "ops_per_s": 1331499.4943227237,
-        "bytes": 12782464,
-        "mb_per_s": 85.21596763665431,
-        "mib_per_s": 81.26827968278343
+        "iters": 163059,
+        "elapsed_s": 0.1500004,
+        "ops_per_s": 1087057.1011810636,
+        "bytes": 10435776,
+        "mb_per_s": 69.57165447558806,
+        "mib_per_s": 66.34870002325827
       }
     },
     {
@@ -1710,12 +1696,12 @@
       "status": "ok",
       "note": "",
       "metrics": {
-        "iters": 73214,
-        "elapsed_s": 0.150001861,
-        "ops_per_s": 488087.27779717353,
-        "bytes": 74971136,
-        "mb_per_s": 499.8013724643057,
-        "mib_per_s": 476.6477322238023
+        "iters": 61203,
+        "elapsed_s": 0.1500013,
+        "ops_per_s": 408016.4638573132,
+        "bytes": 62671872,
+        "mb_per_s": 417.80885898988873,
+        "mib_per_s": 398.45357798565743
       }
     },
     {
@@ -1729,12 +1715,12 @@
       "status": "ok",
       "note": "",
       "metrics": {
-        "iters": 1549,
-        "elapsed_s": 0.150085707,
-        "ops_per_s": 10320.769585340993,
-        "bytes": 101515264,
-        "mb_per_s": 676.3819555449073,
-        "mib_per_s": 645.0480990838121
+        "iters": 1342,
+        "elapsed_s": 0.1500917,
+        "ops_per_s": 8941.200612692108,
+        "bytes": 87949312,
+        "mb_per_s": 585.97052335339,
+        "mib_per_s": 558.8250382932567
       }
     },
     {
@@ -1748,12 +1734,12 @@
       "status": "ok",
       "note": "",
       "metrics": {
-        "iters": 223051,
-        "elapsed_s": 0.150000358,
-        "ops_per_s": 1487003.1176858924,
-        "bytes": 14275264,
-        "mb_per_s": 95.16819953189712,
-        "mib_per_s": 90.75946763219558
+        "iters": 182545,
+        "elapsed_s": 0.1500004,
+        "ops_per_s": 1216963.4214308762,
+        "bytes": 11682880,
+        "mb_per_s": 77.88565897157608,
+        "mib_per_s": 74.27755257756813
       }
     },
     {
@@ -1767,12 +1753,12 @@
       "status": "ok",
       "note": "",
       "metrics": {
-        "iters": 48574,
-        "elapsed_s": 0.15000195,
-        "ops_per_s": 323822.456974726,
-        "bytes": 49739776,
-        "mb_per_s": 331.5941959421194,
-        "mib_per_s": 316.23286813938086
+        "iters": 42241,
+        "elapsed_s": 0.1500027,
+        "ops_per_s": 281601.59783790563,
+        "bytes": 43254784,
+        "mb_per_s": 288.36003618601535,
+        "mib_per_s": 275.0015603885797
       }
     },
     {
@@ -1786,12 +1772,12 @@
       "status": "ok",
       "note": "",
       "metrics": {
-        "iters": 922,
-        "elapsed_s": 0.150049822,
-        "ops_per_s": 6144.625749705988,
-        "bytes": 60424192,
-        "mb_per_s": 402.6941931327316,
-        "mib_per_s": 384.03910935662424
+        "iters": 814,
+        "elapsed_s": 0.150132,
+        "ops_per_s": 5421.8953987157975,
+        "bytes": 53346304,
+        "mb_per_s": 355.3293368502385,
+        "mib_per_s": 338.86846241973734
       }
     },
     {
@@ -1805,12 +1791,12 @@
       "status": "ok",
       "note": "",
       "metrics": {
-        "iters": 213175,
-        "elapsed_s": 0.150000568,
-        "ops_per_s": 1421161.2852026,
-        "bytes": 13643200,
-        "mb_per_s": 90.9543222529664,
-        "mib_per_s": 86.74080109879151
+        "iters": 191087,
+        "elapsed_s": 0.1500008,
+        "ops_per_s": 1273906.5391651245,
+        "bytes": 12229568,
+        "mb_per_s": 81.53001850656797,
+        "mib_per_s": 77.75308466584012
       }
     },
     {
@@ -1824,12 +1810,12 @@
       "status": "ok",
       "note": "",
       "metrics": {
-        "iters": 74811,
-        "elapsed_s": 0.150000599,
-        "ops_per_s": 498738.0083728865,
-        "bytes": 76606464,
-        "mb_per_s": 510.70772057383584,
-        "mib_per_s": 487.048836301647
+        "iters": 80323,
+        "elapsed_s": 0.1500014,
+        "ops_per_s": 535481.6688377574,
+        "bytes": 82250752,
+        "mb_per_s": 548.3332288898637,
+        "mib_per_s": 522.9313172243725
       }
     },
     {
@@ -1843,12 +1829,12 @@
       "status": "ok",
       "note": "",
       "metrics": {
-        "iters": 7594,
-        "elapsed_s": 0.150009853,
-        "ops_per_s": 50623.341388115354,
-        "bytes": 497680384,
-        "mb_per_s": 3317.651301211528,
-        "mib_per_s": 3163.9588367572096
+        "iters": 8799,
+        "elapsed_s": 0.1500041,
+        "ops_per_s": 58658.396670491005,
+        "bytes": 576651264,
+        "mb_per_s": 3844.2366841972985,
+        "mib_per_s": 3666.149791905688
       }
     },
     {
@@ -1862,12 +1848,12 @@
       "status": "ok",
       "note": "",
       "metrics": {
-        "iters": 74629,
-        "elapsed_s": 0.150001349,
-        "ops_per_s": 497522.1922837507,
-        "bytes": 4776256,
-        "mb_per_s": 31.841420306160046,
-        "mib_per_s": 30.366344743881267
+        "iters": 52905,
+        "elapsed_s": 0.1500003,
+        "ops_per_s": 352699.2946014108,
+        "bytes": 3385920,
+        "mb_per_s": 22.57275485449029,
+        "mib_per_s": 21.52705655526189
       }
     },
     {
@@ -1881,12 +1867,12 @@
       "status": "ok",
       "note": "",
       "metrics": {
-        "iters": 55648,
-        "elapsed_s": 0.150000658,
-        "ops_per_s": 370985.039278961,
-        "bytes": 56983552,
-        "mb_per_s": 379.8886802216561,
-        "mib_per_s": 362.29007742086037
+        "iters": 43784,
+        "elapsed_s": 0.1500012,
+        "ops_per_s": 291890.9982053477,
+        "bytes": 44834816,
+        "mb_per_s": 298.896382162276,
+        "mib_per_s": 285.04980293490985
       }
     },
     {
@@ -1900,12 +1886,12 @@
       "status": "ok",
       "note": "",
       "metrics": {
-        "iters": 3068,
-        "elapsed_s": 0.150018545,
-        "ops_per_s": 20450.804932150222,
-        "bytes": 201064448,
-        "mb_per_s": 1340.263952033397,
-        "mib_per_s": 1278.1753082593889
+        "iters": 3281,
+        "elapsed_s": 0.1500364,
+        "ops_per_s": 21868.026692189364,
+        "bytes": 215023616,
+        "mb_per_s": 1433.1429972993221,
+        "mib_per_s": 1366.7516682618352
       }
     },
     {
@@ -1919,12 +1905,12 @@
       "status": "ok",
       "note": "",
       "metrics": {
-        "iters": 52671,
-        "elapsed_s": 0.150000509,
-        "ops_per_s": 351138.8084689766,
-        "bytes": 3370944,
-        "mb_per_s": 22.472883742014503,
-        "mib_per_s": 21.43181204034281
+        "iters": 41538,
+        "elapsed_s": 0.1500012,
+        "ops_per_s": 276917.78465772275,
+        "bytes": 2658432,
+        "mb_per_s": 17.722738218094253,
+        "mib_per_s": 16.90172025498796
       }
     },
     {
@@ -1938,12 +1924,12 @@
       "status": "ok",
       "note": "",
       "metrics": {
-        "iters": 34484,
-        "elapsed_s": 0.150001229,
-        "ops_per_s": 229891.44975605496,
-        "bytes": 35311616,
-        "mb_per_s": 235.4088445502003,
-        "mib_per_s": 224.50336890239743
+        "iters": 30116,
+        "elapsed_s": 0.1500022,
+        "ops_per_s": 200770.3887009657,
+        "bytes": 30838784,
+        "mb_per_s": 205.5888780297889,
+        "mib_per_s": 196.06483271578682
       }
     },
     {
@@ -1957,12 +1943,12 @@
       "status": "ok",
       "note": "",
       "metrics": {
-        "iters": 1498,
-        "elapsed_s": 0.150070333,
-        "ops_per_s": 9981.986246408875,
-        "bytes": 98172928,
-        "mb_per_s": 654.1794506446521,
-        "mib_per_s": 623.8741404005547
+        "iters": 1619,
+        "elapsed_s": 0.150039,
+        "ops_per_s": 10790.527796106346,
+        "bytes": 106102784,
+        "mb_per_s": 707.1680296456254,
+        "mib_per_s": 674.4079872566466
       }
     },
     {
@@ -1976,12 +1962,12 @@
       "status": "ok",
       "note": "",
       "metrics": {
-        "iters": 52420,
-        "elapsed_s": 0.150001569,
-        "ops_per_s": 349463.01128356863,
-        "bytes": 3354880,
-        "mb_per_s": 22.365632722148394,
-        "mib_per_s": 21.329529497288124
+        "iters": 41930,
+        "elapsed_s": 0.1500029,
+        "ops_per_s": 279527.9291267036,
+        "bytes": 2683520,
+        "mb_per_s": 17.88978746410903,
+        "mib_per_s": 17.06103083048728
       }
     },
     {
@@ -1995,12 +1981,12 @@
       "status": "ok",
       "note": "",
       "metrics": {
-        "iters": 34198,
-        "elapsed_s": 0.150004234,
-        "ops_per_s": 227980.23154466428,
-        "bytes": 35018752,
-        "mb_per_s": 233.45175710173623,
-        "mib_per_s": 222.6369448678362
+        "iters": 30292,
+        "elapsed_s": 0.1500092,
+        "ops_per_s": 201934.28136407633,
+        "bytes": 31019008,
+        "mb_per_s": 206.78070411681415,
+        "mib_per_s": 197.2014466446058
       }
     },
     {
@@ -2014,12 +2000,12 @@
       "status": "ok",
       "note": "",
       "metrics": {
-        "iters": 1498,
-        "elapsed_s": 0.150010433,
-        "ops_per_s": 9985.972109019911,
-        "bytes": 98172928,
-        "mb_per_s": 654.4406681367288,
-        "mib_per_s": 624.1232568137444
+        "iters": 1620,
+        "elapsed_s": 0.1500372,
+        "ops_per_s": 10797.322264078508,
+        "bytes": 106168320,
+        "mb_per_s": 707.613311898649,
+        "mib_per_s": 674.8326415049067
       }
     },
     {
@@ -2033,12 +2019,12 @@
       "status": "ok",
       "note": "",
       "metrics": {
-        "iters": 46496,
-        "elapsed_s": 0.150002131,
-        "ops_per_s": 309968.9297080719,
-        "bytes": 2975744,
-        "mb_per_s": 19.838011501316604,
-        "mib_per_s": 18.919002057377437
+        "iters": 27494,
+        "elapsed_s": 0.1500028,
+        "ops_per_s": 183289.91192164415,
+        "bytes": 1759616,
+        "mb_per_s": 11.730554362985226,
+        "mib_per_s": 11.187128413186288
       }
     },
     {
@@ -2052,12 +2038,12 @@
       "status": "ok",
       "note": "",
       "metrics": {
-        "iters": 42750,
-        "elapsed_s": 0.150003602,
-        "ops_per_s": 284993.1563643385,
-        "bytes": 43776000,
-        "mb_per_s": 291.8329921170826,
-        "mib_per_s": 278.3136292620493
+        "iters": 26422,
+        "elapsed_s": 0.1500026,
+        "ops_per_s": 176143.61351069913,
+        "bytes": 27056128,
+        "mb_per_s": 180.3710602349559,
+        "mib_per_s": 172.01524756904212
       }
     },
     {
@@ -2071,12 +2057,12 @@
       "status": "ok",
       "note": "",
       "metrics": {
-        "iters": 10213,
-        "elapsed_s": 0.150013467,
-        "ops_per_s": 68080.55439449313,
-        "bytes": 669319168,
-        "mb_per_s": 4461.727212797501,
-        "mib_per_s": 4255.03464965582
+        "iters": 9608,
+        "elapsed_s": 0.1500004,
+        "ops_per_s": 64053.16252489993,
+        "bytes": 629669888,
+        "mb_per_s": 4197.7880592318415,
+        "mib_per_s": 4003.322657806246
       }
     },
     {
@@ -2090,17 +2076,17 @@
       "status": "ok",
       "note": "",
       "metrics": {
-        "iters": 136,
-        "elapsed_s": 0.401957586,
-        "ops_per_s": 338.34415554480915,
-        "n": 136,
-        "min_ns": 2931433,
-        "p50_ns": 2950576.5,
-        "p90_ns": 2968614.0,
-        "p99_ns": 3052270.5,
-        "max_ns": 3099857,
-        "mean_ns": 2954670.3235294116,
-        "stdev_ns": 21688.21816911687
+        "iters": 74,
+        "elapsed_s": 0.4015669,
+        "ops_per_s": 184.27813646991322,
+        "n": 74,
+        "min_ns": 4995000,
+        "p50_ns": 5033450.0,
+        "p90_ns": 5881810.000000001,
+        "p99_ns": 10378440.999999998,
+        "max_ns": 10574300,
+        "mean_ns": 5425660.810810811,
+        "stdev_ns": 1182796.7735491425
       }
     },
     {
@@ -2114,17 +2100,17 @@
       "status": "ok",
       "note": "",
       "metrics": {
-        "iters": 14,
-        "elapsed_s": 0.413491279,
-        "ops_per_s": 33.85802968773133,
-        "n": 14,
-        "min_ns": 29462353,
-        "p50_ns": 29517926.5,
-        "p90_ns": 29600719.4,
-        "p99_ns": 29634483.89,
-        "max_ns": 29638598,
-        "mean_ns": 29532035.35714286,
-        "stdev_ns": 52195.263544840025
+        "iters": 8,
+        "elapsed_s": 0.4009139,
+        "ops_per_s": 19.95440916366332,
+        "n": 8,
+        "min_ns": 49901000,
+        "p50_ns": 50024050.0,
+        "p90_ns": 50310870.0,
+        "p99_ns": 50749287.0,
+        "max_ns": 50798000,
+        "mean_ns": 50112587.5,
+        "stdev_ns": 265133.44487964927
       }
     },
     {
@@ -2139,16 +2125,16 @@
       "note": "",
       "metrics": {
         "iters": 3,
-        "elapsed_s": 0.531593699,
-        "ops_per_s": 5.643407748518103,
+        "elapsed_s": 0.9021837,
+        "ops_per_s": 3.325265131702113,
         "n": 3,
-        "min_ns": 177058734,
-        "p50_ns": 177152525.0,
-        "p90_ns": 177311901.8,
-        "p99_ns": 177347761.58,
-        "max_ns": 177351746,
-        "mean_ns": 177187668.33333334,
-        "stdev_ns": 122175.55250358213
+        "min_ns": 297567900,
+        "p50_ns": 297813500.0,
+        "p90_ns": 304989100.0,
+        "p99_ns": 306603610.0,
+        "max_ns": 306783000,
+        "mean_ns": 300721466.6666667,
+        "stdev_ns": 4287323.920841791
       }
     },
     {
@@ -2163,17 +2149,17 @@
       "status": "ok",
       "note": "",
       "metrics": {
-        "iters": 34221,
-        "elapsed_s": 0.150003873,
-        "ops_per_s": 228134.1095772907,
+        "iters": 25141,
+        "elapsed_s": 0.1500011,
+        "ops_per_s": 167605.43756012456,
         "n": 4000,
-        "min_ns": 3876,
-        "p50_ns": 4056.0,
-        "p90_ns": 4136.0,
-        "p99_ns": 4447.0,
-        "max_ns": 16034,
-        "mean_ns": 4095.49975,
-        "stdev_ns": 560.0151247956946
+        "min_ns": 5400,
+        "p50_ns": 5500.0,
+        "p90_ns": 5600.0,
+        "p99_ns": 11600.999999999976,
+        "max_ns": 32500,
+        "mean_ns": 5643.825,
+        "stdev_ns": 1216.0435310362043
       }
     },
     {
@@ -2188,17 +2174,17 @@
       "status": "ok",
       "note": "",
       "metrics": {
-        "iters": 25871,
-        "elapsed_s": 0.150004945,
-        "ops_per_s": 172467.64764988248,
+        "iters": 20389,
+        "elapsed_s": 0.150006,
+        "ops_per_s": 135921.22981747397,
         "n": 4000,
-        "min_ns": 5318,
-        "p50_ns": 5458.0,
-        "p90_ns": 5519.0,
-        "p99_ns": 5949.099999999998,
-        "max_ns": 39279,
-        "mean_ns": 5517.53275,
-        "stdev_ns": 814.3982738362339
+        "min_ns": 6700,
+        "p50_ns": 6900.0,
+        "p90_ns": 6900.0,
+        "p99_ns": 14900.0,
+        "max_ns": 58700,
+        "mean_ns": 7028.1,
+        "stdev_ns": 1608.2274061835908
       }
     },
     {
@@ -2215,17 +2201,17 @@
       "status": "ok",
       "note": "",
       "metrics": {
-        "iters": 7,
-        "elapsed_s": 0.53394733,
-        "ops_per_s": 13.109907301156463,
-        "n": 7,
-        "min_ns": 75683420,
-        "p50_ns": 76158807.0,
-        "p90_ns": 76886785.8,
-        "p99_ns": 77097243.78,
-        "max_ns": 77120628,
-        "mean_ns": 76272551.57142857,
-        "stdev_ns": 521151.38645910256
+        "iters": 6,
+        "elapsed_s": 0.5775781,
+        "ops_per_s": 10.38820550848448,
+        "n": 6,
+        "min_ns": 95048200,
+        "p50_ns": 95762950.0,
+        "p90_ns": 97853000.0,
+        "p99_ns": 97937510.0,
+        "max_ns": 97946900,
+        "mean_ns": 96258400.0,
+        "stdev_ns": 1184254.752998695
       }
     },
     {
@@ -2243,16 +2229,16 @@
       "note": "",
       "metrics": {
         "iters": 3,
-        "elapsed_s": 0.54753199,
-        "ops_per_s": 5.47913191337003,
+        "elapsed_s": 0.6689142,
+        "ops_per_s": 4.484880123639175,
         "n": 3,
-        "min_ns": 181113103,
-        "p50_ns": 181815190.0,
-        "p90_ns": 184025533.2,
-        "p99_ns": 184522860.42,
-        "max_ns": 184578119,
-        "mean_ns": 182502137.33333334,
-        "stdev_ns": 1495661.826560254
+        "min_ns": 219995800,
+        "p50_ns": 220224700.0,
+        "p90_ns": 226987020.0,
+        "p99_ns": 228508542.0,
+        "max_ns": 228677600,
+        "mean_ns": 222966033.33333334,
+        "stdev_ns": 4039768.4870409206
       }
     },
     {
@@ -2277,7 +2263,7 @@
     },
     {
       "group": "gpu",
-      "name": "swapover \u2014 Apple M5 (unified memory) (modeled)",
+      "name": "swapover, Apple M5 (unified memory) (modeled)",
       "config": {
         "device": "Apple M5 (unified memory)",
         "modeled": true,
@@ -2294,7 +2280,7 @@
     },
     {
       "group": "gpu",
-      "name": "crossover batch \u2014 Apple M5 (unified memory) (modeled)",
+      "name": "crossover batch, Apple M5 (unified memory) (modeled)",
       "config": {
         "device": "Apple M5 (unified memory)",
         "modeled": true
@@ -2302,7 +2288,7 @@
       "unit": "bytes",
       "dependency": "analytical model",
       "status": "ok",
-      "note": "GPU overtakes CPU above ~4.0 MiB resident / 4.0 MiB cold (host<->device copy each batch); ~4,081 concurrent 1-KiB streams. Roofline projection \u2014 see GPGPU-Sim/Accel-Sim for cycle-accurate. CALIBRATED: GPU saturates ~120 GB/s unified LPDDR5; numpy CPU ~17.5 GB/s effective -> reproduces the measured ~4 MiB crossover",
+      "note": "GPU overtakes CPU above ~4.0 MiB resident / 4.0 MiB cold (host<->device copy each batch); ~4,081 concurrent 1-KiB streams. Roofline projection, see GPGPU-Sim/Accel-Sim for cycle-accurate. CALIBRATED: GPU saturates ~120 GB/s unified LPDDR5; numpy CPU ~17.5 GB/s effective -> reproduces the measured ~4 MiB crossover",
       "metrics": {
         "crossover_bytes_resident": 4179512.1951219514,
         "crossover_bytes_cold": 4179512.1951219514,
@@ -2313,7 +2299,7 @@
     },
     {
       "group": "gpu",
-      "name": "swapover \u2014 NVIDIA A100 80GB (PCIe4 x16) (modeled)",
+      "name": "swapover, NVIDIA A100 80GB (PCIe4 x16) (modeled)",
       "config": {
         "device": "NVIDIA A100 80GB (PCIe4 x16)",
         "modeled": true,
@@ -2330,7 +2316,7 @@
     },
     {
       "group": "gpu",
-      "name": "crossover batch \u2014 NVIDIA A100 80GB (PCIe4 x16) (modeled)",
+      "name": "crossover batch, NVIDIA A100 80GB (PCIe4 x16) (modeled)",
       "config": {
         "device": "NVIDIA A100 80GB (PCIe4 x16)",
         "modeled": true
@@ -2338,7 +2324,7 @@
       "unit": "bytes",
       "dependency": "analytical model",
       "status": "ok",
-      "note": "GPU overtakes CPU above ~319 KiB resident / never (per-byte slower) cold (host<->device copy each batch); ~319 concurrent 1-KiB streams. Roofline projection \u2014 see GPGPU-Sim/Accel-Sim for cycle-accurate. PROJECTED: HBM2e 1.94 TB/s, PCIe4 x16 ~25 GB/s effective, ~8 us launch",
+      "note": "GPU overtakes CPU above ~319 KiB resident / never (per-byte slower) cold (host<->device copy each batch); ~319 concurrent 1-KiB streams. Roofline projection, see GPGPU-Sim/Accel-Sim for cycle-accurate. PROJECTED: HBM2e 1.94 TB/s, PCIe4 x16 ~25 GB/s effective, ~8 us launch",
       "metrics": {
         "crossover_bytes_resident": 326754.617414248,
         "crossover_bytes_cold": null,
@@ -2349,7 +2335,7 @@
     },
     {
       "group": "gpu",
-      "name": "swapover \u2014 NVIDIA H100 (PCIe5 x16) (modeled)",
+      "name": "swapover, NVIDIA H100 (PCIe5 x16) (modeled)",
       "config": {
         "device": "NVIDIA H100 (PCIe5 x16)",
         "modeled": true,
@@ -2366,7 +2352,7 @@
     },
     {
       "group": "gpu",
-      "name": "crossover batch \u2014 NVIDIA H100 (PCIe5 x16) (modeled)",
+      "name": "crossover batch, NVIDIA H100 (PCIe5 x16) (modeled)",
       "config": {
         "device": "NVIDIA H100 (PCIe5 x16)",
         "modeled": true
@@ -2374,7 +2360,7 @@
       "unit": "bytes",
       "dependency": "analytical model",
       "status": "ok",
-      "note": "GPU overtakes CPU above ~237 KiB resident / never (per-byte slower) cold (host<->device copy each batch); ~237 concurrent 1-KiB streams. Roofline projection \u2014 see GPGPU-Sim/Accel-Sim for cycle-accurate. PROJECTED: HBM3 3.35 TB/s, PCIe5 x16 ~55 GB/s effective, ~6 us launch",
+      "note": "GPU overtakes CPU above ~237 KiB resident / never (per-byte slower) cold (host<->device copy each batch); ~237 concurrent 1-KiB streams. Roofline projection, see GPGPU-Sim/Accel-Sim for cycle-accurate. PROJECTED: HBM3 3.35 TB/s, PCIe5 x16 ~55 GB/s effective, ~6 us launch",
       "metrics": {
         "crossover_bytes_resident": 242900.3021148036,
         "crossover_bytes_cold": null,
@@ -2385,7 +2371,7 @@
     },
     {
       "group": "gpu",
-      "name": "swapover \u2014 NVIDIA H100 (NVLink) (modeled)",
+      "name": "swapover, NVIDIA H100 (NVLink) (modeled)",
       "config": {
         "device": "NVIDIA H100 (NVLink)",
         "modeled": true,
@@ -2402,7 +2388,7 @@
     },
     {
       "group": "gpu",
-      "name": "crossover batch \u2014 NVIDIA H100 (NVLink) (modeled)",
+      "name": "crossover batch, NVIDIA H100 (NVLink) (modeled)",
       "config": {
         "device": "NVIDIA H100 (NVLink)",
         "modeled": true
@@ -2410,7 +2396,7 @@
       "unit": "bytes",
       "dependency": "analytical model",
       "status": "ok",
-      "note": "GPU overtakes CPU above ~237 KiB resident / 289 KiB cold (host<->device copy each batch); ~237 concurrent 1-KiB streams. Roofline projection \u2014 see GPGPU-Sim/Accel-Sim for cycle-accurate. PROJECTED: HBM3 3.35 TB/s, NVLink ~450 GB/s effective, ~6 us launch",
+      "note": "GPU overtakes CPU above ~237 KiB resident / 289 KiB cold (host<->device copy each batch); ~237 concurrent 1-KiB streams. Roofline projection, see GPGPU-Sim/Accel-Sim for cycle-accurate. PROJECTED: HBM3 3.35 TB/s, NVLink ~450 GB/s effective, ~6 us launch",
       "metrics": {
         "crossover_bytes_resident": 242900.3021148036,
         "crossover_bytes_cold": 296193.20507572655,
@@ -2421,7 +2407,7 @@
     },
     {
       "group": "gpu",
-      "name": "swapover \u2014 AMD MI250 (PCIe4 x16) (modeled)",
+      "name": "swapover, AMD MI250 (PCIe4 x16) (modeled)",
       "config": {
         "device": "AMD MI250 (PCIe4 x16)",
         "modeled": true,
@@ -2438,7 +2424,7 @@
     },
     {
       "group": "gpu",
-      "name": "crossover batch \u2014 AMD MI250 (PCIe4 x16) (modeled)",
+      "name": "crossover batch, AMD MI250 (PCIe4 x16) (modeled)",
       "config": {
         "device": "AMD MI250 (PCIe4 x16)",
         "modeled": true
@@ -2446,7 +2432,7 @@
       "unit": "bytes",
       "dependency": "analytical model",
       "status": "ok",
-      "note": "GPU overtakes CPU above ~316 KiB resident / never (per-byte slower) cold (host<->device copy each batch); ~316 concurrent 1-KiB streams. Roofline projection \u2014 see GPGPU-Sim/Accel-Sim for cycle-accurate. PROJECTED: HBM2e ~3.2 TB/s (per-GCD aggregate), PCIe4 x16 ~25 GB/s, ~8 us launch",
+      "note": "GPU overtakes CPU above ~316 KiB resident / never (per-byte slower) cold (host<->device copy each batch); ~316 concurrent 1-KiB streams. Roofline projection, see GPGPU-Sim/Accel-Sim for cycle-accurate. PROJECTED: HBM2e ~3.2 TB/s (per-GCD aggregate), PCIe4 x16 ~25 GB/s, ~8 us launch",
       "metrics": {
         "crossover_bytes_resident": 324050.6329113924,
         "crossover_bytes_cold": null,
@@ -2462,7 +2448,7 @@
       "unit": "",
       "dependency": "mlx/cupy/torch",
       "status": "skipped",
-      "note": "no GPU on this runner \u2014 the GPU swapover/crossover is measured on the Apple-Silicon host",
+      "note": "no GPU on this runner, the GPU swapover/crossover is measured on the Apple-Silicon host",
       "metrics": {}
     },
     {
@@ -2472,7 +2458,7 @@
       "unit": "",
       "dependency": "mlx/cupy/torch",
       "status": "skipped",
-      "note": "no GPU on this runner \u2014 the GPU swapover/crossover is measured on the Apple-Silicon host",
+      "note": "no GPU on this runner, the GPU swapover/crossover is measured on the Apple-Silicon host",
       "metrics": {}
     },
     {
@@ -2482,7 +2468,7 @@
       "unit": "",
       "dependency": "robobus",
       "status": "skipped",
-      "note": "n/a here \u2014 needs the robobus package (private repo); the portable `bus` group measures the same ring on this platform",
+      "note": "n/a here, needs the robobus package (private repo); the portable `bus` group measures the same ring on this platform",
       "metrics": {}
     },
     {
@@ -2492,7 +2478,7 @@
       "unit": "",
       "dependency": "robobus",
       "status": "skipped",
-      "note": "n/a here \u2014 needs the robobus package (private repo); the portable `bus` group measures the same ring on this platform",
+      "note": "n/a here, needs the robobus package (private repo); the portable `bus` group measures the same ring on this platform",
       "metrics": {}
     }
   ],
